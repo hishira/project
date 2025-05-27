@@ -18,6 +18,7 @@ describe('AuthController', () => {
 
   const mockUser = {
     id: '1',
+    login: 'johndoe',
     email: 'test@example.com',
     firstName: 'John',
     lastName: 'Doe',
@@ -53,6 +54,7 @@ describe('AuthController', () => {
   describe('register', () => {
     it('should register a new user', async () => {
       const registerDto: RegisterDto = {
+        login: 'johndoe',
         email: 'test@example.com',
         password: 'Password123!',
         firstName: 'John',
@@ -71,7 +73,7 @@ describe('AuthController', () => {
   describe('login', () => {
     it('should login a user', async () => {
       const loginDto: LoginDto = {
-        email: 'test@example.com',
+        identifier: 'test@example.com',
         password: 'Password123!',
       };
 

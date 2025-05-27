@@ -41,6 +41,7 @@ describe('Authentication System (e2e)', () => {
 
   describe('Authentication Flow', () => {
     const testUser = {
+      login: 'johndoe',
       email: 'test@example.com',
       password: 'StrongPassword123!',
       firstName: 'John',
@@ -79,18 +80,18 @@ describe('Authentication System (e2e)', () => {
         .expect(409);
     });
 
-    it('should login with valid credentials', async () => {
+    it('should login with valid email credentials', async () => {
       // Register user first
       await request(app.getHttpServer())
         .post('/auth/register')
         .send(testUser)
         .expect(201);
 
-      // Login
+      // Login with email
       const response = await request(app.getHttpServer())
         .post('/auth/login')
         .send({
-          email: testUser.email,
+          identifier: testUser.email,
           password: testUser.password,
         })
         .expect(200);
@@ -98,6 +99,27 @@ describe('Authentication System (e2e)', () => {
       expect(response.body).toHaveProperty('user');
       expect(response.body).toHaveProperty('access_token');
       expect(response.body.user.email).toBe(testUser.email);
+    });
+
+    it('should login with valid username credentials', async () => {
+      // Register user first
+      await request(app.getHttpServer())
+        .post('/auth/register')
+        .send(testUser)
+        .expect(201);
+
+      // Login with login/username
+      const response = await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({
+          identifier: testUser.login,
+          password: testUser.password,
+        })
+        .expect(200);
+
+      expect(response.body).toHaveProperty('user');
+      expect(response.body).toHaveProperty('access_token');
+      expect(response.body.user.login).toBe(testUser.login);
     });
 
     it('should not login with invalid credentials', async () => {
@@ -111,7 +133,7 @@ describe('Authentication System (e2e)', () => {
       await request(app.getHttpServer())
         .post('/auth/login')
         .send({
-          email: testUser.email,
+          identifier: testUser.email,
           password: 'WrongPassword123!',
         })
         .expect(401);
@@ -165,7 +187,7 @@ describe('Authentication System (e2e)', () => {
       await request(app.getHttpServer())
         .post('/auth/login')
         .send({
-          email: testUser.email,
+          identifier: testUser.email,
           password: testUser.password,
         })
         .expect(401);
@@ -174,7 +196,7 @@ describe('Authentication System (e2e)', () => {
       await request(app.getHttpServer())
         .post('/auth/login')
         .send({
-          email: testUser.email,
+          identifier: testUser.email,
           password: newPassword,
         })
         .expect(200);
@@ -229,6 +251,7 @@ describe('Authentication System (e2e)', () => {
     it('should validate password change input', async () => {
       // Register user first
       const testUser = {
+        login: 'janedoe',
         email: 'test@example.com',
         password: 'StrongPassword123!',
         firstName: 'John',

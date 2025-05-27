@@ -11,6 +11,7 @@ import { User } from '../entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { JwtPayload } from './strategies/jwt.strategy';
 
 @Injectable()
@@ -21,17 +22,27 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(
-    registerDto: RegisterDto,
-  ): Promise<{ user: Omit<User, 'password'>; access_token: string }> {
-    const { email, password, firstName, lastName } = registerDto;
+  async register(registerDto: RegisterDto): Promise<{
+    user: Omit<User, 'password' | 'refreshToken'>;
+    access_token: string;
+    refresh_token: string;
+  }> {
+    const { login, email, password, firstName, lastName } = registerDto;
 
-    // Check if user already exists
-    const existingUser = await this.usersRepository.findOne({
+    // Check if email already exists
+    const existingEmail = await this.usersRepository.findOne({
       where: { email },
     });
-    if (existingUser) {
+    if (existingEmail) {
       throw new ConflictException('Email address is already in use');
+    }
+
+    // Check if login already exists
+    const existingLogin = await this.usersRepository.findOne({
+      where: { login },
+    });
+    if (existingLogin) {
+      throw new ConflictException('Login is already in use');
     }
 
     // Hash password
@@ -40,6 +51,7 @@ export class AuthService {
 
     // Create user
     const user = this.usersRepository.create({
+      login,
       email,
       password: hashedPassword,
       firstName,
@@ -48,46 +60,81 @@ export class AuthService {
 
     const savedUser = await this.usersRepository.save(user);
 
-    // Generate JWT token
+    // Generate JWT tokens
     const payload: JwtPayload = {
       sub: savedUser.id,
       email: savedUser.email,
+      login: savedUser.login,
     };
 
     const access_token = this.jwtService.sign(payload);
+    const refresh_token = this.jwtService.sign(payload, { expiresIn: '7d' });
 
-    // Remove password from response
+    // Hash and store refresh token
+    const hashedRefreshToken = await bcrypt.hash(refresh_token, 10);
+    await this.usersRepository.update(savedUser.id, {
+      refreshToken: hashedRefreshToken,
+    });
+
+    // Remove password and refresh token from response
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, ...userWithoutPassword } = savedUser;
+    const { password: _, refreshToken: __, ...userWithoutPassword } = savedUser;
 
     return {
       user: userWithoutPassword,
       access_token,
+      refresh_token,
     };
   }
 
-  async login(
-    loginDto: LoginDto,
-  ): Promise<{ user: Omit<User, 'password'>; access_token: string }> {
-    const { email, password } = loginDto;
+  async login(loginDto: LoginDto): Promise<{
+    user: Omit<User, 'password' | 'refreshToken'>;
+    access_token: string;
+    refresh_token: string;
+  }> {
+    const { identifier, password } = loginDto;
 
-    // Find user with password field
-    const user = await this.usersRepository.findOne({
-      where: { email },
-      select: [
-        'id',
-        'email',
-        'password',
-        'firstName',
-        'lastName',
-        'isActive',
-        'createdAt',
-        'updatedAt',
-      ],
-    });
+    // Check if identifier is email or login
+    let user: User | null = null;
+
+    // Try to find by email
+    if (identifier.includes('@')) {
+      user = await this.usersRepository.findOne({
+        where: { email: identifier },
+        select: [
+          'id',
+          'login',
+          'email',
+          'password',
+          'firstName',
+          'lastName',
+          'isActive',
+          'createdAt',
+          'updatedAt',
+        ],
+      });
+    }
+
+    // If not found, try to find by login
+    if (!user) {
+      user = await this.usersRepository.findOne({
+        where: { login: identifier },
+        select: [
+          'id',
+          'login',
+          'email',
+          'password',
+          'firstName',
+          'lastName',
+          'isActive',
+          'createdAt',
+          'updatedAt',
+        ],
+      });
+    }
 
     if (!user) {
-      throw new UnauthorizedException('Invalid email or password');
+      throw new UnauthorizedException('Invalid username/email or password');
     }
 
     // Check if user is active
@@ -98,24 +145,33 @@ export class AuthService {
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid email or password');
+      throw new UnauthorizedException('Invalid username/email or password');
     }
 
-    // Generate JWT token
+    // Generate JWT tokens
     const payload: JwtPayload = {
       sub: user.id,
       email: user.email,
+      login: user.login,
     };
 
     const access_token = this.jwtService.sign(payload);
+    const refresh_token = this.jwtService.sign(payload, { expiresIn: '7d' });
 
-    // Remove password from response
+    // Hash and store refresh token
+    const hashedRefreshToken = await bcrypt.hash(refresh_token, 10);
+    await this.usersRepository.update(user.id, {
+      refreshToken: hashedRefreshToken,
+    });
+
+    // Remove password and refresh token from response
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, ...userWithoutPassword } = user;
+    const { password: _, refreshToken: __, ...userWithoutPassword } = user;
 
     return {
       user: userWithoutPassword,
       access_token,
+      refresh_token,
     };
   }
 
@@ -125,7 +181,7 @@ export class AuthService {
 
   async getMe(userId: string): Promise<Omit<User, 'password'>> {
     const user = await this.usersRepository.findOne({ where: { id: userId } });
-    
+
     if (!user) {
       throw new UnauthorizedException('User not found');
     }
@@ -147,6 +203,7 @@ export class AuthService {
       where: { id: userId },
       select: [
         'id',
+        'login',
         'email',
         'password',
         'firstName',
@@ -183,5 +240,73 @@ export class AuthService {
     await this.usersRepository.update(userId, { password: hashedNewPassword });
 
     return { message: 'Password changed successfully' };
+  }
+
+  async refreshToken(
+    refreshTokenDto: RefreshTokenDto,
+  ): Promise<{ access_token: string; refresh_token: string }> {
+    const { refresh_token } = refreshTokenDto;
+
+    try {
+      // Verify the refresh token
+      const decoded = this.jwtService.verify(refresh_token);
+      const payload = decoded as JwtPayload;
+
+      // Find user with refresh token
+      const user = await this.usersRepository.findOne({
+        where: { id: payload.sub },
+        select: ['id', 'login', 'email', 'refreshToken', 'isActive'],
+      });
+
+      if (!user || !user.refreshToken) {
+        throw new UnauthorizedException('Invalid refresh token');
+      }
+
+      // Check if user is active
+      if (!user.isActive) {
+        throw new UnauthorizedException('Account is deactivated');
+      }
+
+      // Verify refresh token against stored hash
+      const isRefreshTokenValid = await bcrypt.compare(
+        refresh_token,
+        user.refreshToken,
+      );
+
+      if (!isRefreshTokenValid) {
+        throw new UnauthorizedException('Invalid refresh token');
+      }
+
+      // Generate new tokens
+      const newPayload: JwtPayload = {
+        sub: user.id,
+        email: user.email,
+        login: user.login,
+      };
+
+      const access_token = this.jwtService.sign(newPayload);
+      const new_refresh_token = this.jwtService.sign(newPayload, {
+        expiresIn: '7d',
+      });
+
+      // Hash and store new refresh token
+      const hashedRefreshToken = await bcrypt.hash(new_refresh_token, 10);
+      await this.usersRepository.update(user.id, {
+        refreshToken: hashedRefreshToken,
+      });
+
+      return {
+        access_token,
+        refresh_token: new_refresh_token,
+      };
+    } catch {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+
+  async logout(userId: string): Promise<{ message: string }> {
+    // Clear refresh token from database
+    await this.usersRepository.update(userId, { refreshToken: undefined });
+    return { message: 'Logged out successfully' };
   }
 }

@@ -17,6 +17,7 @@ describe('AuthService', () => {
 
   const mockUser: User = {
     id: '1',
+    login: 'johndoe',
     email: 'test@example.com',
     password: 'hashedPassword',
     firstName: 'John',
@@ -35,6 +36,7 @@ describe('AuthService', () => {
 
   const mockJwtService = {
     sign: jest.fn(),
+    verify: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -63,6 +65,7 @@ describe('AuthService', () => {
 
   describe('register', () => {
     const registerDto: RegisterDto = {
+      login: 'janesmith',
       email: 'new@example.com',
       password: 'Password123!',
       firstName: 'Jane',
@@ -95,11 +98,43 @@ describe('AuthService', () => {
         ConflictException,
       );
     });
+
+    it('should successfully register a new user without firstName and lastName', async () => {
+      const registerDtoMinimal: RegisterDto = {
+        login: 'janesmith',
+        email: 'new@example.com',
+        password: 'Password123!',
+      };
+
+      const mockUserMinimal = {
+        ...mockUser,
+        firstName: undefined,
+        lastName: undefined,
+      };
+
+      mockUserRepository.findOne.mockResolvedValue(null);
+      mockUserRepository.create.mockReturnValue(mockUserMinimal);
+      mockUserRepository.save.mockResolvedValue(mockUserMinimal);
+      mockJwtService.sign.mockReturnValue('mock-token');
+
+      jest
+        .spyOn(bcrypt, 'hash')
+        .mockResolvedValue('hashedPassword' as never);
+
+      const result = await service.register(registerDtoMinimal);
+
+      expect(result).toHaveProperty('user');
+      expect(result).toHaveProperty('access_token');
+      expect(result.access_token).toBe('mock-token');
+      expect(result.user).not.toHaveProperty('password');
+      expect(result.user.firstName).toBeUndefined();
+      expect(result.user.lastName).toBeUndefined();
+    });
   });
 
   describe('login', () => {
     const loginDto: LoginDto = {
-      email: 'test@example.com',
+      identifier: 'test@example.com',
       password: 'Password123!',
     };
 
@@ -215,6 +250,95 @@ describe('AuthService', () => {
       const result = await service.validateUser('1');
 
       expect(result).toBeNull();
+    });
+  });
+
+  describe('refreshToken', () => {
+    it('should successfully refresh token with valid refresh token', async () => {
+      const refreshTokenDto = { refresh_token: 'valid_refresh_token' };
+      const mockPayload = { sub: '1', email: 'test@test.com', login: 'testuser' };
+      const mockUser = {
+        id: '1',
+        login: 'testuser',
+        email: 'test@test.com',
+        refreshToken: 'hashedRefreshToken',
+        isActive: true,
+      };
+
+      mockJwtService.verify.mockReturnValue(mockPayload);
+      mockUserRepository.findOne.mockResolvedValue(mockUser);
+      jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never);
+      mockJwtService.sign.mockReturnValue('new_access_token');
+      jest.spyOn(bcrypt, 'hash').mockResolvedValue('newHashedRefreshToken' as never);
+      mockUserRepository.update.mockResolvedValue({ affected: 1 });
+
+      const result = await service.refreshToken(refreshTokenDto);
+
+      expect(result).toEqual({
+        access_token: 'new_access_token',
+        refresh_token: 'new_access_token',
+      });
+      expect(mockJwtService.verify).toHaveBeenCalledWith('valid_refresh_token');
+      expect(mockUserRepository.update).toHaveBeenCalledWith('1', {
+        refreshToken: 'newHashedRefreshToken',
+      });
+    });
+
+    it('should throw UnauthorizedException for invalid refresh token', async () => {
+      const refreshTokenDto = { refresh_token: 'invalid_refresh_token' };
+
+      mockJwtService.verify.mockImplementation(() => {
+        throw new Error('Invalid token');
+      });
+
+      await expect(service.refreshToken(refreshTokenDto)).rejects.toThrow(
+        'Invalid refresh token',
+      );
+    });
+
+    it('should throw UnauthorizedException if user not found', async () => {
+      const refreshTokenDto = { refresh_token: 'valid_refresh_token' };
+      const mockPayload = { sub: '1', email: 'test@test.com', login: 'testuser' };
+
+      mockJwtService.verify.mockReturnValue(mockPayload);
+      mockUserRepository.findOne.mockResolvedValue(null);
+
+      await expect(service.refreshToken(refreshTokenDto)).rejects.toThrow(
+        'Invalid refresh token',
+      );
+    });
+
+    it('should throw UnauthorizedException if refresh token does not match', async () => {
+      const refreshTokenDto = { refresh_token: 'valid_refresh_token' };
+      const mockPayload = { sub: '1', email: 'test@test.com', login: 'testuser' };
+      const mockUser = {
+        id: '1',
+        login: 'testuser',
+        email: 'test@test.com',
+        refreshToken: 'hashedRefreshToken',
+        isActive: true,
+      };
+
+      mockJwtService.verify.mockReturnValue(mockPayload);
+      mockUserRepository.findOne.mockResolvedValue(mockUser);
+      jest.spyOn(bcrypt, 'compare').mockResolvedValue(false as never);
+
+      await expect(service.refreshToken(refreshTokenDto)).rejects.toThrow(
+        'Invalid refresh token',
+      );
+    });
+  });
+
+  describe('logout', () => {
+    it('should successfully logout user', async () => {
+      mockUserRepository.update.mockResolvedValue({ affected: 1 });
+
+      const result = await service.logout('1');
+
+      expect(result).toEqual({ message: 'Logged out successfully' });
+      expect(mockUserRepository.update).toHaveBeenCalledWith('1', {
+        refreshToken: undefined,
+      });
     });
   });
 });

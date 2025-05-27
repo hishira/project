@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import {
   IsEmail,
   IsNotEmpty,
@@ -5,9 +7,20 @@ import {
   MinLength,
   MaxLength,
   Matches,
+  IsOptional,
 } from 'class-validator';
 
 export class RegisterDto {
+  @IsString({ message: 'Login must be a string' })
+  @IsNotEmpty({ message: 'Login is required' })
+  @MinLength(3, { message: 'Login must be at least 3 characters long' })
+  @MaxLength(50, { message: 'Login cannot exceed 50 characters' })
+  @Matches(/^[a-zA-Z0-9_-]+$/, {
+    message:
+      'Login can only contain letters, numbers, underscores, and hyphens',
+  })
+  login: string;
+
   @IsEmail({}, { message: 'Please provide a valid email address' })
   @IsNotEmpty({ message: 'Email is required' })
   @MaxLength(255, { message: 'Email cannot exceed 255 characters' })
@@ -26,23 +39,23 @@ export class RegisterDto {
   )
   password: string;
 
+  @IsOptional()
   @IsString({ message: 'First name must be a string' })
-  @IsNotEmpty({ message: 'First name is required' })
   @MinLength(1, { message: 'First name cannot be empty' })
   @MaxLength(50, { message: 'First name cannot exceed 50 characters' })
   @Matches(/^[a-zA-ZÀ-ÿ\s'-]+$/, {
     message:
       'First name can only contain letters, spaces, hyphens, and apostrophes',
   })
-  firstName: string;
+  firstName?: string;
 
+  @IsOptional()
   @IsString({ message: 'Last name must be a string' })
-  @IsNotEmpty({ message: 'Last name is required' })
   @MinLength(1, { message: 'Last name cannot be empty' })
   @MaxLength(50, { message: 'Last name cannot exceed 50 characters' })
   @Matches(/^[a-zA-ZÀ-ÿ\s'-]+$/, {
     message:
       'Last name can only contain letters, spaces, hyphens, and apostrophes',
   })
-  lastName: string;
+  lastName?: string;
 }

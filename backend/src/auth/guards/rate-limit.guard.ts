@@ -29,7 +29,7 @@ export class RateLimitGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
     const key = this.getKey(request);
-    
+
     const now = Date.now();
     const current = this.store[key];
 

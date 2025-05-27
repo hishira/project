@@ -46,6 +46,24 @@ export class UsersService {
       where: { email },
       select: [
         'id',
+        'login',
+        'email',
+        'firstName',
+        'lastName',
+        'isActive',
+        'createdAt',
+        'updatedAt',
+        'password',
+      ],
+    });
+  }
+
+  async findByLogin(login: string): Promise<User | null> {
+    return this.usersRepository.findOne({
+      where: { login },
+      select: [
+        'id',
+        'login',
         'email',
         'firstName',
         'lastName',
