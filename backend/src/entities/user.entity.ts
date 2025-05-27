@@ -14,6 +14,9 @@ export class User {
   @Column({ unique: true })
   email: string;
 
+  @Column({ select: false }) // Don't include password in queries by default
+  password: string;
+
   @Column()
   firstName: string;
 

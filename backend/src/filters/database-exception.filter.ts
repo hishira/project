@@ -28,7 +28,7 @@ export class DatabaseExceptionFilter implements ExceptionFilter {
     // Handle specific SQLite constraint errors
     if (exception.message.includes('UNIQUE constraint failed')) {
       status = HttpStatus.CONFLICT;
-      
+
       if (exception.message.includes('user.email')) {
         message = 'Email address is already in use';
       } else {
