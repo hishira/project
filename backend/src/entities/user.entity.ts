@@ -20,9 +20,6 @@ export class User {
   @Column({ select: false }) // Don't include password in queries by default
   password: string;
 
-  @Column({ nullable: true, select: false }) // Don't include refresh token in queries by default
-  refreshToken?: string;
-
   @Column({ nullable: true })
   firstName?: string;
 

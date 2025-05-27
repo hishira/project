@@ -13,6 +13,7 @@ import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { JwtPayload } from './strategies/jwt.strategy';
+import { UserSessionService } from '../user-session/user-session.service';
 
 @Injectable()
 export class AuthService {
@@ -20,10 +21,11 @@ export class AuthService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly userSessionService: UserSessionService,
   ) {}
 
   async register(registerDto: RegisterDto): Promise<{
-    user: Omit<User, 'password' | 'refreshToken'>;
+    user: Omit<User, 'password'>;
     access_token: string;
     refresh_token: string;
   }> {
@@ -70,15 +72,19 @@ export class AuthService {
     const access_token = this.jwtService.sign(payload);
     const refresh_token = this.jwtService.sign(payload, { expiresIn: '7d' });
 
-    // Hash and store refresh token
-    const hashedRefreshToken = await bcrypt.hash(refresh_token, 10);
-    await this.usersRepository.update(savedUser.id, {
-      refreshToken: hashedRefreshToken,
-    });
+    // Create session with refresh token
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 7); // 7 days from now
+    
+    await this.userSessionService.createSession(
+      savedUser.login,
+      refresh_token,
+      expiresAt,
+    );
 
-    // Remove password and refresh token from response
+    // Remove password from response
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, refreshToken: __, ...userWithoutPassword } = savedUser;
+    const { password: _, ...userWithoutPassword } = savedUser;
 
     return {
       user: userWithoutPassword,
@@ -88,7 +94,7 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto): Promise<{
-    user: Omit<User, 'password' | 'refreshToken'>;
+    user: Omit<User, 'password'>;
     access_token: string;
     refresh_token: string;
   }> {
@@ -158,15 +164,19 @@ export class AuthService {
     const access_token = this.jwtService.sign(payload);
     const refresh_token = this.jwtService.sign(payload, { expiresIn: '7d' });
 
-    // Hash and store refresh token
-    const hashedRefreshToken = await bcrypt.hash(refresh_token, 10);
-    await this.usersRepository.update(user.id, {
-      refreshToken: hashedRefreshToken,
-    });
+    // Create session with refresh token
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 7); // 7 days from now
+    
+    await this.userSessionService.createSession(
+      user.login,
+      refresh_token,
+      expiresAt,
+    );
 
-    // Remove password and refresh token from response
+    // Remove password from response
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, refreshToken: __, ...userWithoutPassword } = user;
+    const { password: _, ...userWithoutPassword } = user;
 
     return {
       user: userWithoutPassword,
@@ -249,16 +259,15 @@ export class AuthService {
 
     try {
       // Verify the refresh token
-      const decoded = this.jwtService.verify(refresh_token);
-      const payload = decoded as JwtPayload;
+      const payload = this.jwtService.verify(refresh_token) as JwtPayload;
 
-      // Find user with refresh token
+      // Find user to get login
       const user = await this.usersRepository.findOne({
         where: { id: payload.sub },
-        select: ['id', 'login', 'email', 'refreshToken', 'isActive'],
+        select: ['id', 'login', 'email', 'isActive'],
       });
 
-      if (!user || !user.refreshToken) {
+      if (!user) {
         throw new UnauthorizedException('Invalid refresh token');
       }
 
@@ -267,13 +276,13 @@ export class AuthService {
         throw new UnauthorizedException('Account is deactivated');
       }
 
-      // Verify refresh token against stored hash
-      const isRefreshTokenValid = await bcrypt.compare(
+      // Find and verify the session
+      const session = await this.userSessionService.findValidSession(
+        user.login,
         refresh_token,
-        user.refreshToken,
       );
 
-      if (!isRefreshTokenValid) {
+      if (!session) {
         throw new UnauthorizedException('Invalid refresh token');
       }
 
@@ -289,11 +298,15 @@ export class AuthService {
         expiresIn: '7d',
       });
 
-      // Hash and store new refresh token
-      const hashedRefreshToken = await bcrypt.hash(new_refresh_token, 10);
-      await this.usersRepository.update(user.id, {
-        refreshToken: hashedRefreshToken,
-      });
+      // Update session with new refresh token
+      const newExpiresAt = new Date();
+      newExpiresAt.setDate(newExpiresAt.getDate() + 7); // 7 days from now
+
+      await this.userSessionService.updateSession(
+        session.id,
+        new_refresh_token,
+        newExpiresAt,
+      );
 
       return {
         access_token,
@@ -305,8 +318,17 @@ export class AuthService {
   }
 
   async logout(userId: string): Promise<{ message: string }> {
-    // Clear refresh token from database
-    await this.usersRepository.update(userId, { refreshToken: undefined });
+    // Find user to get login
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      select: ['login'],
+    });
+
+    if (user) {
+      // Clear all sessions for this user
+      await this.userSessionService.deleteUserSessions(user.login);
+    }
+
     return { message: 'Logged out successfully' };
   }
 }

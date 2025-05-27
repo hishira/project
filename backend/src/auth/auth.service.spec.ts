@@ -9,11 +9,13 @@ import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { UserSessionService } from '../user-session/user-session.service';
 
 describe('AuthService', () => {
   let service: AuthService;
   let userRepository: Repository<User>;
   let jwtService: JwtService;
+  let userSessionService: UserSessionService;
 
   const mockUser: User = {
     id: '1',
@@ -39,6 +41,17 @@ describe('AuthService', () => {
     verify: jest.fn(),
   };
 
+  const mockUserSessionService = {
+    createSession: jest.fn(),
+    findValidSession: jest.fn(),
+    updateSession: jest.fn(),
+    deleteUserSessions: jest.fn(),
+    deleteSession: jest.fn(),
+    getUserSessions: jest.fn(),
+    getSessionCount: jest.fn(),
+    cleanupExpiredSessions: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -51,12 +64,17 @@ describe('AuthService', () => {
           provide: JwtService,
           useValue: mockJwtService,
         },
+        {
+          provide: UserSessionService,
+          useValue: mockUserSessionService,
+        },
       ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
     jwtService = module.get<JwtService>(JwtService);
+    userSessionService = module.get<UserSessionService>(UserSessionService);
   });
 
   afterEach(() => {
@@ -257,20 +275,24 @@ describe('AuthService', () => {
     it('should successfully refresh token with valid refresh token', async () => {
       const refreshTokenDto = { refresh_token: 'valid_refresh_token' };
       const mockPayload = { sub: '1', email: 'test@test.com', login: 'testuser' };
-      const mockUser = {
+      const mockUserWithoutRefreshToken = {
         id: '1',
         login: 'testuser',
         email: 'test@test.com',
-        refreshToken: 'hashedRefreshToken',
         isActive: true,
+      };
+      const mockSession = {
+        id: 'session-id',
+        userLogin: 'testuser',
+        refreshToken: 'hashedRefreshToken',
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       };
 
       mockJwtService.verify.mockReturnValue(mockPayload);
-      mockUserRepository.findOne.mockResolvedValue(mockUser);
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never);
+      mockUserRepository.findOne.mockResolvedValue(mockUserWithoutRefreshToken);
+      mockUserSessionService.findValidSession.mockResolvedValue(mockSession);
       mockJwtService.sign.mockReturnValue('new_access_token');
-      jest.spyOn(bcrypt, 'hash').mockResolvedValue('newHashedRefreshToken' as never);
-      mockUserRepository.update.mockResolvedValue({ affected: 1 });
+      mockUserSessionService.updateSession.mockResolvedValue(undefined);
 
       const result = await service.refreshToken(refreshTokenDto);
 
@@ -279,9 +301,15 @@ describe('AuthService', () => {
         refresh_token: 'new_access_token',
       });
       expect(mockJwtService.verify).toHaveBeenCalledWith('valid_refresh_token');
-      expect(mockUserRepository.update).toHaveBeenCalledWith('1', {
-        refreshToken: 'newHashedRefreshToken',
-      });
+      expect(mockUserSessionService.findValidSession).toHaveBeenCalledWith(
+        'testuser',
+        'valid_refresh_token'
+      );
+      expect(mockUserSessionService.updateSession).toHaveBeenCalledWith(
+        'session-id',
+        'new_access_token',
+        expect.any(Date)
+      );
     });
 
     it('should throw UnauthorizedException for invalid refresh token', async () => {
@@ -315,13 +343,12 @@ describe('AuthService', () => {
         id: '1',
         login: 'testuser',
         email: 'test@test.com',
-        refreshToken: 'hashedRefreshToken',
         isActive: true,
       };
 
       mockJwtService.verify.mockReturnValue(mockPayload);
       mockUserRepository.findOne.mockResolvedValue(mockUser);
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(false as never);
+      mockUserSessionService.findValidSession.mockResolvedValue(null); // No valid session found
 
       await expect(service.refreshToken(refreshTokenDto)).rejects.toThrow(
         'Invalid refresh token',
@@ -331,14 +358,24 @@ describe('AuthService', () => {
 
   describe('logout', () => {
     it('should successfully logout user', async () => {
-      mockUserRepository.update.mockResolvedValue({ affected: 1 });
+      const mockUser = {
+        id: '1',
+        login: 'testuser',
+        email: 'test@test.com',
+        isActive: true,
+      };
+
+      mockUserRepository.findOne.mockResolvedValue(mockUser);
+      mockUserSessionService.deleteUserSessions.mockResolvedValue(undefined);
 
       const result = await service.logout('1');
 
       expect(result).toEqual({ message: 'Logged out successfully' });
-      expect(mockUserRepository.update).toHaveBeenCalledWith('1', {
-        refreshToken: undefined,
+      expect(mockUserRepository.findOne).toHaveBeenCalledWith({
+        where: { id: '1' },
+        select: ['login'],
       });
+      expect(mockUserSessionService.deleteUserSessions).toHaveBeenCalledWith('testuser');
     });
   });
 });

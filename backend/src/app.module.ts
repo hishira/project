@@ -7,9 +7,15 @@ import { databaseConfig } from './database/database.config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { UserSessionModule } from './user-session/user-session.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(databaseConfig), UsersModule, AuthModule],
+  imports: [
+    TypeOrmModule.forRoot(databaseConfig),
+    UsersModule,
+    AuthModule,
+    UserSessionModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

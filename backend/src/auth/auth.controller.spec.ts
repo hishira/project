@@ -4,16 +4,29 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { UserSessionService } from '../user-session/user-session.service';
 
 describe('AuthController', () => {
   let controller: AuthController;
   let authService: AuthService;
+  let userSessionService: UserSessionService;
 
   const mockAuthService = {
     register: jest.fn(),
     login: jest.fn(),
     getMe: jest.fn(),
     changePassword: jest.fn(),
+  };
+
+  const mockUserSessionService = {
+    createSession: jest.fn(),
+    findSessionByUserAndToken: jest.fn(),
+    updateSession: jest.fn(),
+    deleteAllUserSessions: jest.fn(),
+    deleteSession: jest.fn(),
+    getUserSessions: jest.fn(),
+    getSessionCount: jest.fn(),
+    cleanupExpiredSessions: jest.fn(),
   };
 
   const mockUser = {
@@ -40,11 +53,16 @@ describe('AuthController', () => {
           provide: AuthService,
           useValue: mockAuthService,
         },
+        {
+          provide: UserSessionService,
+          useValue: mockUserSessionService,
+        },
       ],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
     authService = module.get<AuthService>(AuthService);
+    userSessionService = module.get<UserSessionService>(UserSessionService);
   });
 
   afterEach(() => {

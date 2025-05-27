@@ -8,6 +8,8 @@ import {
   Request,
   Patch,
   UseGuards,
+  Delete,
+  Param,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
@@ -16,17 +18,22 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { Public } from './decorators/public.decorator';
 import { RateLimitGuard } from './guards/rate-limit.guard';
+import { UserSessionService } from '../user-session/user-session.service';
 
 interface AuthenticatedRequest extends Request {
   user: {
     sub: string;
     email: string;
+    login: string;
   };
 }
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userSessionService: UserSessionService,
+  ) {}
 
   @Public()
   @Post('register')
@@ -71,5 +78,54 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async logout(@Request() req: AuthenticatedRequest) {
     return this.authService.logout(req.user.sub);
+  }
+
+  @Get('sessions')
+  async getSessions(@Request() req: AuthenticatedRequest) {
+    return this.userSessionService.getUserSessions(req.user.login);
+  }
+
+  @Get('sessions/count')
+  async getActiveSessionCount(@Request() req: AuthenticatedRequest) {
+    const count = await this.userSessionService.getActiveSessionCount(
+      req.user.login,
+    );
+    return { count };
+  }
+
+  @Delete('sessions/:sessionId')
+  @HttpCode(HttpStatus.OK)
+  async deleteSession(
+    @Request() req: AuthenticatedRequest,
+    @Param('sessionId') sessionId: string,
+  ) {
+    // First verify the session belongs to the user
+    const userSessions = await this.userSessionService.getUserSessions(
+      req.user.login,
+    );
+    const sessionExists = userSessions.some(
+      (session) => session.id === sessionId,
+    );
+
+    if (!sessionExists) {
+      throw new Error('Session not found or does not belong to user');
+    }
+
+    await this.userSessionService.deleteSession(sessionId);
+    return { message: 'Session deleted successfully' };
+  }
+
+  @Delete('sessions')
+  @HttpCode(HttpStatus.OK)
+  async deleteAllSessions(@Request() req: AuthenticatedRequest) {
+    await this.userSessionService.deleteUserSessions(req.user.login);
+    return { message: 'All sessions deleted successfully' };
+  }
+
+  @Post('sessions/cleanup')
+  @HttpCode(HttpStatus.OK)
+  async cleanupExpiredSessions() {
+    await this.userSessionService.cleanupExpiredSessions();
+    return { message: 'Expired sessions cleaned up successfully' };
   }
 }

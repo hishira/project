@@ -8,18 +8,20 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { User } from '../entities/user.entity';
 import { UsersModule } from '../users/users.module';
+import { UserSessionModule } from '../user-session/user-session.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
+      secret: process.env.JWT_SECRET ?? 'your-secret-key-change-in-production',
       signOptions: {
-        expiresIn: process.env.JWT_EXPIRES_IN || '24h',
+        expiresIn: process.env.JWT_EXPIRES_IN ?? '24h',
       },
     }),
     UsersModule,
+    UserSessionModule,
   ],
   providers: [AuthService, JwtStrategy, JwtAuthGuard],
   controllers: [AuthController],
