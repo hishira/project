@@ -74,10 +74,7 @@ export class ActivitiesController {
   }
 
   @Get(':id')
-  findOne(
-    @Request() req: any,
-    @Param('id', ParseUUIDPipe) id: string,
-  ) {
+  findOne(@Request() req: any, @Param('id', ParseUUIDPipe) id: string) {
     return this.activitiesService.findOne(id, req.user.login);
   }
 
@@ -92,10 +89,7 @@ export class ActivitiesController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(
-    @Request() req: any,
-    @Param('id', ParseUUIDPipe) id: string,
-  ) {
+  remove(@Request() req: any, @Param('id', ParseUUIDPipe) id: string) {
     return this.activitiesService.remove(id, req.user.login);
   }
 }
