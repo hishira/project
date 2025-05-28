@@ -1,0 +1,250 @@
+.statistics-container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.statistics-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
+.filters-card {
+  margin-bottom: 20px;
+  
+  .filters-form {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    
+    mat-form-field {
+      min-width: 200px;
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  
+  mat-spinner {
+    margin-bottom: 16px;
+  }
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.overview-card {
+  .overview-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .overview-icon {
+    font-size: 40px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    padding: 12px;
+    color: white;
+    
+    &.activities {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    &.duration {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    
+    &.calories {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    &.average {
+      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    }
+  }
+  
+  .overview-info {
+    h3 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.87);
+    }
+    
+    p {
+      margin: 4px 0 0 0;
+      color: rgba(0, 0, 0, 0.6);
+      font-size: 14px;
+    }
+  }
+}
+
+.charts-tabs {
+  .tab-content {
+    padding: 20px;
+  }
+  
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+  }
+  
+  .chart-card {
+    &.full-width {
+      grid-column: 1 / -1;
+    }
+    
+    .chart-container {
+      height: 300px;
+      position: relative;
+    }
+    
+    .no-data {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 300px;
+      color: rgba(0, 0, 0, 0.5);
+      
+      mat-icon {
+        font-size: 48px;
+        height: 48px;
+        width: 48px;
+        margin-bottom: 16px;
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.goal-card {
+  .goal-progress {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    
+    .progress-circle {
+      width: 120px;
+      height: 120px;
+      position: relative;
+    }
+    
+    .goal-info {
+      flex: 1;
+      
+      h3 {
+        margin: 0;
+        font-size: 32px;
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.87);
+      }
+      
+      p {
+        margin: 8px 0 0 0;
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  text-align: center;
+  
+  .empty-icon {
+    font-size: 72px;
+    height: 72px;
+    width: 72px;
+    color: rgba(0, 0, 0, 0.3);
+    margin-bottom: 16px;
+  }
+  
+  h2 {
+    margin: 16px 0;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  p {
+    margin-bottom: 24px;
+    color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+// Material tabs customization
+::ng-deep .mat-mdc-tab-group {
+  .mat-mdc-tab-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+  
+  .mat-mdc-tab {
+    min-width: 160px;
+  }
+}
+
+// Chart.js customization
+::ng-deep canvas {
+  max-height: 300px !important;
+}
+
+@media (max-width: 768px) {
+  .statistics-container {
+    padding: 16px;
+  }
+  
+  .overview-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .goals-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .goal-progress {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .filters-form {
+    flex-direction: column;
+    align-items: stretch;
+    
+    mat-form-field {
+      min-width: unset;
+    }
+  }
+}
