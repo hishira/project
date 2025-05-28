@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { UserSessionModule } from './user-session/user-session.module';
+import { ActivitiesModule } from './activities/activities.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UserSessionModule } from './user-session/user-session.module';
     UsersModule,
     AuthModule,
     UserSessionModule,
+    ActivitiesModule,
   ],
   controllers: [AppController],
   providers: [

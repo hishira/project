@@ -59,7 +59,7 @@ describe('UserSessionService', () => {
         ...mockUserSession,
         refreshToken: 'hashedRefreshToken',
       };
-      
+
       repository.create.mockReturnValue(createResult as UserSession);
       repository.save.mockResolvedValue(createResult as UserSession);
 
@@ -90,7 +90,7 @@ describe('UserSessionService', () => {
         ...mockUserSession,
         refreshToken: 'hashedRefreshToken',
       };
-      
+
       repository.find.mockResolvedValue([sessionWithToken as UserSession]);
 
       const result = await service.findValidSession(
@@ -131,9 +131,9 @@ describe('UserSessionService', () => {
 
   describe('updateSession', () => {
     it('should update session with new hashed refresh token', async () => {
-      repository.update.mockResolvedValue({ 
-        affected: 1, 
-        generatedMaps: [], 
+      repository.update.mockResolvedValue({
+        affected: 1,
+        generatedMaps: [],
         raw: [],
       });
 
@@ -152,7 +152,7 @@ describe('UserSessionService', () => {
         {
           refreshToken: 'hashedRefreshToken',
           expiresAt: expect.any(Date),
-        }
+        },
       );
     });
   });
@@ -164,7 +164,7 @@ describe('UserSessionService', () => {
       await service.deleteSession('123e4567-e89b-12d3-a456-426614174000');
 
       expect(repository.delete).toHaveBeenCalledWith(
-        '123e4567-e89b-12d3-a456-426614174000'
+        '123e4567-e89b-12d3-a456-426614174000',
       );
     });
   });
