@@ -3,7 +3,11 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { ActivitiesService } from './activities.service';
-import { Activity, ActivityType, DifficultyLevel } from '../entities/activity.entity';
+import {
+  Activity,
+  ActivityType,
+  DifficultyLevel,
+} from '../entities/activity.entity';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { UpdateActivityDto } from './dto/update-activity.dto';
 import { CalorieCalculationService } from './services/calorie-calculation.service';
@@ -62,7 +66,9 @@ describe('ActivitiesService', () => {
           useValue: {
             buildFindAllQuery: jest.fn().mockReturnValue({}),
             buildRecentActivitiesQuery: jest.fn().mockReturnValue({}),
-            findActivitiesWithQuery: jest.fn().mockResolvedValue({ activities: [], total: 0 }),
+            findActivitiesWithQuery: jest
+              .fn()
+              .mockResolvedValue({ activities: [], total: 0 }),
           },
         },
         {
@@ -132,14 +138,21 @@ describe('ActivitiesService', () => {
     it('should return activities for a user', async () => {
       const activities = [mockActivity as Activity];
       const queryOptions = { where: { userLogin: 'testuser' } };
-      
-      const mockQueryService = module.get(ActivityQueryService) as jest.Mocked<ActivityQueryService>;
-      (mockQueryService.buildFindAllQuery as jest.Mock).mockReturnValue(queryOptions);
-      (mockQueryService.findActivitiesWithQuery as jest.Mock).mockResolvedValue({ activities, total: 1 });
+
+      const mockQueryService = module.get(ActivityQueryService);
+      (mockQueryService.buildFindAllQuery as jest.Mock).mockReturnValue(
+        queryOptions,
+      );
+      (mockQueryService.findActivitiesWithQuery as jest.Mock).mockResolvedValue(
+        { activities, total: 1 },
+      );
 
       const result = await service.findAll('testuser');
 
-      expect(mockQueryService.buildFindAllQuery).toHaveBeenCalledWith('testuser', undefined);
+      expect(mockQueryService.buildFindAllQuery).toHaveBeenCalledWith(
+        'testuser',
+        undefined,
+      );
       expect(mockQueryService.findActivitiesWithQuery).toHaveBeenCalledWith(
         repository,
         queryOptions,
@@ -155,8 +168,8 @@ describe('ActivitiesService', () => {
         limit: 10,
         offset: 1,
       };
-      const queryOptions = { 
-        where: { 
+      const queryOptions = {
+        where: {
           userLogin: 'testuser',
           type: ActivityType.RUNNING,
           difficulty: DifficultyLevel.MODERATE,
@@ -164,14 +177,21 @@ describe('ActivitiesService', () => {
         take: 10,
         skip: 1,
       };
-      
-      const mockQueryService = module.get(ActivityQueryService) as jest.Mocked<ActivityQueryService>;
-      (mockQueryService.buildFindAllQuery as jest.Mock).mockReturnValue(queryOptions);
-      (mockQueryService.findActivitiesWithQuery as jest.Mock).mockResolvedValue({ activities, total: 1 });
+
+      const mockQueryService = module.get(ActivityQueryService);
+      (mockQueryService.buildFindAllQuery as jest.Mock).mockReturnValue(
+        queryOptions,
+      );
+      (mockQueryService.findActivitiesWithQuery as jest.Mock).mockResolvedValue(
+        { activities, total: 1 },
+      );
 
       const result = await service.findAll('testuser', filters);
 
-      expect(mockQueryService.buildFindAllQuery).toHaveBeenCalledWith('testuser', filters);
+      expect(mockQueryService.buildFindAllQuery).toHaveBeenCalledWith(
+        'testuser',
+        filters,
+      );
       expect(mockQueryService.findActivitiesWithQuery).toHaveBeenCalledWith(
         repository,
         queryOptions,
@@ -184,10 +204,16 @@ describe('ActivitiesService', () => {
     it('should return an activity by id', async () => {
       repository.findOne.mockResolvedValue(mockActivity as Activity);
 
-      const result = await service.findOne('123e4567-e89b-12d3-a456-426614174000', 'testuser');
+      const result = await service.findOne(
+        '123e4567-e89b-12d3-a456-426614174000',
+        'testuser',
+      );
 
       expect(repository.findOne).toHaveBeenCalledWith({
-        where: { id: '123e4567-e89b-12d3-a456-426614174000', userLogin: 'testuser' },
+        where: {
+          id: '123e4567-e89b-12d3-a456-426614174000',
+          userLogin: 'testuser',
+        },
       });
       expect(result).toEqual(mockActivity);
     });
@@ -210,12 +236,16 @@ describe('ActivitiesService', () => {
 
       repository.findOne
         .mockResolvedValueOnce(mockActivity as Activity)
-        .mockResolvedValueOnce({ 
-          ...mockActivity, 
+        .mockResolvedValueOnce({
+          ...mockActivity,
           ...updateActivityDto,
           caloriesBurned: 300, // Mock the calculated calories
         } as Activity);
-      repository.update.mockResolvedValue({ affected: 1, generatedMaps: [], raw: [] });
+      repository.update.mockResolvedValue({
+        affected: 1,
+        generatedMaps: [],
+        raw: [],
+      });
 
       const result = await service.update(
         '123e4567-e89b-12d3-a456-426614174000',
@@ -260,8 +290,10 @@ describe('ActivitiesService', () => {
         totalCaloriesBurned: 700,
       };
 
-      const mockStatsService = module.get(ActivityStatisticsService) as jest.Mocked<ActivityStatisticsService>;
-      (mockStatsService.getStatistics as jest.Mock).mockResolvedValue(expectedStats);
+      const mockStatsService = module.get(ActivityStatisticsService);
+      (mockStatsService.getStatistics as jest.Mock).mockResolvedValue(
+        expectedStats,
+      );
 
       const result = await service.getStatistics('testuser');
 
@@ -283,8 +315,10 @@ describe('ActivitiesService', () => {
         totalCaloriesBurned: 0,
       };
 
-      const mockStatsService = module.get(ActivityStatisticsService) as jest.Mocked<ActivityStatisticsService>;
-      (mockStatsService.getStatistics as jest.Mock).mockResolvedValue(expectedStats);
+      const mockStatsService = module.get(ActivityStatisticsService);
+      (mockStatsService.getStatistics as jest.Mock).mockResolvedValue(
+        expectedStats,
+      );
 
       const result = await service.getStatistics('testuser');
 
@@ -295,19 +329,26 @@ describe('ActivitiesService', () => {
   describe('getRecentActivities', () => {
     it('should return recent activities', async () => {
       const activities = [mockActivity as Activity];
-      const queryOptions = { 
+      const queryOptions = {
         where: { userLogin: 'testuser' },
         order: { activityDate: 'DESC', createdAt: 'DESC' },
         take: 5,
       };
 
-      const mockQueryService = module.get(ActivityQueryService) as jest.Mocked<ActivityQueryService>;
-      (mockQueryService.buildRecentActivitiesQuery as jest.Mock).mockReturnValue(queryOptions);
-      (mockQueryService.findActivitiesWithQuery as jest.Mock).mockResolvedValue({ activities, total: 1 });
+      const mockQueryService = module.get(ActivityQueryService);
+      (
+        mockQueryService.buildRecentActivitiesQuery as jest.Mock
+      ).mockReturnValue(queryOptions);
+      (mockQueryService.findActivitiesWithQuery as jest.Mock).mockResolvedValue(
+        { activities, total: 1 },
+      );
 
       const result = await service.getRecentActivities('testuser', 5);
 
-      expect(mockQueryService.buildRecentActivitiesQuery).toHaveBeenCalledWith('testuser', 5);
+      expect(mockQueryService.buildRecentActivitiesQuery).toHaveBeenCalledWith(
+        'testuser',
+        5,
+      );
       expect(mockQueryService.findActivitiesWithQuery).toHaveBeenCalledWith(
         repository,
         queryOptions,

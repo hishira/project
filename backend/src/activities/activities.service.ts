@@ -5,14 +5,15 @@ import { Activity } from '../entities/activity.entity';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { UpdateActivityDto } from './dto/update-activity.dto';
 import { CalorieCalculationService } from './services/calorie-calculation.service';
-import { 
-  ActivityQueryService, 
-  ActivityFilterOptions 
+import {
+  ActivityQueryService,
+  ActivityFilterOptions,
 } from './services/activity-query.service';
-import { 
-  ActivityStatisticsService, 
-  ActivityStatistics 
+import {
+  ActivityStatisticsService,
+  ActivityStatistics,
 } from './services/activity-statistics.service';
+import { UserStatisticsService } from '../user-statistics/user-statistics.service';
 
 @Injectable()
 export class ActivitiesService {
@@ -22,6 +23,7 @@ export class ActivitiesService {
     private readonly calorieCalculationService: CalorieCalculationService,
     private readonly activityQueryService: ActivityQueryService,
     private readonly activityStatisticsService: ActivityStatisticsService,
+    private readonly userStatisticsService: UserStatisticsService,
   ) {}
 
   /**
@@ -49,7 +51,14 @@ export class ActivitiesService {
       caloriesBurned,
     });
 
-    return this.activityRepository.save(activity);
+    const savedActivity = await this.activityRepository.save(activity);
+
+    // Update user statistics
+    await this.userStatisticsService.updateStatisticsForNewActivity(
+      savedActivity,
+    );
+
+    return savedActivity;
   }
 
   /**
@@ -59,7 +68,10 @@ export class ActivitiesService {
     userLogin: string,
     options?: ActivityFilterOptions,
   ): Promise<{ activities: Activity[]; total: number }> {
-    const queryOptions = this.activityQueryService.buildFindAllQuery(userLogin, options);
+    const queryOptions = this.activityQueryService.buildFindAllQuery(
+      userLogin,
+      options,
+    );
     return this.activityQueryService.findActivitiesWithQuery(
       this.activityRepository,
       queryOptions,
@@ -89,31 +101,45 @@ export class ActivitiesService {
     userLogin: string,
     updateActivityDto: UpdateActivityDto,
   ): Promise<Activity> {
-    const activity = await this.findOne(id, userLogin);
+    const oldActivity = await this.findOne(id, userLogin);
 
-    const updateData = { ...updateActivityDto };
-    if (updateActivityDto.activityDate) {
-      updateData.activityDate = new Date(updateActivityDto.activityDate) as any;
+    const { activityDate, ...otherUpdates } = updateActivityDto;
+    const updateData: any = { ...otherUpdates };
+
+    if (activityDate) {
+      // @ts-ignore: Intentional type override for date conversion
+      updateData.activityDate = new Date(activityDate);
     }
 
     // Recalculate calories if relevant fields changed but calories not provided
     if (
       (updateActivityDto.type !== undefined ||
-       updateActivityDto.duration !== undefined ||
-       updateActivityDto.difficulty !== undefined ||
-       updateActivityDto.metadata !== undefined) &&
+        updateActivityDto.duration !== undefined ||
+        updateActivityDto.difficulty !== undefined ||
+        updateActivityDto.metadata !== undefined) &&
       updateActivityDto.caloriesBurned === undefined
     ) {
-      updateData.caloriesBurned = this.calorieCalculationService.calculateCalories(
-        updateActivityDto.type ?? activity.type,
-        updateActivityDto.duration ?? activity.duration,
-        updateActivityDto.difficulty ?? activity.difficulty,
-        updateActivityDto.metadata ?? activity.metadata,
-      );
+      // @ts-ignore: Intentional type override for calculated calories
+      updateData.caloriesBurned =
+        this.calorieCalculationService.calculateCalories(
+          updateActivityDto.type ?? oldActivity.type,
+          updateActivityDto.duration ?? oldActivity.duration,
+          updateActivityDto.difficulty ?? oldActivity.difficulty,
+          updateActivityDto.metadata ?? oldActivity.metadata,
+        );
     }
 
+    // @ts-ignore: updateData is correctly typed for the repository update
     await this.activityRepository.update(id, updateData);
-    return this.findOne(id, userLogin);
+    const updatedActivity = await this.findOne(id, userLogin);
+
+    // Update user statistics
+    await this.userStatisticsService.updateStatisticsForUpdatedActivity(
+      oldActivity,
+      updatedActivity,
+    );
+
+    return updatedActivity;
   }
 
   /**
@@ -122,6 +148,11 @@ export class ActivitiesService {
   async remove(id: string, userLogin: string): Promise<void> {
     const activity = await this.findOne(id, userLogin);
     await this.activityRepository.remove(activity);
+
+    // Update user statistics
+    await this.userStatisticsService.updateStatisticsForDeletedActivity(
+      activity,
+    );
   }
 
   /**
@@ -148,7 +179,10 @@ export class ActivitiesService {
     userLogin: string,
     limit: number = 10,
   ): Promise<Activity[]> {
-    const queryOptions = this.activityQueryService.buildRecentActivitiesQuery(userLogin, limit);
+    const queryOptions = this.activityQueryService.buildRecentActivitiesQuery(
+      userLogin,
+      limit,
+    );
     const result = await this.activityQueryService.findActivitiesWithQuery(
       this.activityRepository,
       queryOptions,

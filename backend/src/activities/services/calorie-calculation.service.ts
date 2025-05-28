@@ -22,9 +22,15 @@ export class CalorieCalculationService {
     metadata?: ActivityMetadata,
   ): number {
     // Try to calculate from metadata first
-    const metadataCalories = this.calculateFromMetadata(type, duration, metadata);
+    const metadataCalories = this.calculateFromMetadata(
+      type,
+      duration,
+      metadata,
+    );
     if (metadataCalories > 0) {
-      return Math.round(metadataCalories * this.getDifficultyMultiplier(difficulty));
+      return Math.round(
+        metadataCalories * this.getDifficultyMultiplier(difficulty),
+      );
     }
 
     // Fallback to general estimates based on activity type and difficulty
@@ -59,7 +65,10 @@ export class CalorieCalculationService {
       }
 
       case ActivityType.GYM_WORKOUT: {
-        return this.calculateGymCalories(metadata as GymWorkoutMetadata, duration);
+        return this.calculateGymCalories(
+          metadata as GymWorkoutMetadata,
+          duration,
+        );
       }
     }
 
@@ -101,7 +110,10 @@ export class CalorieCalculationService {
     if (metadata.distance && metadata.avgSpeed) {
       // Calories based on distance and speed
       const baseCaloriesPerKm = 25;
-      const speedMultiplier = Math.max(0.8, Math.min(1.8, metadata.avgSpeed / 20));
+      const speedMultiplier = Math.max(
+        0.8,
+        Math.min(1.8, metadata.avgSpeed / 20),
+      );
       return metadata.distance * baseCaloriesPerKm * speedMultiplier;
     }
     return 0;
@@ -122,7 +134,10 @@ export class CalorieCalculationService {
   /**
    * Calculate gym workout calories from metadata
    */
-  private calculateGymCalories(metadata: GymWorkoutMetadata, duration: number): number {
+  private calculateGymCalories(
+    metadata: GymWorkoutMetadata,
+    duration: number,
+  ): number {
     if (metadata.workoutType) {
       // Different rates for different workout types
       const ratesPerMinute = {

@@ -6,9 +6,10 @@ import { Activity } from '../entities/activity.entity';
 import { CalorieCalculationService } from './services/calorie-calculation.service';
 import { ActivityQueryService } from './services/activity-query.service';
 import { ActivityStatisticsService } from './services/activity-statistics.service';
+import { UserStatisticsModule } from '../user-statistics/user-statistics.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Activity])],
+  imports: [TypeOrmModule.forFeature([Activity]), UserStatisticsModule],
   controllers: [ActivitiesController],
   providers: [
     ActivitiesService,

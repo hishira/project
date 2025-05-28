@@ -106,7 +106,9 @@ export class UserSessionService {
   /**
    * Get all active sessions for a user
    */
-  async getUserSessions(userLogin: string): Promise<Omit<UserSession, 'refreshToken'>[]> {
+  async getUserSessions(
+    userLogin: string,
+  ): Promise<Omit<UserSession, 'refreshToken'>[]> {
     return this.userSessionRepository.find({
       where: { userLogin },
       order: { createdAt: 'DESC' },
@@ -130,9 +132,7 @@ export class UserSessionService {
   /**
    * Get count of active sessions for a user
    */
-  async getActiveSessionCount(
-    userLogin: string,
-  ): Promise<number> {
+  async getActiveSessionCount(userLogin: string): Promise<number> {
     return this.userSessionRepository.count({
       where: {
         userLogin,

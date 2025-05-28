@@ -45,7 +45,7 @@ describe('UsersService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-  
+
   describe('findAll', () => {
     it('should return an array of users', async () => {
       const result = await service.findAll();
@@ -53,12 +53,14 @@ describe('UsersService', () => {
       expect(mockUserRepository.find).toHaveBeenCalled();
     });
   });
-  
+
   describe('findOne', () => {
     it('should return a single user', async () => {
       const result = await service.findOne('1');
       expect(result).toEqual(mockUser);
-      expect(mockUserRepository.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
+      expect(mockUserRepository.findOne).toHaveBeenCalledWith({
+        where: { id: '1' },
+      });
     });
   });
 });

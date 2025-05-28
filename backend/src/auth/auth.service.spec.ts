@@ -135,9 +135,7 @@ describe('AuthService', () => {
       mockUserRepository.save.mockResolvedValue(mockUserMinimal);
       mockJwtService.sign.mockReturnValue('mock-token');
 
-      jest
-        .spyOn(bcrypt, 'hash')
-        .mockResolvedValue('hashedPassword' as never);
+      jest.spyOn(bcrypt, 'hash').mockResolvedValue('hashedPassword' as never);
 
       const result = await service.register(registerDtoMinimal);
 
@@ -206,7 +204,9 @@ describe('AuthService', () => {
     it('should successfully change password with valid current password', async () => {
       mockUserRepository.findOne.mockResolvedValue(mockUser);
       jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never);
-      jest.spyOn(bcrypt, 'hash').mockResolvedValue('newHashedPassword' as never);
+      jest
+        .spyOn(bcrypt, 'hash')
+        .mockResolvedValue('newHashedPassword' as never);
       mockUserRepository.update.mockResolvedValue({ affected: 1 });
 
       const result = await service.changePassword('1', changePasswordDto);
@@ -274,7 +274,11 @@ describe('AuthService', () => {
   describe('refreshToken', () => {
     it('should successfully refresh token with valid refresh token', async () => {
       const refreshTokenDto = { refresh_token: 'valid_refresh_token' };
-      const mockPayload = { sub: '1', email: 'test@test.com', login: 'testuser' };
+      const mockPayload = {
+        sub: '1',
+        email: 'test@test.com',
+        login: 'testuser',
+      };
       const mockUserWithoutRefreshToken = {
         id: '1',
         login: 'testuser',
@@ -303,12 +307,12 @@ describe('AuthService', () => {
       expect(mockJwtService.verify).toHaveBeenCalledWith('valid_refresh_token');
       expect(mockUserSessionService.findValidSession).toHaveBeenCalledWith(
         'testuser',
-        'valid_refresh_token'
+        'valid_refresh_token',
       );
       expect(mockUserSessionService.updateSession).toHaveBeenCalledWith(
         'session-id',
         'new_access_token',
-        expect.any(Date)
+        expect.any(Date),
       );
     });
 
@@ -326,7 +330,11 @@ describe('AuthService', () => {
 
     it('should throw UnauthorizedException if user not found', async () => {
       const refreshTokenDto = { refresh_token: 'valid_refresh_token' };
-      const mockPayload = { sub: '1', email: 'test@test.com', login: 'testuser' };
+      const mockPayload = {
+        sub: '1',
+        email: 'test@test.com',
+        login: 'testuser',
+      };
 
       mockJwtService.verify.mockReturnValue(mockPayload);
       mockUserRepository.findOne.mockResolvedValue(null);
@@ -338,7 +346,11 @@ describe('AuthService', () => {
 
     it('should throw UnauthorizedException if refresh token does not match', async () => {
       const refreshTokenDto = { refresh_token: 'valid_refresh_token' };
-      const mockPayload = { sub: '1', email: 'test@test.com', login: 'testuser' };
+      const mockPayload = {
+        sub: '1',
+        email: 'test@test.com',
+        login: 'testuser',
+      };
       const mockUser = {
         id: '1',
         login: 'testuser',
@@ -375,7 +387,9 @@ describe('AuthService', () => {
         where: { id: '1' },
         select: ['login'],
       });
-      expect(mockUserSessionService.deleteUserSessions).toHaveBeenCalledWith('testuser');
+      expect(mockUserSessionService.deleteUserSessions).toHaveBeenCalledWith(
+        'testuser',
+      );
     });
   });
 });

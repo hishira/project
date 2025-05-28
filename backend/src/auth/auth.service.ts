@@ -75,7 +75,7 @@ export class AuthService {
     // Create session with refresh token
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7); // 7 days from now
-    
+
     await this.userSessionService.createSession(
       savedUser.login,
       refresh_token,
@@ -167,7 +167,7 @@ export class AuthService {
     // Create session with refresh token
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7); // 7 days from now
-    
+
     await this.userSessionService.createSession(
       user.login,
       refresh_token,
@@ -259,7 +259,7 @@ export class AuthService {
 
     try {
       // Verify the refresh token
-      const payload = this.jwtService.verify(refresh_token) as JwtPayload;
+      const payload = this.jwtService.verify(refresh_token);
 
       // Find user to get login
       const user = await this.usersRepository.findOne({

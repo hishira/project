@@ -22,14 +22,14 @@ export class ActivityStatisticsService {
    */
   calculateStatistics(activities: Activity[]): ActivityStatistics {
     const totalActivities = activities.length;
-    
+
     if (totalActivities === 0) {
       // Create initial empty records with all possible values set to 0
       const emptyTypeStats = Object.values(ActivityType).reduce(
         (acc, type) => ({ ...acc, [type]: 0 }),
         {} as Record<ActivityType, number>,
       );
-      
+
       const emptyDifficultyStats = [1, 2, 3, 4, 5].reduce(
         (acc, difficulty) => ({ ...acc, [difficulty]: 0 }),
         {} as Record<DifficultyLevel, number>,

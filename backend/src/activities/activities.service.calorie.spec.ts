@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ActivitiesService } from './activities.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Activity, ActivityType, DifficultyLevel } from '../entities/activity.entity';
+import {
+  Activity,
+  ActivityType,
+  DifficultyLevel,
+} from '../entities/activity.entity';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { CalorieCalculationService } from './services/calorie-calculation.service';
 import { ActivityQueryService } from './services/activity-query.service';
@@ -32,25 +36,53 @@ describe('ActivitiesService - Calorie Calculation', () => {
         {
           provide: CalorieCalculationService,
           useValue: {
-            calculateCalories: jest.fn().mockImplementation((type, duration, difficulty, metadata) => {
-              if (type === ActivityType.RUNNING && metadata?.distance && metadata?.pace) {
-                const baseCalories = metadata.distance * 70;
-                const paceMultiplier = metadata.pace < 5 ? 1.3 : metadata.pace < 7 ? 1.0 : 0.8;
-                const difficultyMultiplier = difficulty === DifficultyLevel.HARD ? 1.3 : difficulty === DifficultyLevel.MODERATE ? 1.1 : 1.0;
-                return Math.round(baseCalories * paceMultiplier * difficultyMultiplier);
-              }
-              
-              if (type === ActivityType.SWIMMING && metadata?.poolSize && metadata?.laps) {
-                const distance = (metadata.poolSize * metadata.laps) / 1000;
-                const baseCalories = distance * 400;
-                const difficultyMultiplier = difficulty === DifficultyLevel.HARD ? 1.3 : difficulty === DifficultyLevel.MODERATE ? 1.1 : 1.0;
-                return Math.round(baseCalories * difficultyMultiplier);
-              }
-              
-              const baseRate = 10;
-              const difficultyMultiplier = difficulty === DifficultyLevel.HARD ? 1.3 : difficulty === DifficultyLevel.MODERATE ? 1.1 : 1.0;
-              return Math.round(duration * baseRate * difficultyMultiplier);
-            }),
+            calculateCalories: jest
+              .fn()
+              .mockImplementation((type, duration, difficulty, metadata) => {
+                if (
+                  type === ActivityType.RUNNING &&
+                  metadata?.distance &&
+                  metadata?.pace
+                ) {
+                  const baseCalories = metadata.distance * 70;
+                  const paceMultiplier =
+                    metadata.pace < 5 ? 1.3 : metadata.pace < 7 ? 1.0 : 0.8;
+                  const difficultyMultiplier =
+                    difficulty === DifficultyLevel.HARD
+                      ? 1.3
+                      : difficulty === DifficultyLevel.MODERATE
+                        ? 1.1
+                        : 1.0;
+                  return Math.round(
+                    baseCalories * paceMultiplier * difficultyMultiplier,
+                  );
+                }
+
+                if (
+                  type === ActivityType.SWIMMING &&
+                  metadata?.poolSize &&
+                  metadata?.laps
+                ) {
+                  const distance = (metadata.poolSize * metadata.laps) / 1000;
+                  const baseCalories = distance * 400;
+                  const difficultyMultiplier =
+                    difficulty === DifficultyLevel.HARD
+                      ? 1.3
+                      : difficulty === DifficultyLevel.MODERATE
+                        ? 1.1
+                        : 1.0;
+                  return Math.round(baseCalories * difficultyMultiplier);
+                }
+
+                const baseRate = 10;
+                const difficultyMultiplier =
+                  difficulty === DifficultyLevel.HARD
+                    ? 1.3
+                    : difficulty === DifficultyLevel.MODERATE
+                      ? 1.1
+                      : 1.0;
+                return Math.round(duration * baseRate * difficultyMultiplier);
+              }),
           },
         },
         {
@@ -58,7 +90,9 @@ describe('ActivitiesService - Calorie Calculation', () => {
           useValue: {
             buildFindAllQuery: jest.fn().mockReturnValue({}),
             buildRecentActivitiesQuery: jest.fn().mockReturnValue({}),
-            findActivitiesWithQuery: jest.fn().mockResolvedValue({ activities: [], total: 0 }),
+            findActivitiesWithQuery: jest
+              .fn()
+              .mockResolvedValue({ activities: [], total: 0 }),
           },
         },
         {

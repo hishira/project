@@ -72,9 +72,15 @@ describe('ActivitiesController', () => {
 
       service.create.mockResolvedValue(mockActivity as any);
 
-      const result = await controller.create({ user: mockUser }, createActivityDto);
+      const result = await controller.create(
+        { user: mockUser },
+        createActivityDto,
+      );
 
-      expect(service.create).toHaveBeenCalledWith('testuser', createActivityDto);
+      expect(service.create).toHaveBeenCalledWith(
+        'testuser',
+        createActivityDto,
+      );
       expect(result).toEqual(mockActivity);
     });
   });
@@ -128,7 +134,10 @@ describe('ActivitiesController', () => {
       const activities = [mockActivity];
       service.getRecentActivities.mockResolvedValue(activities as any);
 
-      const result = await controller.getRecentActivities({ user: mockUser }, 5);
+      const result = await controller.getRecentActivities(
+        { user: mockUser },
+        5,
+      );
 
       expect(service.getRecentActivities).toHaveBeenCalledWith('testuser', 5);
       expect(result).toEqual(activities);

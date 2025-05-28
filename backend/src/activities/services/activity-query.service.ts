@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { FindManyOptions, Repository } from 'typeorm';
-import { 
-  Activity, 
-  ActivityType, 
-  DifficultyLevel 
+import {
+  Activity,
+  ActivityType,
+  DifficultyLevel,
 } from '../../entities/activity.entity';
 
 export interface ActivityFilterOptions {
@@ -69,28 +69,31 @@ export class ActivityQueryService {
    */
   private buildDateFilter(dateFrom?: string, dateTo?: string): any {
     const dateFilter: any = {};
-    
+
     if (dateFrom) {
       dateFilter.activityDate = {
         ...dateFilter.activityDate,
         gte: new Date(dateFrom),
       };
     }
-    
+
     if (dateTo) {
       dateFilter.activityDate = {
         ...dateFilter.activityDate,
         lte: new Date(dateTo),
       };
     }
-    
+
     return dateFilter;
   }
 
   /**
    * Build query options for recent activities
    */
-  buildRecentActivitiesQuery(userLogin: string, limit: number = 10): FindManyOptions<Activity> {
+  buildRecentActivitiesQuery(
+    userLogin: string,
+    limit: number = 10,
+  ): FindManyOptions<Activity> {
     return {
       where: { userLogin },
       order: { activityDate: 'DESC', createdAt: 'DESC' },
@@ -131,7 +134,10 @@ export class ActivityQueryService {
   /**
    * Build date filter for statistics queries
    */
-  private buildDateFilterForStatistics(dateFrom?: string, dateTo?: string): any {
+  private buildDateFilterForStatistics(
+    dateFrom?: string,
+    dateTo?: string,
+  ): any {
     if (dateFrom && dateTo) {
       return {
         activityDate: {

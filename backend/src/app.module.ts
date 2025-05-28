@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { UserSessionModule } from './user-session/user-session.module';
 import { ActivitiesModule } from './activities/activities.module';
+import { UserStatisticsModule } from './user-statistics/user-statistics.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ActivitiesModule } from './activities/activities.module';
     AuthModule,
     UserSessionModule,
     ActivitiesModule,
+    UserStatisticsModule,
   ],
   controllers: [AppController],
   providers: [
