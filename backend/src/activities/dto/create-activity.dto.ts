@@ -1,17 +1,19 @@
 import {
-  IsEnum,
-  IsString,
-  IsNumber,
-  IsOptional,
   IsDateString,
+  IsEnum,
+  IsNumber,
   IsObject,
-  Min,
+  IsOptional,
+  IsString,
   Max,
+  Min,
   MinLength,
-  ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
-import { ActivityType, DifficultyLevel, ActivityMetadata } from '../../entities/activity.entity';
+import {
+  ActivityMetadata,
+  ActivityType,
+  DifficultyLevel,
+} from '../../entities/activity.entity';
 
 export class CreateActivityDto {
   @IsEnum(ActivityType)
