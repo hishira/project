@@ -513,18 +513,22 @@ export class UserStatisticsService {
       return;
     }
 
-    // Sort activities by date
-    const sortedActivities = activities.sort(
-      (a, b) => a.activityDate.getTime() - b.activityDate.getTime(),
-    );
+    // Sort activities by date - ensure dates are properly converted to Date objects
+    const sortedActivities = activities.sort((a, b) => {
+      const dateA = new Date(a.activityDate);
+      const dateB = new Date(b.activityDate);
+      return dateA.getTime() - dateB.getTime();
+    });
 
     let currentStreak = 0;
     let longestStreak = 0;
     let lastDate: Date | null = null;
 
-    // Get unique activity dates
+    // Get unique activity dates - ensure proper date conversion
     const uniqueDates = [
-      ...new Set(sortedActivities.map((a) => a.activityDate.toDateString())),
+      ...new Set(
+        sortedActivities.map((a) => new Date(a.activityDate).toDateString()),
+      ),
     ];
 
     for (let i = 0; i < uniqueDates.length; i++) {
