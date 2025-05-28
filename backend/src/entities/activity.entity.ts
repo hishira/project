@@ -119,7 +119,7 @@ export class Activity {
   notes?: string;
 
   @ManyToOne(() => User, (user) => user.activities, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userLogin' })
+  @JoinColumn({ name: 'userLogin', referencedColumnName: 'login' })
   user: User;
 
   @Column()
