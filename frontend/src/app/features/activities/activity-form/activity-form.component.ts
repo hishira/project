@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,11 +16,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ActivityService } from '../../../core/services/activity.service';
+import { ActivityFormService } from '../../../core/services/activity-form.service';
+import { ActivityFormValidatorService } from '../../../core/services/activity-form-validator.service';
 import { 
   ActivityType, 
-  DifficultyLevel, 
-  CreateActivityDto,
-  ActivityMetadata
+  DifficultyLevel
 } from '../../../shared/models/activity.model';
 
 @Component({
@@ -46,26 +46,16 @@ import {
   styleUrls: ['./activity-form.component.scss']
 })
 export class ActivityFormComponent implements OnInit {
-  private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  public activityService = inject(ActivityService);
+  public readonly activityService = inject(ActivityService);
+  private readonly formService = inject(ActivityFormService);
+  private readonly validatorService = inject(ActivityFormValidatorService);
   private readonly snackBar = inject(MatSnackBar);
 
-  activityForm: FormGroup = this.fb.group({
-    title: ['', Validators.required],
-    type: ['', Validators.required],
-    activityDate: [new Date(), Validators.required],
-    duration: ['', [Validators.required, Validators.min(1)]],
-    difficulty: ['', Validators.required],
-    caloriesBurned: ['', Validators.min(1)],
-    description: [''],
-    notes: [''],
-    metadata: this.fb.group({})
-  });
+  activityForm: FormGroup = this.formService.createActivityForm();
 
   currentActivityType = signal<ActivityType | null>(null);
-
   isEditMode = signal(false);
   isLoading = signal(false);
   isSaving = signal(false);
@@ -84,12 +74,24 @@ export class ActivityFormComponent implements OnInit {
     }));
 
   ngOnInit() {
-    // Subscribe to activity type changes to update metadata form
+    this.setupFormSubscriptions();
+    this.checkForEditMode();
+  }
+
+  /**
+   * Setup form value change subscriptions
+   */
+  private setupFormSubscriptions(): void {
     this.activityForm.get('type')?.valueChanges.subscribe((type: ActivityType) => {
       this.currentActivityType.set(type);
-      this.updateMetadataForm(type);
+      this.formService.updateMetadataForm(this.activityForm, type);
     });
+  }
 
+  /**
+   * Check if this is edit mode and load activity if needed
+   */
+  private checkForEditMode(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode.set(true);
@@ -98,148 +100,91 @@ export class ActivityFormComponent implements OnInit {
     }
   }
 
-  private loadActivity(id: string) {
+  /**
+   * Load activity for editing
+   */
+  private loadActivity(id: string): void {
     this.isLoading.set(true);
+    
     this.activityService.getActivity(id).subscribe({
       next: (activity) => {
-        this.activityForm.patchValue({
-          title: activity.title,
-          type: activity.type,
-          activityDate: new Date(activity.activityDate),
-          duration: activity.duration,
-          difficulty: activity.difficulty,
-          caloriesBurned: activity.caloriesBurned ?? '',
-          description: activity.description ?? '',
-          notes: activity.notes ?? ''
-        });
-        
-        // Load metadata if it exists
-        if (activity.metadata) {
-          this.currentActivityType.set(activity.type);
-          this.updateMetadataForm(activity.type);
-          this.activityForm.get('metadata')?.patchValue(activity.metadata);
-        }
-        
+        this.populateFormWithActivity(activity);
         this.isLoading.set(false);
       },
       error: (error) => {
-        this.snackBar.open('Failed to load activity', 'Close', { duration: 3000 });
-        this.isLoading.set(false);
-        this.goBack();
+        this.handleLoadError();
       }
     });
   }
 
-  private updateMetadataForm(type: ActivityType) {
-    const metadataGroup = this.activityForm.get('metadata') as FormGroup;
-    
-    // Clear existing controls
-    Object.keys(metadataGroup.controls).forEach(key => {
-      metadataGroup.removeControl(key);
+  /**
+   * Populate form with loaded activity data
+   */
+  private populateFormWithActivity(activity: any): void {
+    this.activityForm.patchValue({
+      title: activity.title,
+      type: activity.type,
+      activityDate: new Date(activity.activityDate),
+      duration: activity.duration,
+      difficulty: activity.difficulty,
+      caloriesBurned: activity.caloriesBurned ?? '',
+      description: activity.description ?? '',
+      notes: activity.notes ?? ''
     });
-
-    // Add controls based on activity type
-    switch (type) {
-      case ActivityType.SWIMMING:
-        metadataGroup.addControl('poolSize', this.fb.control('', [Validators.required, Validators.min(1)]));
-        metadataGroup.addControl('laps', this.fb.control('', [Validators.required, Validators.min(1)]));
-        metadataGroup.addControl('strokeType', this.fb.control(''));
-        break;
-
-      case ActivityType.RUNNING:
-        metadataGroup.addControl('location', this.fb.control('', Validators.required));
-        metadataGroup.addControl('distance', this.fb.control('', Validators.min(0.1)));
-        metadataGroup.addControl('pace', this.fb.control('', Validators.min(1)));
-        metadataGroup.addControl('elevation', this.fb.control('', Validators.min(0)));
-        break;
-
-      case ActivityType.CYCLING:
-        metadataGroup.addControl('location', this.fb.control('', Validators.required));
-        metadataGroup.addControl('distance', this.fb.control('', Validators.min(0.1)));
-        metadataGroup.addControl('avgSpeed', this.fb.control('', Validators.min(1)));
-        metadataGroup.addControl('elevation', this.fb.control('', Validators.min(0)));
-        break;
-
-      case ActivityType.SKATING:
-        metadataGroup.addControl('type', this.fb.control('', Validators.required));
-        metadataGroup.addControl('location', this.fb.control('', Validators.required));
-        metadataGroup.addControl('distance', this.fb.control('', Validators.min(0.1)));
-        break;
-
-      case ActivityType.HORSE_RIDING:
-        metadataGroup.addControl('discipline', this.fb.control('', Validators.required));
-        metadataGroup.addControl('location', this.fb.control('', Validators.required));
-        metadataGroup.addControl('horseName', this.fb.control(''));
-        break;
-
-      case ActivityType.GYM_WORKOUT:
-        metadataGroup.addControl('workoutType', this.fb.control('', Validators.required));
-        metadataGroup.addControl('exercises', this.fb.array([]));
-        metadataGroup.addControl('equipment', this.fb.array([]));
-        break;
+    
+    // Load metadata if it exists
+    if (activity.metadata) {
+      this.currentActivityType.set(activity.type);
+      this.formService.updateMetadataForm(this.activityForm, activity.type);
+      this.activityForm.get('metadata')?.patchValue(activity.metadata);
     }
+  }
+
+  /**
+   * Handle activity loading error
+   */
+  private handleLoadError(): void {
+    this.snackBar.open('Failed to load activity', 'Close', { duration: 3000 });
+    this.isLoading.set(false);
+    this.goBack();
   }
 
   // Helper methods for dynamic arrays (gym workout)
   get exercisesArray(): FormArray {
-    return this.activityForm.get('metadata.exercises') as FormArray;
+    return this.formService.getExercisesArray(this.activityForm);
   }
 
   get equipmentArray(): FormArray {
-    return this.activityForm.get('metadata.equipment') as FormArray;
+    return this.formService.getEquipmentArray(this.activityForm);
   }
 
-  addExercise() {
-    this.exercisesArray.push(this.fb.control('', Validators.required));
+  addExercise(): void {
+    this.formService.addExercise(this.activityForm);
   }
 
-  removeExercise(index: number) {
-    this.exercisesArray.removeAt(index);
+  removeExercise(index: number): void {
+    this.formService.removeExercise(this.activityForm, index);
   }
 
-  addEquipment() {
-    this.equipmentArray.push(this.fb.control('', Validators.required));
+  addEquipment(): void {
+    this.formService.addEquipment(this.activityForm);
   }
 
-  removeEquipment(index: number) {
-    this.equipmentArray.removeAt(index);
+  removeEquipment(index: number): void {
+    this.formService.removeEquipment(this.activityForm, index);
   }
 
-  onSubmit() {
+  /**
+   * Handle form submission
+   */
+  onSubmit(): void {
     if (this.activityForm.invalid) {
       this.activityForm.markAllAsTouched();
       return;
     }
 
     this.isSaving.set(true);
-    const formValue = this.activityForm.value;
-    
-    // Build activity data with only defined optional fields
-    const activityData: CreateActivityDto = {
-      title: formValue.title,
-      type: formValue.type,
-      activityDate: formValue.activityDate.toISOString(),
-      duration: formValue.duration,
-      difficulty: formValue.difficulty
-    };
-
-    // Only include optional fields if they have values
-    if (formValue.caloriesBurned != null && formValue.caloriesBurned > 0) {
-      activityData.caloriesBurned = formValue.caloriesBurned;
-    }
-    
-    if (formValue.description && formValue.description.trim()) {
-      activityData.description = formValue.description.trim();
-    }
-
-    if (formValue.notes && formValue.notes.trim()) {
-      activityData.notes = formValue.notes.trim();
-    }
-
-    const cleanedMetadata = this.getCleanedMetadata(formValue.metadata);
-    if (cleanedMetadata && Object.keys(cleanedMetadata).length > 0) {
-      activityData.metadata = cleanedMetadata;
-    }
+    const activityData = this.validatorService.transformFormToDto(this.activityForm.value);
 
     const operation = this.isEditMode() 
       ? this.activityService.updateActivity(this.activityId()!, activityData)
@@ -247,48 +192,37 @@ export class ActivityFormComponent implements OnInit {
 
     operation.subscribe({
       next: (activity) => {
-        const message = this.isEditMode() ? 'Activity updated successfully' : 'Activity created successfully';
-        this.snackBar.open(message, 'Close', { duration: 3000 });
-        this.isSaving.set(false);
-        this.router.navigate(['/activities', activity.id]);
+        this.handleSubmitSuccess(activity);
       },
       error: (error) => {
-        const message = this.isEditMode() ? 'Failed to update activity' : 'Failed to create activity';
-        this.snackBar.open(message, 'Close', { duration: 3000 });
-        this.isSaving.set(false);
+        this.handleSubmitError();
       }
     });
   }
 
-  private getCleanedMetadata(metadata: any): ActivityMetadata | undefined {
-    if (!metadata || Object.keys(metadata).length === 0) {
-      return undefined;
-    }
-
-    // Remove empty values and convert to appropriate types
-    const cleaned: any = {};
-    Object.keys(metadata).forEach(key => {
-      const value = metadata[key];
-      if (value !== null && value !== undefined && value !== '') {
-        // Convert numeric strings to numbers for specific fields
-        if (['poolSize', 'laps', 'distance', 'pace', 'elevation', 'avgSpeed'].includes(key)) {
-          cleaned[key] = Number(value);
-        } else if (Array.isArray(value)) {
-          // Filter out empty array items
-          const filteredArray = value.filter(item => item && item.trim());
-          if (filteredArray.length > 0) {
-            cleaned[key] = filteredArray;
-          }
-        } else {
-          cleaned[key] = value;
-        }
-      }
-    });
-
-    return Object.keys(cleaned).length > 0 ? cleaned : undefined;
+  /**
+   * Handle successful form submission
+   */
+  private handleSubmitSuccess(activity: any): void {
+    const message = this.isEditMode() ? 'Activity updated successfully' : 'Activity created successfully';
+    this.snackBar.open(message, 'Close', { duration: 3000 });
+    this.isSaving.set(false);
+    this.router.navigate(['/activities', activity.id]);
   }
 
-  goBack() {
+  /**
+   * Handle form submission error
+   */
+  private handleSubmitError(): void {
+    const message = this.isEditMode() ? 'Failed to update activity' : 'Failed to create activity';
+    this.snackBar.open(message, 'Close', { duration: 3000 });
+    this.isSaving.set(false);
+  }
+
+  /**
+   * Navigate back to activities list
+   */
+  goBack(): void {
     this.router.navigate(['/activities']);
   }
 }
