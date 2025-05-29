@@ -66,6 +66,62 @@
   }
 }
 
+// Metadata section styling
+.metadata-panel {
+  margin: 16px 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  
+  mat-expansion-panel-header {
+    mat-panel-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+      mat-icon {
+        color: #2196f3;
+      }
+    }
+  }
+}
+
+.metadata-content {
+  padding: 16px 0;
+  
+  .array-field {
+    margin: 16px 0;
+    
+    .array-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      
+      h4 {
+        margin: 0;
+        color: rgba(0, 0, 0, 0.87);
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+    
+    .array-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+      
+      .flex-grow {
+        flex: 1;
+      }
+      
+      button[mat-icon-button] {
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
 // Material form field customizations
 mat-form-field {
   .mat-mdc-form-field-icon-suffix {

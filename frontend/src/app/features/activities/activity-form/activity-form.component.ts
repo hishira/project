@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,8 +13,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { ActivityService } from '../../../core/services/activity.service';
-import { ActivityType, DifficultyLevel, CreateActivityDto } from '../../../shared/models/activity.model';
+import { 
+  ActivityType, 
+  DifficultyLevel, 
+  CreateActivityDto,
+  ActivityMetadata
+} from '../../../shared/models/activity.model';
 
 @Component({
   selector: 'app-activity-form',
@@ -31,7 +38,9 @@ import { ActivityType, DifficultyLevel, CreateActivityDto } from '../../../share
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatChipsModule,
+    MatExpansionModule
   ],
   template: `
     <div class="activity-form-container">
@@ -138,6 +147,259 @@ import { ActivityType, DifficultyLevel, CreateActivityDto } from '../../../share
                 <mat-icon matSuffix>description</mat-icon>
               </mat-form-field>
 
+              <!-- Activity-Specific Metadata -->
+              @if (currentActivityType()) {
+                <mat-expansion-panel class="metadata-panel">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <mat-icon>info</mat-icon>
+                      Activity Details
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      Add specific details for {{ activityService.getActivityTypeLabel(currentActivityType()!) }}
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+
+                  <div formGroupName="metadata" class="metadata-content">
+                    <!-- Swimming Metadata -->
+                    @if (currentActivityType() === 'swimming') {
+                      <div class="form-row">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Pool Size (meters)</mat-label>
+                          <input matInput type="number" formControlName="poolSize" min="1">
+                          <mat-icon matSuffix>pool</mat-icon>
+                          @if (activityForm.get('metadata.poolSize')?.hasError('required') && activityForm.get('metadata.poolSize')?.touched) {
+                            <mat-error>Pool size is required</mat-error>
+                          }
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                          <mat-label>Number of Laps</mat-label>
+                          <input matInput type="number" formControlName="laps" min="1">
+                          <mat-icon matSuffix>repeat</mat-icon>
+                          @if (activityForm.get('metadata.laps')?.hasError('required') && activityForm.get('metadata.laps')?.touched) {
+                            <mat-error>Number of laps is required</mat-error>
+                          }
+                        </mat-form-field>
+                      </div>
+
+                      <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Stroke Type (Optional)</mat-label>
+                        <mat-select formControlName="strokeType">
+                          <mat-option value="freestyle">Freestyle</mat-option>
+                          <mat-option value="backstroke">Backstroke</mat-option>
+                          <mat-option value="breaststroke">Breaststroke</mat-option>
+                          <mat-option value="butterfly">Butterfly</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    }
+
+                    <!-- Running Metadata -->
+                    @if (currentActivityType() === 'running') {
+                      <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Location</mat-label>
+                        <mat-select formControlName="location">
+                          <mat-option value="treadmill">Treadmill</mat-option>
+                          <mat-option value="outdoor">Outdoor</mat-option>
+                          <mat-option value="track">Track</mat-option>
+                        </mat-select>
+                        @if (activityForm.get('metadata.location')?.hasError('required') && activityForm.get('metadata.location')?.touched) {
+                          <mat-error>Location is required</mat-error>
+                        }
+                      </mat-form-field>
+
+                      <div class="form-row">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Distance (km)</mat-label>
+                          <input matInput type="number" formControlName="distance" min="0.1" step="0.1">
+                          <mat-icon matSuffix>straighten</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                          <mat-label>Pace (min/km)</mat-label>
+                          <input matInput type="number" formControlName="pace" min="1" step="0.1">
+                          <mat-icon matSuffix>speed</mat-icon>
+                        </mat-form-field>
+                      </div>
+
+                      <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Elevation Gain (meters)</mat-label>
+                        <input matInput type="number" formControlName="elevation" min="0">
+                        <mat-icon matSuffix>terrain</mat-icon>
+                      </mat-form-field>
+                    }
+
+                    <!-- Cycling Metadata -->
+                    @if (currentActivityType() === 'cycling') {
+                      <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Location</mat-label>
+                        <mat-select formControlName="location">
+                          <mat-option value="indoor">Indoor</mat-option>
+                          <mat-option value="outdoor">Outdoor</mat-option>
+                          <mat-option value="mountain">Mountain</mat-option>
+                          <mat-option value="road">Road</mat-option>
+                        </mat-select>
+                        @if (activityForm.get('metadata.location')?.hasError('required') && activityForm.get('metadata.location')?.touched) {
+                          <mat-error>Location is required</mat-error>
+                        }
+                      </mat-form-field>
+
+                      <div class="form-row">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Distance (km)</mat-label>
+                          <input matInput type="number" formControlName="distance" min="0.1" step="0.1">
+                          <mat-icon matSuffix>straighten</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                          <mat-label>Avg Speed (km/h)</mat-label>
+                          <input matInput type="number" formControlName="avgSpeed" min="1" step="0.1">
+                          <mat-icon matSuffix>speed</mat-icon>
+                        </mat-form-field>
+                      </div>
+
+                      <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Elevation Gain (meters)</mat-label>
+                        <input matInput type="number" formControlName="elevation" min="0">
+                        <mat-icon matSuffix>terrain</mat-icon>
+                      </mat-form-field>
+                    }
+
+                    <!-- Skating Metadata -->
+                    @if (currentActivityType() === 'skating') {
+                      <div class="form-row">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Skating Type</mat-label>
+                          <mat-select formControlName="type">
+                            <mat-option value="ice">Ice Skating</mat-option>
+                            <mat-option value="roller">Roller Skating</mat-option>
+                            <mat-option value="inline">Inline Skating</mat-option>
+                          </mat-select>
+                          @if (activityForm.get('metadata.type')?.hasError('required') && activityForm.get('metadata.type')?.touched) {
+                            <mat-error>Skating type is required</mat-error>
+                          }
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                          <mat-label>Location</mat-label>
+                          <mat-select formControlName="location">
+                            <mat-option value="indoor">Indoor</mat-option>
+                            <mat-option value="outdoor">Outdoor</mat-option>
+                          </mat-select>
+                          @if (activityForm.get('metadata.location')?.hasError('required') && activityForm.get('metadata.location')?.touched) {
+                            <mat-error>Location is required</mat-error>
+                          }
+                        </mat-form-field>
+                      </div>
+
+                      <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Distance (km)</mat-label>
+                        <input matInput type="number" formControlName="distance" min="0.1" step="0.1">
+                        <mat-icon matSuffix>straighten</mat-icon>
+                      </mat-form-field>
+                    }
+
+                    <!-- Horse Riding Metadata -->
+                    @if (currentActivityType() === 'horse_riding') {
+                      <div class="form-row">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Discipline</mat-label>
+                          <mat-select formControlName="discipline">
+                            <mat-option value="dressage">Dressage</mat-option>
+                            <mat-option value="jumping">Jumping</mat-option>
+                            <mat-option value="trail">Trail</mat-option>
+                            <mat-option value="racing">Racing</mat-option>
+                            <mat-option value="western">Western</mat-option>
+                            <mat-option value="other">Other</mat-option>
+                          </mat-select>
+                          @if (activityForm.get('metadata.discipline')?.hasError('required') && activityForm.get('metadata.discipline')?.touched) {
+                            <mat-error>Discipline is required</mat-error>
+                          }
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                          <mat-label>Location</mat-label>
+                          <mat-select formControlName="location">
+                            <mat-option value="indoor">Indoor</mat-option>
+                            <mat-option value="outdoor">Outdoor</mat-option>
+                          </mat-select>
+                          @if (activityForm.get('metadata.location')?.hasError('required') && activityForm.get('metadata.location')?.touched) {
+                            <mat-error>Location is required</mat-error>
+                          }
+                        </mat-form-field>
+                      </div>
+
+                      <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Horse Name (Optional)</mat-label>
+                        <input matInput formControlName="horseName">
+                        <mat-icon matSuffix>pets</mat-icon>
+                      </mat-form-field>
+                    }
+
+                    <!-- Gym Workout Metadata -->
+                    @if (currentActivityType() === 'gym_workout') {
+                      <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Workout Type</mat-label>
+                        <mat-select formControlName="workoutType">
+                          <mat-option value="strength">Strength Training</mat-option>
+                          <mat-option value="cardio">Cardio</mat-option>
+                          <mat-option value="mixed">Mixed</mat-option>
+                        </mat-select>
+                        @if (activityForm.get('metadata.workoutType')?.hasError('required') && activityForm.get('metadata.workoutType')?.touched) {
+                          <mat-error>Workout type is required</mat-error>
+                        }
+                      </mat-form-field>
+
+                      <!-- Exercises -->
+                      <div class="array-field">
+                        <div class="array-header">
+                          <h4>Exercises</h4>
+                          <button mat-icon-button type="button" (click)="addExercise()" color="primary">
+                            <mat-icon>add</mat-icon>
+                          </button>
+                        </div>
+                        <div formArrayName="exercises">
+                          @for (exercise of exercisesArray.controls; track $index) {
+                            <div class="array-item">
+                              <mat-form-field appearance="outline" class="flex-grow">
+                                <mat-label>Exercise {{ $index + 1 }}</mat-label>
+                                <input matInput [formControlName]="$index" placeholder="e.g., Bench Press">
+                              </mat-form-field>
+                              <button mat-icon-button type="button" (click)="removeExercise($index)" color="warn">
+                                <mat-icon>remove</mat-icon>
+                              </button>
+                            </div>
+                          }
+                        </div>
+                      </div>
+
+                      <!-- Equipment -->
+                      <div class="array-field">
+                        <div class="array-header">
+                          <h4>Equipment</h4>
+                          <button mat-icon-button type="button" (click)="addEquipment()" color="primary">
+                            <mat-icon>add</mat-icon>
+                          </button>
+                        </div>
+                        <div formArrayName="equipment">
+                          @for (equipment of equipmentArray.controls; track $index) {
+                            <div class="array-item">
+                              <mat-form-field appearance="outline" class="flex-grow">
+                                <mat-label>Equipment {{ $index + 1 }}</mat-label>
+                                <input matInput [formControlName]="$index" placeholder="e.g., Dumbbells">
+                              </mat-form-field>
+                              <button mat-icon-button type="button" (click)="removeEquipment($index)" color="warn">
+                                <mat-icon>remove</mat-icon>
+                              </button>
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </mat-expansion-panel>
+              }
+
               <!-- Action Buttons -->
               <div class="form-actions">
                 <button mat-button type="button" (click)="goBack()">
@@ -160,11 +422,11 @@ import { ActivityType, DifficultyLevel, CreateActivityDto } from '../../../share
   styleUrls: ['./activity-form.component.scss']
 })
 export class ActivityFormComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   public activityService = inject(ActivityService);
-  private snackBar = inject(MatSnackBar);
+  private readonly snackBar = inject(MatSnackBar);
 
   activityForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
@@ -173,8 +435,11 @@ export class ActivityFormComponent implements OnInit {
     duration: ['', [Validators.required, Validators.min(1)]],
     difficulty: ['', Validators.required],
     caloriesBurned: ['', Validators.min(1)],
-    description: ['']
+    description: [''],
+    metadata: this.fb.group({})
   });
+
+  currentActivityType = signal<ActivityType | null>(null);
 
   isEditMode = signal(false);
   isLoading = signal(false);
@@ -194,6 +459,12 @@ export class ActivityFormComponent implements OnInit {
     }));
 
   ngOnInit() {
+    // Subscribe to activity type changes to update metadata form
+    this.activityForm.get('type')?.valueChanges.subscribe((type: ActivityType) => {
+      this.currentActivityType.set(type);
+      this.updateMetadataForm(type);
+    });
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode.set(true);
@@ -212,9 +483,17 @@ export class ActivityFormComponent implements OnInit {
           activityDate: new Date(activity.activityDate),
           duration: activity.duration,
           difficulty: activity.difficulty,
-          caloriesBurned: activity.caloriesBurned || '',
-          description: activity.description || ''
+          caloriesBurned: activity.caloriesBurned ?? '',
+          description: activity.description ?? ''
         });
+        
+        // Load metadata if it exists
+        if (activity.metadata) {
+          this.currentActivityType.set(activity.type);
+          this.updateMetadataForm(activity.type);
+          this.activityForm.get('metadata')?.patchValue(activity.metadata);
+        }
+        
         this.isLoading.set(false);
       },
       error: (error) => {
@@ -223,6 +502,81 @@ export class ActivityFormComponent implements OnInit {
         this.goBack();
       }
     });
+  }
+
+  private updateMetadataForm(type: ActivityType) {
+    const metadataGroup = this.activityForm.get('metadata') as FormGroup;
+    
+    // Clear existing controls
+    Object.keys(metadataGroup.controls).forEach(key => {
+      metadataGroup.removeControl(key);
+    });
+
+    // Add controls based on activity type
+    switch (type) {
+      case ActivityType.SWIMMING:
+        metadataGroup.addControl('poolSize', this.fb.control('', [Validators.required, Validators.min(1)]));
+        metadataGroup.addControl('laps', this.fb.control('', [Validators.required, Validators.min(1)]));
+        metadataGroup.addControl('strokeType', this.fb.control(''));
+        break;
+
+      case ActivityType.RUNNING:
+        metadataGroup.addControl('location', this.fb.control('', Validators.required));
+        metadataGroup.addControl('distance', this.fb.control('', Validators.min(0.1)));
+        metadataGroup.addControl('pace', this.fb.control('', Validators.min(1)));
+        metadataGroup.addControl('elevation', this.fb.control('', Validators.min(0)));
+        break;
+
+      case ActivityType.CYCLING:
+        metadataGroup.addControl('location', this.fb.control('', Validators.required));
+        metadataGroup.addControl('distance', this.fb.control('', Validators.min(0.1)));
+        metadataGroup.addControl('avgSpeed', this.fb.control('', Validators.min(1)));
+        metadataGroup.addControl('elevation', this.fb.control('', Validators.min(0)));
+        break;
+
+      case ActivityType.SKATING:
+        metadataGroup.addControl('type', this.fb.control('', Validators.required));
+        metadataGroup.addControl('location', this.fb.control('', Validators.required));
+        metadataGroup.addControl('distance', this.fb.control('', Validators.min(0.1)));
+        break;
+
+      case ActivityType.HORSE_RIDING:
+        metadataGroup.addControl('discipline', this.fb.control('', Validators.required));
+        metadataGroup.addControl('location', this.fb.control('', Validators.required));
+        metadataGroup.addControl('horseName', this.fb.control(''));
+        break;
+
+      case ActivityType.GYM_WORKOUT:
+        metadataGroup.addControl('workoutType', this.fb.control('', Validators.required));
+        metadataGroup.addControl('exercises', this.fb.array([]));
+        metadataGroup.addControl('equipment', this.fb.array([]));
+        break;
+    }
+  }
+
+  // Helper methods for dynamic arrays (gym workout)
+  get exercisesArray(): FormArray {
+    return this.activityForm.get('metadata.exercises') as FormArray;
+  }
+
+  get equipmentArray(): FormArray {
+    return this.activityForm.get('metadata.equipment') as FormArray;
+  }
+
+  addExercise() {
+    this.exercisesArray.push(this.fb.control('', Validators.required));
+  }
+
+  removeExercise(index: number) {
+    this.exercisesArray.removeAt(index);
+  }
+
+  addEquipment() {
+    this.equipmentArray.push(this.fb.control('', Validators.required));
+  }
+
+  removeEquipment(index: number) {
+    this.equipmentArray.removeAt(index);
   }
 
   onSubmit() {
@@ -240,8 +594,9 @@ export class ActivityFormComponent implements OnInit {
       activityDate: formValue.activityDate.toISOString(),
       duration: formValue.duration,
       difficulty: formValue.difficulty,
-      caloriesBurned: formValue.caloriesBurned || undefined,
-      description: formValue.description || undefined
+      caloriesBurned: formValue.caloriesBurned ?? undefined,
+      description: formValue.description ?? undefined,
+      metadata: this.getCleanedMetadata(formValue.metadata)
     };
 
     const operation = this.isEditMode() 
@@ -261,6 +616,34 @@ export class ActivityFormComponent implements OnInit {
         this.isSaving.set(false);
       }
     });
+  }
+
+  private getCleanedMetadata(metadata: any): ActivityMetadata | undefined {
+    if (!metadata || Object.keys(metadata).length === 0) {
+      return undefined;
+    }
+
+    // Remove empty values and convert to appropriate types
+    const cleaned: any = {};
+    Object.keys(metadata).forEach(key => {
+      const value = metadata[key];
+      if (value !== null && value !== undefined && value !== '') {
+        // Convert numeric strings to numbers for specific fields
+        if (['poolSize', 'laps', 'distance', 'pace', 'elevation', 'avgSpeed'].includes(key)) {
+          cleaned[key] = Number(value);
+        } else if (Array.isArray(value)) {
+          // Filter out empty array items
+          const filteredArray = value.filter(item => item && item.trim());
+          if (filteredArray.length > 0) {
+            cleaned[key] = filteredArray;
+          }
+        } else {
+          cleaned[key] = value;
+        }
+      }
+    });
+
+    return Object.keys(cleaned).length > 0 ? cleaned : undefined;
   }
 
   goBack() {
