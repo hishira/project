@@ -80,6 +80,13 @@ import { format } from 'date-fns';
                 <p class="activity-description">{{ activity()!.description }}</p>
               }
               
+              @if (activity()!.notes) {
+                <div class="activity-notes">
+                  <mat-icon class="notes-icon">note</mat-icon>
+                  <p class="notes-text">{{ activity()!.notes }}</p>
+                </div>
+              }
+              
               <div class="activity-tags">
                 <mat-chip-set>
                   <mat-chip>
@@ -171,6 +178,265 @@ import { format } from 'date-fns';
               </div>
             </mat-card-content>
           </mat-card>
+
+          <!-- Activity Metadata -->
+          @if (activity()!.metadata && hasMetadata()) {
+            <mat-card class="metadata-card">
+              <mat-card-header>
+                <div mat-card-avatar class="metadata-avatar">
+                  <mat-icon>info</mat-icon>
+                </div>
+                <mat-card-title>Activity Details</mat-card-title>
+                <mat-card-subtitle>
+                  Specific information for {{ activityService.getActivityTypeLabel(activity()!.type) }}
+                </mat-card-subtitle>
+              </mat-card-header>
+              
+              <mat-card-content>
+                <!-- Swimming Metadata -->
+                @if (activity()!.type === 'swimming' && activity()!.metadata) {
+                  <div class="metadata-grid">
+                    @if (getMetadataValue('poolSize')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">pool</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Pool Size</span>
+                          <span class="metadata-value">{{ getMetadataValue('poolSize') }} meters</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataValue('laps')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">repeat</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Laps</span>
+                          <span class="metadata-value">{{ getMetadataValue('laps') }}</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataValue('strokeType')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">sports</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Stroke Type</span>
+                          <span class="metadata-value">{{ capitalizeFirst(getMetadataValue('strokeType')) }}</span>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <!-- Running Metadata -->
+                @if (activity()!.type === 'running' && activity()!.metadata) {
+                  <div class="metadata-grid">
+                    @if (getMetadataValue('location')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">place</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Location</span>
+                          <span class="metadata-value">{{ capitalizeFirst(getMetadataValue('location')) }}</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataValue('distance')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">straighten</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Distance</span>
+                          <span class="metadata-value">{{ getMetadataValue('distance') }} km</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataValue('pace')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">speed</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Pace</span>
+                          <span class="metadata-value">{{ getMetadataValue('pace') }} min/km</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataValue('elevation')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">terrain</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Elevation Gain</span>
+                          <span class="metadata-value">{{ getMetadataValue('elevation') }} m</span>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <!-- Cycling Metadata -->
+                @if (activity()!.type === 'cycling' && activity()!.metadata) {
+                  <div class="metadata-grid">
+                    @if (getMetadataValue('location')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">place</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Location</span>
+                          <span class="metadata-value">{{ capitalizeFirst(getMetadataValue('location')) }}</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataValue('distance')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">straighten</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Distance</span>
+                          <span class="metadata-value">{{ getMetadataValue('distance') }} km</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataValue('avgSpeed')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">speed</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Average Speed</span>
+                          <span class="metadata-value">{{ getMetadataValue('avgSpeed') }} km/h</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataValue('elevation')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">terrain</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Elevation Gain</span>
+                          <span class="metadata-value">{{ getMetadataValue('elevation') }} m</span>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <!-- Skating Metadata -->
+                @if (activity()!.type === 'skating' && activity()!.metadata) {
+                  <div class="metadata-grid">
+                    @if (getMetadataValue('type')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">sports</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Skating Type</span>
+                          <span class="metadata-value">{{ formatSkatingType(getMetadataValue('type')) }}</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataValue('location')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">place</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Location</span>
+                          <span class="metadata-value">{{ capitalizeFirst(getMetadataValue('location')) }}</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataValue('distance')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">straighten</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Distance</span>
+                          <span class="metadata-value">{{ getMetadataValue('distance') }} km</span>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <!-- Horse Riding Metadata -->
+                @if (activity()!.type === 'horse_riding' && activity()!.metadata) {
+                  <div class="metadata-grid">
+                    @if (getMetadataValue('discipline')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">sports</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Discipline</span>
+                          <span class="metadata-value">{{ capitalizeFirst(getMetadataValue('discipline')) }}</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataValue('location')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">place</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Location</span>
+                          <span class="metadata-value">{{ capitalizeFirst(getMetadataValue('location')) }}</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataValue('horseName')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">pets</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Horse Name</span>
+                          <span class="metadata-value">{{ getMetadataValue('horseName') }}</span>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <!-- Gym Workout Metadata -->
+                @if (activity()!.type === 'gym_workout' && activity()!.metadata) {
+                  <div class="metadata-grid">
+                    @if (getMetadataValue('workoutType')) {
+                      <div class="metadata-item">
+                        <mat-icon class="metadata-icon">fitness_center</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Workout Type</span>
+                          <span class="metadata-value">{{ formatWorkoutType(getMetadataValue('workoutType')) }}</span>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataArrayValue('exercises').length) {
+                      <div class="metadata-item full-width">
+                        <mat-icon class="metadata-icon">list</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Exercises</span>
+                          <div class="metadata-chips">
+                            <mat-chip-set>
+                              @for (exercise of getMetadataArrayValue('exercises'); track exercise) {
+                                <mat-chip>{{ exercise }}</mat-chip>
+                              }
+                            </mat-chip-set>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                    
+                    @if (getMetadataArrayValue('equipment').length) {
+                      <div class="metadata-item full-width">
+                        <mat-icon class="metadata-icon">build</mat-icon>
+                        <div class="metadata-content">
+                          <span class="metadata-label">Equipment</span>
+                          <div class="metadata-chips">
+                            <mat-chip-set>
+                              @for (equipment of getMetadataArrayValue('equipment'); track equipment) {
+                                <mat-chip color="accent">{{ equipment }}</mat-chip>
+                              }
+                            </mat-chip-set>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </mat-card-content>
+            </mat-card>
+          }
         </div>
       }
 
@@ -191,10 +457,10 @@ import { format } from 'date-fns';
   styleUrls: ['./activity-detail.component.scss']
 })
 export class ActivityDetailComponent implements OnInit {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  public activityService = inject(ActivityService);
-  private snackBar = inject(MatSnackBar);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  public readonly activityService = inject(ActivityService);
+  private readonly snackBar = inject(MatSnackBar);
 
   activity = signal<Activity | null>(null);
   isLoading = signal(false);
@@ -230,7 +496,7 @@ export class ActivityDetailComponent implements OnInit {
     if (!this.activity()) return;
 
     if (confirm('Are you sure you want to delete this activity? This action cannot be undone.')) {
-      this.activityService.deleteActivity(this.activity()!.id!).subscribe({
+      this.activityService.deleteActivity(this.activity()!.id).subscribe({
         next: () => {
           this.snackBar.open('Activity deleted successfully', 'Close', { duration: 3000 });
           this.router.navigate(['/activities']);
@@ -271,5 +537,45 @@ export class ActivityDetailComponent implements OnInit {
     };
     
     return difficultyScores[activity.difficulty] || '0';
+  }
+
+  // Metadata helper methods
+  hasMetadata(): boolean {
+    const activity = this.activity();
+    return !!(activity?.metadata && Object.keys(activity.metadata).length > 0);
+  }
+
+  getMetadataValue(key: string): any {
+    const activity = this.activity();
+    if (!activity?.metadata) return null;
+    return activity.metadata[key as keyof typeof activity.metadata];
+  }
+
+  getMetadataArrayValue(key: string): string[] {
+    const value = this.getMetadataValue(key);
+    return Array.isArray(value) ? value : [];
+  }
+
+  capitalizeFirst(str: string): string {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  formatSkatingType(type: string): string {
+    const types: { [key: string]: string } = {
+      'ice': 'Ice Skating',
+      'roller': 'Roller Skating', 
+      'inline': 'Inline Skating'
+    };
+    return types[type] || this.capitalizeFirst(type);
+  }
+
+  formatWorkoutType(type: string): string {
+    const types: { [key: string]: string } = {
+      'strength': 'Strength Training',
+      'cardio': 'Cardio',
+      'mixed': 'Mixed Training'
+    };
+    return types[type] || this.capitalizeFirst(type);
   }
 }

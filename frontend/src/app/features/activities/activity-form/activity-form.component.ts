@@ -143,8 +143,16 @@ import {
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Description (Optional)</mat-label>
                 <textarea matInput formControlName="description" rows="3" 
-                          placeholder="Add notes about your activity..."></textarea>
+                          placeholder="Describe your activity..."></textarea>
                 <mat-icon matSuffix>description</mat-icon>
+              </mat-form-field>
+
+              <!-- Notes (Optional) -->
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Notes (Optional)</mat-label>
+                <textarea matInput formControlName="notes" rows="3" 
+                          placeholder="Add any additional notes or observations..."></textarea>
+                <mat-icon matSuffix>note</mat-icon>
               </mat-form-field>
 
               <!-- Activity-Specific Metadata -->
@@ -436,6 +444,7 @@ export class ActivityFormComponent implements OnInit {
     difficulty: ['', Validators.required],
     caloriesBurned: ['', Validators.min(1)],
     description: [''],
+    notes: [''],
     metadata: this.fb.group({})
   });
 
@@ -484,7 +493,8 @@ export class ActivityFormComponent implements OnInit {
           duration: activity.duration,
           difficulty: activity.difficulty,
           caloriesBurned: activity.caloriesBurned ?? '',
-          description: activity.description ?? ''
+          description: activity.description ?? '',
+          notes: activity.notes ?? ''
         });
         
         // Load metadata if it exists
@@ -588,16 +598,32 @@ export class ActivityFormComponent implements OnInit {
     this.isSaving.set(true);
     const formValue = this.activityForm.value;
     
+    // Build activity data with only defined optional fields
     const activityData: CreateActivityDto = {
       title: formValue.title,
       type: formValue.type,
       activityDate: formValue.activityDate.toISOString(),
       duration: formValue.duration,
-      difficulty: formValue.difficulty,
-      caloriesBurned: formValue.caloriesBurned ?? undefined,
-      description: formValue.description ?? undefined,
-      metadata: this.getCleanedMetadata(formValue.metadata)
+      difficulty: formValue.difficulty
     };
+
+    // Only include optional fields if they have values
+    if (formValue.caloriesBurned != null && formValue.caloriesBurned > 0) {
+      activityData.caloriesBurned = formValue.caloriesBurned;
+    }
+    
+    if (formValue.description && formValue.description.trim()) {
+      activityData.description = formValue.description.trim();
+    }
+
+    if (formValue.notes && formValue.notes.trim()) {
+      activityData.notes = formValue.notes.trim();
+    }
+
+    const cleanedMetadata = this.getCleanedMetadata(formValue.metadata);
+    if (cleanedMetadata && Object.keys(cleanedMetadata).length > 0) {
+      activityData.metadata = cleanedMetadata;
+    }
 
     const operation = this.isEditMode() 
       ? this.activityService.updateActivity(this.activityId()!, activityData)
