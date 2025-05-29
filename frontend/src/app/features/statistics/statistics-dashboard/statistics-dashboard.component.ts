@@ -14,8 +14,8 @@ import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
 import { firstValueFrom } from 'rxjs';
 import { StatisticsService } from '../../../core/services/statistics.service';
 import { ActivityService } from '../../../core/services/activity.service';
-import { Statistics } from '../../../shared/models/statistics.model';
-import { ActivityType, Activity, ActivitiesResponse } from '../../../shared/models/activity.model';
+import { UserStatistics } from '../../../shared/models/statistics.model';
+import { ActivityType, Activity } from '../../../shared/models/activity.model';
 
 Chart.register(...registerables);
 
@@ -44,7 +44,7 @@ export class StatisticsDashboardComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  statistics = signal<Statistics | null>(null);
+  statistics = signal<UserStatistics | null>(null);
   activities = signal<Activity[]>([]);
   isLoading = signal(false);
 
@@ -155,7 +155,7 @@ export class StatisticsDashboardComponent implements OnInit {
     }
   }
 
-  private updateCharts(stats: Statistics, activities: Activity[]) {
+  private updateCharts(stats: UserStatistics, activities: Activity[]) {
     this.updateActivityTypeChart(stats);
     this.updateIntensityChart(activities);
     this.updateDurationTrendChart(activities);
@@ -163,7 +163,7 @@ export class StatisticsDashboardComponent implements OnInit {
     this.cdr.detectChanges(); // Force change detection to update charts
   }
 
-  private updateActivityTypeChart(stats: Statistics) {
+  private updateActivityTypeChart(stats: UserStatistics) {
     const chartData = this.statisticsService.getActivityTypeChartData(stats);
     this.activityTypeChart.data = chartData;
   }
@@ -189,7 +189,7 @@ export class StatisticsDashboardComponent implements OnInit {
     this.durationTrendChart.data = chartData;
   }
 
-  private updateGoalCharts(stats: Statistics) {
+  private updateGoalCharts(stats: UserStatistics) {
     // Force chart updates by recreating the chart configurations
     const weeklyProgress = this.getWeeklyProgress();
     this.weeklyGoalChart = {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import {
   ActivitiesResponse
 } from '../../shared/models/activity.model';
 import { ActivityStatistics } from '../../shared/models/statistics.model';
+import { ActivityHelperService } from './activity-helper.service';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -17,8 +18,9 @@ import { environment } from '../../../environments/environment';
 })
 export class ActivityService {
   private readonly API_URL = environment.apiUrl || 'http://localhost:3000';
+  private readonly activityHelper = inject(ActivityHelperService);
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   // Activity CRUD operations
   createActivity(activityDto: CreateActivityDto): Observable<Activity> {
@@ -76,72 +78,41 @@ export class ActivityService {
       .pipe(catchError(this.handleError));
   }
 
-  // Helper methods for UI
+  // Helper methods for UI - delegate to ActivityHelperService
   getActivityTypeOptions() {
-    return [
-      { value: 'running', label: 'Running', icon: 'directions_run' },
-      { value: 'swimming', label: 'Swimming', icon: 'pool' },
-      { value: 'cycling', label: 'Cycling', icon: 'directions_bike' },
-      { value: 'skating', label: 'Skating', icon: 'sports' },
-      { value: 'horse_riding', label: 'Horse Riding', icon: 'pets' },
-      { value: 'walking', label: 'Walking', icon: 'directions_walk' },
-      { value: 'hiking', label: 'Hiking', icon: 'terrain' },
-      { value: 'gym_workout', label: 'Gym Workout', icon: 'fitness_center' },
-      { value: 'yoga', label: 'Yoga', icon: 'spa' },
-      { value: 'tennis', label: 'Tennis', icon: 'sports_tennis' },
-      { value: 'football', label: 'Football', icon: 'sports_soccer' },
-      { value: 'basketball', label: 'Basketball', icon: 'sports_basketball' },
-      { value: 'other', label: 'Other', icon: 'sports' }
-    ];
+    return this.activityHelper.getActivityTypeOptions();
   }
 
   getDifficultyOptions() {
-    return [
-      { value: 1, label: 'Very Easy', color: '#4CAF50' },
-      { value: 2, label: 'Easy', color: '#8BC34A' },
-      { value: 3, label: 'Moderate', color: '#FF9800' },
-      { value: 4, label: 'Hard', color: '#FF5722' },
-      { value: 5, label: 'Very Hard', color: '#F44336' }
-    ];
+    return this.activityHelper.getDifficultyOptions();
   }
 
   getDifficultyLabel(difficulty: number): string {
-    const options = this.getDifficultyOptions();
-    return options.find(opt => opt.value === difficulty)?.label || 'Unknown';
+    return this.activityHelper.getDifficultyLabel(difficulty);
   }
 
   getDifficultyColor(difficulty: number): string {
-    const options = this.getDifficultyOptions();
-    return options.find(opt => opt.value === difficulty)?.color || '#9E9E9E';
+    return this.activityHelper.getDifficultyColor(difficulty);
   }
 
   getActivityTypeLabel(type: string): string {
-    const options = this.getActivityTypeOptions();
-    return options.find(opt => opt.value === type)?.label || type;
+    return this.activityHelper.getActivityTypeLabel(type);
   }
 
   getActivityTypeIcon(type: string): string {
-    const options = this.getActivityTypeOptions();
-    return options.find(opt => opt.value === type)?.icon || 'sports';
+    return this.activityHelper.getActivityTypeIcon(type);
   }
 
   // Additional helper methods for UI
   getActivityIcon(type: string): string {
-    return this.getActivityTypeIcon(type);
+    return this.activityHelper.getActivityIcon(type);
   }
 
   getDifficultyLevelLabel(difficulty: number): string {
-    const difficultyLabels: { [key: number]: string } = {
-      1: 'Very Easy',
-      2: 'Easy', 
-      3: 'Moderate',
-      4: 'Hard',
-      5: 'Very Hard'
-    };
-    return difficultyLabels[difficulty] || 'Unknown';
+    return this.activityHelper.getDifficultyLevelLabel(difficulty);
   }
 
-  private handleError = (error: any): Observable<never> => {
+  private readonly handleError = (error: any): Observable<never> => {
     let errorMessage = 'An unexpected error occurred';
     
     if (error.error?.message) {
@@ -150,6 +121,6 @@ export class ActivityService {
       errorMessage = error.message;
     }
 
-    return throwError(errorMessage);
+    return throwError(() => errorMessage);
   };
 }

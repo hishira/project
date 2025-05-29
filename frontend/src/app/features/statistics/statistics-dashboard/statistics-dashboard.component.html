@@ -71,14 +71,12 @@
             </div>
           </div>
         </mat-card-content>
-      </mat-card>
-
-      <mat-card class="overview-card">
+      </mat-card>        <mat-card class="overview-card">
         <mat-card-content>
           <div class="overview-content">
             <mat-icon class="overview-icon calories">local_fire_department</mat-icon>
             <div class="overview-info">
-              <h3>{{ statistics()!.totalCalories || 0 | number }}</h3>
+              <h3>{{ statistics()!.totalCaloriesBurned || 0 | number }}</h3>
               <p>Total Calories</p>
             </div>
           </div>
