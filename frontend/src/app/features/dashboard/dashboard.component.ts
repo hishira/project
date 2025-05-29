@@ -45,6 +45,7 @@ import { User } from '../../shared/models/user.model';
       top: 0;
       z-index: 1000;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      min-height: 64px;
     }
 
     .toolbar-content {
@@ -52,6 +53,7 @@ import { User } from '../../shared/models/user.model';
       justify-content: space-between;
       align-items: center;
       width: 100%;
+      height: 100%;
     }
 
     .app-title {
@@ -60,21 +62,43 @@ import { User } from '../../shared/models/user.model';
       gap: 8px;
       font-size: 18px;
       font-weight: 500;
+      flex: 1;
+      min-width: 0; /* Allow text truncation */
+    }
+
+    .app-title-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .title-icon {
       font-size: 24px;
+      flex-shrink: 0;
     }
 
     .user-menu {
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-shrink: 0;
     }
 
     .welcome-text {
       color: white;
       font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .welcome-text-short {
+      display: none;
+      color: white;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .user-menu-button {
+      color: white;
     }
 
     .dashboard-content {
@@ -289,10 +313,12 @@ import { User } from '../../shared/models/user.model';
         padding: 16px;
       }
 
-      .toolbar-content {
-        flex-direction: column;
-        gap: 12px;
-        align-items: flex-start;
+      .app-title {
+        font-size: 16px;
+      }
+
+      .app-title-text {
+        max-width: 180px;
       }
 
       .section-header {
@@ -315,6 +341,74 @@ import { User } from '../../shared/models/user.model';
 
       .welcome-text {
         display: none;
+      }
+
+      .welcome-text-short {
+        display: block;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dashboard-toolbar {
+        min-height: 56px;
+      }
+
+      .toolbar-content {
+        padding: 0 8px;
+      }
+
+      .app-title {
+        font-size: 14px;
+        gap: 6px;
+      }
+
+      .app-title-text {
+        max-width: 120px;
+      }
+
+      .title-icon {
+        font-size: 20px;
+      }
+
+      .user-menu {
+        gap: 8px;
+      }
+
+      .welcome-text-short {
+        font-size: 14px;
+        max-width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .dashboard-content {
+        padding: 12px;
+      }
+
+      .stats-grid {
+        gap: 12px;
+      }
+
+      .activities-grid {
+        gap: 12px;
+      }
+
+      .actions-grid {
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .app-title-text {
+        display: none;
+      }
+
+      .welcome-text-short {
+        display: none;
+      }
+
+      .toolbar-content {
+        justify-content: space-between;
       }
     }
   `]

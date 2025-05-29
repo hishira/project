@@ -34,7 +34,7 @@ export class ActivityService {
       if (filters.dateFrom) params = params.set('dateFrom', filters.dateFrom);
       if (filters.dateTo) params = params.set('dateTo', filters.dateTo);
       if (filters.limit) params = params.set('limit', filters.limit.toString());
-      if (filters.page) params = params.set('page', filters.page.toString());
+      if (filters.offset !== undefined) params = params.set('offset', filters.offset.toString());
     }
 
     return this.http.get<Activity[]>(`${this.API_URL}/activities`, { params })

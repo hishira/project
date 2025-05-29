@@ -115,6 +115,6 @@ export interface ActivityFilterOptions {
   difficulty?: DifficultyLevel; // Backend uses difficulty (1-5)
   dateFrom?: string;
   dateTo?: string;
-  page?: number;
+  offset?: number; // Backend uses offset instead of page
   limit?: number;
 }

@@ -49,6 +49,7 @@ export class ActivityListComponent implements OnInit {
   totalCount = signal(0);
   pageSize = signal(12);
   pageIndex = signal(0);
+  isFiltersExpanded = signal(true); // For mobile filter toggle
 
   filterForm: FormGroup = this.fb.group({
     search: [''],
@@ -93,7 +94,7 @@ export class ActivityListComponent implements OnInit {
       search: filters.search || undefined,
       type: filters.type || undefined,
       difficulty: filters.difficulty || undefined,
-      page: this.pageIndex() + 1,
+      offset: this.pageIndex() * this.pageSize(), // Convert page index to offset
       limit: this.pageSize()
     }).subscribe({
       next: (response: any) => {
@@ -162,6 +163,19 @@ export class ActivityListComponent implements OnInit {
   hasActiveFilters(): boolean {
     const values = this.filterForm.value;
     return !!(values.search || values.type || values.difficulty);
+  }
+
+  getActiveFiltersCount(): number {
+    let count = 0;
+    const formValue = this.filterForm.value;
+    if (formValue.search) count++;
+    if (formValue.type) count++;
+    if (formValue.difficulty) count++;
+    return count;
+  }
+  
+  toggleFilters(): void {
+    this.isFiltersExpanded.set(!this.isFiltersExpanded());
   }
 
   deleteActivity(id: string) {

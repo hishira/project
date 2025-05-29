@@ -18,14 +18,43 @@
 .filters-card {
   margin-bottom: 20px;
   
+  .filters-header {
+    padding-bottom: 8px;
+    
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.125rem;
+      
+      .active-filters-chip {
+        font-size: 0.75rem;
+        height: 24px;
+        background-color: #667eea;
+        color: white;
+      }
+      
+      .filter-toggle-btn {
+        margin-left: auto;
+        display: none; // Hidden by default, shown on mobile
+      }
+    }
+  }
+  
   .filters-form {
     display: flex;
     gap: 16px;
-    align-items: center;
+    align-items: flex-end;
     flex-wrap: wrap;
     
     mat-form-field {
       min-width: 200px;
+      flex: 1;
+    }
+    
+    .clear-filters-btn {
+      flex-shrink: 0;
+      margin-bottom: 8px; // Align with form fields
     }
   }
 }
@@ -71,6 +100,7 @@
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    line-clamp: 2;
     overflow: hidden;
   }
   
@@ -116,16 +146,642 @@ mat-paginator {
     padding: 16px;
   }
   
-  .activities-grid {
-    grid-template-columns: 1fr;
+  .activities-header {
+    margin-bottom: 16px;
+    
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .filters-card {
+    margin-bottom: 16px;
+    
+    .filters-header {
+      padding-bottom: 6px;
+      
+      mat-card-title {
+        font-size: 1rem;
+        
+        .active-filters-chip {
+          font-size: 0.7rem;
+          height: 20px;
+        }
+      }
+    }
   }
   
   .filters-form {
     flex-direction: column;
     align-items: stretch;
+    gap: 12px;
     
     mat-form-field {
       min-width: unset;
+      flex: none;
+    }
+    
+    .clear-filters-btn {
+      margin-bottom: 0;
+      align-self: flex-start;
+    }
+  }
+  
+  .activities-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .activity-card {
+    mat-card-header {
+      .mat-mdc-card-title {
+        font-size: 1.1rem;
+      }
+      
+      .mat-mdc-card-subtitle {
+        font-size: 0.875rem;
+      }
+    }
+  }
+  
+  // Improve paginator on mobile
+  mat-paginator {
+    .mat-mdc-paginator-range-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .mat-mdc-paginator-page-size {
+      margin-right: 8px;
+    }
+    
+    .mat-mdc-paginator-range-label {
+      margin: 0 8px;
+      font-size: 0.875rem;
+    }
+  }
+  
+  // Better menu positioning on mobile
+  .activity-card {
+    mat-menu {
+      .mat-mdc-menu-item {
+        min-height: 44px; // Better touch targets
+        padding: 0 16px;
+        
+        mat-icon {
+          margin-right: 12px;
+        }
+      }
+    }
+  }
+  
+  // Improve empty state spacing
+  .empty-state {
+    padding: 32px 16px;
+    
+    button {
+      min-height: 44px; // Better touch target
+      padding: 12px 24px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .activities-container {
+    padding: 12px;
+  }
+  
+  .activities-header {
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    
+    h1 {
+      font-size: 1.25rem;
+    }
+    
+    button {
+      font-size: 0.875rem;
+      min-height: 44px; // Better touch target
+      
+      mat-icon {
+        font-size: 18px;
+        margin-right: 4px;
+      }
+    }
+  }
+  
+  .filters-card {
+    // Reduce card padding on small screens
+    .mat-mdc-card {
+      padding: 8px;
+    }
+    
+    .filters-header {
+      padding: 8px 8px 6px 8px;
+      
+      mat-card-title {
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+        gap: 8px;
+        
+        .active-filters-chip {
+          font-size: 0.65rem;
+          height: 18px;
+          order: 1; // Move chip below title on small screens
+          flex-basis: 100%;
+        }
+        
+        .filter-toggle-btn {
+          display: inline-flex !important;
+          width: 36px;
+          height: 36px;
+          margin-left: auto;
+          order: 2;
+          
+          mat-icon {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+    
+    mat-card-content {
+      padding: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+      
+      &.filters-collapsed {
+        max-height: 0;
+        padding: 0 8px !important;
+        overflow: hidden;
+        opacity: 0;
+      }
+    }
+  }
+  
+  .filters-form {
+    gap: 12px;
+    
+    mat-form-field {
+      .mat-mdc-form-field-label {
+        font-size: 0.875rem;
+      }
+      
+      .mat-mdc-form-field-infix {
+        min-height: 48px; // Better touch target
+      }
+      
+      // Improve select dropdown touch targets
+      .mat-mdc-select-trigger {
+        min-height: 48px;
+      }
+    }
+    
+    .clear-filters-btn {
+      font-size: 0.875rem;
+      padding: 12px 16px;
+      min-height: 44px;
+      border-radius: 22px; // More modern rounded button
+      margin-top: 4px;
+      
+      mat-icon {
+        margin-right: 6px;
+      }
+    }
+  }
+  
+  .activities-grid {
+    gap: 12px;
+  }
+  
+  .activity-card {
+    mat-card-header {
+      padding-bottom: 8px;
+      
+      .mat-mdc-card-title {
+        font-size: 1rem;
+        line-height: 1.3;
+      }
+      
+      .mat-mdc-card-subtitle {
+        font-size: 0.8rem;
+        margin-top: 2px;
+      }
+    }
+    
+    mat-card-content {
+      padding-top: 8px;
+    }
+  }
+  
+  .empty-state {
+    padding: 40px 16px;
+    
+    .empty-icon {
+      font-size: 48px;
+      height: 48px;
+      width: 48px;
+    }
+    
+    h2 {
+      font-size: 1.25rem;
+    }
+    
+    p {
+      font-size: 0.875rem;
+    }
+  }
+  
+  // Show filter toggle button on mobile
+  .filters-card {
+    .filters-header {
+      mat-card-title {
+        .filter-toggle-btn {
+          display: inline-flex !important;
+        }
+      }
+    }
+    
+    mat-card-content {
+      transition: all 0.3s ease-in-out;
+      
+      &.filters-collapsed {
+        max-height: 0;
+        padding: 0 !important;
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .activities-container {
+    padding: 8px;
+  }
+  
+  .activities-header {
+    padding: 8px 12px;
+    
+    h1 {
+      font-size: 1.1rem;
+    }
+    
+    button {
+      font-size: 0.8rem;
+      min-width: 36px;
+      padding: 6px 8px;
+      
+      .mat-button-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      
+      mat-icon {
+        font-size: 16px;
+        margin-right: 2px;
+      }
+      
+      // Hide text on very small screens, show only icon
+      span {
+        display: none;
+      }
+    }
+  }
+  
+  .filters-card {
+    .filters-header {
+      padding: 8px 8px 4px 8px;
+      
+      mat-card-title {
+        font-size: 0.85rem;
+        flex-wrap: wrap;
+        gap: 6px;
+        
+        .active-filters-chip {
+          font-size: 0.6rem;
+          height: 16px;
+          padding: 0 6px;
+        }
+      }
+    }
+    
+    mat-card-content {
+      padding: 8px;
+    }
+  }
+  
+  .filters-form {
+    gap: 6px;
+    
+    mat-form-field {
+      .mat-mdc-form-field-infix {
+        min-height: 44px; // Better touch target
+      }
+      
+      .mat-mdc-form-field-label {
+        font-size: 0.8rem;
+      }
+      
+      .mat-mdc-select-trigger {
+        min-height: 44px; // Better touch target for selects
+      }
+    }
+    
+    .clear-filters-btn {
+      font-size: 0.8rem;
+      padding: 6px 8px;
+      min-height: 36px; // Consistent touch target
+      
+      mat-icon {
+        font-size: 16px;
+        margin-right: 2px;
+      }
+    }
+  }
+  
+  .activity-card {
+    mat-card-header {
+      padding: 8px;
+      
+      .mat-mdc-card-title {
+        font-size: 0.95rem;
+      }
+      
+      .mat-mdc-card-subtitle {
+        font-size: 0.75rem;
+      }
+      
+      button[mat-icon-button] {
+        width: 32px;
+        height: 32px;
+        
+        mat-icon {
+          font-size: 18px;
+        }
+      }
+    }
+    
+    mat-card-content {
+      padding: 8px;
+      
+      .activity-description {
+        font-size: 0.875rem;
+        line-height: 1.4;
+      }
+      
+      .activity-stats {
+        mat-chip-set {
+          gap: 4px;
+          
+          mat-chip {
+            font-size: 0.75rem;
+            height: 24px;
+            
+            mat-icon {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Additional mobile improvements for better touch experience
+@media (max-width: 768px) {
+  // Improve paginator on mobile
+  mat-paginator {
+    .mat-mdc-paginator-range-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .mat-mdc-paginator-page-size {
+      margin-right: 8px;
+    }
+    
+    .mat-mdc-paginator-range-label {
+      margin: 0 8px;
+      font-size: 0.875rem;
+    }
+  }
+  
+  // Better menu positioning on mobile
+  .activity-card {
+    mat-menu {
+      .mat-mdc-menu-item {
+        min-height: 44px; // Better touch targets
+        padding: 0 16px;
+        
+        mat-icon {
+          margin-right: 12px;
+        }
+      }
+    }
+  }
+  
+  // Improve empty state spacing
+  .empty-state {
+    button {
+      min-height: 44px; // Better touch target
+      padding: 12px 24px;
+    }
+  }
+}
+
+// Focus improvements for accessibility on touch devices
+@media (hover: none) and (pointer: coarse) {
+  // Touch device specific improvements
+  .activity-card {
+    &:focus-within {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+  
+  button, .mat-mdc-button, .mat-mdc-icon-button {
+    &:focus {
+      outline: 2px solid #667eea;
+      outline-offset: 2px;
+    }
+  }
+  
+  mat-form-field {
+    .mat-mdc-form-field-focus-overlay {
+      opacity: 0.08;
+    }
+  }
+}
+
+// Collapsible filters for mobile
+.filters-collapsed {
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 360px) {
+  .activities-container {
+    padding: 8px;
+  }
+  
+  .activities-header {
+    padding: 8px 12px;
+    
+    h1 {
+      font-size: 1.1rem;
+    }
+    
+    button {
+      font-size: 0.8rem;
+      min-width: 36px;
+      padding: 6px 8px;
+      
+      .mat-button-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      
+      mat-icon {
+        font-size: 16px;
+        margin-right: 2px;
+      }
+      
+      // Hide text on very small screens, show only icon
+      span {
+        display: none;
+      }
+    }
+  }
+  
+  .filters-card {
+    .filters-header {
+      padding: 8px 8px 4px 8px;
+      
+      mat-card-title {
+        font-size: 0.85rem;
+        flex-wrap: wrap;
+        gap: 6px;
+        
+        .active-filters-chip {
+          font-size: 0.6rem;
+          height: 16px;
+          padding: 0 6px;
+        }
+      }
+    }
+    
+    mat-card-content {
+      padding: 8px;
+    }
+  }
+  
+  .filters-form {
+    gap: 6px;
+    
+    mat-form-field {
+      .mat-mdc-form-field-infix {
+        min-height: 44px; // Better touch target
+      }
+      
+      .mat-mdc-form-field-label {
+        font-size: 0.8rem;
+      }
+      
+      .mat-mdc-select-trigger {
+        min-height: 44px; // Better touch target for selects
+      }
+    }
+    
+    .clear-filters-btn {
+      font-size: 0.8rem;
+      padding: 6px 8px;
+      min-height: 36px; // Consistent touch target
+      
+      mat-icon {
+        font-size: 16px;
+        margin-right: 2px;
+      }
+    }
+  }
+  
+  .activity-card {
+    mat-card-header {
+      padding: 8px;
+      
+      .mat-mdc-card-title {
+        font-size: 0.95rem;
+      }
+      
+      .mat-mdc-card-subtitle {
+        font-size: 0.75rem;
+      }
+      
+      button[mat-icon-button] {
+        width: 32px;
+        height: 32px;
+        
+        mat-icon {
+          font-size: 18px;
+        }
+      }
+    }
+    
+    mat-card-content {
+      padding: 8px;
+      
+      .activity-description {
+        font-size: 0.875rem;
+        line-height: 1.4;
+      }
+      
+      .activity-stats {
+        mat-chip-set {
+          gap: 4px;
+          
+          mat-chip {
+            font-size: 0.75rem;
+            height: 24px;
+            
+            mat-icon {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Focus improvements for accessibility
+@media (hover: none) and (pointer: coarse) {
+  // Touch device specific improvements
+  .activity-card {
+    &:focus-within {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+  
+  button, .mat-mdc-button, .mat-mdc-icon-button {
+    &:focus {
+      outline: 2px solid #667eea;
+      outline-offset: 2px;
+    }
+  }
+  
+  mat-form-field {
+    .mat-mdc-form-field-focus-overlay {
+      opacity: 0.08;
     }
   }
 }

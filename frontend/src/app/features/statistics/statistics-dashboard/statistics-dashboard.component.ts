@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -42,6 +42,7 @@ export class StatisticsDashboardComponent implements OnInit {
   private readonly statisticsService = inject(StatisticsService);
   public readonly activityService = inject(ActivityService);
   private readonly fb = inject(FormBuilder);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   statistics = signal<Statistics | null>(null);
   activities = signal<Activity[]>([]);
@@ -159,6 +160,7 @@ export class StatisticsDashboardComponent implements OnInit {
     this.updateIntensityChart(activities);
     this.updateDurationTrendChart(activities);
     this.updateGoalCharts(stats);
+    this.cdr.detectChanges(); // Force change detection to update charts
   }
 
   private updateActivityTypeChart(stats: Statistics) {
@@ -168,7 +170,19 @@ export class StatisticsDashboardComponent implements OnInit {
 
   private updateIntensityChart(activities: Activity[]) {
     const chartData = this.statisticsService.getIntensityLevelChartData(activities);
-    this.intensityChart.data = chartData;
+    // Create a new chart configuration to trigger re-render
+    console.log(chartData);
+    this.intensityChart = {
+      type: 'pie' as ChartType,
+      data: chartData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    };
   }
 
   private updateDurationTrendChart(activities: Activity[]) {
