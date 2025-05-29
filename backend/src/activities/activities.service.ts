@@ -14,6 +14,7 @@ import {
   ActivityStatistics,
 } from './services/activity-statistics.service';
 import { UserStatisticsService } from '../user-statistics/user-statistics.service';
+import { LoggerService } from '../common/logger';
 
 @Injectable()
 export class ActivitiesService {
@@ -24,6 +25,7 @@ export class ActivitiesService {
     private readonly activityQueryService: ActivityQueryService,
     private readonly activityStatisticsService: ActivityStatisticsService,
     private readonly userStatisticsService: UserStatisticsService,
+    private readonly logger: LoggerService,
   ) {}
 
   /**
@@ -33,6 +35,13 @@ export class ActivitiesService {
     userLogin: string,
     createActivityDto: CreateActivityDto,
   ): Promise<Activity> {
+    this.logger.logInfo('Creating new activity', {
+      module: 'ActivitiesService',
+      action: 'create',
+      userLogin,
+      activityType: createActivityDto.type,
+    });
+
     // Calculate calories if not provided
     let caloriesBurned = createActivityDto.caloriesBurned;
     if (caloriesBurned === undefined || caloriesBurned === null) {
@@ -53,6 +62,16 @@ export class ActivitiesService {
 
     const savedActivity = await this.activityRepository.save(activity);
 
+    this.logger.logBusiness('Activity created successfully', {
+      module: 'ActivitiesService',
+      action: 'create',
+      userLogin,
+      activityId: savedActivity.id,
+      activityType: savedActivity.type,
+      duration: savedActivity.duration,
+      caloriesBurned: savedActivity.caloriesBurned,
+    });
+
     // Update user statistics
     await this.userStatisticsService.updateStatisticsForNewActivity(
       savedActivity,
@@ -68,14 +87,30 @@ export class ActivitiesService {
     userLogin: string,
     options?: ActivityFilterOptions,
   ): Promise<{ activities: Activity[]; total: number }> {
+    this.logger.logInfo('Fetching activities for user', {
+      module: 'ActivitiesService',
+      action: 'findAll',
+      userLogin,
+      filters: options,
+    });
+
     const queryOptions = this.activityQueryService.buildFindAllQuery(
       userLogin,
       options,
     );
-    return this.activityQueryService.findActivitiesWithQuery(
+    const result = await this.activityQueryService.findActivitiesWithQuery(
       this.activityRepository,
       queryOptions,
     );
+
+    this.logger.logInfo(`Found ${result.total} activities for user`, {
+      module: 'ActivitiesService',
+      action: 'findAll',
+      userLogin,
+      totalFound: result.total,
+    });
+
+    return result;
   }
 
   /**
@@ -146,8 +181,23 @@ export class ActivitiesService {
    * Delete an activity
    */
   async remove(id: string, userLogin: string): Promise<void> {
+    this.logger.logInfo('Deleting activity', {
+      module: 'ActivitiesService',
+      action: 'remove',
+      userLogin,
+      activityId: id,
+    });
+
     const activity = await this.findOne(id, userLogin);
     await this.activityRepository.remove(activity);
+
+    this.logger.logBusiness('Activity deleted successfully', {
+      module: 'ActivitiesService',
+      action: 'remove',
+      userLogin,
+      activityId: id,
+      activityType: activity.type,
+    });
 
     // Update user statistics
     await this.userStatisticsService.updateStatisticsForDeletedActivity(

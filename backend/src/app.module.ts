@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { databaseConfig } from './database/database.config';
@@ -10,10 +10,12 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { UserSessionModule } from './user-session/user-session.module';
 import { ActivitiesModule } from './activities/activities.module';
 import { UserStatisticsModule } from './user-statistics/user-statistics.module';
+import { LoggerModule, LoggingInterceptor } from './common/logger';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(databaseConfig),
+    LoggerModule,
     UsersModule,
     AuthModule,
     UserSessionModule,
@@ -26,6 +28,10 @@ import { UserStatisticsModule } from './user-statistics/user-statistics.module';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
     },
   ],
 })

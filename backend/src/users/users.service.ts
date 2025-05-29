@@ -5,16 +5,25 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LoggerService } from '../common/logger';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+    private readonly logger: LoggerService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
     const { password, ...userData } = createUserDto;
+
+    this.logger.logInfo('Creating new user', {
+      module: 'UsersService',
+      action: 'create',
+      email: userData.email,
+      login: userData.login,
+    });
 
     // Hash password
     const saltRounds = 12;
@@ -26,6 +35,14 @@ export class UsersService {
     });
 
     const savedUser = await this.usersRepository.save(user);
+
+    this.logger.logBusiness('User created successfully', {
+      module: 'UsersService',
+      action: 'create',
+      userId: savedUser.id,
+      email: savedUser.email,
+      login: savedUser.login,
+    });
 
     // Remove password from response
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

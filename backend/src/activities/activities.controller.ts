@@ -1,25 +1,25 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
-  Request,
-  Query,
-  ParseUUIDPipe,
-  ParseIntPipe,
-  ParseEnumPipe,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
+  ParseEnumPipe,
+  ParseIntPipe,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ActivityType, DifficultyLevel } from '../entities/activity.entity';
 import { ActivitiesService } from './activities.service';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { UpdateActivityDto } from './dto/update-activity.dto';
-import { ActivityType, DifficultyLevel } from '../entities/activity.entity';
 
 @Controller('activities')
 @UseGuards(JwtAuthGuard)

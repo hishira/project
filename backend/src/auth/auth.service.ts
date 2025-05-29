@@ -14,6 +14,7 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { JwtPayload } from './strategies/jwt.strategy';
 import { UserSessionService } from '../user-session/user-session.service';
+import { LoggerService } from '../common/logger';
 
 @Injectable()
 export class AuthService {
@@ -22,6 +23,7 @@ export class AuthService {
     private readonly usersRepository: Repository<User>,
     private readonly jwtService: JwtService,
     private readonly userSessionService: UserSessionService,
+    private readonly logger: LoggerService,
   ) {}
 
   async register(registerDto: RegisterDto): Promise<{
@@ -31,11 +33,24 @@ export class AuthService {
   }> {
     const { login, email, password, firstName, lastName } = registerDto;
 
+    this.logger.logInfo('User registration attempt', {
+      module: 'AuthService',
+      action: 'register',
+      email,
+      login,
+    });
+
     // Check if email already exists
     const existingEmail = await this.usersRepository.findOne({
       where: { email },
     });
     if (existingEmail) {
+      this.logger.logWarn('Registration failed: email already exists', {
+        module: 'AuthService',
+        action: 'register',
+        email,
+        reason: 'email_exists',
+      });
       throw new ConflictException('Email address is already in use');
     }
 
@@ -44,6 +59,12 @@ export class AuthService {
       where: { login },
     });
     if (existingLogin) {
+      this.logger.logWarn('Registration failed: login already exists', {
+        module: 'AuthService',
+        action: 'register',
+        login,
+        reason: 'login_exists',
+      });
       throw new ConflictException('Login is already in use');
     }
 
@@ -61,6 +82,12 @@ export class AuthService {
     });
 
     const savedUser = await this.usersRepository.save(user);
+
+    this.logger.logAuth('register', savedUser.id, {
+      module: 'AuthService',
+      email: savedUser.email,
+      login: savedUser.login,
+    });
 
     // Generate JWT tokens
     const payload: JwtPayload = {
@@ -99,6 +126,12 @@ export class AuthService {
     refresh_token: string;
   }> {
     const { identifier, password } = loginDto;
+
+    this.logger.logInfo('User login attempt', {
+      module: 'AuthService',
+      action: 'login',
+      identifier,
+    });
 
     // Check if identifier is email or login
     let user: User | null = null;
@@ -140,17 +173,34 @@ export class AuthService {
     }
 
     if (!user) {
+      this.logger.logWarn('Login failed: user not found', {
+        module: 'AuthService',
+        action: 'login',
+        identifier,
+      });
       throw new UnauthorizedException('Invalid username/email or password');
     }
 
     // Check if user is active
     if (!user.isActive) {
+      this.logger.logWarn('Login failed: account deactivated', {
+        module: 'AuthService',
+        action: 'login',
+        userId: user.id,
+        identifier,
+      });
       throw new UnauthorizedException('Account is deactivated');
     }
 
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
+      this.logger.logWarn('Login failed: invalid password', {
+        module: 'AuthService',
+        action: 'login',
+        userId: user.id,
+        identifier,
+      });
       throw new UnauthorizedException('Invalid username/email or password');
     }
 
@@ -163,6 +213,12 @@ export class AuthService {
 
     const access_token = this.jwtService.sign(payload);
     const refresh_token = this.jwtService.sign(payload, { expiresIn: '7d' });
+
+    this.logger.logAuth('login', user.id, {
+      module: 'AuthService',
+      email: user.email,
+      login: user.login,
+    });
 
     // Create session with refresh token
     const expiresAt = new Date();
@@ -208,6 +264,12 @@ export class AuthService {
   ): Promise<{ message: string }> {
     const { currentPassword, newPassword } = changePasswordDto;
 
+    this.logger.logInfo('Password change attempt', {
+      module: 'AuthService',
+      action: 'changePassword',
+      userId,
+    });
+
     // Get user with password for verification (same approach as login)
     const user = await this.usersRepository.findOne({
       where: { id: userId },
@@ -239,6 +301,14 @@ export class AuthService {
       user.password,
     );
     if (!isCurrentPasswordValid) {
+      this.logger.logWarn(
+        'Password change failed: incorrect current password',
+        {
+          module: 'AuthService',
+          action: 'changePassword',
+          userId,
+        },
+      );
       throw new UnauthorizedException('Current password is incorrect');
     }
 
@@ -248,6 +318,12 @@ export class AuthService {
 
     // Update password
     await this.usersRepository.update(userId, { password: hashedNewPassword });
+
+    this.logger.logSecurity('Password changed successfully', 'medium', {
+      module: 'AuthService',
+      action: 'changePassword',
+      userId,
+    });
 
     return { message: 'Password changed successfully' };
   }
@@ -259,7 +335,7 @@ export class AuthService {
 
     try {
       // Verify the refresh token
-      const payload = this.jwtService.verify(refresh_token);
+      const payload: JwtPayload = this.jwtService.verify(refresh_token);
 
       // Find user to get login
       const user = await this.usersRepository.findOne({
@@ -318,6 +394,12 @@ export class AuthService {
   }
 
   async logout(userId: string): Promise<{ message: string }> {
+    this.logger.logInfo('User logout attempt', {
+      module: 'AuthService',
+      action: 'logout',
+      userId,
+    });
+
     // Find user to get login
     const user = await this.usersRepository.findOne({
       where: { id: userId },
@@ -327,6 +409,11 @@ export class AuthService {
     if (user) {
       // Clear all sessions for this user
       await this.userSessionService.deleteUserSessions(user.login);
+      
+      this.logger.logAuth('logout', userId, {
+        module: 'AuthService',
+        login: user.login,
+      });
     }
 
     return { message: 'Logged out successfully' };
