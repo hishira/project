@@ -138,7 +138,7 @@ import { User } from '../../shared/models/user.model';
         <div class="recent-activities-section">
           <div class="section-header">
             <h2>Recent Activities</h2>
-            <button mat-raised-button color="primary" routerLink="/activities/new">
+            <button mat-raised-button color="primary" routerLink="/activities/create">
               <mat-icon>add</mat-icon>
               Add Activity
             </button>
@@ -199,7 +199,7 @@ import { User } from '../../shared/models/user.model';
                   <mat-icon class="empty-icon">fitness_center</mat-icon>
                   <h3>No activities yet</h3>
                   <p>Start tracking your fitness journey by adding your first activity!</p>
-                  <button mat-raised-button color="primary" routerLink="/activities/new">
+                  <button mat-raised-button color="primary" routerLink="/activities/create">
                     <mat-icon>add</mat-icon>
                     Add Your First Activity
                   </button>
@@ -229,7 +229,7 @@ import { User } from '../../shared/models/user.model';
               </mat-card-content>
             </mat-card>
 
-            <mat-card class="action-card" routerLink="/activities/new">
+            <mat-card class="action-card" routerLink="/activities/create">
               <mat-card-content>
                 <mat-icon class="action-icon">add_circle</mat-icon>
                 <h3>Log New Activity</h3>

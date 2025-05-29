@@ -58,12 +58,14 @@
   }
   
   .overview-icon {
-    font-size: 40px;
-    height: 40px;
-    width: 40px;
+    font-size: 32px;
+    height: 64px;
+    width: 64px;
     border-radius: 50%;
-    padding: 12px;
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     
     &.activities {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
