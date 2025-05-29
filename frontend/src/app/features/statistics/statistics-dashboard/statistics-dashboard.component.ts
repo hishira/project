@@ -11,10 +11,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
+import { firstValueFrom } from 'rxjs';
 import { StatisticsService } from '../../../core/services/statistics.service';
 import { ActivityService } from '../../../core/services/activity.service';
 import { Statistics } from '../../../shared/models/statistics.model';
-import { ActivityType } from '../../../shared/models/activity.model';
+import { ActivityType, Activity } from '../../../shared/models/activity.model';
 
 Chart.register(...registerables);
 
@@ -234,7 +235,7 @@ Chart.register(...registerables);
                       </div>
                       <div class="goal-info">
                         <h3>{{ getWeeklyProgress() }}%</h3>
-                        <p>{{ statistics()!.weeklyStats?.totalActivities || 0 }} / 5 activities</p>
+                        <p>{{ statistics()!.weeklyStats?.totalActivities ?? 0 }} / 5 activities</p>
                       </div>
                     </div>
                   </mat-card-content>
@@ -255,7 +256,7 @@ Chart.register(...registerables);
                       </div>
                       <div class="goal-info">
                         <h3>{{ getMonthlyProgress() }}%</h3>
-                        <p>{{ statistics()!.monthlyStats?.totalActivities || 0 }} / 20 activities</p>
+                        <p>{{ statistics()!.monthlyStats?.totalActivities ?? 0 }} / 20 activities</p>
                       </div>
                     </div>
                   </mat-card-content>
@@ -283,11 +284,12 @@ Chart.register(...registerables);
   styleUrls: ['./statistics-dashboard.component.scss']
 })
 export class StatisticsDashboardComponent implements OnInit {
-  private statisticsService = inject(StatisticsService);
-  public activityService = inject(ActivityService);
-  private fb = inject(FormBuilder);
+  private readonly statisticsService = inject(StatisticsService);
+  public readonly activityService = inject(ActivityService);
+  private readonly fb = inject(FormBuilder);
 
   statistics = signal<Statistics | null>(null);
+  activities = signal<Activity[]>([]);
   isLoading = signal(false);
 
   filterForm: FormGroup = this.fb.group({
@@ -371,29 +373,36 @@ export class StatisticsDashboardComponent implements OnInit {
     this.loadStatistics();
   }
 
-  private loadStatistics() {
+  private async loadStatistics() {
     this.isLoading.set(true);
     const filters = this.filterForm.value;
     
-    this.statisticsService.getStatistics({
-      period: filters.period,
-      activityType: filters.activityType || undefined
-    }).subscribe({
-      next: (stats: any) => {
-        this.statistics.set(stats);
-        this.updateCharts(stats);
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.isLoading.set(false);
-      }
-    });
+    try {
+      // Load both statistics and activities
+      const [stats, activitiesResponse] = await Promise.all([
+        firstValueFrom(this.statisticsService.getStatistics({
+          period: filters.period,
+          activityType: filters.activityType ?? undefined
+        })),
+        firstValueFrom(this.activityService.getActivities())
+      ]);
+      
+      this.statistics.set(stats);
+      // ActivityService.getActivities() returns Activity[] directly
+      const activities = activitiesResponse ?? [];
+      this.activities.set(activities);
+      this.updateCharts(stats, activities);
+      this.isLoading.set(false);
+    } catch (error) {
+      console.error('Error loading statistics:', error);
+      this.isLoading.set(false);
+    }
   }
 
-  private updateCharts(stats: Statistics) {
+  private updateCharts(stats: Statistics, activities: Activity[]) {
     this.updateActivityTypeChart(stats);
-    this.updateIntensityChart(stats);
-    this.updateDurationTrendChart(stats);
+    this.updateIntensityChart(activities);
+    this.updateDurationTrendChart(activities);
     this.updateGoalCharts(stats);
   }
 
@@ -402,13 +411,13 @@ export class StatisticsDashboardComponent implements OnInit {
     this.activityTypeChart.data = chartData;
   }
 
-  private updateIntensityChart(stats: Statistics) {
-    const chartData = this.statisticsService.getIntensityLevelChartData(stats);
+  private updateIntensityChart(activities: Activity[]) {
+    const chartData = this.statisticsService.getIntensityLevelChartData(activities);
     this.intensityChart.data = chartData;
   }
 
-  private updateDurationTrendChart(stats: Statistics) {
-    const chartData = this.statisticsService.getDurationTrendChartData(stats);
+  private updateDurationTrendChart(activities: Activity[]) {
+    const chartData = this.statisticsService.getDurationTrendChartData(activities);
     this.durationTrendChart.data = chartData;
   }
 
@@ -444,12 +453,12 @@ export class StatisticsDashboardComponent implements OnInit {
   }
 
   getWeeklyProgress(): number {
-    const weeklyActivities = this.statistics()?.weeklyStats?.totalActivities || 0;
+    const weeklyActivities = this.statistics()?.weeklyStats?.totalActivities ?? 0;
     return Math.min(Math.round((weeklyActivities / 5) * 100), 100);
   }
 
   getMonthlyProgress(): number {
-    const monthlyActivities = this.statistics()?.monthlyStats?.totalActivities || 0;
+    const monthlyActivities = this.statistics()?.monthlyStats?.totalActivities ?? 0;
     return Math.min(Math.round((monthlyActivities / 20) * 100), 100);
   }
 }

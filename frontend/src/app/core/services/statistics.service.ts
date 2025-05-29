@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
 export class StatisticsService {
   private readonly API_URL = environment.apiUrl || 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getUserStatistics(): Observable<UserStatistics> {
     return this.http.get<UserStatistics>(`${this.API_URL}/user-statistics`)
@@ -28,69 +28,115 @@ export class StatisticsService {
   }
 
   getActivityTypeChartData(stats: any): ChartData {
+    const activities = [
+      { label: 'Running', count: stats.totalRunningActivities ?? 0, color: '#FF6384' },
+      { label: 'Swimming', count: stats.totalSwimmingActivities ?? 0, color: '#36A2EB' },
+      { label: 'Cycling', count: stats.totalCyclingActivities ?? 0, color: '#FFCE56' },
+      { label: 'Walking', count: stats.totalWalkingActivities ?? 0, color: '#4BC0C0' },
+      { label: 'Hiking', count: stats.totalHikingActivities ?? 0, color: '#9966FF' },
+      { label: 'Gym Workout', count: stats.totalGymWorkoutActivities ?? 0, color: '#FF9F40' },
+      { label: 'Yoga', count: stats.totalYogaActivities ?? 0, color: '#FF6B6B' },
+      { label: 'Tennis', count: stats.totalTennisActivities ?? 0, color: '#4ECDC4' },
+      { label: 'Football', count: stats.totalFootballActivities ?? 0, color: '#45B7D1' },
+      { label: 'Basketball', count: stats.totalBasketballActivities ?? 0, color: '#96CEB4' },
+      { label: 'Skating', count: stats.totalSkatingActivities ?? 0, color: '#FFEAA7' },
+      { label: 'Horse Riding', count: stats.totalHorseRidingActivities ?? 0, color: '#DDA0DD' },
+      { label: 'Other', count: stats.totalOtherActivities ?? 0, color: '#C9CBCF' }
+    ].filter(activity => activity.count > 0);
+
     return {
-      labels: ['Running', 'Swimming', 'Cycling', 'Walking', 'Strength Training', 'Other'],
+      labels: activities.map(a => a.label),
       datasets: [{
         label: 'Activity Count',
-        data: [
-          stats.totalRunning || 0,
-          stats.totalSwimming || 0,
-          stats.totalCycling || 0,
-          stats.totalWalking || 0,
-          stats.totalStrengthTraining || 0,
-          stats.totalOther || 0
-        ],
-        backgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#4BC0C0',
-          '#9966FF',
-          '#FF9F40'
-        ],
+        data: activities.map(a => a.count),
+        backgroundColor: activities.map(a => a.color),
         borderWidth: 2
       }]
     };
   }
 
-  getIntensityLevelChartData(stats: any): ChartData {
-    return {
-      labels: ['Low', 'Moderate', 'High', 'Very High'],
-      datasets: [{
-        label: 'Activity Count',
-        data: [
-          stats.totalLowIntensity || 0,
-          stats.totalModerateIntensity || 0,
-          stats.totalHighIntensity || 0,
-          stats.totalVeryHighIntensity || 0
-        ],
-        backgroundColor: [
-          '#4CAF50',
-          '#FFC107',
-          '#FF9800',
-          '#F44336'
-        ],
-        borderWidth: 2
-      }]
+  getIntensityLevelChartData(activities: any[]): ChartData {
+    const intensityLevels = {
+      'Easy (1-2)': 0,
+      'Moderate (3)': 0,
+      'Hard (4)': 0,
+      'Very Hard (5)': 0
     };
-  }
 
-  getDurationTrendChartData(stats: any): ChartData {
-    // Mock data for trend - in real app this would come from API
-    const last7Days = [];
-    const today = new Date();
-    
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      last7Days.push(date.toLocaleDateString('en-US', { weekday: 'short' }));
+    if (activities && Array.isArray(activities)) {
+      activities.forEach(activity => {
+        const difficulty = parseInt(activity.difficulty);
+        if (difficulty >= 1 && difficulty <= 2) {
+          intensityLevels['Easy (1-2)']++;
+        } else if (difficulty === 3) {
+          intensityLevels['Moderate (3)']++;
+        } else if (difficulty === 4) {
+          intensityLevels['Hard (4)']++;
+        } else if (difficulty === 5) {
+          intensityLevels['Very Hard (5)']++;
+        }
+      });
     }
 
+    const nonZeroLevels = Object.entries(intensityLevels).filter(([_, count]) => count > 0);
+
     return {
-      labels: last7Days,
+      labels: nonZeroLevels.map(([level, _]) => level),
+      datasets: [{
+        label: 'Activity Count',
+        data: nonZeroLevels.map(([_, count]) => count),
+        backgroundColor: [
+          '#4CAF50', // Easy - Green
+          '#FFC107', // Moderate - Yellow  
+          '#FF9800', // Hard - Orange
+          '#F44336'  // Very Hard - Red
+        ].slice(0, nonZeroLevels.length),
+        borderWidth: 2
+      }]
+    };
+  }
+
+  getDurationTrendChartData(activities: any[]): ChartData {
+    if (!activities || !Array.isArray(activities) || activities.length === 0) {
+      return {
+        labels: [],
+        datasets: [{
+          label: 'Duration (minutes)',
+          data: [],
+          borderColor: '#2196F3',
+          backgroundColor: 'rgba(33, 150, 243, 0.1)',
+          fill: true,
+          tension: 0.4
+        }]
+      };
+    }
+
+    // Group activities by date and sum durations
+    const dailyDurations = new Map<string, number>();
+    
+    activities.forEach(activity => {
+      const date = new Date(activity.activityDate).toISOString().split('T')[0];
+      const current = dailyDurations.get(date) ?? 0;
+      dailyDurations.set(date, current + activity.duration);
+    });
+
+    // Sort by date and get last 7 days of data
+    const sortedEntries = Array.from(dailyDurations.entries())
+      .sort(([a], [b]) => a.localeCompare(b))
+      .slice(-7);
+
+    const labels = sortedEntries.map(([date]) => {
+      const d = new Date(date);
+      return d.toLocaleDateString('en-US', { weekday: 'short' });
+    });
+
+    const data = sortedEntries.map(([_, duration]) => duration);
+
+    return {
+      labels,
       datasets: [{
         label: 'Duration (minutes)',
-        data: [45, 60, 30, 75, 90, 40, 65], // Mock data
+        data,
         borderColor: '#2196F3',
         backgroundColor: 'rgba(33, 150, 243, 0.1)',
         fill: true,
@@ -243,7 +289,7 @@ export class StatisticsService {
       .trim();
   }
 
-  private handleError = (error: any): Observable<never> => {
+  private readonly handleError = (error: any): Observable<never> => {
     let errorMessage = 'An unexpected error occurred';
     
     if (error.error?.message) {
@@ -252,6 +298,6 @@ export class StatisticsService {
       errorMessage = error.message;
     }
 
-    return throwError(errorMessage);
+    return throwError(() => new Error(errorMessage));
   };
 }
