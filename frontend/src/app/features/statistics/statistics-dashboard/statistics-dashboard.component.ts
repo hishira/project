@@ -15,7 +15,7 @@ import { firstValueFrom } from 'rxjs';
 import { StatisticsService } from '../../../core/services/statistics.service';
 import { ActivityService } from '../../../core/services/activity.service';
 import { Statistics } from '../../../shared/models/statistics.model';
-import { ActivityType, Activity } from '../../../shared/models/activity.model';
+import { ActivityType, Activity, ActivitiesResponse } from '../../../shared/models/activity.model';
 
 Chart.register(...registerables);
 
@@ -144,8 +144,8 @@ export class StatisticsDashboardComponent implements OnInit {
       ]);
       
       this.statistics.set(stats);
-      // ActivityService.getActivities() returns Activity[] directly
-      const activities = activitiesResponse ?? [];
+      // ActivityService.getActivities() now returns ActivitiesResponse with proper typing
+      const activities = activitiesResponse.activities || [];
       this.activities.set(activities);
       this.updateCharts(stats, activities);
       this.isLoading.set(false);
@@ -171,7 +171,6 @@ export class StatisticsDashboardComponent implements OnInit {
   private updateIntensityChart(activities: Activity[]) {
     const chartData = this.statisticsService.getIntensityLevelChartData(activities);
     // Create a new chart configuration to trigger re-render
-    console.log(chartData);
     this.intensityChart = {
       type: 'pie' as ChartType,
       data: chartData,
@@ -191,24 +190,45 @@ export class StatisticsDashboardComponent implements OnInit {
   }
 
   private updateGoalCharts(stats: Statistics) {
+    // Force chart updates by recreating the chart configurations
     const weeklyProgress = this.getWeeklyProgress();
-    this.weeklyGoalChart.data = {
-      labels: ['Completed', 'Remaining'],
-      datasets: [{
-        data: [weeklyProgress, 100 - weeklyProgress],
-        backgroundColor: ['#4caf50', '#e0e0e0'],
-        borderWidth: 0
-      }]
+    this.weeklyGoalChart = {
+      type: 'doughnut' as ChartType,
+      data: {
+        labels: ['Completed', 'Remaining'],
+        datasets: [{
+          data: [weeklyProgress, 100 - weeklyProgress],
+          backgroundColor: ['#4caf50', '#e0e0e0'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        }
+      }
     };
 
     const monthlyProgress = this.getMonthlyProgress();
-    this.monthlyGoalChart.data = {
-      labels: ['Completed', 'Remaining'],
-      datasets: [{
-        data: [monthlyProgress, 100 - monthlyProgress],
-        backgroundColor: ['#2196f3', '#e0e0e0'],
-        borderWidth: 0
-      }]
+    this.monthlyGoalChart = {
+      type: 'doughnut' as ChartType,
+      data: {
+        labels: ['Completed', 'Remaining'],
+        datasets: [{
+          data: [monthlyProgress, 100 - monthlyProgress],
+          backgroundColor: ['#2196f3', '#e0e0e0'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        }
+      }
     };
   }
 
@@ -222,12 +242,70 @@ export class StatisticsDashboardComponent implements OnInit {
   }
 
   getWeeklyProgress(): number {
-    const weeklyActivities = this.statistics()?.weeklyStats?.totalActivities ?? 0;
+    const activities = this.activities();
+    if (!Array.isArray(activities)) {
+      console.warn('Activities is not an array:', activities);
+      return 0;
+    }
+    
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    
+    const weeklyActivities = activities.filter(activity => {
+      const activityDate = new Date(activity.activityDate);
+      return activityDate >= weekAgo && activityDate <= now;
+    }).length;
+    
     return Math.min(Math.round((weeklyActivities / 5) * 100), 100);
   }
 
   getMonthlyProgress(): number {
-    const monthlyActivities = this.statistics()?.monthlyStats?.totalActivities ?? 0;
+    const activities = this.activities();
+    if (!Array.isArray(activities)) {
+      console.warn('Activities is not an array:', activities);
+      return 0;
+    }
+    
+    const now = new Date();
+    const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    
+    const monthlyActivities = activities.filter(activity => {
+      const activityDate = new Date(activity.activityDate);
+      return activityDate >= monthAgo && activityDate <= now;
+    }).length;
+    
     return Math.min(Math.round((monthlyActivities / 20) * 100), 100);
+  }
+
+  getWeeklyActivitiesCount(): number {
+    const activities = this.activities();
+    if (!Array.isArray(activities)) {
+      console.warn('Activities is not an array in getWeeklyActivitiesCount:', activities);
+      return 0;
+    }
+    
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    
+    return activities.filter(activity => {
+      const activityDate = new Date(activity.activityDate);
+      return activityDate >= weekAgo && activityDate <= now;
+    }).length;
+  }
+
+  getMonthlyActivitiesCount(): number {
+    const activities = this.activities();
+    if (!Array.isArray(activities)) {
+      console.warn('Activities is not an array in getMonthlyActivitiesCount:', activities);
+      return 0;
+    }
+    
+    const now = new Date();
+    const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    
+    return activities.filter(activity => {
+      const activityDate = new Date(activity.activityDate);
+      return activityDate >= monthAgo && activityDate <= now;
+    }).length;
   }
 }

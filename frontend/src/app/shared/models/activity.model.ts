@@ -109,6 +109,11 @@ export interface UpdateActivityDto {
   notes?: string;
 }
 
+export interface ActivitiesResponse {
+  activities: Activity[];
+  total: number;
+}
+
 export interface ActivityFilterOptions {
   search?: string;
   type?: ActivityType;

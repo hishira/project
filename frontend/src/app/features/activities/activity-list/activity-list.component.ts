@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { ActivityService } from '../../../core/services/activity.service';
-import { Activity, ActivityType } from '../../../shared/models/activity.model';
+import { Activity, ActivityType, ActivitiesResponse } from '../../../shared/models/activity.model';
 import { formatDistanceToNow } from 'date-fns';
 
 @Component({
@@ -97,15 +97,13 @@ export class ActivityListComponent implements OnInit {
       offset: this.pageIndex() * this.pageSize(), // Convert page index to offset
       limit: this.pageSize()
     }).subscribe({
-      next: (response: any) => {
+      next: (response: ActivitiesResponse) => {
         console.log('API Response:', response);
         
-        const activitiesData = this.extractActivitiesFromResponse(response);
-        const processedActivities = this.processActivitiesData(activitiesData);
-        const totalCount = this.extractTotalCount(response, processedActivities.length);
+        const processedActivities = this.processActivitiesData(response.activities);
         
         this.activities.set(processedActivities);
-        this.totalCount.set(totalCount);
+        this.totalCount.set(response.total);
         
         console.log('Processed activities:', this.activities());
         this.isLoading.set(false);

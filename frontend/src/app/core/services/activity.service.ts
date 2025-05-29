@@ -6,7 +6,8 @@ import {
   Activity,
   CreateActivityDto,
   UpdateActivityDto,
-  ActivityFilterOptions
+  ActivityFilterOptions,
+  ActivitiesResponse
 } from '../../shared/models/activity.model';
 import { ActivityStatistics } from '../../shared/models/statistics.model';
 import { environment } from '../../../environments/environment';
@@ -25,7 +26,7 @@ export class ActivityService {
       .pipe(catchError(this.handleError));
   }
 
-  getActivities(filters?: ActivityFilterOptions): Observable<Activity[]> {
+  getActivities(filters?: ActivityFilterOptions): Observable<ActivitiesResponse> {
     let params = new HttpParams();
     
     if (filters) {
@@ -37,7 +38,7 @@ export class ActivityService {
       if (filters.offset !== undefined) params = params.set('offset', filters.offset.toString());
     }
 
-    return this.http.get<Activity[]>(`${this.API_URL}/activities`, { params })
+    return this.http.get<ActivitiesResponse>(`${this.API_URL}/activities`, { params })
       .pipe(catchError(this.handleError));
   }
 

@@ -197,7 +197,7 @@
                   </div>
                   <div class="goal-info">
                     <h3>{{ getWeeklyProgress() }}%</h3>
-                    <p>{{ statistics()!.weeklyStats?.totalActivities ?? 0 }} / 5 activities</p>
+                    <p>{{ getWeeklyActivitiesCount() }} / 5 activities</p>
                   </div>
                 </div>
               </mat-card-content>
@@ -218,7 +218,7 @@
                   </div>
                   <div class="goal-info">
                     <h3>{{ getMonthlyProgress() }}%</h3>
-                    <p>{{ statistics()!.monthlyStats?.totalActivities ?? 0 }} / 20 activities</p>
+                    <p>{{ getMonthlyActivitiesCount() }} / 20 activities</p>
                   </div>
                 </div>
               </mat-card-content>
