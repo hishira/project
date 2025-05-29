@@ -10,10 +10,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { BaseChartDirective } from 'ng2-charts';
-import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
+import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { firstValueFrom } from 'rxjs';
 import { StatisticsService } from '../../../core/services/statistics.service';
 import { ActivityService } from '../../../core/services/activity.service';
+import { ChartManagementService } from '../../../core/services/chart-management.service';
+import { ProgressCalculationService } from '../../../core/services/progress-calculation.service';
+import { DataFormatterService } from '../../../core/services/data-formatter.service';
 import { UserStatistics } from '../../../shared/models/statistics.model';
 import { ActivityType, Activity } from '../../../shared/models/activity.model';
 
@@ -41,6 +44,9 @@ Chart.register(...registerables);
 export class StatisticsDashboardComponent implements OnInit {
   private readonly statisticsService = inject(StatisticsService);
   public readonly activityService = inject(ActivityService);
+  private readonly chartManagementService = inject(ChartManagementService);
+  private readonly progressCalculationService = inject(ProgressCalculationService);
+  private readonly dataFormatterService = inject(DataFormatterService);
   private readonly fb = inject(FormBuilder);
   private readonly cdr = inject(ChangeDetectorRef);
 
@@ -58,83 +64,48 @@ export class StatisticsDashboardComponent implements OnInit {
     label: this.activityService.getActivityTypeLabel(type)
   }));
 
-  // Chart configurations
-  activityTypeChart: ChartConfiguration = {
-    type: 'doughnut' as ChartType,
-    data: { labels: [], datasets: [{ data: [], backgroundColor: [] }] },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'bottom' }
-      }
-    }
-  };
-
-  intensityChart: ChartConfiguration = {
-    type: 'pie' as ChartType,
-    data: { labels: [], datasets: [{ data: [], backgroundColor: [] }] },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'bottom' }
-      }
-    }
-  };
-
-  durationTrendChart: ChartConfiguration = {
-    type: 'line' as ChartType,
-    data: { labels: [], datasets: [] },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: { display: true, text: 'Duration (minutes)' }
-        }
-      }
-    }
-  };
-
-  weeklyGoalChart: ChartConfiguration = {
-    type: 'doughnut' as ChartType,
-    data: { labels: [], datasets: [{ data: [], backgroundColor: [] }] },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      }
-    }
-  };
-
-  monthlyGoalChart: ChartConfiguration = {
-    type: 'doughnut' as ChartType,
-    data: { labels: [], datasets: [{ data: [], backgroundColor: [] }] },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      }
-    }
-  };
+  // Chart configurations - initialized from service
+  activityTypeChart!: ChartConfiguration;
+  intensityChart!: ChartConfiguration;
+  durationTrendChart!: ChartConfiguration;
+  weeklyGoalChart!: ChartConfiguration;
+  monthlyGoalChart!: ChartConfiguration;
 
   ngOnInit() {
-    this.filterForm.valueChanges.subscribe(() => {
-      this.loadStatistics();
-    });
+    this.initializeCharts();
+    this.setupFormSubscription();
     this.loadStatistics();
   }
 
-  private async loadStatistics() {
+  /**
+   * Initialize chart configurations
+   */
+  private initializeCharts(): void {
+    const initialCharts = this.chartManagementService.getInitialChartConfigurations();
+    this.activityTypeChart = initialCharts.activityTypeChart;
+    this.intensityChart = initialCharts.intensityChart;
+    this.durationTrendChart = initialCharts.durationTrendChart;
+    this.weeklyGoalChart = initialCharts.weeklyGoalChart;
+    this.monthlyGoalChart = initialCharts.monthlyGoalChart;
+  }
+
+  /**
+   * Setup form value changes subscription
+   */
+  private setupFormSubscription(): void {
+    this.filterForm.valueChanges.subscribe(() => {
+      this.loadStatistics();
+    });
+  }
+
+  /**
+   * Load statistics and activities data
+   */
+  private async loadStatistics(): Promise<void> {
     this.isLoading.set(true);
     const filters = this.filterForm.value;
     
     try {
-      // Load both statistics and activities
       const [stats, activitiesResponse] = await Promise.all([
         firstValueFrom(this.statisticsService.getStatistics({
           period: filters.period,
@@ -144,168 +115,63 @@ export class StatisticsDashboardComponent implements OnInit {
       ]);
       
       this.statistics.set(stats);
-      // ActivityService.getActivities() now returns ActivitiesResponse with proper typing
       const activities = activitiesResponse.activities || [];
       this.activities.set(activities);
-      this.updateCharts(stats, activities);
-      this.isLoading.set(false);
+      this.updateAllCharts(stats, activities);
     } catch (error) {
       console.error('Error loading statistics:', error);
+    } finally {
       this.isLoading.set(false);
     }
   }
 
-  private updateCharts(stats: UserStatistics, activities: Activity[]) {
-    this.updateActivityTypeChart(stats);
-    this.updateIntensityChart(activities);
-    this.updateDurationTrendChart(activities);
-    this.updateGoalCharts(stats);
+  /**
+   * Update all charts with new data
+   */
+  private updateAllCharts(stats: UserStatistics, activities: Activity[]): void {
+    const updatedCharts = this.chartManagementService.updateAllCharts(stats, activities);
+    
+    this.activityTypeChart = updatedCharts.activityTypeChart;
+    this.intensityChart = updatedCharts.intensityChart;
+    this.durationTrendChart = updatedCharts.durationTrendChart;
+    this.weeklyGoalChart = updatedCharts.weeklyGoalChart;
+    this.monthlyGoalChart = updatedCharts.monthlyGoalChart;
+    
     this.cdr.detectChanges(); // Force change detection to update charts
   }
 
-  private updateActivityTypeChart(stats: UserStatistics) {
-    const chartData = this.statisticsService.getActivityTypeChartData(stats);
-    this.activityTypeChart.data = chartData;
-  }
-
-  private updateIntensityChart(activities: Activity[]) {
-    const chartData = this.statisticsService.getIntensityLevelChartData(activities);
-    // Create a new chart configuration to trigger re-render
-    this.intensityChart = {
-      type: 'pie' as ChartType,
-      data: chartData,
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { position: 'bottom' }
-        }
-      }
-    };
-  }
-
-  private updateDurationTrendChart(activities: Activity[]) {
-    const chartData = this.statisticsService.getDurationTrendChartData(activities);
-    this.durationTrendChart.data = chartData;
-  }
-
-  private updateGoalCharts(stats: UserStatistics) {
-    // Force chart updates by recreating the chart configurations
-    const weeklyProgress = this.getWeeklyProgress();
-    this.weeklyGoalChart = {
-      type: 'doughnut' as ChartType,
-      data: {
-        labels: ['Completed', 'Remaining'],
-        datasets: [{
-          data: [weeklyProgress, 100 - weeklyProgress],
-          backgroundColor: ['#4caf50', '#e0e0e0'],
-          borderWidth: 0
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false }
-        }
-      }
-    };
-
-    const monthlyProgress = this.getMonthlyProgress();
-    this.monthlyGoalChart = {
-      type: 'doughnut' as ChartType,
-      data: {
-        labels: ['Completed', 'Remaining'],
-        datasets: [{
-          data: [monthlyProgress, 100 - monthlyProgress],
-          backgroundColor: ['#2196f3', '#e0e0e0'],
-          borderWidth: 0
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false }
-        }
-      }
-    };
-  }
-
+  /**
+   * Format duration using the data formatter service
+   */
   formatDuration(minutes: number): string {
-    if (minutes < 60) {
-      return `${minutes}m`;
-    }
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+    return this.dataFormatterService.formatDuration(minutes);
   }
 
+  /**
+   * Get weekly progress percentage
+   */
   getWeeklyProgress(): number {
-    const activities = this.activities();
-    if (!Array.isArray(activities)) {
-      console.warn('Activities is not an array:', activities);
-      return 0;
-    }
-    
-    const now = new Date();
-    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    
-    const weeklyActivities = activities.filter(activity => {
-      const activityDate = new Date(activity.activityDate);
-      return activityDate >= weekAgo && activityDate <= now;
-    }).length;
-    
-    return Math.min(Math.round((weeklyActivities / 5) * 100), 100);
+    return this.progressCalculationService.getWeeklyProgress(this.activities());
   }
 
+  /**
+   * Get monthly progress percentage
+   */
   getMonthlyProgress(): number {
-    const activities = this.activities();
-    if (!Array.isArray(activities)) {
-      console.warn('Activities is not an array:', activities);
-      return 0;
-    }
-    
-    const now = new Date();
-    const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-    
-    const monthlyActivities = activities.filter(activity => {
-      const activityDate = new Date(activity.activityDate);
-      return activityDate >= monthAgo && activityDate <= now;
-    }).length;
-    
-    return Math.min(Math.round((monthlyActivities / 20) * 100), 100);
+    return this.progressCalculationService.getMonthlyProgress(this.activities());
   }
 
+  /**
+   * Get weekly activities count
+   */
   getWeeklyActivitiesCount(): number {
-    const activities = this.activities();
-    if (!Array.isArray(activities)) {
-      console.warn('Activities is not an array in getWeeklyActivitiesCount:', activities);
-      return 0;
-    }
-    
-    const now = new Date();
-    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    
-    return activities.filter(activity => {
-      const activityDate = new Date(activity.activityDate);
-      return activityDate >= weekAgo && activityDate <= now;
-    }).length;
+    return this.progressCalculationService.getWeeklyActivitiesCount(this.activities());
   }
 
+  /**
+   * Get monthly activities count
+   */
   getMonthlyActivitiesCount(): number {
-    const activities = this.activities();
-    if (!Array.isArray(activities)) {
-      console.warn('Activities is not an array in getMonthlyActivitiesCount:', activities);
-      return 0;
-    }
-    
-    const now = new Date();
-    const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-    
-    return activities.filter(activity => {
-      const activityDate = new Date(activity.activityDate);
-      return activityDate >= monthAgo && activityDate <= now;
-    }).length;
+    return this.progressCalculationService.getMonthlyActivitiesCount(this.activities());
   }
 }
