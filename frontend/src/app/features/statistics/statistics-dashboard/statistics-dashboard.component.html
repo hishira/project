@@ -1,0 +1,244 @@
+<div class="statistics-container">
+  <!-- Header -->
+  <mat-toolbar class="statistics-header">
+    <h1>
+      <mat-icon>analytics</mat-icon>
+      Activity Statistics
+    </h1>
+  </mat-toolbar>
+
+  <!-- Filters -->
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <form [formGroup]="filterForm" class="filters-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Time Period</mat-label>
+          <mat-select formControlName="period">
+            <mat-option value="week">Last 7 Days</mat-option>
+            <mat-option value="month">Last 30 Days</mat-option>
+            <mat-option value="3months">Last 3 Months</mat-option>
+            <mat-option value="year">Last Year</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Activity Type</mat-label>
+          <mat-select formControlName="activityType">
+            <mat-option value="">All Activities</mat-option>
+            @for (type of activityTypes; track type.value) {
+              <mat-option [value]="type.value">
+                <mat-icon>{{ activityService.getActivityIcon(type.value) }}</mat-icon>
+                {{ type.label }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>Loading statistics...</p>
+    </div>
+  }
+
+  <!-- Statistics Content -->
+  @if (!isLoading() && statistics()) {
+    <!-- Overview Cards -->
+    <div class="overview-grid">
+      <mat-card class="overview-card">
+        <mat-card-content>
+          <div class="overview-content">
+            <mat-icon class="overview-icon activities">fitness_center</mat-icon>
+            <div class="overview-info">
+              <h3>{{ statistics()!.totalActivities }}</h3>
+              <p>Total Activities</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="overview-card">
+        <mat-card-content>
+          <div class="overview-content">
+            <mat-icon class="overview-icon duration">schedule</mat-icon>
+            <div class="overview-info">
+              <h3>{{ formatDuration(statistics()!.totalDuration) }}</h3>
+              <p>Total Duration</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="overview-card">
+        <mat-card-content>
+          <div class="overview-content">
+            <mat-icon class="overview-icon calories">local_fire_department</mat-icon>
+            <div class="overview-info">
+              <h3>{{ statistics()!.totalCalories || 0 | number }}</h3>
+              <p>Total Calories</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="overview-card">
+        <mat-card-content>
+          <div class="overview-content">
+            <mat-icon class="overview-icon average">trending_up</mat-icon>
+            <div class="overview-info">
+              <h3>{{ (statistics()!.averageDuration || 0) | number:'1.0-0' }}</h3>
+              <p>Avg Duration (min)</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Charts Section -->
+    <mat-tab-group class="charts-tabs" animationDuration="300ms">
+      <!-- Activity Distribution -->
+      <mat-tab label="Activity Distribution">
+        <div class="tab-content">
+          <div class="charts-grid">
+            <mat-card class="chart-card">
+              <mat-card-header>
+                <mat-card-title>Activities by Type</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                @if (activityTypeChart.data.datasets[0].data.length > 0) {
+                  <div class="chart-container">
+                    <canvas baseChart
+                      [data]="activityTypeChart.data"
+                      [options]="activityTypeChart.options"
+                      [type]="activityTypeChart.type">
+                    </canvas>
+                  </div>
+                } @else {
+                  <div class="no-data">
+                    <mat-icon>pie_chart</mat-icon>
+                    <p>No activity data available</p>
+                  </div>
+                }
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="chart-card">
+              <mat-card-header>
+                <mat-card-title>Intensity Levels</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                @if (intensityChart.data.datasets[0].data.length > 0) {
+                  <div class="chart-container">
+                    <canvas baseChart
+                      [data]="intensityChart.data"
+                      [options]="intensityChart.options"
+                      [type]="intensityChart.type">
+                    </canvas>
+                  </div>
+                } @else {
+                  <div class="no-data">
+                    <mat-icon>donut_large</mat-icon>
+                    <p>No intensity data available</p>
+                  </div>
+                }
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Trends -->
+      <mat-tab label="Activity Trends">
+        <div class="tab-content">
+          <mat-card class="chart-card full-width">
+            <mat-card-header>
+              <mat-card-title>Activity Duration Over Time</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @if (durationTrendChart.data.datasets[0].data.length > 0) {
+                <div class="chart-container">
+                  <canvas baseChart
+                    [data]="durationTrendChart.data"
+                    [options]="durationTrendChart.options"
+                    [type]="durationTrendChart.type">
+                  </canvas>
+                </div>
+              } @else {
+                <div class="no-data">
+                  <mat-icon>show_chart</mat-icon>
+                  <p>No trend data available</p>
+                </div>
+              }
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+
+      <!-- Goals & Progress -->
+      <mat-tab label="Goals & Progress">
+        <div class="tab-content">
+          <div class="goals-grid">
+            <mat-card class="goal-card">
+              <mat-card-header>
+                <mat-card-title>Weekly Goal</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="goal-progress">
+                  <div class="progress-circle">
+                    <canvas baseChart
+                      [data]="weeklyGoalChart.data"
+                      [options]="weeklyGoalChart.options"
+                      [type]="weeklyGoalChart.type">
+                    </canvas>
+                  </div>
+                  <div class="goal-info">
+                    <h3>{{ getWeeklyProgress() }}%</h3>
+                    <p>{{ statistics()!.weeklyStats?.totalActivities ?? 0 }} / 5 activities</p>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="goal-card">
+              <mat-card-header>
+                <mat-card-title>Monthly Goal</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="goal-progress">
+                  <div class="progress-circle">
+                    <canvas baseChart
+                      [data]="monthlyGoalChart.data"
+                      [options]="monthlyGoalChart.options"
+                      [type]="monthlyGoalChart.type">
+                    </canvas>
+                  </div>
+                  <div class="goal-info">
+                    <h3>{{ getMonthlyProgress() }}%</h3>
+                    <p>{{ statistics()!.monthlyStats?.totalActivities ?? 0 }} / 20 activities</p>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  }
+
+  <!-- Empty State -->
+  @if (!isLoading() && !statistics()) {
+    <div class="empty-state">
+      <mat-icon class="empty-icon">analytics</mat-icon>
+      <h2>No Statistics Available</h2>
+      <p>Start adding activities to see your statistics and progress!</p>
+      <button mat-raised-button color="primary" routerLink="/activities/create">
+        <mat-icon>add</mat-icon>
+        Add Your First Activity
+      </button>
+    </div>
+  }
+</div>
