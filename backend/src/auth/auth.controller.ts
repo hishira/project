@@ -30,6 +30,7 @@ interface AuthenticatedRequest extends Request {
 
 @Controller('auth')
 export class AuthController {
+  private readonly loginRateLimit = 5;//15 * 60 * 1000;
   constructor(
     private readonly authService: AuthService,
     private readonly userSessionService: UserSessionService,
@@ -42,7 +43,7 @@ export class AuthController {
   }
 
   @Public()
-  @UseGuards(new RateLimitGuard(5, 15 * 60 * 1000)) // 5 attempts per 15 minutes
+  @UseGuards(new RateLimitGuard(5, 5)) // 5 attempts per 15 minutes
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() loginDto: LoginDto) {

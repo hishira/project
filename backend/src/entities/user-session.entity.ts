@@ -1,16 +1,10 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Index,
-} from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity } from './base.entity';
 
 @Entity()
 @Index(['userLogin']) // Index for faster lookups by user login
 @Index(['expiresAt']) // Index for cleanup operations
-export class UserSession {
+export class UserSession extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -28,10 +22,4 @@ export class UserSession {
 
   @Column({ nullable: true })
   ipAddress?: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }

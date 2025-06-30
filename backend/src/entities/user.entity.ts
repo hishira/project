@@ -1,15 +1,9 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Activity } from './activity.entity';
+import { BaseEntity } from './base.entity';
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -33,10 +27,4 @@ export class User {
 
   @OneToMany(() => Activity, (activity) => activity.user)
   activities?: Activity[];
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }

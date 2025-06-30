@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Repository } from 'typeorm';
+import { LoggerService } from '../common/logger';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { LoggerService } from '../common/logger';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +15,9 @@ export class UsersService {
     private readonly logger: LoggerService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
+  async create(
+    createUserDto: CreateUserDto,
+  ): Promise<Omit<Partial<User>, 'password'>> {
     const { password, ...userData } = createUserDto;
 
     this.logger.logInfo('Creating new user', {
