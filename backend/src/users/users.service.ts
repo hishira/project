@@ -6,12 +6,15 @@ import { LoggerService } from '../common/logger';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Event, EventType } from 'src/entities/event.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+    @InjectRepository(Event)
+    private readonly eventRepository: Repository<Event>,
     private readonly logger: LoggerService,
   ) {}
 
@@ -37,6 +40,14 @@ export class UsersService {
     });
 
     const savedUser = await this.usersRepository.save(user);
+    const event = this.eventRepository.create({
+      name: 'User Created',
+      corelatedEntityId: savedUser.id,
+      corelatedEntity: savedUser,
+      type: EventType.Create,
+    });
+
+    await event.save();
 
     this.logger.logBusiness('User created successfully', {
       module: 'UsersService',

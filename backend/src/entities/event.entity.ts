@@ -14,11 +14,11 @@ export class Event extends BaseEntity {
   @Column()
   name: string;
 
-  @Column()
-  corelatedEntityId?: string;
-
   @Column({ type: 'text', enum: EventType })
   type: EventType;
+
+  @Column()
+  corelatedEntityId?: string;
 
   @Column({ type: 'json', nullable: true })
   corelatedEntity?: any;
