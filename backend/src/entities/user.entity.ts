@@ -1,6 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Activity } from './activity.entity';
+import { UserType } from 'src/users/userTypes';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { UserRole } from './userRole.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -25,6 +32,16 @@ export class User extends BaseEntity {
   @Column({ default: true })
   isActive: boolean;
 
-  @OneToMany(() => Activity, (activity) => activity.user)
-  activities?: Activity[];
+  @Column({ type: 'text', enum: UserType, default: UserType.None })
+  userType: UserType;
+
+  @Column({ type: 'text', nullable: true })
+  roleId: string;
+
+  @OneToOne(() => UserRole)
+  @JoinColumn({ name: 'roleId', referencedColumnName: 'id' })
+  role?: Promise<UserRole>;
+
+  //@OneToMany(() => Activity, (activity) => activity.user)
+  //activities?: Activity[];
 }

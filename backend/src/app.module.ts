@@ -19,7 +19,7 @@ import { LoggerModule, LoggingInterceptor } from './common/logger';
     UsersModule,
     AuthModule,
     UserSessionModule,
-    ActivitiesModule,
+    //ActivitiesModule,
     UserStatisticsModule,
   ],
   controllers: [AppController],

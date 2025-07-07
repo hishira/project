@@ -58,7 +58,24 @@ export class UsersService {
       type: EventType.Create,
     });
 
-    await event.save();
+    event
+      .save()
+      .then(() => {
+        this.logger.logDatabase('Event saved successfully', 'event', {
+          module: 'UsersService',
+          action: 'create',
+          eventId: event.id,
+          userId: savedUser.id,
+        });
+      })
+      .catch((error: Error) => {
+        this.logger.logError('Failed to save event', error, {
+          module: 'UsersService',
+          action: 'create',
+          error: error.message,
+          userId: savedUser.id,
+        });
+      });
 
     this.logger.logBusiness('User created successfully', {
       module: 'UsersService',
