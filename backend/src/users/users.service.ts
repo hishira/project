@@ -8,6 +8,17 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Event, EventType } from 'src/entities/event.entity';
 
+const selectVariables: (keyof User)[] = [
+  'id',
+  'login',
+  'email',
+  'firstName',
+  'lastName',
+  'isActive',
+  'createdAt',
+  'updatedAt',
+];
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -74,34 +85,14 @@ export class UsersService {
   async findByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findOne({
       where: { email },
-      select: [
-        'id',
-        'login',
-        'email',
-        'firstName',
-        'lastName',
-        'isActive',
-        'createdAt',
-        'updatedAt',
-        'password',
-      ],
+      select: selectVariables,
     });
   }
 
   async findByLogin(login: string): Promise<User | null> {
     return this.usersRepository.findOne({
       where: { login },
-      select: [
-        'id',
-        'login',
-        'email',
-        'firstName',
-        'lastName',
-        'isActive',
-        'createdAt',
-        'updatedAt',
-        'password',
-      ],
+      select: selectVariables,
     });
   }
 
