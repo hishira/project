@@ -15,6 +15,8 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { JwtPayload } from './strategies/jwt.strategy';
 import { UserSessionService } from '../user-session/user-session.service';
 import { LoggerService } from '../common/logger';
+import { CreateEventPayload } from 'src/events/events.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class AuthService {
@@ -24,10 +26,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly userSessionService: UserSessionService,
     private readonly logger: LoggerService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async register(registerDto: RegisterDto): Promise<{
-    user: Omit<User, 'password'>;
+    user: Omit<Partial<User>, 'password'>;
     access_token: string;
     refresh_token: string;
   }> {
@@ -82,7 +85,10 @@ export class AuthService {
     });
 
     const savedUser = await this.usersRepository.save(user);
-
+    this.eventEmitter.emit(
+      'create',
+      new CreateEventPayload('User Created', savedUser.id, savedUser),
+    );
     this.logger.logAuth('register', savedUser.id, {
       module: 'AuthService',
       email: savedUser.email,
@@ -121,7 +127,7 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto): Promise<{
-    user: Omit<User, 'password'>;
+    user: Omit<Partial<User>, 'password'>;
     access_token: string;
     refresh_token: string;
   }> {
@@ -245,7 +251,7 @@ export class AuthService {
     return this.usersRepository.findOne({ where: { id: userId } });
   }
 
-  async getMe(userId: string): Promise<Omit<User, 'password'>> {
+  async getMe(userId: string): Promise<Omit<Partial<User>, 'password'>> {
     const user = await this.usersRepository.findOne({ where: { id: userId } });
 
     if (!user) {
@@ -409,7 +415,7 @@ export class AuthService {
     if (user) {
       // Clear all sessions for this user
       await this.userSessionService.deleteUserSessions(user.login);
-      
+
       this.logger.logAuth('logout', userId, {
         module: 'AuthService',
         login: user.login,

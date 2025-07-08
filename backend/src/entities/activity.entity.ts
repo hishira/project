@@ -118,9 +118,9 @@ export class Activity {
   @Column({ type: 'text', nullable: true })
   notes?: string;
 
-  @ManyToOne(() => User, (user) => user.activities, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userLogin', referencedColumnName: 'login' })
-  user: User;
+  // @ManyToOne(() => User, (user) => user.activities, { onDelete: 'CASCADE' })
+  // @JoinColumn({ name: 'userLogin', referencedColumnName: 'login' })
+  // user: User;
 
   @Column()
   userLogin: string;

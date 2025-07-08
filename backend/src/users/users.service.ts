@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { CreateEventPayload } from 'src/events/events.service';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../common/logger';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Event, EventType } from 'src/entities/event.entity';
 
 const selectVariables: (keyof User)[] = [
   'id',
@@ -24,9 +25,8 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-    @InjectRepository(Event)
-    private readonly eventRepository: Repository<Event>,
     private readonly logger: LoggerService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async create(
@@ -51,31 +51,35 @@ export class UsersService {
     });
 
     const savedUser = await this.usersRepository.save(user);
-    const event = this.eventRepository.create({
-      name: 'User Created',
-      corelatedEntityId: savedUser.id,
-      corelatedEntity: savedUser,
-      type: EventType.Create,
-    });
+    this.eventEmitter.emit(
+      'create',
+      new CreateEventPayload('User Created', savedUser.id, savedUser),
+    );
+    // const event = this.eventRepository.create({
+    //   name: 'User Created',
+    //   corelatedEntityId: savedUser.id,
+    //   corelatedEntity: savedUser,
+    //   type: EventType.Create,
+    // });
 
-    event
-      .save()
-      .then(() => {
-        this.logger.logDatabase('Event saved successfully', 'event', {
-          module: 'UsersService',
-          action: 'create',
-          eventId: event.id,
-          userId: savedUser.id,
-        });
-      })
-      .catch((error: Error) => {
-        this.logger.logError('Failed to save event', error, {
-          module: 'UsersService',
-          action: 'create',
-          error: error.message,
-          userId: savedUser.id,
-        });
-      });
+    // event
+    //   .save()
+    //   .then(() => {
+    //     this.logger.logDatabase('Event saved successfully', 'event', {
+    //       module: 'UsersService',
+    //       action: 'create',
+    //       eventId: event.id,
+    //       userId: savedUser.id,
+    //     });
+    //   })
+    //   .catch((error: Error) => {
+    //     this.logger.logError('Failed to save event', error, {
+    //       module: 'UsersService',
+    //       action: 'create',
+    //       error: error.message,
+    //       userId: savedUser.id,
+    //     });
+    //   });
 
     this.logger.logBusiness('User created successfully', {
       module: 'UsersService',

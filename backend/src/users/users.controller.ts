@@ -19,7 +19,7 @@ export class UsersController {
   @Post()
   create(
     @Body() createUserDto: CreateUserDto,
-  ): Promise<Omit<User, 'password'>> {
+  ): Promise<Omit<Partial<User>, 'password'>> {
     return this.usersService.create(createUserDto);
   }
 

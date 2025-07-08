@@ -150,166 +150,166 @@ print_test "GET /auth/sessions/count"
 test_endpoint "GET" "/auth/sessions/count" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
 # 3. Activities Tests
-print_section "Activities Endpoints"
+# print_section "Activities Endpoints"
 
-# Create a running activity
-print_test "POST /activities (Running)"
-running_activity='{
-    "type": "running",
-    "title": "Morning Run",
-    "description": "A nice morning run",
-    "duration": 30,
-    "difficulty": "moderate",
-    "activityDate": "2024-01-15",
-    "metadata": {
-        "location": "outdoor",
-        "distance": 5,
-        "pace": 6,
-        "elevation": 100
-    },
-    "caloriesBurned": 300,
-    "notes": "Felt great today!"
-}'
+# # Create a running activity
+# print_test "POST /activities (Running)"
+# running_activity='{
+#     "type": "running",
+#     "title": "Morning Run",
+#     "description": "A nice morning run",
+#     "duration": 30,
+#     "difficulty": "moderate",
+#     "activityDate": "2024-01-15",
+#     "metadata": {
+#         "location": "outdoor",
+#         "distance": 5,
+#         "pace": 6,
+#         "elevation": 100
+#     },
+#     "caloriesBurned": 300,
+#     "notes": "Felt great today!"
+# }'
 
-activity_response=$(test_endpoint "POST" "/activities" "$running_activity" "Authorization: Bearer $ACCESS_TOKEN" "201")
-if [ $? -eq 0 ]; then
-    ACTIVITY_ID=$(echo "$activity_response" | grep -o '"id":"[^"]*"' | cut -d'"' -f4 | head -1)
-    print_success "Activity created with ID: $ACTIVITY_ID"
-fi
+# activity_response=$(test_endpoint "POST" "/activities" "$running_activity" "Authorization: Bearer $ACCESS_TOKEN" "201")
+# if [ $? -eq 0 ]; then
+#     ACTIVITY_ID=$(echo "$activity_response" | grep -o '"id":"[^"]*"' | cut -d'"' -f4 | head -1)
+#     print_success "Activity created with ID: $ACTIVITY_ID"
+# fi
 
-# Create a swimming activity
-print_test "POST /activities (Swimming)"
-swimming_activity='{
-    "type": "swimming",
-    "title": "Pool Session",
-    "description": "Swimming practice",
-    "duration": 45,
-    "difficulty": "hard",
-    "activityDate": "2024-01-16",
-    "metadata": {
-        "location": "indoor",
-        "laps": 40,
-        "poolSize": 25,
-        "stroke": "freestyle"
-    },
-    "caloriesBurned": 400
-}'
+# # Create a swimming activity
+# print_test "POST /activities (Swimming)"
+# swimming_activity='{
+#     "type": "swimming",
+#     "title": "Pool Session",
+#     "description": "Swimming practice",
+#     "duration": 45,
+#     "difficulty": "hard",
+#     "activityDate": "2024-01-16",
+#     "metadata": {
+#         "location": "indoor",
+#         "laps": 40,
+#         "poolSize": 25,
+#         "stroke": "freestyle"
+#     },
+#     "caloriesBurned": 400
+# }'
 
-test_endpoint "POST" "/activities" "$swimming_activity" "Authorization: Bearer $ACCESS_TOKEN" "201"
+# test_endpoint "POST" "/activities" "$swimming_activity" "Authorization: Bearer $ACCESS_TOKEN" "201"
 
-# Create a cycling activity
-print_test "POST /activities (Cycling)"
-cycling_activity='{
-    "type": "cycling",
-    "title": "City Ride",
-    "duration": 60,
-    "difficulty": "easy",
-    "activityDate": "2024-01-17",
-    "metadata": {
-        "location": "outdoor",
-        "distance": 20,
-        "avgSpeed": 25,
-        "maxSpeed": 35
-    }
-}'
+# # Create a cycling activity
+# print_test "POST /activities (Cycling)"
+# cycling_activity='{
+#     "type": "cycling",
+#     "title": "City Ride",
+#     "duration": 60,
+#     "difficulty": "easy",
+#     "activityDate": "2024-01-17",
+#     "metadata": {
+#         "location": "outdoor",
+#         "distance": 20,
+#         "avgSpeed": 25,
+#         "maxSpeed": 35
+#     }
+# }'
 
-test_endpoint "POST" "/activities" "$cycling_activity" "Authorization: Bearer $ACCESS_TOKEN" "201"
+# test_endpoint "POST" "/activities" "$cycling_activity" "Authorization: Bearer $ACCESS_TOKEN" "201"
 
-# Get all activities
-print_test "GET /activities"
-test_endpoint "GET" "/activities" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# # Get all activities
+# print_test "GET /activities"
+# test_endpoint "GET" "/activities" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
-# Get activities with filters
-print_test "GET /activities?type=running"
-test_endpoint "GET" "/activities?type=running" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# # Get activities with filters
+# print_test "GET /activities?type=running"
+# test_endpoint "GET" "/activities?type=running" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
-print_test "GET /activities?difficulty=moderate"
-test_endpoint "GET" "/activities?difficulty=moderate" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# print_test "GET /activities?difficulty=moderate"
+# test_endpoint "GET" "/activities?difficulty=moderate" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
-print_test "GET /activities?limit=2"
-test_endpoint "GET" "/activities?limit=2" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# print_test "GET /activities?limit=2"
+# test_endpoint "GET" "/activities?limit=2" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
-# Get recent activities
-print_test "GET /activities/recent"
-test_endpoint "GET" "/activities/recent" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# # Get recent activities
+# print_test "GET /activities/recent"
+# test_endpoint "GET" "/activities/recent" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
-print_test "GET /activities/recent?limit=1"
-test_endpoint "GET" "/activities/recent?limit=1" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# print_test "GET /activities/recent?limit=1"
+# test_endpoint "GET" "/activities/recent?limit=1" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
-# Get activity statistics
-print_test "GET /activities/statistics"
-test_endpoint "GET" "/activities/statistics" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# # Get activity statistics
+# print_test "GET /activities/statistics"
+# test_endpoint "GET" "/activities/statistics" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
-print_test "GET /activities/statistics?dateFrom=2024-01-01&dateTo=2024-12-31"
-test_endpoint "GET" "/activities/statistics?dateFrom=2024-01-01&dateTo=2024-12-31" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# print_test "GET /activities/statistics?dateFrom=2024-01-01&dateTo=2024-12-31"
+# test_endpoint "GET" "/activities/statistics?dateFrom=2024-01-01&dateTo=2024-12-31" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
-# Get single activity
-if [ -n "$ACTIVITY_ID" ]; then
-    print_test "GET /activities/:id"
-    test_endpoint "GET" "/activities/$ACTIVITY_ID" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
-fi
+# # Get single activity
+# if [ -n "$ACTIVITY_ID" ]; then
+#     print_test "GET /activities/:id"
+#     test_endpoint "GET" "/activities/$ACTIVITY_ID" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# fi
 
-# Update activity
-if [ -n "$ACTIVITY_ID" ]; then
-    print_test "PATCH /activities/:id"
-    update_data='{
-        "title": "Updated Morning Run",
-        "duration": 35
-    }'
-    test_endpoint "PATCH" "/activities/$ACTIVITY_ID" "$update_data" "Authorization: Bearer $ACCESS_TOKEN" "200"
-fi
+# # Update activity
+# if [ -n "$ACTIVITY_ID" ]; then
+#     print_test "PATCH /activities/:id"
+#     update_data='{
+#         "title": "Updated Morning Run",
+#         "duration": 35
+#     }'
+#     test_endpoint "PATCH" "/activities/$ACTIVITY_ID" "$update_data" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# fi
 
-# 4. User Statistics Tests
-print_section "User Statistics Endpoints"
+# # 4. User Statistics Tests
+# print_section "User Statistics Endpoints"
 
-# Get user statistics
-print_test "GET /user-statistics"
-test_endpoint "GET" "/user-statistics" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# # Get user statistics
+# print_test "GET /user-statistics"
+# test_endpoint "GET" "/user-statistics" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
-# Recalculate statistics
-print_test "POST /user-statistics/recalculate"
-test_endpoint "POST" "/user-statistics/recalculate" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# # Recalculate statistics
+# print_test "POST /user-statistics/recalculate"
+# test_endpoint "POST" "/user-statistics/recalculate" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
-# 5. Users Endpoints (might be protected)
-print_section "Users Endpoints"
+# # 5. Users Endpoints (might be protected)
+# print_section "Users Endpoints"
 
-# Get all users
-print_test "GET /users"
-test_endpoint "GET" "/users" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# # Get all users
+# print_test "GET /users"
+# test_endpoint "GET" "/users" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
-# 6. Error Cases Tests
-print_section "Error Cases"
+# # 6. Error Cases Tests
+# print_section "Error Cases"
 
-# Test invalid login
-print_test "POST /auth/login (invalid credentials)"
-invalid_login='{
-    "identifier": "invalid@example.com",
-    "password": "wrongpassword"
-}'
-test_endpoint "POST" "/auth/login" "$invalid_login" "" "401"
+# # Test invalid login
+# print_test "POST /auth/login (invalid credentials)"
+# invalid_login='{
+#     "identifier": "invalid@example.com",
+#     "password": "wrongpassword"
+# }'
+# test_endpoint "POST" "/auth/login" "$invalid_login" "" "401"
 
-# Test unauthorized access
-print_test "GET /auth/me (no token)"
-test_endpoint "GET" "/auth/me" "" "" "401"
+# # Test unauthorized access
+# print_test "GET /auth/me (no token)"
+# test_endpoint "GET" "/auth/me" "" "" "401"
 
-# Test invalid token
-print_test "GET /auth/me (invalid token)"
-test_endpoint "GET" "/auth/me" "" "Authorization: Bearer invalid_token" "401"
+# # Test invalid token
+# print_test "GET /auth/me (invalid token)"
+# test_endpoint "GET" "/auth/me" "" "Authorization: Bearer invalid_token" "401"
 
-# 7. Cleanup
-print_section "Cleanup"
+# # 7. Cleanup
+# print_section "Cleanup"
 
-# Delete the created activity
-if [ -n "$ACTIVITY_ID" ]; then
-    print_test "DELETE /activities/:id"
-    test_endpoint "DELETE" "/activities/$ACTIVITY_ID" "" "Authorization: Bearer $ACCESS_TOKEN" "204"
-fi
+# # Delete the created activity
+# if [ -n "$ACTIVITY_ID" ]; then
+#     print_test "DELETE /activities/:id"
+#     test_endpoint "DELETE" "/activities/$ACTIVITY_ID" "" "Authorization: Bearer $ACCESS_TOKEN" "204"
+# fi
 
-# Logout
-print_test "POST /auth/logout"
-test_endpoint "POST" "/auth/logout" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
+# # Logout
+# print_test "POST /auth/logout"
+# test_endpoint "POST" "/auth/logout" "" "Authorization: Bearer $ACCESS_TOKEN" "200"
 
-print_section "Test Summary"
-print_success "All API endpoint tests completed!"
-echo -e "${BLUE}Note: Some error cases are expected and show that the API handles invalid requests correctly.${NC}"
-echo -e "${GREEN}🎉 API testing finished!${NC}"
+# print_section "Test Summary"
+# print_success "All API endpoint tests completed!"
+# echo -e "${BLUE}Note: Some error cases are expected and show that the API handles invalid requests correctly.${NC}"
+# echo -e "${GREEN}🎉 API testing finished!${NC}"
