@@ -9,4 +9,5 @@ export enum UserType {
   System = 'system',
   Bot = 'bot',
   Developer = 'developer',
+  Unknowk = 'unknown',
 }

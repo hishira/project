@@ -49,4 +49,7 @@ export class EventsService {
         });
       });
   }
+
+  @OnEvent('update', { async: true })
+  handleUpdateEvent(_: CreateEventPayload) {}
 }

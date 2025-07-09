@@ -5,6 +5,7 @@ export enum EventType {
   Create = 'create',
   Update = 'update',
   Delete = 'delete',
+  Unknown = 'unknown',
 }
 @Entity()
 export class Event extends BaseEntity {

@@ -17,7 +17,18 @@ import { UserSessionService } from '../user-session/user-session.service';
 import { LoggerService } from '../common/logger';
 import { CreateEventPayload } from 'src/events/events.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-
+import { LocalJwtService } from './jwt.service';
+const selection: (keyof User)[] = [
+  'id',
+  'login',
+  'email',
+  'password',
+  'firstName',
+  'lastName',
+  'isActive',
+  'createdAt',
+  'updatedAt',
+];
 @Injectable()
 export class AuthService {
   constructor(
@@ -27,6 +38,7 @@ export class AuthService {
     private readonly userSessionService: UserSessionService,
     private readonly logger: LoggerService,
     private readonly eventEmitter: EventEmitter2,
+    private readonly jwt: LocalJwtService,
   ) {}
 
   async register(registerDto: RegisterDto): Promise<{
@@ -96,22 +108,22 @@ export class AuthService {
     });
 
     // Generate JWT tokens
-    const payload: JwtPayload = {
-      sub: savedUser.id,
-      email: savedUser.email,
-      login: savedUser.login,
-    };
+    // const payload: JwtPayload = {
+    //   sub: savedUser.id,
+    //   email: savedUser.email,
+    //   login: savedUser.login,
+    // };
 
-    const access_token = this.jwtService.sign(payload);
-    const refresh_token = this.jwtService.sign(payload, { expiresIn: '7d' });
-
+    // const access_token = this.jwtService.sign(payload);
+    // const refresh_token = this.jwtService.sign(payload, { expiresIn: '7d' });
+    const { accessToken, refreshToken } = this.jwt.prepareTokens(savedUser);
     // Create session with refresh token
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7); // 7 days from now
 
     await this.userSessionService.createSession(
       savedUser.login,
-      refresh_token,
+      refreshToken,
       expiresAt,
     );
 
@@ -121,8 +133,8 @@ export class AuthService {
 
     return {
       user: userWithoutPassword,
-      access_token,
-      refresh_token,
+      access_token: accessToken,
+      refresh_token: refreshToken,
     };
   }
 
@@ -146,17 +158,7 @@ export class AuthService {
     if (identifier.includes('@')) {
       user = await this.usersRepository.findOne({
         where: { email: identifier },
-        select: [
-          'id',
-          'login',
-          'email',
-          'password',
-          'firstName',
-          'lastName',
-          'isActive',
-          'createdAt',
-          'updatedAt',
-        ],
+        select: selection,
       });
     }
 
@@ -164,17 +166,7 @@ export class AuthService {
     if (!user) {
       user = await this.usersRepository.findOne({
         where: { login: identifier },
-        select: [
-          'id',
-          'login',
-          'email',
-          'password',
-          'firstName',
-          'lastName',
-          'isActive',
-          'createdAt',
-          'updatedAt',
-        ],
+        select: selection,
       });
     }
 

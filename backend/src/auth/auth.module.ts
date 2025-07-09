@@ -9,6 +9,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { User } from '../entities/user.entity';
 import { UsersModule } from '../users/users.module';
 import { UserSessionModule } from '../user-session/user-session.module';
+import { LocalJwtService } from './jwt.service';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { UserSessionModule } from '../user-session/user-session.module';
     UsersModule,
     UserSessionModule,
   ],
-  providers: [AuthService, JwtStrategy, JwtAuthGuard],
+  providers: [AuthService, JwtStrategy, JwtAuthGuard, LocalJwtService],
   controllers: [AuthController],
   exports: [AuthService, JwtAuthGuard],
 })
