@@ -1,19 +1,20 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { databaseConfig } from './database/database.config';
-import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { databaseConfig } from './database/database.config';
 import { UserSessionModule } from './user-session/user-session.module';
+import { UsersModule } from './users/users.module';
 //import { ActivitiesModule } from './activities/activities.module';
-import { UserStatisticsModule } from './user-statistics/user-statistics.module';
-import { LoggerModule, LoggingInterceptor } from './common/logger';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { EventsService } from './events/events.service';
+import { ScheduleModule } from '@nestjs/schedule';
+import { LoggerModule, LoggingInterceptor } from './common/logger';
 import { Event } from './entities/event.entity';
+import { EventsService } from './events/events.service';
+import { UserStatisticsModule } from './user-statistics/user-statistics.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { Event } from './entities/event.entity';
     UserSessionModule,
     //ActivitiesModule,
     EventEmitterModule.forRoot(),
+    ScheduleModule.forRoot(),
     UserStatisticsModule,
   ],
   controllers: [AppController],

@@ -152,4 +152,10 @@ export class UserSessionService {
       order: { createdAt: 'DESC' },
     });
   }
+
+  async getAllSessions(): Promise<UserSession[]> {
+    return this.userSessionRepository.find({
+      order: { createdAt: 'DESC' },
+    });
+  }
 }
