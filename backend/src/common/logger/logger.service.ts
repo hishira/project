@@ -1,6 +1,7 @@
 import { Injectable, LoggerService as NestLoggerService } from '@nestjs/common';
 import * as winston from 'winston';
 import 'winston-daily-rotate-file';
+import LokiTransport from 'winston-loki';
 
 export enum LogLevel {
   ERROR = 'error',
@@ -153,6 +154,14 @@ export class LoggerService implements NestLoggerService {
         maxSize: '20m',
         maxFiles: '14d',
         format: fileFormat,
+      }),
+
+      new LokiTransport({
+        host: 'http://192.168.1.42:3100',
+        json: true,
+        format: winston.format.json(),
+        replaceTimestamp: true,
+        onConnectionError: (err) => console.error(err),
       }),
     );
 

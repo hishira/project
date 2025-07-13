@@ -107,15 +107,6 @@ export class AuthService {
       login: savedUser.login,
     });
 
-    // Generate JWT tokens
-    // const payload: JwtPayload = {
-    //   sub: savedUser.id,
-    //   email: savedUser.email,
-    //   login: savedUser.login,
-    // };
-
-    // const access_token = this.jwtService.sign(payload);
-    // const refresh_token = this.jwtService.sign(payload, { expiresIn: '7d' });
     const { accessToken, refreshToken } = this.jwt.prepareTokens(savedUser);
     // Create session with refresh token
     const expiresAt = new Date();
@@ -202,16 +193,8 @@ export class AuthService {
       throw new UnauthorizedException('Invalid username/email or password');
     }
 
-    // Generate JWT tokens
-    const payload: JwtPayload = {
-      sub: user.id,
-      email: user.email,
-      login: user.login,
-    };
-
-    const access_token = this.jwtService.sign(payload);
-    const refresh_token = this.jwtService.sign(payload, { expiresIn: '7d' });
-
+    const { accessToken: access_token, refreshToken: refresh_token } =
+      this.jwt.prepareTokens(user);
     this.logger.logAuth('login', user.id, {
       module: 'AuthService',
       email: user.email,
@@ -271,17 +254,7 @@ export class AuthService {
     // Get user with password for verification (same approach as login)
     const user = await this.usersRepository.findOne({
       where: { id: userId },
-      select: [
-        'id',
-        'login',
-        'email',
-        'password',
-        'firstName',
-        'lastName',
-        'isActive',
-        'createdAt',
-        'updatedAt',
-      ],
+      select: selection,
     });
 
     if (!user) {
@@ -360,17 +333,8 @@ export class AuthService {
         throw new UnauthorizedException('Invalid refresh token');
       }
 
-      // Generate new tokens
-      const newPayload: JwtPayload = {
-        sub: user.id,
-        email: user.email,
-        login: user.login,
-      };
-
-      const access_token = this.jwtService.sign(newPayload);
-      const new_refresh_token = this.jwtService.sign(newPayload, {
-        expiresIn: '7d',
-      });
+      const { accessToken: access_token, refreshToken: new_refresh_token } =
+        this.jwt.prepareTokens(user);
 
       // Update session with new refresh token
       const newExpiresAt = new Date();

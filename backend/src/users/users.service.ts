@@ -55,31 +55,6 @@ export class UsersService {
       'create',
       new CreateEventPayload('User Created', savedUser.id, savedUser),
     );
-    // const event = this.eventRepository.create({
-    //   name: 'User Created',
-    //   corelatedEntityId: savedUser.id,
-    //   corelatedEntity: savedUser,
-    //   type: EventType.Create,
-    // });
-
-    // event
-    //   .save()
-    //   .then(() => {
-    //     this.logger.logDatabase('Event saved successfully', 'event', {
-    //       module: 'UsersService',
-    //       action: 'create',
-    //       eventId: event.id,
-    //       userId: savedUser.id,
-    //     });
-    //   })
-    //   .catch((error: Error) => {
-    //     this.logger.logError('Failed to save event', error, {
-    //       module: 'UsersService',
-    //       action: 'create',
-    //       error: error.message,
-    //       userId: savedUser.id,
-    //     });
-    //   });
 
     this.logger.logBusiness('User created successfully', {
       module: 'UsersService',
