@@ -24,7 +24,7 @@ def generate_unique_email_login():
 def send_register_request():
   
     global request_counter
-    while request_counter <= 100:
+    while request_counter <= 5:
         try:
             email, login = generate_unique_email_login()
             first_name = random.choice(FIRST_NAMES)

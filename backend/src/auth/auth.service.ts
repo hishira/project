@@ -1,44 +1,23 @@
-import {
-  Injectable,
-  UnauthorizedException,
-  ConflictException,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 import { User } from '../entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
-import { JwtPayload } from './strategies/jwt.strategy';
-import { UserSessionService } from '../user-session/user-session.service';
-import { LoggerService } from '../common/logger';
-import { CreateEventPayload } from 'src/events/events.service';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { LocalJwtService } from './jwt.service';
-const selection: (keyof User)[] = [
-  'id',
-  'login',
-  'email',
-  'password',
-  'firstName',
-  'lastName',
-  'isActive',
-  'createdAt',
-  'updatedAt',
-];
+import { UserAuthenticationService } from './services/user-authentication.service';
+import { UserRegistrationService } from './services/user-registration.service';
+import { UserPasswordService } from './services/user-password.service';
+
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-    private readonly jwtService: JwtService,
-    private readonly userSessionService: UserSessionService,
-    private readonly logger: LoggerService,
-    private readonly eventEmitter: EventEmitter2,
-    private readonly jwt: LocalJwtService,
+    private readonly authenticationService: UserAuthenticationService,
+    private readonly registrationService: UserRegistrationService,
+    private readonly passwordService: UserPasswordService,
   ) {}
 
   async register(registerDto: RegisterDto): Promise<{
@@ -46,87 +25,7 @@ export class AuthService {
     access_token: string;
     refresh_token: string;
   }> {
-    const { login, email, password, firstName, lastName } = registerDto;
-
-    this.logger.logInfo('User registration attempt', {
-      module: 'AuthService',
-      action: 'register',
-      email,
-      login,
-    });
-
-    // Check if email already exists
-    const existingEmail = await this.usersRepository.findOne({
-      where: { email },
-    });
-    if (existingEmail) {
-      this.logger.logWarn('Registration failed: email already exists', {
-        module: 'AuthService',
-        action: 'register',
-        email,
-        reason: 'email_exists',
-      });
-      throw new ConflictException('Email address is already in use');
-    }
-
-    // Check if login already exists
-    const existingLogin = await this.usersRepository.findOne({
-      where: { login },
-    });
-    if (existingLogin) {
-      this.logger.logWarn('Registration failed: login already exists', {
-        module: 'AuthService',
-        action: 'register',
-        login,
-        reason: 'login_exists',
-      });
-      throw new ConflictException('Login is already in use');
-    }
-
-    // Hash password
-    const saltRounds = 12;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    // Create user
-    const user = this.usersRepository.create({
-      login,
-      email,
-      password: hashedPassword,
-      firstName,
-      lastName,
-    });
-
-    const savedUser = await this.usersRepository.save(user);
-    this.eventEmitter.emit(
-      'create',
-      new CreateEventPayload('User Created', savedUser.id, savedUser),
-    );
-    this.logger.logAuth('register', savedUser.id, {
-      module: 'AuthService',
-      email: savedUser.email,
-      login: savedUser.login,
-    });
-
-    const { accessToken, refreshToken } = this.jwt.prepareTokens(savedUser);
-    // Create session with refresh token
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7); // 7 days from now
-
-    await this.userSessionService.createSession(
-      savedUser.login,
-      refreshToken,
-      expiresAt,
-    );
-
-    // Remove password from response
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, ...userWithoutPassword } = savedUser;
-
-    return {
-      user: userWithoutPassword,
-      access_token: accessToken,
-      refresh_token: refreshToken,
-    };
+    return this.registrationService.register(registerDto);
   }
 
   async login(loginDto: LoginDto): Promise<{
@@ -134,92 +33,7 @@ export class AuthService {
     access_token: string;
     refresh_token: string;
   }> {
-    const { identifier, password } = loginDto;
-
-    this.logger.logInfo('User login attempt', {
-      module: 'AuthService',
-      action: 'login',
-      identifier,
-    });
-
-    // Check if identifier is email or login
-    let user: User | null = null;
-
-    // Try to find by email
-    if (identifier.includes('@')) {
-      user = await this.usersRepository.findOne({
-        where: { email: identifier },
-        select: selection,
-      });
-    }
-
-    // If not found, try to find by login
-    if (!user) {
-      user = await this.usersRepository.findOne({
-        where: { login: identifier },
-        select: selection,
-      });
-    }
-
-    if (!user) {
-      this.logger.logWarn('Login failed: user not found', {
-        module: 'AuthService',
-        action: 'login',
-        identifier,
-      });
-      throw new UnauthorizedException('Invalid username/email or password');
-    }
-
-    // Check if user is active
-    if (!user.isActive) {
-      this.logger.logWarn('Login failed: account deactivated', {
-        module: 'AuthService',
-        action: 'login',
-        userId: user.id,
-        identifier,
-      });
-      throw new UnauthorizedException('Account is deactivated');
-    }
-
-    // Verify password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      this.logger.logWarn('Login failed: invalid password', {
-        module: 'AuthService',
-        action: 'login',
-        userId: user.id,
-        identifier,
-      });
-      throw new UnauthorizedException('Invalid username/email or password');
-    }
-
-    const { accessToken: access_token, refreshToken: refresh_token } =
-      this.jwt.prepareTokens(user);
-    this.logger.logAuth('login', user.id, {
-      module: 'AuthService',
-      email: user.email,
-      login: user.login,
-    });
-
-    // Create session with refresh token
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7); // 7 days from now
-
-    await this.userSessionService.createSession(
-      user.login,
-      refresh_token,
-      expiresAt,
-    );
-
-    // Remove password from response
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, ...userWithoutPassword } = user;
-
-    return {
-      user: userWithoutPassword,
-      access_token,
-      refresh_token,
-    };
+    return this.authenticationService.login(loginDto);
   }
 
   async validateUser(userId: string): Promise<User | null> {
@@ -243,141 +57,16 @@ export class AuthService {
     userId: string,
     changePasswordDto: ChangePasswordDto,
   ): Promise<{ message: string }> {
-    const { currentPassword, newPassword } = changePasswordDto;
-
-    this.logger.logInfo('Password change attempt', {
-      module: 'AuthService',
-      action: 'changePassword',
-      userId,
-    });
-
-    // Get user with password for verification (same approach as login)
-    const user = await this.usersRepository.findOne({
-      where: { id: userId },
-      select: selection,
-    });
-
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-
-    // Check if user is active
-    if (!user.isActive) {
-      throw new UnauthorizedException('Account is deactivated');
-    }
-
-    // Verify current password
-    const isCurrentPasswordValid = await bcrypt.compare(
-      currentPassword,
-      user.password,
-    );
-    if (!isCurrentPasswordValid) {
-      this.logger.logWarn(
-        'Password change failed: incorrect current password',
-        {
-          module: 'AuthService',
-          action: 'changePassword',
-          userId,
-        },
-      );
-      throw new UnauthorizedException('Current password is incorrect');
-    }
-
-    // Hash new password
-    const saltRounds = 12;
-    const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
-
-    // Update password
-    await this.usersRepository.update(userId, { password: hashedNewPassword });
-
-    this.logger.logSecurity('Password changed successfully', 'medium', {
-      module: 'AuthService',
-      action: 'changePassword',
-      userId,
-    });
-
-    return { message: 'Password changed successfully' };
+    return this.passwordService.changePassword(userId, changePasswordDto);
   }
 
   async refreshToken(
     refreshTokenDto: RefreshTokenDto,
   ): Promise<{ access_token: string; refresh_token: string }> {
-    const { refresh_token } = refreshTokenDto;
-
-    try {
-      // Verify the refresh token
-      const payload: JwtPayload = this.jwtService.verify(refresh_token);
-
-      // Find user to get login
-      const user = await this.usersRepository.findOne({
-        where: { id: payload.sub },
-        select: ['id', 'login', 'email', 'isActive'],
-      });
-
-      if (!user) {
-        throw new UnauthorizedException('Invalid refresh token');
-      }
-
-      // Check if user is active
-      if (!user.isActive) {
-        throw new UnauthorizedException('Account is deactivated');
-      }
-
-      // Find and verify the session
-      const session = await this.userSessionService.findValidSession(
-        user.login,
-        refresh_token,
-      );
-
-      if (!session) {
-        throw new UnauthorizedException('Invalid refresh token');
-      }
-
-      const { accessToken: access_token, refreshToken: new_refresh_token } =
-        this.jwt.prepareTokens(user);
-
-      // Update session with new refresh token
-      const newExpiresAt = new Date();
-      newExpiresAt.setDate(newExpiresAt.getDate() + 7); // 7 days from now
-
-      await this.userSessionService.updateSession(
-        session.id,
-        new_refresh_token,
-        newExpiresAt,
-      );
-
-      return {
-        access_token,
-        refresh_token: new_refresh_token,
-      };
-    } catch {
-      throw new UnauthorizedException('Invalid refresh token');
-    }
+    return this.authenticationService.refreshToken(refreshTokenDto);
   }
 
   async logout(userId: string): Promise<{ message: string }> {
-    this.logger.logInfo('User logout attempt', {
-      module: 'AuthService',
-      action: 'logout',
-      userId,
-    });
-
-    // Find user to get login
-    const user = await this.usersRepository.findOne({
-      where: { id: userId },
-      select: ['login'],
-    });
-
-    if (user) {
-      // Clear all sessions for this user
-      await this.userSessionService.deleteUserSessions(user.login);
-
-      this.logger.logAuth('logout', userId, {
-        module: 'AuthService',
-        login: user.login,
-      });
-    }
-
-    return { message: 'Logged out successfully' };
+    return this.authenticationService.logout(userId);
   }
 }

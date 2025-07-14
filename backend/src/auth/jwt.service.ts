@@ -5,6 +5,10 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class LocalJwtService {
+  
+  verify(refreshToken: string): JwtPayload {
+    throw new Error('Method not implemented.');
+  }
   constructor(private readonly jwtService: JwtService) {}
   prepareTokens(user: User): {
     accessToken: string;

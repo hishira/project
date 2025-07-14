@@ -1,0 +1,260 @@
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
+import { Repository } from 'typeorm';
+import { LoggerService } from '../../common/logger';
+import { User } from '../../entities/user.entity';
+import { UserSessionService } from '../../user-session/user-session.service';
+import { LoginDto } from '../dto/login.dto';
+import { RefreshTokenDto } from '../dto/refresh-token.dto';
+import { LocalJwtService } from '../jwt.service';
+import { JwtPayload } from '../strategies/jwt.strategy';
+
+const USER_MESSAGES = {
+  INVALID_CREDENTIALS: 'Invalid username/email or password',
+  ACCOUNT_DEACTIVATED: 'Account is deactivated',
+  INVALID_REFRESH_TOKEN: 'Invalid refresh token',
+  LOGOUT_SUCCESS: 'Logged out successfully',
+} as const;
+
+const LOG_METADATA = {
+  MODULE: 'UserAuthenticationService',
+  ACTIONS: {
+    LOGIN: 'login',
+    LOGOUT: 'logout',
+  },
+  MESSAGES: {
+    LOGIN_ATTEMPT: 'User login attempt',
+    LOGIN_FAILED_USER: 'Login failed: user not found',
+    LOGIN_FAILED_INACTIVE: 'Login failed: account deactivated',
+    LOGIN_FAILED_PASSWORD: 'Login failed: invalid password',
+    LOGOUT_ATTEMPT: 'User logout attempt',
+  },
+} as const;
+
+const USER_FIELDS = {
+  ID: 'id',
+  LOGIN: 'login',
+  EMAIL: 'email',
+  PASSWORD: 'password',
+  FIRST_NAME: 'firstName',
+  LAST_NAME: 'lastName',
+  IS_ACTIVE: 'isActive',
+  CREATED_AT: 'createdAt',
+  UPDATED_AT: 'updatedAt',
+} as const;
+
+const TOKEN_EXPIRY_DAYS = 7;
+
+const selection: (keyof User)[] = [
+  USER_FIELDS.ID,
+  USER_FIELDS.LOGIN,
+  USER_FIELDS.EMAIL,
+  USER_FIELDS.PASSWORD,
+  USER_FIELDS.FIRST_NAME,
+  USER_FIELDS.LAST_NAME,
+  USER_FIELDS.IS_ACTIVE,
+  USER_FIELDS.CREATED_AT,
+  USER_FIELDS.UPDATED_AT,
+];
+
+@Injectable()
+export class UserAuthenticationService {
+  constructor(
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
+    private readonly userSessionService: UserSessionService,
+    private readonly logger: LoggerService,
+    private readonly jwt: LocalJwtService,
+  ) {}
+
+  async login(loginDto: LoginDto): Promise<{
+    user: Omit<Partial<User>, 'password'>;
+    access_token: string;
+    refresh_token: string;
+  }> {
+    const { identifier, password } = loginDto;
+
+    this.logger.logInfo(LOG_METADATA.MESSAGES.LOGIN_ATTEMPT, {
+      module: LOG_METADATA.MODULE,
+      action: LOG_METADATA.ACTIONS.LOGIN,
+      identifier,
+    });
+
+    const user = await this.findUserByIdentifier(identifier);
+
+    if (!user) {
+      this.logger.logWarn(LOG_METADATA.MESSAGES.LOGIN_FAILED_USER, {
+        module: LOG_METADATA.MODULE,
+        action: LOG_METADATA.ACTIONS.LOGIN,
+        identifier,
+      });
+      throw new UnauthorizedException(USER_MESSAGES.INVALID_CREDENTIALS);
+    }
+
+    this.validateUserStatus(user, identifier);
+    await this.validatePassword(password, user);
+
+    const { accessToken: access_token, refreshToken: refresh_token } =
+      this.jwt.prepareTokens(user);
+
+    await this.createUserSession(user, refresh_token);
+
+    // Remove password from response
+    const { password: _, ...userWithoutPassword } = user;
+
+    return {
+      user: userWithoutPassword,
+      access_token,
+      refresh_token,
+    };
+  }
+
+  async refreshToken(
+    refreshTokenDto: RefreshTokenDto,
+  ): Promise<{ access_token: string; refresh_token: string }> {
+    const { refresh_token } = refreshTokenDto;
+
+    try {
+      const { user, session } = await this.validateRefreshToken(refresh_token);
+      const { accessToken: access_token, refreshToken: new_refresh_token } =
+        this.jwt.prepareTokens(user);
+
+      await this.updateUserSession(session.id, new_refresh_token);
+
+      return {
+        access_token,
+        refresh_token: new_refresh_token,
+      };
+    } catch {
+      throw new UnauthorizedException(USER_MESSAGES.INVALID_REFRESH_TOKEN);
+    }
+  }
+
+  async logout(userId: string): Promise<{ message: string }> {
+    this.logger.logInfo(LOG_METADATA.MESSAGES.LOGOUT_ATTEMPT, {
+      module: LOG_METADATA.MODULE,
+      action: LOG_METADATA.ACTIONS.LOGOUT,
+      userId,
+    });
+
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      select: [USER_FIELDS.LOGIN],
+    });
+
+    if (user) {
+      await this.userSessionService.deleteUserSessions(user.login);
+      this.logger.logAuth(LOG_METADATA.ACTIONS.LOGOUT, userId, {
+        module: LOG_METADATA.MODULE,
+        login: user.login,
+      });
+    }
+
+    return { message: USER_MESSAGES.LOGOUT_SUCCESS };
+  }
+
+  private async findUserByIdentifier(identifier: string): Promise<User | null> {
+    if (identifier.includes('@')) {
+      return this.usersRepository.findOne({
+        where: { [USER_FIELDS.EMAIL]: identifier },
+        select: selection,
+      });
+    }
+    return this.usersRepository.findOne({
+      where: { [USER_FIELDS.LOGIN]: identifier },
+      select: selection,
+    });
+  }
+
+  private validateUserStatus(user: User, identifier: string): void {
+    if (!user.isActive) {
+      this.logger.logWarn(LOG_METADATA.MESSAGES.LOGIN_FAILED_INACTIVE, {
+        module: LOG_METADATA.MODULE,
+        action: LOG_METADATA.ACTIONS.LOGIN,
+        userId: user.id,
+        identifier,
+      });
+      throw new UnauthorizedException(USER_MESSAGES.ACCOUNT_DEACTIVATED);
+    }
+  }
+
+  private async validatePassword(password: string, user: User): Promise<void> {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      this.logger.logWarn(LOG_METADATA.MESSAGES.LOGIN_FAILED_PASSWORD, {
+        module: LOG_METADATA.MODULE,
+        action: LOG_METADATA.ACTIONS.LOGIN,
+        userId: user.id,
+      });
+      throw new UnauthorizedException(USER_MESSAGES.INVALID_CREDENTIALS);
+    }
+  }
+
+  private async createUserSession(
+    user: User,
+    refreshToken: string,
+  ): Promise<void> {
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + TOKEN_EXPIRY_DAYS);
+
+    await this.userSessionService.createSession(
+      user.login,
+      refreshToken,
+      expiresAt,
+    );
+
+    this.logger.logAuth(LOG_METADATA.ACTIONS.LOGIN, user.id, {
+      module: LOG_METADATA.MODULE,
+      email: user.email,
+      login: user.login,
+    });
+  }
+
+  private async validateRefreshToken(refreshToken: string) {
+    const payload: JwtPayload = this.jwt.verify(refreshToken);
+
+    const user = await this.usersRepository.findOne({
+      where: { [USER_FIELDS.ID]: payload.sub },
+      select: [
+        USER_FIELDS.ID,
+        USER_FIELDS.LOGIN,
+        USER_FIELDS.EMAIL,
+        USER_FIELDS.IS_ACTIVE,
+      ],
+    });
+
+    if (!user) {
+      throw new UnauthorizedException(USER_MESSAGES.INVALID_REFRESH_TOKEN);
+    }
+
+    if (!user.isActive) {
+      throw new UnauthorizedException(USER_MESSAGES.ACCOUNT_DEACTIVATED);
+    }
+
+    const session = await this.userSessionService.findValidSession(
+      user.login,
+      refreshToken,
+    );
+
+    if (!session) {
+      throw new UnauthorizedException(USER_MESSAGES.INVALID_REFRESH_TOKEN);
+    }
+
+    return { user, session };
+  }
+
+  private async updateUserSession(
+    sessionId: string,
+    refreshToken: string,
+  ): Promise<void> {
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + TOKEN_EXPIRY_DAYS);
+
+    await this.userSessionService.updateSession(
+      sessionId,
+      refreshToken,
+      expiresAt,
+    );
+  }
+}
