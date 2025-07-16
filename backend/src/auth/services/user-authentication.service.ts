@@ -9,54 +9,13 @@ import { LoginDto } from '../dto/login.dto';
 import { RefreshTokenDto } from '../dto/refresh-token.dto';
 import { LocalJwtService } from '../jwt.service';
 import { JwtPayload } from '../strategies/jwt.strategy';
-
-const USER_MESSAGES = {
-  INVALID_CREDENTIALS: 'Invalid username/email or password',
-  ACCOUNT_DEACTIVATED: 'Account is deactivated',
-  INVALID_REFRESH_TOKEN: 'Invalid refresh token',
-  LOGOUT_SUCCESS: 'Logged out successfully',
-} as const;
-
-const LOG_METADATA = {
-  MODULE: 'UserAuthenticationService',
-  ACTIONS: {
-    LOGIN: 'login',
-    LOGOUT: 'logout',
-  },
-  MESSAGES: {
-    LOGIN_ATTEMPT: 'User login attempt',
-    LOGIN_FAILED_USER: 'Login failed: user not found',
-    LOGIN_FAILED_INACTIVE: 'Login failed: account deactivated',
-    LOGIN_FAILED_PASSWORD: 'Login failed: invalid password',
-    LOGOUT_ATTEMPT: 'User logout attempt',
-  },
-} as const;
-
-const USER_FIELDS = {
-  ID: 'id',
-  LOGIN: 'login',
-  EMAIL: 'email',
-  PASSWORD: 'password',
-  FIRST_NAME: 'firstName',
-  LAST_NAME: 'lastName',
-  IS_ACTIVE: 'isActive',
-  CREATED_AT: 'createdAt',
-  UPDATED_AT: 'updatedAt',
-} as const;
-
-const TOKEN_EXPIRY_DAYS = 7;
-
-const selection: (keyof User)[] = [
-  USER_FIELDS.ID,
-  USER_FIELDS.LOGIN,
-  USER_FIELDS.EMAIL,
-  USER_FIELDS.PASSWORD,
-  USER_FIELDS.FIRST_NAME,
-  USER_FIELDS.LAST_NAME,
-  USER_FIELDS.IS_ACTIVE,
-  USER_FIELDS.CREATED_AT,
-  USER_FIELDS.UPDATED_AT,
-];
+import {
+  LOG_METADATA,
+  selection,
+  TOKEN_EXPIRY_DAYS,
+  USER_FIELDS,
+  USER_MESSAGES,
+} from './constst';
 
 @Injectable()
 export class UserAuthenticationService {

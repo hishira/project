@@ -1,10 +1,14 @@
-import { LoggerService, LogContext } from './logger.service';
+import { LogContext, LoggerService } from './logger.service';
 
 /**
  * Decorator to automatically log method calls
  */
 export function LogMethodCall(context?: string) {
-  return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {
+  return function (
+    target: any,
+    propertyName: string,
+    descriptor: PropertyDescriptor,
+  ) {
     const method = descriptor.value;
 
     descriptor.value = function (...args: any[]) {
@@ -14,7 +18,7 @@ export function LogMethodCall(context?: string) {
       const logContext: LogContext = {
         module: className,
         action: methodName,
-        ...(context && { context })
+        ...(context && { context }),
       };
 
       logger.logDebug(`Calling method: ${className}.${methodName}`, logContext);
@@ -26,19 +30,33 @@ export function LogMethodCall(context?: string) {
         if (result instanceof Promise) {
           return result
             .then((res) => {
-              logger.logDebug(`Method ${className}.${methodName} completed successfully`, logContext);
+              logger.logDebug(
+                `Method ${className}.${methodName} completed successfully`,
+                logContext,
+              );
               return res;
             })
             .catch((error) => {
-              logger.logError(`Method ${className}.${methodName} failed`, error, logContext);
+              logger.logError(
+                `Method ${className}.${methodName} failed`,
+                error,
+                logContext,
+              );
               throw error;
             });
         } else {
-          logger.logDebug(`Method ${className}.${methodName} completed successfully`, logContext);
+          logger.logDebug(
+            `Method ${className}.${methodName} completed successfully`,
+            logContext,
+          );
           return result;
         }
       } catch (error) {
-        logger.logError(`Method ${className}.${methodName} failed`, error as Error, logContext);
+        logger.logError(
+          `Method ${className}.${methodName} failed`,
+          error as Error,
+          logContext,
+        );
         throw error;
       }
     };
@@ -49,7 +67,11 @@ export function LogMethodCall(context?: string) {
  * Decorator to log user actions
  */
 export function LogUserAction(actionName?: string) {
-  return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {
+  return function (
+    target: any,
+    propertyName: string,
+    descriptor: PropertyDescriptor,
+  ) {
     const method = descriptor.value;
 
     descriptor.value = function (...args: any[]) {
@@ -60,16 +82,16 @@ export function LogUserAction(actionName?: string) {
 
       // Try to extract user ID from various sources
       let userId: string | undefined;
-      
+
       // Look for user in request object (first argument is often request)
       if (args[0] && args[0].user) {
         userId = args[0].user.id || args[0].user.sub;
       }
-      
+
       // Look for user ID in method arguments
       if (!userId) {
-        const userIdArg = args.find(arg => 
-          typeof arg === 'object' && arg && (arg.userId || arg.id)
+        const userIdArg = args.find(
+          (arg) => typeof arg === 'object' && arg && (arg.userId || arg.id),
         );
         userId = userIdArg?.userId || userIdArg?.id;
       }
@@ -77,7 +99,7 @@ export function LogUserAction(actionName?: string) {
       if (userId) {
         logger.logUserAction(action, userId, {
           module: className,
-          method: methodName
+          method: methodName,
         });
       }
 
@@ -90,7 +112,11 @@ export function LogUserAction(actionName?: string) {
  * Decorator to log performance of methods
  */
 export function LogPerformance(operationName?: string) {
-  return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {
+  return function (
+    target: any,
+    propertyName: string,
+    descriptor: PropertyDescriptor,
+  ) {
     const method = descriptor.value;
 
     descriptor.value = function (...args: any[]) {
@@ -109,14 +135,14 @@ export function LogPerformance(operationName?: string) {
             const duration = Date.now() - startTime;
             logger.logPerformance(operation, duration, {
               module: className,
-              method: methodName
+              method: methodName,
             });
           });
         } else {
           const duration = Date.now() - startTime;
           logger.logPerformance(operation, duration, {
             module: className,
-            method: methodName
+            method: methodName,
           });
           return result;
         }
@@ -125,7 +151,7 @@ export function LogPerformance(operationName?: string) {
         logger.logPerformance(`${operation} (failed)`, duration, {
           module: className,
           method: methodName,
-          error: true
+          error: true,
         });
         throw error;
       }

@@ -9,6 +9,13 @@ import { CreateEventPayload } from '../../events/events.service';
 import { UserSessionService } from '../../user-session/user-session.service';
 import { RegisterDto } from '../dto/register.dto';
 import { LocalJwtService } from '../jwt.service';
+import {
+  EVENTS,
+  SECURITY,
+  USER_FIELDS,
+  USER_MESSAGES,
+  USER_REGISTRATION_LOG_METADATA
+} from './constst';
 
 @Injectable()
 export class UserRegistrationService {
@@ -26,14 +33,17 @@ export class UserRegistrationService {
     access_token: string;
     refresh_token: string;
   }> {
-    const { login, email, password, firstName, lastName } = registerDto;
+    const { login, email } = registerDto;
 
-    this.logger.logInfo('User registration attempt', {
-      module: 'UserRegistrationService',
-      action: 'register',
-      email,
-      login,
-    });
+    this.logger.logInfo(
+      USER_REGISTRATION_LOG_METADATA.MESSAGES.REGISTRATION_ATTEMPT,
+      {
+        module: USER_REGISTRATION_LOG_METADATA.MODULE,
+        action: USER_REGISTRATION_LOG_METADATA.ACTIONS.REGISTER,
+        email,
+        login,
+      },
+    );
 
     await this.validateUniqueConstraints(email, login);
     const user = await this.createUser(registerDto);
@@ -53,37 +63,42 @@ export class UserRegistrationService {
     login: string,
   ): Promise<void> {
     const existingEmail = await this.usersRepository.findOne({
-      where: { email },
+      where: { [USER_FIELDS.EMAIL]: email },
     });
     if (existingEmail) {
-      this.logger.logWarn('Registration failed: email already exists', {
-        module: 'UserRegistrationService',
-        action: 'register',
-        email,
-        reason: 'email_exists',
-      });
-      throw new ConflictException('Email address is already in use');
+      this.logger.logWarn(
+        USER_REGISTRATION_LOG_METADATA.MESSAGES.REGISTRATION_FAILED_EMAIL,
+        {
+          module: USER_REGISTRATION_LOG_METADATA.MODULE,
+          action: USER_REGISTRATION_LOG_METADATA.ACTIONS.REGISTER,
+          email,
+          reason: USER_REGISTRATION_LOG_METADATA.REASONS.EMAIL_EXISTS,
+        },
+      );
+      throw new ConflictException(USER_MESSAGES.EMAIL_IN_USE);
     }
 
     const existingLogin = await this.usersRepository.findOne({
-      where: { login },
+      where: { [USER_FIELDS.LOGIN]: login },
     });
     if (existingLogin) {
-      this.logger.logWarn('Registration failed: login already exists', {
-        module: 'UserRegistrationService',
-        action: 'register',
-        login,
-        reason: 'login_exists',
-      });
-      throw new ConflictException('Login is already in use');
+      this.logger.logWarn(
+        USER_REGISTRATION_LOG_METADATA.MESSAGES.REGISTRATION_FAILED_LOGIN,
+        {
+          module: USER_REGISTRATION_LOG_METADATA.MODULE,
+          action: USER_REGISTRATION_LOG_METADATA.ACTIONS.REGISTER,
+          login,
+          reason: USER_REGISTRATION_LOG_METADATA.REASONS.LOGIN_EXISTS,
+        },
+      );
+      throw new ConflictException(USER_MESSAGES.LOGIN_IN_USE);
     }
   }
 
   private async createUser(registerDto: RegisterDto): Promise<User> {
     const { login, email, password, firstName, lastName } = registerDto;
 
-    const saltRounds = 12;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcrypt.hash(password, SECURITY.SALT_ROUNDS);
 
     const user = this.usersRepository.create({
       login,
@@ -96,15 +111,23 @@ export class UserRegistrationService {
     const savedUser = await this.usersRepository.save(user);
 
     this.eventEmitter.emit(
-      'create',
-      new CreateEventPayload('User Created', savedUser.id, savedUser),
+      EVENTS.CREATE,
+      new CreateEventPayload(
+        USER_REGISTRATION_LOG_METADATA.MESSAGES.USER_CREATED,
+        savedUser.id,
+        savedUser,
+      ),
     );
 
-    this.logger.logAuth('register', savedUser.id, {
-      module: 'UserRegistrationService',
-      email: savedUser.email,
-      login: savedUser.login,
-    });
+    this.logger.logAuth(
+      USER_REGISTRATION_LOG_METADATA.ACTIONS.REGISTER,
+      savedUser.id,
+      {
+        module: USER_REGISTRATION_LOG_METADATA.MODULE,
+        email: savedUser.email,
+        login: savedUser.login,
+      },
+    );
 
     return savedUser;
   }
@@ -116,7 +139,7 @@ export class UserRegistrationService {
     const { accessToken, refreshToken } = this.jwt.prepareTokens(user);
 
     const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7);
+    expiresAt.setDate(expiresAt.getDate() + SECURITY.TOKEN_EXPIRY_DAYS);
 
     await this.userSessionService.createSession(
       user.login,

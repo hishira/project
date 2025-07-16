@@ -1,7 +1,7 @@
 import { Injectable, LoggerService as NestLoggerService } from '@nestjs/common';
 import * as winston from 'winston';
 import 'winston-daily-rotate-file';
-import LokiTransport from 'winston-loki';
+import { Transporters } from './transporters';
 
 export enum LogLevel {
   ERROR = 'error',
@@ -56,113 +56,20 @@ export class LoggerService implements NestLoggerService {
     winston.addColors(colors);
 
     // File format (no colors)
-    const fileFormat = winston.format.combine(
-      winston.format.timestamp({
-        format: 'YYYY-MM-DD HH:mm:ss',
-      }),
-      winston.format.errors({ stack: true }),
-      winston.format.json(),
-      winston.format.printf(({ timestamp, level, message, stack, ...meta }) => {
-        const contextStr = meta.module ? ` [${meta.module}]` : '';
-        const metaStr = Object.keys(meta).length
-          ? ` ${JSON.stringify(meta)}`
-          : '';
-        const stackStr = stack ? `\n${stack}` : '';
-        return `${timestamp} [${level.toUpperCase()}]${contextStr} ${message}${metaStr}${stackStr}`;
-      }),
-    );
-
-    // Console format (with colors if terminal)
-    const consoleFormat = winston.format.combine(
-      winston.format.timestamp({
-        format: 'YYYY-MM-DD HH:mm:ss',
-      }),
-      winston.format.errors({ stack: true }),
-      // Only colorize if we're in a terminal
-      ...(this.isTerminal ? [winston.format.colorize({ all: true })] : []),
-      winston.format.printf(({ timestamp, level, message, stack, ...meta }) => {
-        const contextStr = meta.module ? ` [${meta.module}]` : '';
-
-        // Create a more readable meta string for console
-        const filteredMeta = { ...meta };
-        delete filteredMeta.module;
-        delete filteredMeta.timestamp;
-
-        const metaStr = Object.keys(filteredMeta).length
-          ? ` ${JSON.stringify(filteredMeta, null, 2).replace(/\n/g, ' ').replace(/\s+/g, ' ')}`
-          : '';
-
-        const stackStr = stack ? `\n${stack}` : '';
-
-        if (this.isTerminal) {
-          // Enhanced formatting for terminal with emojis
-          const levelEmoji =
-            {
-              error: '❌',
-              warn: '⚠️ ',
-              info: '💡',
-              http: '🌐',
-              verbose: '📝',
-              debug: '🔍',
-              silly: '🤪',
-            }[level] || '📄';
-
-          return `${timestamp} ${levelEmoji} [${level.toUpperCase()}]${contextStr} ${message}${metaStr}${stackStr}`;
-        } else {
-          return `${timestamp} [${level.toUpperCase()}]${contextStr} ${message}${metaStr}${stackStr}`;
-        }
-      }),
-    );
 
     const transports: winston.transport[] = [];
 
     // Console transport for development
     if (this.isDevelopment) {
-      transports.push(
-        new winston.transports.Console({
-          format: consoleFormat,
-        }),
-      );
+      transports.push(Transporters.ConsoleTransport());
     }
 
     // File transports
     transports.push(
-      // Combined logs (all levels)
-      new winston.transports.DailyRotateFile({
-        filename: 'logs/combined-%DATE%.log',
-        datePattern: 'YYYY-MM-DD',
-        maxSize: '20m',
-        maxFiles: '14d',
-        format: fileFormat,
-      }),
-
-      // Error logs only
-      new winston.transports.DailyRotateFile({
-        filename: 'logs/error-%DATE%.log',
-        datePattern: 'YYYY-MM-DD',
-        level: 'error',
-        maxSize: '20m',
-        maxFiles: '30d',
-        format: fileFormat,
-      }),
-
-      // HTTP access logs
-      new winston.transports.DailyRotateFile({
-        filename: 'logs/access-%DATE%.log',
-        datePattern: 'YYYY-MM-DD',
-        level: 'http',
-        maxSize: '20m',
-        maxFiles: '14d',
-        format: fileFormat,
-      }),
-
-      new LokiTransport({
-        host: 'http://192.168.1.42:3100',
-        json: true,
-        format: winston.format.json(),
-        replaceTimestamp: true,
-        onConnectionError: (err) => console.error(err),
-      }),
+      Transporters.CombinedTransporter(),
+      Transporters.ErrorsOnlyTransport(),
+      Transporters.HttpAccessTransport(),
+      Transporters.LokiTransport(),
     );
 
     return winston.createLogger({
