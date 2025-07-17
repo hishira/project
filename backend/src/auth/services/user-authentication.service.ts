@@ -8,7 +8,6 @@ import { UserSessionService } from '../../user-session/user-session.service';
 import { LoginDto } from '../dto/login.dto';
 import { RefreshTokenDto } from '../dto/refresh-token.dto';
 import { LocalJwtService } from '../jwt.service';
-import { JwtPayload } from '../strategies/jwt.strategy';
 import {
   LOG_METADATA,
   selection,
@@ -16,6 +15,7 @@ import {
   USER_FIELDS,
   USER_MESSAGES,
 } from './constst';
+import { JwtPayload } from '../utils';
 
 @Injectable()
 export class UserAuthenticationService {

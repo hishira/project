@@ -1,10 +1,10 @@
 import {
-  CreateDateColumn,
-  UpdateDateColumn,
   BaseEntity as BEntity,
+  CreateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
-export class BaseEntity extends BEntity {
+export abstract class BaseEntity extends BEntity {
   @CreateDateColumn()
   createdAt: Date;
 

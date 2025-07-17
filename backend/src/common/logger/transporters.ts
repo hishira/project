@@ -3,7 +3,7 @@ import TransportStream from 'winston-transport';
 import LokiTransport from 'winston-loki';
 
 export class Transporters {
-  static fileFormat = winston.format.combine(
+  static readonly fileFormat = winston.format.combine(
     winston.format.timestamp({
       format: 'YYYY-MM-DD HH:mm:ss',
     }),
@@ -18,6 +18,7 @@ export class Transporters {
       return `${timestamp} [${level.toUpperCase()}]${contextStr} ${message}${metaStr}${stackStr}`;
     }),
   );
+  static readonly isTerminal = process.stdout.isTTY === true;
 
   static ConsoleTransport(): TransportStream {
     const consoleFormat = winston.format.combine(

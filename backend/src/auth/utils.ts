@@ -7,11 +7,13 @@ export class JwtPayload {
   readonly iat?: number;
   readonly exp?: number;
 
+  private constructor(user: User) {
+    this.sub = user.id;
+    this.email = user.email;
+    this.login = user.login;
+  }
   static fromUser(user: User): JwtPayload {
-    const payload = new JwtPayload();
-    payload.sub = user.id;
-    payload.email = user.email;
-    payload.login = user.login;
+    const payload = new JwtPayload(user);
     return payload;
   }
 }

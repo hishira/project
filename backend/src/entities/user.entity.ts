@@ -1,16 +1,17 @@
 import { UserType } from 'src/users/userTypes';
 import {
+  ChildEntity,
   Column,
   Entity,
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { BaseEntity } from './base.entity';
+import { EntityWithAddress } from './bride/entityWithAddress.entity';
 import { UserRole } from './userRole.entity';
 
 @Entity()
-export class User extends BaseEntity {
+export class User extends EntityWithAddress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -42,6 +43,4 @@ export class User extends BaseEntity {
   @JoinColumn({ name: 'roleId', referencedColumnName: 'id' })
   role?: Promise<UserRole>;
 
-  //@OneToMany(() => Activity, (activity) => activity.user)
-  //activities?: Activity[];
 }
