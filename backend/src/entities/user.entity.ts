@@ -1,11 +1,10 @@
 import { UserType } from 'src/users/userTypes';
 import {
-  ChildEntity,
   Column,
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 import { EntityWithAddress } from './bride/entityWithAddress.entity';
 import { UserRole } from './userRole.entity';
@@ -29,9 +28,6 @@ export class User extends EntityWithAddress {
 
   @Column({ nullable: true })
   lastName?: string;
-
-  @Column({ default: true })
-  isActive: boolean;
 
   @Column({ type: 'text', enum: UserType, default: UserType.None })
   userType: UserType;
