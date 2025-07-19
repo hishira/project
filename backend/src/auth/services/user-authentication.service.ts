@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { State } from 'src/entities/base.entity';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../../common/logger';
 import { User } from '../../entities/user.entity';
@@ -8,6 +9,7 @@ import { UserSessionService } from '../../user-session/user-session.service';
 import { LoginDto } from '../dto/login.dto';
 import { RefreshTokenDto } from '../dto/refresh-token.dto';
 import { LocalJwtService } from '../jwt.service';
+import { JwtPayload } from '../utils';
 import {
   LOG_METADATA,
   selection,
@@ -15,7 +17,6 @@ import {
   USER_FIELDS,
   USER_MESSAGES,
 } from './constst';
-import { JwtPayload } from '../utils';
 
 @Injectable()
 export class UserAuthenticationService {
@@ -60,7 +61,7 @@ export class UserAuthenticationService {
     await this.createUserSession(user, refresh_token);
 
     // Remove password from response
-    const { password: _, ...userWithoutPassword } = user;
+    const { ...userWithoutPassword } = user;
 
     return {
       user: userWithoutPassword,
@@ -99,14 +100,16 @@ export class UserAuthenticationService {
 
     const user = await this.usersRepository.findOne({
       where: { id: userId },
-      select: [USER_FIELDS.LOGIN],
+      relations: {
+        credentials: true,
+      },
     });
 
     if (user) {
-      await this.userSessionService.deleteUserSessions(user.login);
+      await this.userSessionService.deleteUserSessions(user.credentials?.login);
       this.logger.logAuth(LOG_METADATA.ACTIONS.LOGOUT, userId, {
         module: LOG_METADATA.MODULE,
-        login: user.login,
+        login: user.credentials?.login,
       });
     }
 
@@ -116,18 +119,24 @@ export class UserAuthenticationService {
   private async findUserByIdentifier(identifier: string): Promise<User | null> {
     if (identifier.includes('@')) {
       return this.usersRepository.findOne({
-        where: { [USER_FIELDS.EMAIL]: identifier },
+        relations: {
+          credentials: true,
+        },
+        where: { credentials: { email: identifier } },
         select: selection,
       });
     }
     return this.usersRepository.findOne({
-      where: { [USER_FIELDS.LOGIN]: identifier },
+      relations: {
+        credentials: true,
+      },
+      where: { credentials: { login: identifier } },
       select: selection,
     });
   }
 
   private validateUserStatus(user: User, identifier: string): void {
-    if (!user.isActive) {
+    if (!user.state || user.state !== State.Active) {
       this.logger.logWarn(LOG_METADATA.MESSAGES.LOGIN_FAILED_INACTIVE, {
         module: LOG_METADATA.MODULE,
         action: LOG_METADATA.ACTIONS.LOGIN,
@@ -139,7 +148,10 @@ export class UserAuthenticationService {
   }
 
   private async validatePassword(password: string, user: User): Promise<void> {
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      user.credentials?.password,
+    );
     if (!isPasswordValid) {
       this.logger.logWarn(LOG_METADATA.MESSAGES.LOGIN_FAILED_PASSWORD, {
         module: LOG_METADATA.MODULE,
@@ -158,15 +170,15 @@ export class UserAuthenticationService {
     expiresAt.setDate(expiresAt.getDate() + TOKEN_EXPIRY_DAYS);
 
     await this.userSessionService.createSession(
-      user.login,
+      user.credentials.login,
       refreshToken,
       expiresAt,
     );
 
     this.logger.logAuth(LOG_METADATA.ACTIONS.LOGIN, user.id, {
       module: LOG_METADATA.MODULE,
-      email: user.email,
-      login: user.login,
+      email: user.credentials.email,
+      login: user.credentials.login,
     });
   }
 
@@ -175,24 +187,22 @@ export class UserAuthenticationService {
 
     const user = await this.usersRepository.findOne({
       where: { [USER_FIELDS.ID]: payload.sub },
-      select: [
-        USER_FIELDS.ID,
-        USER_FIELDS.LOGIN,
-        USER_FIELDS.EMAIL,
-        USER_FIELDS.IS_ACTIVE,
-      ],
+      relations: {
+        credentials: true,
+      },
+      select: [USER_FIELDS.ID],
     });
 
     if (!user) {
       throw new UnauthorizedException(USER_MESSAGES.INVALID_REFRESH_TOKEN);
     }
 
-    if (!user.isActive) {
+    if (!user.state !== State.Active) {
       throw new UnauthorizedException(USER_MESSAGES.ACCOUNT_DEACTIVATED);
     }
 
     const session = await this.userSessionService.findValidSession(
-      user.login,
+      user.credentials.login,
       refreshToken,
     );
 

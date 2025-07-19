@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { State } from 'src/entities/base.entity';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../../common/logger';
 import { User } from '../../entities/user.entity';
@@ -8,12 +9,8 @@ import { ChangePasswordDto } from '../dto/change-password.dto';
 
 const selection: (keyof User)[] = [
   'id',
-  'login',
-  'email',
-  'password',
   'firstName',
   'lastName',
-  'isActive',
   'createdAt',
   'updatedAt',
 ];
@@ -61,7 +58,7 @@ export class UserPasswordService {
       throw new UnauthorizedException('User not found');
     }
 
-    if (!user.isActive) {
+    if (!user.state !== State.Active) {
       throw new UnauthorizedException('Account is deactivated');
     }
 
@@ -74,7 +71,7 @@ export class UserPasswordService {
   ): Promise<void> {
     const isCurrentPasswordValid = await bcrypt.compare(
       currentPassword,
-      user.password,
+      user.credentials?.password,
     );
 
     if (!isCurrentPasswordValid) {
@@ -96,6 +93,8 @@ export class UserPasswordService {
   ): Promise<void> {
     const saltRounds = 12;
     const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
-    await this.usersRepository.update(userId, { password: hashedNewPassword });
+    await this.usersRepository.update(userId, {
+      credentials: { password: hashedNewPassword },
+    });
   }
 }

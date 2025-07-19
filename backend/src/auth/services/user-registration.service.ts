@@ -14,14 +14,17 @@ import {
   SECURITY,
   USER_FIELDS,
   USER_MESSAGES,
-  USER_REGISTRATION_LOG_METADATA
+  USER_REGISTRATION_LOG_METADATA,
 } from './constst';
+import { Credentials } from 'src/entities/credentials.entity';
 
 @Injectable()
 export class UserRegistrationService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+    @InjectRepository(Credentials)
+    private readonly credentialsRepository: Repository<Credentials>,
     private readonly userSessionService: UserSessionService,
     private readonly logger: LoggerService,
     private readonly eventEmitter: EventEmitter2,
@@ -50,7 +53,7 @@ export class UserRegistrationService {
     const tokens = await this.setupUserSession(user);
 
     // Remove password from response
-    const { password: _, ...userWithoutPassword } = user;
+    const { ...userWithoutPassword } = user;
 
     return {
       user: userWithoutPassword,
@@ -62,7 +65,7 @@ export class UserRegistrationService {
     email: string,
     login: string,
   ): Promise<void> {
-    const existingEmail = await this.usersRepository.findOne({
+    const existingEmail = await this.credentialsRepository.findOne({
       where: { [USER_FIELDS.EMAIL]: email },
     });
     if (existingEmail) {
@@ -78,7 +81,7 @@ export class UserRegistrationService {
       throw new ConflictException(USER_MESSAGES.EMAIL_IN_USE);
     }
 
-    const existingLogin = await this.usersRepository.findOne({
+    const existingLogin = await this.credentialsRepository.findOne({
       where: { [USER_FIELDS.LOGIN]: login },
     });
     if (existingLogin) {
@@ -99,11 +102,13 @@ export class UserRegistrationService {
     const { login, email, password, firstName, lastName } = registerDto;
 
     const hashedPassword = await bcrypt.hash(password, SECURITY.SALT_ROUNDS);
-
-    const user = this.usersRepository.create({
+    const credentials = this.credentialsRepository.create({
       login,
       email,
       password: hashedPassword,
+    });
+    const user = this.usersRepository.create({
+      credentials,
       firstName,
       lastName,
     });
@@ -124,8 +129,8 @@ export class UserRegistrationService {
       savedUser.id,
       {
         module: USER_REGISTRATION_LOG_METADATA.MODULE,
-        email: savedUser.email,
-        login: savedUser.login,
+        email: credentials.email,
+        login: credentials.login,
       },
     );
 
@@ -142,7 +147,7 @@ export class UserRegistrationService {
     expiresAt.setDate(expiresAt.getDate() + SECURITY.TOKEN_EXPIRY_DAYS);
 
     await this.userSessionService.createSession(
-      user.login,
+      user.credentials?.login ?? 'Unknown user login',
       refreshToken,
       expiresAt,
     );

@@ -4,24 +4,28 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { EntityWithAddress } from './bride/entityWithAddress.entity';
 import { UserRole } from './userRole.entity';
+import { Credentials } from './credentials.entity';
 
 @Entity()
 export class User extends EntityWithAddress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
-  login: string;
+  @OneToOne(() => Credentials, { cascade: true })
+  @JoinColumn()
+  credentials: Credentials;
+  // @Column({ unique: true })
+  // login: string;
 
-  @Column({ unique: true })
-  email: string;
+  // @Column({ unique: true })
+  // email: string;
 
-  @Column({ select: false }) // Don't include password in queries by default
-  password: string;
+  // @Column({ select: false }) // Don't include password in queries by default
+  // password: string;
 
   @Column({ nullable: true })
   firstName?: string;
@@ -38,5 +42,4 @@ export class User extends EntityWithAddress {
   @OneToOne(() => UserRole)
   @JoinColumn({ name: 'roleId', referencedColumnName: 'id' })
   role?: Promise<UserRole>;
-
 }
