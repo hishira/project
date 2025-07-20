@@ -1,9 +1,9 @@
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
   HttpException,
   HttpStatus,
+  Injectable,
 } from '@nestjs/common';
 import { Request } from 'express';
 

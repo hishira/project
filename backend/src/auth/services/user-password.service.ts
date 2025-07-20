@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { State } from 'src/entities/base.entity';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../../common/logger';
 import { User } from '../../entities/user.entity';
@@ -58,7 +57,7 @@ export class UserPasswordService {
       throw new UnauthorizedException('User not found');
     }
 
-    if (!user.state !== State.Active) {
+    if (user.isInactive()) {
       throw new UnauthorizedException('Account is deactivated');
     }
 

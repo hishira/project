@@ -9,23 +9,16 @@ import {
 import { EntityWithAddress } from './bride/entityWithAddress.entity';
 import { UserRole } from './userRole.entity';
 import { Credentials } from './credentials.entity';
+import { State } from './base.entity';
 
 @Entity()
 export class User extends EntityWithAddress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => Credentials, { cascade: true })
+  @OneToOne(() => Credentials, (c) => c.user)
   @JoinColumn()
   credentials: Credentials;
-  // @Column({ unique: true })
-  // login: string;
-
-  // @Column({ unique: true })
-  // email: string;
-
-  // @Column({ select: false }) // Don't include password in queries by default
-  // password: string;
 
   @Column({ nullable: true })
   firstName?: string;
@@ -42,4 +35,12 @@ export class User extends EntityWithAddress {
   @OneToOne(() => UserRole)
   @JoinColumn({ name: 'roleId', referencedColumnName: 'id' })
   role?: Promise<UserRole>;
+
+  isActive(): boolean {
+    return this.state === State.Active;
+  }
+
+  isInactive(): boolean {
+    return this.state !== State.Active;
+  }
 }

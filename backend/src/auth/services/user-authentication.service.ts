@@ -197,7 +197,7 @@ export class UserAuthenticationService {
       throw new UnauthorizedException(USER_MESSAGES.INVALID_REFRESH_TOKEN);
     }
 
-    if (!user.state !== State.Active) {
+    if (user.isInactive()) {
       throw new UnauthorizedException(USER_MESSAGES.ACCOUNT_DEACTIVATED);
     }
 

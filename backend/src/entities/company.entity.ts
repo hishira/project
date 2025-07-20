@@ -1,9 +1,9 @@
 import {
   Column,
   Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
   JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 import { EntityWithAddress } from './bride/entityWithAddress.entity';
 import { User } from './user.entity';
@@ -18,7 +18,7 @@ export class Company extends EntityWithAddress {
   @Column({ type: 'text', nullable: false })
   ownerId: string;
 
-  @OneToMany(() => User)
+  @OneToOne(() => User)
   @JoinColumn({ name: 'ownerId', referencedColumnName: 'id' })
-  users: Promise<User[]>;
+  user: Promise<User>;
 }

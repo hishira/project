@@ -3,6 +3,11 @@ import { User } from './user.entity';
 
 @Entity()
 export class Credentials {
+  constructor(login: string, email: string, password: string) {
+    this.login = login;
+    this.email = email;
+    this.password = password;
+  }
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column({ unique: true })
@@ -14,6 +19,6 @@ export class Credentials {
   @Column({ select: false }) // Don't include password in queries by default
   password: string;
 
-  @OneToOne(() => User, (user) => user.credentials)
+  @OneToOne(() => User, (user) => user.credentials, { cascade: true })
   user: User;
 }

@@ -8,14 +8,12 @@ import { LoggerService } from '../common/logger';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Credentials } from 'src/entities/credentials.entity';
 
 const selectVariables: (keyof User)[] = [
   'id',
-  'login',
-  'email',
   'firstName',
   'lastName',
-  'isActive',
   'createdAt',
   'updatedAt',
 ];
@@ -44,10 +42,15 @@ export class UsersService {
     // Hash password
     const saltRounds = 12;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const credentials = new Credentials(
+      userData.login,
+      userData.email,
+      hashedPassword,
+    );
 
     const user = this.usersRepository.create({
       ...userData,
-      password: hashedPassword,
+      credentials: credentials,
     });
 
     const savedUser = await this.usersRepository.save(user);
@@ -60,13 +63,13 @@ export class UsersService {
       module: 'UsersService',
       action: 'create',
       userId: savedUser.id,
-      email: savedUser.email,
-      login: savedUser.login,
+      email: savedUser.credentials.email,
+      login: savedUser.credentials.login,
     });
 
-    // Remove password from response
+    // Remove credentials from response
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, ...userWithoutPassword } = savedUser;
+    const { credentials: _, ...userWithoutPassword } = savedUser;
     return userWithoutPassword;
   }
 
@@ -80,14 +83,16 @@ export class UsersService {
 
   async findByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findOne({
-      where: { email },
+      relations: { credentials: true },
+      where: { credentials: { email } },
       select: selectVariables,
     });
   }
 
   async findByLogin(login: string): Promise<User | null> {
     return this.usersRepository.findOne({
-      where: { login },
+      relations: { credentials: true },
+      where: { credentials: { login } },
       select: selectVariables,
     });
   }
