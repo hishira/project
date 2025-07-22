@@ -1,6 +1,12 @@
 import { User } from 'src/entities/user.entity';
 
-export class JwtPayload {
+export abstract class Parser {
+  parseToObject(): object {
+    return JSON.parse(JSON.stringify(this as any)) as object;
+  }
+}
+
+export class JwtPayload extends Parser {
   readonly sub: string;
   readonly email: string;
   readonly login: string;
@@ -8,9 +14,10 @@ export class JwtPayload {
   readonly exp?: number;
 
   private constructor(user: User) {
+    super();
     this.sub = user.id;
-    this.email = user.email;
-    this.login = user.login;
+    this.email = user?.credentials.email;
+    this.login = user?.credentials.login;
   }
   static fromUser(user: User): JwtPayload {
     const payload = new JwtPayload(user);

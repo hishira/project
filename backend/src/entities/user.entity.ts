@@ -3,23 +3,26 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { EntityWithAddress } from './bride/entityWithAddress.entity';
-import { UserRole } from './userRole.entity';
 import { Credentials } from './credentials.entity';
-import { State } from './base.entity';
+import { UserRole } from './userRole.entity';
 
 @Entity()
 export class User extends EntityWithAddress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => Credentials, (c) => c.user)
-  @JoinColumn()
+  @OneToOne(() => Credentials, (c) => c.user, { cascade: true })
+  @JoinColumn({ name: 'credentialsId', referencedColumnName: 'id' })
   credentials: Credentials;
 
+  @Column()
+  credentialsId: string;
+  
   @Column({ nullable: true })
   firstName?: string;
 
@@ -35,5 +38,4 @@ export class User extends EntityWithAddress {
   @OneToOne(() => UserRole)
   @JoinColumn({ name: 'roleId', referencedColumnName: 'id' })
   role?: Promise<UserRole>;
-
 }

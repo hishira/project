@@ -31,15 +31,18 @@ export abstract class BaseEntity extends BEntity {
   updatedAt: Date;
 
   @Column({
-    type: 'enum',
+    type: 'varchar',
     enum: State,
     default: State.Active,
     transformer: {
       from(value: State): StateClass {
         return new StateClass(value);
       },
-      to(value: StateClass): State {
-        return value.state || State.Unknown;
+      to(value: StateClass | State): State {
+        if (value instanceof StateClass) {
+          return value.state;
+        }
+        return value;
       },
     },
   })

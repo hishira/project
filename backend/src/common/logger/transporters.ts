@@ -1,6 +1,6 @@
 import * as winston from 'winston';
-import TransportStream from 'winston-transport';
 import LokiTransport from 'winston-loki';
+import TransportStream from 'winston-transport';
 
 export class Transporters {
   static readonly fileFormat = winston.format.combine(

@@ -1,4 +1,4 @@
-import { ChildEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from './base.entity';
 
 @Entity()
@@ -13,9 +13,6 @@ export class Address extends BaseEntity {
   city: string;
 
   @Column({ nullable: false })
-  state: string;
-
-  @Column({ nullable: false })
   postalCode: string;
 
   @Column({ nullable: true })
@@ -23,5 +20,4 @@ export class Address extends BaseEntity {
 
   @Column({ nullable: true })
   country?: string;
-
 }

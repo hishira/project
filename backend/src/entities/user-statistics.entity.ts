@@ -45,9 +45,9 @@ export class UserStatistics {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userLogin', referencedColumnName: 'login' })
-  user: User;
+  // @OneToOne(() => User, { onDelete: 'CASCADE' })
+  // @JoinColumn({ name: 'userLogin', referencedColumnName: 'login' })
+  // user: User;
 
   @Column({ unique: true })
   userLogin: string;

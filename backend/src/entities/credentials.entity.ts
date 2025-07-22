@@ -1,5 +1,4 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from './user.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Credentials {
@@ -10,6 +9,7 @@ export class Credentials {
   }
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
   @Column({ unique: true })
   login: string;
 
@@ -18,7 +18,4 @@ export class Credentials {
 
   @Column({ select: false }) // Don't include password in queries by default
   password: string;
-
-  @OneToOne(() => User, (user) => user.credentials, { cascade: true })
-  user: User;
 }

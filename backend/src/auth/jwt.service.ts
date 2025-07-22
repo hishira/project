@@ -15,8 +15,8 @@ export class LocalJwtService {
   } {
     const payload: JwtPayload = JwtPayload.fromUser(user);
 
-    const access_token = this.jwtService.sign(payload);
-    const refresh_token = this.jwtService.sign(payload, { expiresIn: '7d' });
+    const access_token = this.jwtService.sign(payload.parseToObject());
+    const refresh_token = this.jwtService.sign(payload.parseToObject(), { expiresIn: '7d' });
 
     return {
       accessToken: access_token,

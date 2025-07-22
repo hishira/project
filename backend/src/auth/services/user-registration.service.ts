@@ -113,6 +113,8 @@ export class UserRegistrationService {
       lastName,
     });
 
+    user.credentials = credentials;
+
     const savedUser = await this.usersRepository.save(user);
 
     this.eventEmitter.emit(
