@@ -2,13 +2,13 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { RegisterDto } from './dto/register.dto';
 import { UserAuthenticationService } from './services/user-authentication.service';
-import { UserRegistrationService } from './services/user-registration.service';
 import { UserPasswordService } from './services/user-password.service';
+import { UserRegistrationService } from './services/user-registration.service';
 
 @Injectable()
 export class AuthService {

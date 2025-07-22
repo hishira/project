@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { State } from 'src/entities/base.entity';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../../common/logger';
 import { User } from '../../entities/user.entity';
@@ -136,7 +135,7 @@ export class UserAuthenticationService {
   }
 
   private validateUserStatus(user: User, identifier: string): void {
-    if (!user.state || user.state !== State.Active) {
+    if (!user.state || user.state.isInactive()) {
       this.logger.logWarn(LOG_METADATA.MESSAGES.LOGIN_FAILED_INACTIVE, {
         module: LOG_METADATA.MODULE,
         action: LOG_METADATA.ACTIONS.LOGIN,
@@ -197,7 +196,7 @@ export class UserAuthenticationService {
       throw new UnauthorizedException(USER_MESSAGES.INVALID_REFRESH_TOKEN);
     }
 
-    if (user.isInactive()) {
+    if (user.state.isInactive()) {
       throw new UnauthorizedException(USER_MESSAGES.ACCOUNT_DEACTIVATED);
     }
 

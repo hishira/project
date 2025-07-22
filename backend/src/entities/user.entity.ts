@@ -36,11 +36,4 @@ export class User extends EntityWithAddress {
   @JoinColumn({ name: 'roleId', referencedColumnName: 'id' })
   role?: Promise<UserRole>;
 
-  isActive(): boolean {
-    return this.state === State.Active;
-  }
-
-  isInactive(): boolean {
-    return this.state !== State.Active;
-  }
 }

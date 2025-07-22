@@ -57,7 +57,7 @@ export class UserPasswordService {
       throw new UnauthorizedException('User not found');
     }
 
-    if (user.isInactive()) {
+    if (user.state.isInactive()) {
       throw new UnauthorizedException('Account is deactivated');
     }
 
