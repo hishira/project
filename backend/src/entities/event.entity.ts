@@ -15,6 +15,9 @@ export class Event extends BaseEntity {
   @Column()
   name: string;
 
+  @Column({ type: 'text', nullable: true, default: null })
+  description?: string;
+
   @Column({ type: 'text', enum: EventType })
   type: EventType;
 

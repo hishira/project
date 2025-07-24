@@ -68,10 +68,9 @@ export class UserPasswordService {
     currentPassword: string,
     user: User,
   ): Promise<void> {
-    const isCurrentPasswordValid = await bcrypt.compare(
-      currentPassword,
-      user.credentials?.password,
-    );
+    // const isCurrentPasswordValid = await bcrypt.compare(
+    //   currentPassword,
+    const isCurrentPasswordValid = await user?.credentials?.validatePassword(currentPassword);
 
     if (!isCurrentPasswordValid) {
       this.logger.logWarn(

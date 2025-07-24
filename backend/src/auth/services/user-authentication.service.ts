@@ -147,10 +147,7 @@ export class UserAuthenticationService {
   }
 
   private async validatePassword(password: string, user: User): Promise<void> {
-    const isPasswordValid = await bcrypt.compare(
-      password,
-      user.credentials?.password,
-    );
+    const isPasswordValid = await user?.credentials?.validatePassword(password);
     if (!isPasswordValid) {
       this.logger.logWarn(LOG_METADATA.MESSAGES.LOGIN_FAILED_PASSWORD, {
         module: LOG_METADATA.MODULE,
