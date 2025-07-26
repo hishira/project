@@ -20,4 +20,10 @@ export class Address extends BaseEntity {
 
   @Column({ nullable: true })
   country?: string;
+
+  @Column({ nullable: true, default: null })
+  lng?: number;
+
+  @Column({ nullable: true, default: null })
+  lat?: number;
 }

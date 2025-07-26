@@ -22,6 +22,8 @@ export class UserPasswordStrategyHash implements PasswordStrategyHash {
     return bcrypt.compare(password, hashedPassword);
   }
 }
+
+// TODO change logic
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export abstract class Credentials {

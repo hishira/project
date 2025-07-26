@@ -3,7 +3,7 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { EntityWithAddress } from './bride/entityWithAddress.entity';
 import { User } from './user.entity';
