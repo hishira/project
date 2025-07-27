@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, LessThan, MoreThan } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import { LessThan, MoreThan, Repository } from 'typeorm';
 import { UserSession } from '../entities/user-session.entity';
 
 @Injectable()
@@ -22,16 +21,17 @@ export class UserSessionService {
     ipAddress?: string,
   ): Promise<UserSession> {
     // Hash the refresh token before storing
-    const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+    ///const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
 
     const session = this.userSessionRepository.create({
       userLogin,
-      refreshToken: hashedRefreshToken,
+      refreshToken,
       expiresAt,
       userAgent,
       ipAddress,
     });
 
+    await session.hashToken(); // Hash the token before saving
     return this.userSessionRepository.save(session);
   }
 
@@ -57,10 +57,7 @@ export class UserSessionService {
     // Check each session to find a matching refresh token
     for (const session of sessions) {
       try {
-        const isValid = await bcrypt.compare(
-          refreshToken,
-          session.refreshToken,
-        );
+        const isValid = await session.isValidToken(refreshToken);
         if (isValid && session.expiresAt > new Date()) {
           return session;
         }
@@ -81,7 +78,7 @@ export class UserSessionService {
     newRefreshToken: string,
     newExpiresAt: Date,
   ): Promise<void> {
-    const hashedRefreshToken = await bcrypt.hash(newRefreshToken, 10);
+    const hashedRefreshToken = await UserSession.hashToken(newRefreshToken);
 
     await this.userSessionRepository.update(sessionId, {
       refreshToken: hashedRefreshToken,

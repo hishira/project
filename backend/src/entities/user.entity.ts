@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { EntityWithAddress } from './bride/entityWithAddress.entity';
-import { Credentials, UserCredentials } from './credentials.entity';
+import { UserCredentials } from './credentials.entity';
 import { UserRole } from './userRole.entity';
 
 @Entity()
@@ -17,7 +17,7 @@ export class User extends EntityWithAddress {
 
   @OneToOne(() => UserCredentials, { cascade: true })
   @JoinColumn({ name: 'credentialsId', referencedColumnName: 'id' })
-  credentials: Credentials;
+  credentials: UserCredentials;
 
   @Column()
   credentialsId: string;

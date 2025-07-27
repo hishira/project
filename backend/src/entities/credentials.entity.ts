@@ -38,15 +38,23 @@ export abstract class Credentials {
 
   @Column({ select: false }) // Don't include password in queries by default
   password: string;
-
-  abstract validatePassword(password: string): Promise<boolean>;
-  abstract createHashedPassword(password: string): Promise<string>;
 }
 
 @ChildEntity()
 export class UserCredentials extends Credentials {
   private readonly saltRounds = 12;
-  passwordStrategyHash: PasswordStrategyHash = new UserPasswordStrategyHash();
+  static readonly passwordStrategyHash: PasswordStrategyHash =
+    new UserPasswordStrategyHash();
+
+  static async Create(
+    login: string,
+    email: string,
+    password: string,
+  ): Promise<UserCredentials> {
+    const hashedPassword = await this.createHashedPassword(password);
+    return new this(login, email, hashedPassword);
+  }
+
   constructor(login: string, email: string, password: string) {
     super();
     this.login = login;
@@ -54,11 +62,23 @@ export class UserCredentials extends Credentials {
     this.password = password;
   }
 
-  override validatePassword(password: string): Promise<boolean> {
-    return this.passwordStrategyHash?.validatePassword(password, this.password);
+  async updatePassowrd(password: string): Promise<void> {
+    this.password = await UserCredentials.createHashedPassword(password);
+  }
+  validatePassword(password: string): Promise<boolean> {
+    return UserCredentials._validatePassword(password, this.password);
+  }
+  private static _validatePassword(
+    password: string,
+    currentPassword: string,
+  ): Promise<boolean> {
+    return this.passwordStrategyHash?.validatePassword(
+      password,
+      currentPassword,
+    );
   }
 
-  override createHashedPassword(password: string): Promise<string> {
+  private static createHashedPassword(password: string): Promise<string> {
     return this.passwordStrategyHash?.createHashedPassword(password);
   }
 }

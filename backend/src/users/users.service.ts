@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
+import { UserCredentials } from 'src/entities/credentials.entity';
 import { CreateEventPayload } from 'src/events/events.service';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../common/logger';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Credentials } from 'src/entities/credentials.entity';
 
 const selectVariables: (keyof User)[] = [
   'id',
@@ -39,15 +38,11 @@ export class UsersService {
       login: userData.login,
     });
 
-    // Hash password
-    const saltRounds = 12;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const credentials = new Credentials(
+    const credentials = await UserCredentials.Create(
       userData.login,
       userData.email,
-      hashedPassword,
+      password,
     );
-
     const user = this.usersRepository.create({
       ...userData,
       credentials: credentials,

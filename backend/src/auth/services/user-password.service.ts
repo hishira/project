@@ -1,6 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../../common/logger';
 import { User } from '../../entities/user.entity';
@@ -36,7 +35,7 @@ export class UserPasswordService {
 
     const user = await this.validateUser(userId);
     await this.validateCurrentPassword(currentPassword, user);
-    await this.updatePassword(userId, newPassword);
+    await this.updatePassword(user, newPassword);
 
     this.logger.logSecurity('Password changed successfully', 'medium', {
       module: 'UserPasswordService',
@@ -68,9 +67,8 @@ export class UserPasswordService {
     currentPassword: string,
     user: User,
   ): Promise<void> {
-    // const isCurrentPasswordValid = await bcrypt.compare(
-    //   currentPassword,
-    const isCurrentPasswordValid = await user?.credentials?.validatePassword(currentPassword);
+    const isCurrentPasswordValid =
+      await user?.credentials?.validatePassword(currentPassword);
 
     if (!isCurrentPasswordValid) {
       this.logger.logWarn(
@@ -85,14 +83,8 @@ export class UserPasswordService {
     }
   }
 
-  private async updatePassword(
-    userId: string,
-    newPassword: string,
-  ): Promise<void> {
-    const saltRounds = 12;
-    const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
-    await this.usersRepository.update(userId, {
-      credentials: { password: hashedNewPassword },
-    });
+  private async updatePassword(user: User, newPassword: string): Promise<void> {
+    await user?.credentials?.updatePassowrd(newPassword);
+    await this.usersRepository.save(user);
   }
 }

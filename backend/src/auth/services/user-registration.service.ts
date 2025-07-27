@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
+import { Credentials, UserCredentials } from 'src/entities/credentials.entity';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../../common/logger';
 import { User } from '../../entities/user.entity';
@@ -16,7 +16,6 @@ import {
   USER_MESSAGES,
   USER_REGISTRATION_LOG_METADATA,
 } from './constst';
-import { Credentials } from 'src/entities/credentials.entity';
 
 @Injectable()
 export class UserRegistrationService {
@@ -101,12 +100,11 @@ export class UserRegistrationService {
   private async createUser(registerDto: RegisterDto): Promise<User> {
     const { login, email, password, firstName, lastName } = registerDto;
 
-    const hashedPassword = await bcrypt.hash(password, SECURITY.SALT_ROUNDS);
-    const credentials = this.credentialsRepository.create({
+    const credentials: UserCredentials = await UserCredentials.Create(
       login,
       email,
-      password: hashedPassword,
-    });
+      password,
+    );
     const user = this.usersRepository.create({
       credentials,
       firstName,
