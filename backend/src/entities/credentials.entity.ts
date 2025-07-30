@@ -29,20 +29,10 @@ export class UserPasswordStrategyHash implements PasswordStrategyHash {
 export abstract class Credentials {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ unique: true })
-  login: string;
-
-  @Column({ unique: true })
-  email: string;
-
-  @Column({ select: false }) // Don't include password in queries by default
-  password: string;
 }
 
 @ChildEntity()
 export class UserCredentials extends Credentials {
-  private readonly saltRounds = 12;
   static readonly passwordStrategyHash: PasswordStrategyHash =
     new UserPasswordStrategyHash();
 
@@ -54,6 +44,15 @@ export class UserCredentials extends Credentials {
     const hashedPassword = await this.createHashedPassword(password);
     return new this(login, email, hashedPassword);
   }
+
+  @Column({ unique: true })
+  login: string;
+
+  @Column({ unique: true })
+  email: string;
+
+  @Column({ select: false }) // Don't include password in queries by default
+  password: string;
 
   constructor(login: string, email: string, password: string) {
     super();

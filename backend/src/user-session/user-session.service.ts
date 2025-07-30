@@ -20,9 +20,6 @@ export class UserSessionService {
     userAgent?: string,
     ipAddress?: string,
   ): Promise<UserSession> {
-    // Hash the refresh token before storing
-    ///const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
-
     const session = this.userSessionRepository.create({
       userLogin,
       refreshToken,
