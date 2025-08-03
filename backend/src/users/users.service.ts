@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserCredentials } from 'src/entities/credentials.entity';
+import { UserCredentialsBuilder } from 'src/builders/credentials.builder';
 import { CreateEventPayload } from 'src/events/events.service';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../common/logger';
@@ -38,11 +38,13 @@ export class UsersService {
       login: userData.login,
     });
 
-    const credentials = await UserCredentials.Create(
-      userData.login,
-      userData.email,
-      password,
-    );
+    const credentials = (
+      await new UserCredentialsBuilder()
+        .setEmail(userData.email)
+        .setLogin(userData.login)
+        .setPassword(password)
+        .hashPassword()
+    ).build();
     const user = this.usersRepository.create({
       ...userData,
       credentials: credentials,

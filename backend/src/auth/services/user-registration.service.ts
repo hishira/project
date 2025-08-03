@@ -1,7 +1,8 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Credentials, UserCredentials } from 'src/entities/credentials.entity';
+import { UserCredentialsBuilder } from 'src/builders/credentials.builder';
+import { UserCredentials } from 'src/entities/user-credentials.entity';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../../common/logger';
 import { User } from '../../entities/user.entity';
@@ -22,8 +23,8 @@ export class UserRegistrationService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-    @InjectRepository(Credentials)
-    private readonly credentialsRepository: Repository<Credentials>,
+    @InjectRepository(UserCredentials)
+    private readonly credentialsRepository: Repository<UserCredentials>,
     private readonly userSessionService: UserSessionService,
     private readonly logger: LoggerService,
     private readonly eventEmitter: EventEmitter2,
@@ -100,11 +101,13 @@ export class UserRegistrationService {
   private async createUser(registerDto: RegisterDto): Promise<User> {
     const { login, email, password, firstName, lastName } = registerDto;
 
-    const credentials: UserCredentials = await UserCredentials.Create(
-      login,
-      email,
-      password,
-    );
+    const credentials = (
+      await new UserCredentialsBuilder()
+        .setEmail(email)
+        .setLogin(login)
+        .setPassword(password)
+        .hashPassword()
+    ).build();
     const user = this.usersRepository.create({
       credentials,
       firstName,

@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { LoggerService } from '../../common/logger';
 import { User } from '../../entities/user.entity';
 import { ChangePasswordDto } from '../dto/change-password.dto';
+import { UserCredentialsBuilder } from 'src/builders/credentials.builder';
 
 const selection: (keyof User)[] = [
   'id',
@@ -67,10 +68,11 @@ export class UserPasswordService {
     currentPassword: string,
     user: User,
   ): Promise<void> {
-    const isCurrentPasswordValid =
-      await user?.credentials?.validatePassword(currentPassword);
+    const isAuthenticated = await user?.credentials?.authenticate({
+      password: currentPassword,
+    });
 
-    if (!isCurrentPasswordValid) {
+    if (!isAuthenticated) {
       this.logger.logWarn(
         'Password change failed: incorrect current password',
         {
@@ -84,7 +86,14 @@ export class UserPasswordService {
   }
 
   private async updatePassword(user: User, newPassword: string): Promise<void> {
-    await user?.credentials?.updatePassowrd(newPassword);
+    // TODO: Change
+    user.credentials = (
+      await new UserCredentialsBuilder()
+        .setEmail(user.credentials.email)
+        .setLogin(user.credentials.login)
+        .setPassword(newPassword)
+        .hashPassword()
+    ).build();
     await this.usersRepository.save(user);
   }
 }

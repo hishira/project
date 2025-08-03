@@ -14,10 +14,11 @@ import { UserPasswordService } from './services/user-password.service';
 import { UserRegistrationService } from './services/user-registration.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { Credentials } from 'src/entities/credentials.entity';
+import { UserCredentials } from 'src/entities/user-credentials.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Credentials]),
+    TypeOrmModule.forFeature([User, Credentials, UserCredentials]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.JWT_SECRET ?? 'your-secret-key-change-in-production',

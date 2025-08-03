@@ -1,6 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../../common/logger';
 import { User } from '../../entities/user.entity';
@@ -147,8 +146,7 @@ export class UserAuthenticationService {
   }
 
   private async validatePassword(password: string, user: User): Promise<void> {
-    const isPasswordValid = await user?.credentials?.validatePassword(password);
-    if (!isPasswordValid) {
+    if (!(await user?.credentials?.authenticate({ password }))) {
       this.logger.logWarn(LOG_METADATA.MESSAGES.LOGIN_FAILED_PASSWORD, {
         module: LOG_METADATA.MODULE,
         action: LOG_METADATA.ACTIONS.LOGIN,

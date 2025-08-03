@@ -12,6 +12,7 @@ import { User } from './user.entity';
 export class Company extends EntityWithAddress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
   @Column({ unique: true })
   name: string;
 

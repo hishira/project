@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { EntityWithAddress } from './bride/entityWithAddress.entity';
-import { UserCredentials } from './credentials.entity';
 import { UserRole } from './userRole.entity';
+import { UserCredentials } from './user-credentials.entity';
 
 @Entity()
 export class User extends EntityWithAddress {
@@ -19,7 +19,7 @@ export class User extends EntityWithAddress {
   @JoinColumn({ name: 'credentialsId', referencedColumnName: 'id' })
   credentials: UserCredentials;
 
-  @Column()
+  @Column({ select: false })
   credentialsId: string;
 
   @Column({ nullable: true })

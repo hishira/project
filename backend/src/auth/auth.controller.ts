@@ -1,24 +1,24 @@
 import {
-  Controller,
-  Post,
   Body,
+  Controller,
+  Delete,
+  Get,
   HttpCode,
   HttpStatus,
-  Get,
-  Request,
-  Patch,
-  UseGuards,
-  Delete,
   Param,
+  Patch,
+  Post,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
-import { RefreshTokenDto } from './dto/refresh-token.dto';
-import { Public } from './decorators/public.decorator';
-import { RateLimitGuard } from './guards/rate-limit.guard';
 import { UserSessionService } from '../user-session/user-session.service';
+import { AuthService } from './auth.service';
+import { Public } from './decorators/public.decorator';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { LoginDto } from './dto/login.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { RegisterDto } from './dto/register.dto';
+import { RateLimitGuard } from './guards/rate-limit.guard';
 
 interface AuthenticatedRequest extends Request {
   user: {
@@ -30,7 +30,7 @@ interface AuthenticatedRequest extends Request {
 
 @Controller('auth')
 export class AuthController {
-  private readonly loginRateLimit = 5;//15 * 60 * 1000;
+  private readonly loginRateLimit = 5; //15 * 60 * 1000;
   constructor(
     private readonly authService: AuthService,
     private readonly userSessionService: UserSessionService,
