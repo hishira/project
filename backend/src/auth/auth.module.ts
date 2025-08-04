@@ -15,6 +15,7 @@ import { UserRegistrationService } from './services/user-registration.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { Credentials } from 'src/entities/credentials.entity';
 import { UserCredentials } from 'src/entities/user-credentials.entity';
+import { AuthenticationService } from './services/authentication.service';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { UserCredentials } from 'src/entities/user-credentials.entity';
     UserAuthenticationService,
     UserPasswordService,
     UserRegistrationService,
+    AuthenticationService,
   ],
   controllers: [AuthController],
   exports: [AuthService, JwtAuthGuard],

@@ -15,6 +15,7 @@ import {
   USER_FIELDS,
   USER_MESSAGES,
 } from './constst';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable()
 export class UserAuthenticationService {
@@ -24,6 +25,7 @@ export class UserAuthenticationService {
     private readonly userSessionService: UserSessionService,
     private readonly logger: LoggerService,
     private readonly jwt: LocalJwtService,
+    private readonly authenticationService: AuthenticationService,
   ) {}
 
   async login(loginDto: LoginDto): Promise<{
@@ -51,8 +53,9 @@ export class UserAuthenticationService {
     }
 
     this.validateUserStatus(user, identifier);
-    await this.validatePassword(password, user);
-
+    await this.authenticationService.authenticate(user.credentials, {
+      password,
+    });
     const { accessToken: access_token, refreshToken: refresh_token } =
       this.jwt.prepareTokens(user);
 
