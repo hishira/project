@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
   }
 
   passwordHide(): void {
-    this.hidePassword.update(hide=>!hide);
+    this.hidePassword.update((hide) => !hide);
   }
 
   ngOnInit(): void {

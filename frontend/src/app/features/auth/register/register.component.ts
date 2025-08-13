@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  FormControl,
+} from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,10 +32,10 @@ import { RegisterDto } from '../../../shared/models/auth.model';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
   templateUrl: './register.component.html',
-  styleUrl: './registe.component.scss'
+  styleUrl: './registe.component.scss',
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
@@ -37,28 +44,33 @@ export class RegisterComponent implements OnInit {
   isLoading = false;
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private snackBar: MatSnackBar
+    private readonly  authService: AuthService,
+    private readonly router: Router,
+    private readonly snackBar: MatSnackBar
   ) {
-    this.registerForm = this.fb.group({
-      firstName: [''],
-      lastName: [''],
-      login: ['', [
+    this.registerForm = new FormGroup({
+      firstName: new FormControl(''),
+      lastName: new FormControl(''),
+      login: new FormControl('', [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(50),
-        Validators.pattern(/^[a-zA-Z0-9_-]+$/)
-      ]],
-      email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
-      password: ['', [
+        Validators.pattern(/^[a-zA-Z0-9_-]+$/),
+      ]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email,
+        Validators.maxLength(255),
+      ]),
+      password: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)
-      ]],
-      confirmPassword: ['', Validators.required]
-    }, { validators: this.passwordMatchValidator });
+        Validators.pattern(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/
+        ),
+      ]),
+      confirmPassword: new FormControl('', [Validators.required]),
+    });
   }
 
   ngOnInit(): void {
@@ -68,14 +80,16 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
+  passwordMatchValidator(
+    control: AbstractControl
+  ): { [key: string]: boolean } | null {
     const password = control.get('password');
     const confirmPassword = control.get('confirmPassword');
-    
+
     if (!password || !confirmPassword) {
       return null;
     }
-    
+
     if (password.value !== confirmPassword.value) {
       confirmPassword.setErrors({ passwordMismatch: true });
       return { passwordMismatch: true };
@@ -88,26 +102,34 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     if (this.registerForm.valid && !this.isLoading) {
       this.isLoading = true;
-      
+
       const { confirmPassword, ...registerData } = this.registerForm.value;
       const registerDto: RegisterDto = registerData;
 
       this.authService.register(registerDto).subscribe({
         next: (response) => {
           this.isLoading = false;
-          this.snackBar.open('Registration successful! Welcome to Sports Activity Diary!', 'Close', {
-            duration: 5000,
-            panelClass: ['success-snackbar']
-          });
+          this.snackBar.open(
+            'Registration successful! Welcome to Sports Activity Diary!',
+            'Close',
+            {
+              duration: 5000,
+              panelClass: ['success-snackbar'],
+            }
+          );
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           this.isLoading = false;
-          this.snackBar.open(error || 'Registration failed. Please try again.', 'Close', {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
-        }
+          this.snackBar.open(
+            error || 'Registration failed. Please try again.',
+            'Close',
+            {
+              duration: 5000,
+              panelClass: ['error-snackbar'],
+            }
+          );
+        },
       });
     }
   }
