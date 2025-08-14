@@ -65,11 +65,11 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Password</mat-label>
-          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+          <input matInput [type]="passwordType()" formControlName="password"
             placeholder="Enter your password">
-          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword"
-            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <button mat-icon-button matSuffix type="button" (click)="updateHidePassword()"
+            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword()">
+            <mat-icon>{{iconVisibility()}}</mat-icon>
           </button>
           @if(registerForm.get('password')?.hasError('required')){
             <mat-error>

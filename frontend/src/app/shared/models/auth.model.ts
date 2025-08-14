@@ -21,18 +21,20 @@ export interface RefreshTokenDto {
 }
 
 export interface AuthResponse {
-  user: {
-    id: string;
-    login: string;
-    email: string;
-    firstName?: string;
-    lastName?: string;
-    isActive: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-  };
+  user: User
   access_token: string;
   refresh_token: string;
+}
+
+export interface User {
+  id: string;
+  credentials: any;
+  credentialsId: string;
+  firstName?: string;
+  lastName?: string;
+  userType: any;
+  roleId: any;
+  role?: any;
 }
 
 export interface UserSession {

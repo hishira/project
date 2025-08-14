@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Signal,
+  WritableSignal,
+  computed,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -39,12 +46,16 @@ import { RegisterDto } from '../../../shared/models/auth.model';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
-  hidePassword = true;
+  hidePassword: WritableSignal<boolean> = signal(true);
+  passwordType: Signal<'password' | 'text'> = computed(
+    ()=>this.hidePassword() ? 'password' : 'text'
+  );
+  iconVisibility: Signal<'visibility_off' | 'visibility'> = computed(()=>this.hidePassword() ? 'visibility_off' : 'visibility');
   hideConfirmPassword = true;
   isLoading = false;
 
   constructor(
-    private readonly  authService: AuthService,
+    private readonly authService: AuthService,
     private readonly router: Router,
     private readonly snackBar: MatSnackBar
   ) {
@@ -71,6 +82,10 @@ export class RegisterComponent implements OnInit {
       ]),
       confirmPassword: new FormControl('', [Validators.required]),
     });
+  }
+
+  updateHidePassword(): void {
+    this.hidePassword.update((hide)=>!hide);
   }
 
   ngOnInit(): void {

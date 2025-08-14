@@ -9,10 +9,12 @@ import {
   ChangePasswordDto,
   RefreshTokenDto,
   AuthResponse,
-  UserSession
+  UserSession,
+  User
 } from '../../shared/models/auth.model';
-import { User } from '../../shared/models/user.model';
 import { environment } from '../../../environments/environment';
+import { Store } from '@ngrx/store';
+import { UserActions } from '../../store/user';
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +32,9 @@ export class AuthService {
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor(
-    private http: HttpClient,
-    private router: Router
+    private readonly http: HttpClient,
+    private readonly router: Router,
+    private readonly store: Store
   ) {
     // Check token validity on service initialization
     this.validateStoredToken();
@@ -148,6 +151,7 @@ export class AuthService {
     this.setToken(response.access_token);
     this.setRefreshToken(response.refresh_token);
     this.setUser(response.user);
+    this.store.dispatch(UserActions.set(response.user))
     this.currentUserSubject.next(response.user);
     this.isAuthenticatedSubject.next(true);
   }
