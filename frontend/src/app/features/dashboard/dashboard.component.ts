@@ -414,7 +414,7 @@ import { User } from '../../shared/models/user.model';
   `]
 })
 export class DashboardComponent implements OnInit {
-  currentUser: User | null = null;
+  currentUser: any = null;
   recentActivities: Activity[] = [];
   statistics: UserStatistics | null = null;
   overviewData: any = null;

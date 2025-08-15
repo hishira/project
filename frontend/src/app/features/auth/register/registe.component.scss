@@ -1,4 +1,14 @@
 :host {
+  .mat-mdc-form-field-error-wrapper {
+    position: relative !important;
+  }
+  ::ng-deep {
+    & mat-form-field {
+      & div.mat-mdc-form-field-error-wrapper {
+        position: relative !important;
+      }
+    }
+  }
   .auth-container {
     display: flex;
     justify-content: center;

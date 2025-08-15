@@ -63,7 +63,7 @@
           }
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" class="full-width poosition-relative">
           <mat-label>Password</mat-label>
           <input matInput [type]="passwordType()" formControlName="password"
             placeholder="Enter your password">
@@ -72,12 +72,12 @@
             <mat-icon>{{iconVisibility()}}</mat-icon>
           </button>
           @if(registerForm.get('password')?.hasError('required')){
-            <mat-error>
+            <mat-error >
               Password is required
             </mat-error>
           }
           @if(registerForm.get('password')?.hasError('minlength')){
-            <mat-error>
+            <mat-error >
               Password must be at least 8 characters long
             </mat-error>
           }
@@ -94,11 +94,11 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Confirm Password</mat-label>
-          <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword"
+          <input matInput [type]="confirmPasswordType()" formControlName="confirmPassword"
             placeholder="Confirm your password">
-          <button mat-icon-button matSuffix type="button" (click)="hideConfirmPassword = !hideConfirmPassword"
-            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
-            <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <button mat-icon-button matSuffix type="button" (click)="updateConfirmHidePassword()"
+            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword()">
+            <mat-icon>{{confirmIconVisibility()}}</mat-icon>
           </button>
           @if(registerForm.get('confirmPassword')?.hasError('required')){
             <mat-error>

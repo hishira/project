@@ -10,14 +10,14 @@ import {
   RefreshTokenDto,
   AuthResponse,
   UserSession,
-  User
+  User,
 } from '../../shared/models/auth.model';
 import { environment } from '../../../environments/environment';
 import { Store } from '@ngrx/store';
 import { UserActions } from '../../store/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private readonly API_URL = environment.apiUrl || 'http://localhost:3000';
@@ -25,10 +25,14 @@ export class AuthService {
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
   private readonly USER_KEY = 'current_user';
 
-  private currentUserSubject = new BehaviorSubject<User | null>(this.getUserFromStorage());
+  private currentUserSubject = new BehaviorSubject<User | null>(
+    this.getUserFromStorage()
+  );
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasValidToken());
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(
+    this.hasValidToken()
+  );
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor(
@@ -42,31 +46,32 @@ export class AuthService {
 
   // Authentication methods
   register(registerDto: RegisterDto): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/auth/register`, registerDto)
+    return this.http
+      .post<AuthResponse>(`${this.API_URL}/auth/register`, registerDto)
       .pipe(
-        tap(response => this.handleAuthSuccess(response)),
+        tap((response) => this.handleAuthSuccess(response)),
         catchError(this.handleError)
       );
   }
 
   login(loginDto: LoginDto): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/auth/login`, loginDto)
+    return this.http
+      .post<AuthResponse>(`${this.API_URL}/auth/login`, loginDto)
       .pipe(
-        tap(response => this.handleAuthSuccess(response)),
+        tap((response) => this.handleAuthSuccess(response)),
         catchError(this.handleError)
       );
   }
 
   logout(): Observable<void> {
-    return this.http.post<void>(`${this.API_URL}/auth/logout`, {})
-      .pipe(
-        tap(() => this.handleLogout()),
-        catchError(() => {
-          // Even if logout fails on server, clear local storage
-          this.handleLogout();
-          return throwError('Logout failed on server');
-        })
-      );
+    return this.http.post<void>(`${this.API_URL}/auth/logout`, {}).pipe(
+      tap(() => this.handleLogout()),
+      catchError(() => {
+        // Even if logout fails on server, clear local storage
+        this.handleLogout();
+        return throwError('Logout failed on server');
+      })
+    );
   }
 
   refreshToken(): Observable<AuthResponse> {
@@ -76,50 +81,60 @@ export class AuthService {
     }
 
     const refreshDto: RefreshTokenDto = { refresh_token: refreshToken };
-    return this.http.post<AuthResponse>(`${this.API_URL}/auth/refresh`, refreshDto)
+    return this.http
+      .post<AuthResponse>(`${this.API_URL}/auth/refresh`, refreshDto)
       .pipe(
-        tap(response => this.handleAuthSuccess(response)),
-        catchError(error => {
+        tap((response) => this.handleAuthSuccess(response)),
+        catchError((error) => {
           this.handleLogout();
           return throwError(error);
         })
       );
   }
 
-  changePassword(changePasswordDto: ChangePasswordDto): Observable<{ message: string }> {
-    return this.http.patch<{ message: string }>(`${this.API_URL}/auth/change-password`, changePasswordDto)
+  changePassword(
+    changePasswordDto: ChangePasswordDto
+  ): Observable<{ message: string }> {
+    return this.http
+      .patch<{ message: string }>(
+        `${this.API_URL}/auth/change-password`,
+        changePasswordDto
+      )
       .pipe(catchError(this.handleError));
   }
 
   getMe(): Observable<User> {
-    return this.http.get<User>(`${this.API_URL}/auth/me`)
-      .pipe(
-        tap(user => {
-          this.setUser(user);
-          this.currentUserSubject.next(user);
-        }),
-        catchError(this.handleError)
-      );
+    return this.http.get<User>(`${this.API_URL}/auth/me`).pipe(
+      tap((user) => {
+        this.setUser(user);
+        this.currentUserSubject.next(user);
+      }),
+      catchError(this.handleError)
+    );
   }
 
   // Session management
   getSessions(): Observable<UserSession[]> {
-    return this.http.get<UserSession[]>(`${this.API_URL}/auth/sessions`)
+    return this.http
+      .get<UserSession[]>(`${this.API_URL}/auth/sessions`)
       .pipe(catchError(this.handleError));
   }
 
   getActiveSessionCount(): Observable<{ count: number }> {
-    return this.http.get<{ count: number }>(`${this.API_URL}/auth/sessions/count`)
+    return this.http
+      .get<{ count: number }>(`${this.API_URL}/auth/sessions/count`)
       .pipe(catchError(this.handleError));
   }
 
   deleteSession(sessionId: string): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/auth/sessions/${sessionId}`)
+    return this.http
+      .delete<void>(`${this.API_URL}/auth/sessions/${sessionId}`)
       .pipe(catchError(this.handleError));
   }
 
   deleteAllSessions(): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/auth/sessions`)
+    return this.http
+      .delete<void>(`${this.API_URL}/auth/sessions`)
       .pipe(catchError(this.handleError));
   }
 
@@ -151,7 +166,6 @@ export class AuthService {
     this.setToken(response.access_token);
     this.setRefreshToken(response.refresh_token);
     this.setUser(response.user);
-    this.store.dispatch(UserActions.set(response.user))
     this.currentUserSubject.next(response.user);
     this.isAuthenticatedSubject.next(true);
   }
@@ -179,6 +193,7 @@ export class AuthService {
     if (typeof window !== 'undefined') {
       localStorage.setItem(this.USER_KEY, JSON.stringify(user));
     }
+    this.store.dispatch(UserActions.set(user));
   }
 
   private getUserFromStorage(): User | null {
@@ -220,7 +235,7 @@ export class AuthService {
 
   private handleError = (error: any): Observable<never> => {
     let errorMessage = 'An unexpected error occurred';
-    
+
     if (error.error?.message) {
       errorMessage = error.error.message;
     } else if (error.message) {

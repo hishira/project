@@ -7,15 +7,17 @@ import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { provideStore, Store } from '@ngrx/store';
 import { userReducer } from './store/user';
+import { accessTokenReducer } from './store/tokens';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }), 
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideStore({
-      user: userReducer
-    })
-  ]
+      user: userReducer,
+      accessToken: accessTokenReducer
+    }),
+  ],
 };

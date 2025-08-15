@@ -1,12 +1,12 @@
 export interface User {
   id: string;
-  login: string;
-  email: string;
+  credentials: any;
+  credentialsId: string;
   firstName?: string;
   lastName?: string;
-  isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  userType: any;
+  roleId: any;
+  role?: any;
 }
 
 export interface CreateUserDto {
