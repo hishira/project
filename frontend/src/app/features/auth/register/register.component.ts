@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit {
   confirmIconVisibility: Signal<'visibility_off' | 'visibility'> = computed(
     () => (this.hideConfirmPassword() ? 'visibility_off' : 'visibility')
   );
-  isLoading = false;
+  isLoading: WritableSignal<boolean> = signal(false);
 
   constructor(
     private readonly authService: AuthService,
@@ -60,15 +60,15 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.registerForm.valid && !this.isLoading) {
-      this.isLoading = true;
+    if (this.registerForm.valid && !this.isLoading()) {
+      this.isLoading.set(true);
 
       const { confirmPassword, ...registerData } = this.registerForm.value;
       const registerDto: RegisterDto = registerData;
 
       this.authService.register(registerDto).subscribe({
         next: (response) => {
-          this.isLoading = false;
+          this.isLoading.set(false);
           this.snackBar.open(
             'Registration successful! Welcome to Sports Activity Diary!',
             'Close',
@@ -80,7 +80,7 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
-          this.isLoading = false;
+          this.isLoading.set(false);
           this.snackBar.open(
             error || 'Registration failed. Please try again.',
             'Close',

@@ -40,9 +40,11 @@
 
         <button mat-raised-button color="primary" type="submit" class="full-width auth-button"
           [disabled]="loginForm.invalid || isLoading()">
-          <mat-spinner *ngIf="isLoading()" diameter="20"></mat-spinner>
+          @if(isLoading()) {
+            <mat-spinner diameter="20"></mat-spinner>
+          }
           @if(!isLoading()) {
-          <span>Sign In</span>
+            <span>Sign In</span>
           }
         </button>
       </form>

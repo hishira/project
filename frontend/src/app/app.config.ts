@@ -7,7 +7,8 @@ import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { provideStore, Store } from '@ngrx/store';
 import { userReducer } from './store/user';
-import { accessTokenReducer } from './store/tokens';
+import { accessTokenReducer } from './store/access-token';
+import { refreshTokenReducer } from './store/refresh-token';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +18,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptor])),
     provideStore({
       user: userReducer,
-      accessToken: accessTokenReducer
+      accessToken: accessTokenReducer,
+      refreshToken: refreshTokenReducer
     }),
   ],
 };
