@@ -5,7 +5,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { provideStore, Store } from '@ngrx/store';
+import { provideState, provideStore, Store } from '@ngrx/store';
 import { userReducer } from './store/user';
 import { accessTokenReducer } from './store/access-token';
 import { refreshTokenReducer } from './store/refresh-token';
@@ -16,10 +16,23 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([authInterceptor])),
-    provideStore({
-      user: userReducer,
-      accessToken: accessTokenReducer,
-      refreshToken: refreshTokenReducer
+    provideStore(),
+    provideState({
+      name: 'user',
+      reducer: userReducer,
     }),
+    provideState({
+      name: 'accessToken',
+      reducer: accessTokenReducer,
+    }),
+    provideState({
+      name: 'refreshToken',
+      reducer: refreshTokenReducer,
+    }),
+    // provideState({
+    //   user: userReducer,
+    //   accessToken: accessTokenReducer,
+    //   refreshToken: refreshTokenReducer
+    // }),
   ],
 };

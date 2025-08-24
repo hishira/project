@@ -15,6 +15,7 @@ import {
 import { environment } from '../../../environments/environment';
 import { Store } from '@ngrx/store';
 import { UserActions } from '../../store/user';
+import { RefreshTokenActions, RefreshTokenEvents } from '../../store/refresh-token';
 
 @Injectable({
   providedIn: 'root',
@@ -187,6 +188,7 @@ export class AuthService {
     if (typeof window !== 'undefined') {
       localStorage.setItem(this.REFRESH_TOKEN_KEY, token);
     }
+    this.store.dispatch(RefreshTokenActions[RefreshTokenEvents.Set]({refreshToken: token}))
   }
 
   private setUser(user: User): void {
