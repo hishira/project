@@ -17,11 +17,11 @@
           <input matInput type="text" formControlName="identifier" placeholder="Enter your email or username">
           <mat-icon matSuffix>person</mat-icon>
           @if(loginForm.get('identifier')?.hasError('required')) {
-            <mat-error>
-              Email or username is required
-            </mat-error>
+          <mat-error>
+            Email or username is required
+          </mat-error>
           }
-        
+
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
@@ -32,19 +32,19 @@
             <mat-icon>{{passwordIcon()}}</mat-icon>
           </button>
           @if(loginForm.get('password')?.hasError('required')){
-            <mat-error>
-              Password is required
-            </mat-error>
+          <mat-error>
+            Password is required
+          </mat-error>
           }
         </mat-form-field>
 
         <button mat-raised-button color="primary" type="submit" class="full-width auth-button"
           [disabled]="loginForm.invalid || isLoading()">
           @if(isLoading()) {
-            <mat-spinner diameter="20"></mat-spinner>
+          <mat-spinner diameter="20"></mat-spinner>
           }
           @if(!isLoading()) {
-            <span>Sign In</span>
+          <span>Sign In</span>
           }
         </button>
       </form>

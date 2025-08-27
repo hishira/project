@@ -21,22 +21,23 @@ import { registerComponentsImports, registerFormGroup } from './consts';
   styleUrl: './registe.component.scss',
 })
 export class RegisterComponent implements OnInit {
-  registerForm: FormGroup = registerFormGroup();
-  hidePassword: WritableSignal<boolean> = signal(true);
-  passwordType: Signal<'password' | 'text'> = computed(() =>
+  readonly registerForm: FormGroup = registerFormGroup();
+  readonly hidePassword: WritableSignal<boolean> = signal(true);
+  readonly passwordType: Signal<'password' | 'text'> = computed(() =>
     this.hidePassword() ? 'password' : 'text'
   );
-  iconVisibility: Signal<'visibility_off' | 'visibility'> = computed(() =>
-    this.hidePassword() ? 'visibility_off' : 'visibility'
+  readonly iconVisibility: Signal<'visibility_off' | 'visibility'> = computed(
+    () => (this.hidePassword() ? 'visibility_off' : 'visibility')
   );
-  hideConfirmPassword: WritableSignal<boolean> = signal(true);
-  confirmPasswordType: Signal<'password' | 'text'> = computed(() =>
+  readonly hideConfirmPassword: WritableSignal<boolean> = signal(true);
+  readonly confirmPasswordType: Signal<'password' | 'text'> = computed(() =>
     this.hideConfirmPassword() ? 'password' : 'text'
   );
-  confirmIconVisibility: Signal<'visibility_off' | 'visibility'> = computed(
-    () => (this.hideConfirmPassword() ? 'visibility_off' : 'visibility')
-  );
-  isLoading: WritableSignal<boolean> = signal(false);
+  readonly confirmIconVisibility: Signal<'visibility_off' | 'visibility'> =
+    computed(() =>
+      this.hideConfirmPassword() ? 'visibility_off' : 'visibility'
+    );
+  readonly isLoading: WritableSignal<boolean> = signal(false);
 
   constructor(
     private readonly authService: AuthService,

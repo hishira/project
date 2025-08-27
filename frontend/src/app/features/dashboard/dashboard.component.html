@@ -1,40 +1,5 @@
 <div class="dashboard-container">
-  <!-- Toolbar -->
-  <mat-toolbar color="primary" class="dashboard-toolbar">
-    <div class="toolbar-content">
-      <div class="app-title">
-        <mat-icon class="title-icon">sports</mat-icon>
-        <span class="app-title-text">Sports Activity Diary</span>
-      </div>
-      
-      <div class="user-menu">
-        <span class="welcome-text">Welcome, {{currentUser?.firstName || currentUser?.login}}!</span>
-        <span class="welcome-text-short">Hi {{currentUser?.firstName || currentUser?.login}}!</span>
-        <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu-button">
-          <mat-icon>account_circle</mat-icon>
-        </button>
-        <mat-menu #userMenu="matMenu">
-          <button mat-menu-item routerLink="/dashboard">
-            <mat-icon>dashboard</mat-icon>
-            <span>Dashboard</span>
-          </button>
-          <button mat-menu-item routerLink="/activities">
-            <mat-icon>list</mat-icon>
-            <span>Activities</span>
-          </button>
-          <button mat-menu-item routerLink="/statistics">
-            <mat-icon>bar_chart</mat-icon>
-            <span>Statistics</span>
-          </button>
-          <mat-divider></mat-divider>
-          <button mat-menu-item (click)="logout()">
-            <mat-icon>logout</mat-icon>
-            <span>Logout</span>
-          </button>
-        </mat-menu>
-      </div>
-    </div>
-  </mat-toolbar>
+  <app-toolbar></app-toolbar>
 
   <!-- Dashboard Content -->
   <div class="dashboard-content">
@@ -118,7 +83,7 @@
             <mat-card-title>{{activity.title}}</mat-card-title>
             <mat-card-subtitle>{{formatDate(activity.activityDate)}}</mat-card-subtitle>
           </mat-card-header>
-          
+
           <mat-card-content>
             <div class="activity-details">
               <div class="activity-detail">
@@ -134,7 +99,7 @@
                 <span>{{activity.caloriesBurned}} cal</span>
               </div>
             </div>
-            
+
             <div class="activity-type">
               <mat-chip-set>
                 <mat-chip [style.background-color]="activityService.getDifficultyColor(activity.difficulty)">

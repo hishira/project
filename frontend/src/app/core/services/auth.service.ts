@@ -1,21 +1,28 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  LoginDto,
-  RegisterDto,
-  ChangePasswordDto,
-  RefreshTokenDto,
-  AuthResponse,
-  UserSession,
-  User,
-} from '../../shared/models/auth.model';
-import { environment } from '../../../environments/environment';
 import { Store } from '@ngrx/store';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+import {
+  AuthResponse,
+  ChangePasswordDto,
+  LoginDto,
+  RefreshTokenDto,
+  RegisterDto,
+  User,
+  UserSession,
+} from '../../shared/models/auth.model';
+import {
+  AccessTokenActions,
+  AccessTokenEvents,
+} from '../../store/access-token';
+import {
+  RefreshTokenActions,
+  RefreshTokenEvents,
+} from '../../store/refresh-token';
 import { UserActions } from '../../store/user';
-import { RefreshTokenActions, RefreshTokenEvents } from '../../store/refresh-token';
 
 @Injectable({
   providedIn: 'root',
@@ -26,15 +33,15 @@ export class AuthService {
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
   private readonly USER_KEY = 'current_user';
 
-  private currentUserSubject = new BehaviorSubject<User | null>(
+  private readonly currentUserSubject = new BehaviorSubject<User | null>(
     this.getUserFromStorage()
   );
-  public currentUser$ = this.currentUserSubject.asObservable();
+  public readonly currentUser$ = this.currentUserSubject.asObservable();
 
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(
+  private readonly isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.hasValidToken()
   );
-  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  public readonly isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor(
     private readonly http: HttpClient,
@@ -181,21 +188,26 @@ export class AuthService {
   private setToken(token: string): void {
     if (typeof window !== 'undefined') {
       localStorage.setItem(this.TOKEN_KEY, token);
+      this.store.dispatch(
+        AccessTokenActions[AccessTokenEvents.Set]({ accessToken: token })
+      );
     }
   }
 
   private setRefreshToken(token: string): void {
     if (typeof window !== 'undefined') {
       localStorage.setItem(this.REFRESH_TOKEN_KEY, token);
+      this.store.dispatch(
+        RefreshTokenActions[RefreshTokenEvents.Set]({ refreshToken: token })
+      );
     }
-    this.store.dispatch(RefreshTokenActions[RefreshTokenEvents.Set]({refreshToken: token}))
   }
 
   private setUser(user: User): void {
     if (typeof window !== 'undefined') {
       localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+      this.store.dispatch(UserActions.set(user));
     }
-    this.store.dispatch(UserActions.set(user));
   }
 
   private getUserFromStorage(): User | null {

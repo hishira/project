@@ -79,28 +79,29 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid && !this.isLoading()) {
       this.isLoading.set(true);
       const loginData: LoginDto = this.loginForm.value;
-
-      this.authService.login(loginData).subscribe({
-        next: (response) => {
-          this.isLoading.set(false);
-          this.snackBar.open('Login successful!', 'Close', {
-            duration: 3000,
-            panelClass: ['success-snackbar'],
-          });
-          this.router.navigate(['/dashboard']);
-        },
-        error: (error) => {
-          this.isLoading.set(false);
-          this.snackBar.open(
-            error || 'Login failed. Please try again.',
-            'Close',
-            {
-              duration: 5000,
-              panelClass: ['error-snackbar'],
-            }
-          );
-        },
-      });
+      
+       this.router.navigate(['/dashboard']);
+      // this.authService.login(loginData).subscribe({
+      //   next: (response) => {
+      //     this.isLoading.set(false);
+      //     this.snackBar.open('Login successful!', 'Close', {
+      //       duration: 3000,
+      //       panelClass: ['success-snackbar'],
+      //     });
+      //     this.router.navigate(['/dashboard']);
+      //   },
+      //   error: (error) => {
+      //     this.isLoading.set(false);
+      //     this.snackBar.open(
+      //       error || 'Login failed. Please try again.',
+      //       'Close',
+      //       {
+      //         duration: 5000,
+      //         panelClass: ['error-snackbar'],
+      //       }
+      //     );
+      //   },
+      // });
     }
   }
 }
