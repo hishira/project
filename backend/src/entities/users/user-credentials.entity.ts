@@ -4,7 +4,7 @@ import {
   UserPasswordStrategyHash,
 } from 'src/auth/strategies/passwordStrategyHash';
 import { ChildEntity, Column } from 'typeorm';
-import { Credentials } from './credentials.entity';
+import { Credentials } from '../credentials.entity';
 
 @ChildEntity()
 export class UserCredentials extends Credentials {
@@ -14,7 +14,7 @@ export class UserCredentials extends Credentials {
   @Column({ unique: true })
   email: string;
 
-  @Column({ select: false }) // Don't include password in queries by default
+  @Column({ select: true }) // Don't include password in queries by default
   password: string;
 
   readonly passwordStrategyHash: PasswordStrategyHash =

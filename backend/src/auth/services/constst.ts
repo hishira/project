@@ -1,4 +1,4 @@
-import { User } from 'src/entities/user.entity';
+import { User } from 'src/entities/users/user.entity';
 
 export const USER_MESSAGES = {
   INVALID_CREDENTIALS: 'Invalid username/email or password',

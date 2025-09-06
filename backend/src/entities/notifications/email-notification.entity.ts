@@ -1,4 +1,5 @@
 import { ChildEntity, Column } from 'typeorm';
+import { Notification } from './notification.entity';
 
 @ChildEntity()
 export class EmailNotification extends Notification {

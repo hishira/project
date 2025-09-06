@@ -5,7 +5,7 @@ import { UserCredentialsBuilder } from 'src/builders/credentials.builder';
 import { CreateEventPayload } from 'src/events/events.service';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../common/logger';
-import { User } from '../entities/user.entity';
+import { User } from '../entities/users/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 

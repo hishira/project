@@ -12,6 +12,7 @@ export class UserPasswordStrategyHash implements PasswordStrategyHash {
   }
 
   validatePassword(password: string, hashedPassword: string): Promise<boolean> {
+    console.log(password, hashedPassword);
     return bcrypt.compare(password, hashedPassword);
   }
 }

@@ -5,12 +5,14 @@ import {
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
+  TableInheritance,
 } from 'typeorm';
-import { EntityWithAddress } from './bride/entityWithAddress.entity';
-import { UserRole } from './userRole.entity';
+import { EntityWithAddress } from '../bride/entityWithAddress.entity';
 import { UserCredentials } from './user-credentials.entity';
+import { UserRole } from './userRole.entity';
 
 @Entity()
+@TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export class User extends EntityWithAddress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -26,6 +28,9 @@ export class User extends EntityWithAddress {
   firstName?: string;
 
   @Column({ nullable: true })
+  ownerId?: string;
+
+  @Column({ nullable: true })
   lastName?: string;
 
   @Column({ type: 'text', enum: UserType, default: UserType.None })
@@ -37,4 +42,8 @@ export class User extends EntityWithAddress {
   @OneToOne(() => UserRole)
   @JoinColumn({ name: 'roleId', referencedColumnName: 'id' })
   role?: Promise<UserRole>;
+
+  @OneToOne(() => User, { cascade: true })
+  @JoinColumn({ name: 'ownerId', referencedColumnName: 'id' })
+  owner?: Promise<User>;
 }

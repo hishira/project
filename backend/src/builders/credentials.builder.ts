@@ -4,7 +4,7 @@ import {
   PasswordStrategyHash,
   UserPasswordStrategyHash,
 } from 'src/auth/strategies/passwordStrategyHash';
-import { UserCredentials } from 'src/entities/user-credentials.entity';
+import { UserCredentials } from 'src/entities/users/user-credentials.entity';
 
 export class CredentialsBuilder implements Builder<Credentials> {
   private readonly creadentials: Credentials;

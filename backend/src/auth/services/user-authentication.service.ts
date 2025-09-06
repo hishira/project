@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../../common/logger';
-import { User } from '../../entities/user.entity';
+import { User } from '../../entities/users/user.entity';
 import { UserSessionService } from '../../user-session/user-session.service';
 import { LoginDto } from '../dto/login.dto';
 import { RefreshTokenDto } from '../dto/refresh-token.dto';
@@ -124,7 +124,6 @@ export class UserAuthenticationService {
           credentials: true,
         },
         where: { credentials: { email: identifier } },
-        select: selection,
       });
     }
     return this.usersRepository.findOne({
@@ -132,16 +131,19 @@ export class UserAuthenticationService {
         credentials: true,
       },
       where: { credentials: { login: identifier } },
-      select: selection,
     });
   }
 
   private validateUserStatus(user: User, identifier: string): void {
     if (!user.state || user.state.isInactive()) {
+      this.logger.log(
+        `Unactive user wants to login: ${user.credentials?.email},${user.state?.state}`,
+      );
       this.logger.logWarn(LOG_METADATA.MESSAGES.LOGIN_FAILED_INACTIVE, {
         module: LOG_METADATA.MODULE,
         action: LOG_METADATA.ACTIONS.LOGIN,
         userId: user.id,
+        userState: user.state,
         identifier,
       });
       throw new UnauthorizedException(USER_MESSAGES.ACCOUNT_DEACTIVATED);

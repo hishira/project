@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { EntityWithAddress } from './bride/entityWithAddress.entity';
-import { User } from './user.entity';
+import { User } from './users/user.entity';
 
 @Entity()
 export class Company extends EntityWithAddress {

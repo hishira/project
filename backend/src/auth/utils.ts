@@ -1,4 +1,4 @@
-import { User } from 'src/entities/user.entity';
+import { User } from 'src/entities/users/user.entity';
 
 export abstract class Parser {
   parseToObject(): object {
