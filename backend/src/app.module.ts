@@ -24,7 +24,6 @@ import { UserStatisticsModule } from './user-statistics/user-statistics.module';
     UsersModule,
     AuthModule,
     UserSessionModule,
-    //ActivitiesModule,
     EventEmitterModule.forRoot(),
     ScheduleModule.forRoot(),
     UserStatisticsModule,
