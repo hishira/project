@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { EntityWithAddress } from '../bride/entityWithAddress.entity';
 import { UserCredentials } from './user-credentials.entity';
-import { UserRole } from './userRole.entity';
+import { UserRole } from './user-role.entity';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })

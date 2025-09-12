@@ -1,9 +1,12 @@
+import { DataSource } from 'typeorm';
+import dataSource from '../database/data-source';
 export interface Loader {
   load(): Promise<void>;
 }
 
 export abstract class DataLoader {
   static readonly loaders: Loader[] = [];
+  protected readonly dataSource: DataSource = dataSource;
   readonly url: string = 'localhost:3001';
   protected prepareLink(endpoint: string): string {
     return `${this.url}/${endpoint}`;
