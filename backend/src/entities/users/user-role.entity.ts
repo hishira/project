@@ -6,7 +6,7 @@ import {
   Role,
   RoleTransporter,
   RoleType,
-} from '../roles/roles.entity';
+} from '../../roles/roles';
 
 @Entity()
 export class UserRole extends BaseEntity implements Role {
@@ -25,7 +25,7 @@ export class UserRole extends BaseEntity implements Role {
   })
   roleType: BaseRole;
 
-  hasAccess(_: Resource): boolean {
-    return true;
+  hasAccess(resource: Resource): boolean {
+    return this.roleType.hasAccess(resource);
   }
 }
