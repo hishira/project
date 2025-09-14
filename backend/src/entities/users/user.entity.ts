@@ -39,9 +39,9 @@ export class User extends EntityWithAddress {
   @Column({ type: 'text', nullable: true })
   roleId: string;
 
-  @OneToOne(() => UserRole)
+  @OneToOne(() => UserRole, { cascade: true })
   @JoinColumn({ name: 'roleId', referencedColumnName: 'id' })
-  role?: Promise<UserRole>;
+  role: Promise<UserRole>;
 
   @OneToOne(() => User, { cascade: true })
   @JoinColumn({ name: 'ownerId', referencedColumnName: 'id' })

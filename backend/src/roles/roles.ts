@@ -1,4 +1,12 @@
 import { ValueTransformer } from 'typeorm';
+import { AdminBaseRole } from './admin-role';
+import { BaseRole } from './base-role';
+import { EmployeeBaseRole } from './employee-role';
+import { GuestBaseRole } from './guest-role';
+import { ManagerBaseRole } from './manager-role';
+import { SuperAdminBaseRole } from './super-admin-role';
+import { UnknownBaseRole } from './unknown-role';
+import { UserBaseRole } from './user-role';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface Resource {}
@@ -7,55 +15,6 @@ export interface Role {
   hasAccess(resource: Resource): boolean;
 }
 
-export abstract class BaseRole implements Role {
-  abstract roleType: RoleType;
-  hasAccess(resource: Resource): boolean {
-    return true;
-  }
-}
-
-export class UserBaseRole extends BaseRole {
-  roleType: RoleType = RoleType.User;
-  hasAccess(resource: Resource): boolean {
-    return true;
-  }
-}
-export class AdminBaseRole extends BaseRole {
-  roleType: RoleType = RoleType.Admin;
-  hasAccess(resource: Resource): boolean {
-    return true;
-  }
-}
-export class SuperAdminBaseRole extends BaseRole {
-  roleType: RoleType = RoleType.SuperAdmin;
-  hasAccess(resource: Resource): boolean {
-    return true;
-  }
-}
-export class EmployeeBaseRole extends BaseRole {
-  roleType: RoleType = RoleType.Employee;
-  hasAccess(resource: Resource): boolean {
-    return true;
-  }
-}
-export class ManagerBaseRole extends BaseRole {
-  roleType: RoleType = RoleType.Manager;
-  hasAccess(resource: Resource): boolean {
-    return true;
-  }
-}
-export class GuestBaseRole extends BaseRole {
-  roleType: RoleType = RoleType.Guest;
-  hasAccess(resource: Resource): boolean {
-    return false;
-  }
-}
-export class UnknownBaseRole extends BaseRole {
-  roleType: RoleType = RoleType.Unknown;
-  hasAccess(resource: Resource): boolean {
-    return false;
-  }
-}
 export enum RoleType {
   User = 'user',
   Admin = 'admin',

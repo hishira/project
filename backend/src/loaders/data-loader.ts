@@ -6,9 +6,12 @@ export interface Loader {
 
 export abstract class DataLoader {
   static readonly loaders: Loader[] = [];
-  protected readonly dataSource: DataSource = dataSource;
+  protected dataSource: DataSource;
   readonly url: string = 'localhost:3001';
 
+  protected async initialize(): Promise<void> {
+    this.dataSource = await dataSource.initialize();
+  }
   protected prepareLink(endpoint: string): string {
     return `${this.url}/${endpoint}`;
   }

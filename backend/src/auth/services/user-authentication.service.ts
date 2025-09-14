@@ -10,7 +10,6 @@ import { LocalJwtService } from '../jwt.service';
 import { JwtPayload } from '../utils';
 import {
   LOG_METADATA,
-  selection,
   TOKEN_EXPIRY_DAYS,
   USER_FIELDS,
   USER_MESSAGES,

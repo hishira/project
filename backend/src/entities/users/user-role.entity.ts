@@ -1,12 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Resource, Role, RoleTransporter, RoleType } from '../../roles/roles';
 import { BaseEntity } from '../base.entity';
-import {
-  BaseRole,
-  Resource,
-  Role,
-  RoleTransporter,
-  RoleType,
-} from '../../roles/roles';
+import { BaseRole } from 'src/roles/base-role';
 
 @Entity()
 export class UserRole extends BaseEntity implements Role {
