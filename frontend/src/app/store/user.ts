@@ -1,4 +1,11 @@
-import { createActionGroup, createReducer, on, props } from '@ngrx/store';
+import {
+  createActionGroup,
+  createFeatureSelector,
+  createReducer,
+  createSelector,
+  on,
+  props,
+} from '@ngrx/store';
 import { User } from '../shared/models/auth.model';
 export enum UserEvents {
   Set = 'Set',
@@ -11,11 +18,19 @@ export const UserActions = createActionGroup({
   events: {
     [UserEvents.Set]: props<User>(),
     [UserEvents.Remove]: props<{ user?: any[] }>(),
-    [UserEvents.Get]: props<{ user: User | null }>(),
   },
 });
 
 export const userReducer = createReducer<User | null>(
   initialUserState,
-  on(UserActions.get, (_state, { user }) => user)
+  on(UserActions.set, (_state, user) => ({ ...user }))
+);
+
+export const userFeatureStore = createFeatureSelector<{
+  user: Readonly<User | null>;
+}>('user');
+
+export const userSelector = createSelector(
+  userFeatureStore,
+  (state) => state
 );

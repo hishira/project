@@ -1,26 +1,39 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { MatButtonModule } from "@angular/material/button";
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbar } from '@angular/material/toolbar';
+import { Store } from '@ngrx/store';
+import { AdminDirective } from "../../../core/directives/admin.directive";
 import { AuthService } from '../../../core/services/auth.service';
-import { MatButtonModule } from "@angular/material/button";
+import { userSelector } from '../../../store/user';
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss'],
   standalone: true,
-  imports: [MatToolbar, MatIcon, MatMenuModule, MatDivider, MatButtonModule],
+  imports: [
+    MatToolbar,
+    MatIcon,
+    MatMenuModule,
+    MatDivider,
+    MatButtonModule,
+  ],
 })
-export class ToolbarComponent {
-    private readonly authService: AuthService = inject(AuthService);
-  currentUser: any = this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-    });
+export class ToolbarComponent implements OnInit {
+  private readonly authService: AuthService = inject(AuthService);
+  currentUser: any = this.authService.currentUser$.subscribe((user) => {
+    this.currentUser = user;
+  });
   private readonly snackBar: MatSnackBar = inject(MatSnackBar);
+  private readonly store: Store = inject(Store);
 
+  ngOnInit(): void {
+    this.store.select(userSelector).subscribe(console.log);
+  }
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {

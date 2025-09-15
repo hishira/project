@@ -121,6 +121,7 @@ export class UserAuthenticationService {
       return this.usersRepository.findOne({
         relations: {
           credentials: true,
+          role: true,
         },
         where: { credentials: { email: identifier } },
       });
@@ -128,6 +129,7 @@ export class UserAuthenticationService {
     return this.usersRepository.findOne({
       relations: {
         credentials: true,
+        role: true,
       },
       where: { credentials: { login: identifier } },
     });

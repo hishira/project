@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -39,7 +39,7 @@ import { ToolbarComponent } from "./toolbar/toolbar.component";
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
-  recentActivities: Activity[] = [];
+  recentActivities: WritableSignal<Activity[]> = signal([]);
   statistics: UserStatistics | null = null;
   overviewData: any = null;
   isLoading = true;
@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
     // Load recent activities
     this.activityService.getRecentActivities(6).subscribe({
       next: (activities) => {
-        this.recentActivities = activities;
+        this.recentActivities.set(activities);
       },
       error: (error) => {
         console.error('Error loading recent activities:', error);

@@ -206,6 +206,7 @@ export class AuthService {
   private setUser(user: User): void {
     if (typeof window !== 'undefined') {
       localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+      console.log(user);
       this.store.dispatch(UserActions.set(user));
     }
   }

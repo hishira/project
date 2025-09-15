@@ -74,8 +74,8 @@
         </button>
       </div>
 
-      <div class="activities-grid" *ngIf="recentActivities.length > 0; else noActivities">
-        <mat-card class="activity-card" *ngFor="let activity of recentActivities">
+      <div class="activities-grid" *ngIf="recentActivities().length > 0; else noActivities">
+        <mat-card class="activity-card" *ngFor="let activity of recentActivities()">
           <mat-card-header>
             <div mat-card-avatar class="activity-avatar">
               <mat-icon>{{getActivityIcon(activity.type)}}</mat-icon>

@@ -5,6 +5,14 @@
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     min-height: 64px;
+      background: linear-gradient(
+      210deg,
+      rgba(230, 240, 247, 1) 0%,
+      rgba(197, 212, 200, 1) 1%,
+      rgba(92, 102, 102, 1) 100%,
+      rgba(182, 194, 187, 1) 30%,
+      rgba(209, 199, 199, 1) 100%
+    );
   }
 
   .toolbar-content {

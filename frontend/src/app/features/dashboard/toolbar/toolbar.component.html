@@ -1,8 +1,8 @@
   <mat-toolbar color="primary" class="dashboard-toolbar">
     <div class="toolbar-content">
       <div class="app-title">
-        <mat-icon class="title-icon">sports</mat-icon>
-        <span class="app-title-text">Sports Activity Diary</span>
+        <mat-icon class="title-icon">admin_panel_settings</mat-icon>
+        <span class="app-title-text">Admin panel</span>
       </div>
       
       <div class="user-menu">
@@ -16,10 +16,12 @@
             <mat-icon>dashboard</mat-icon>
             <span>Dashboard</span>
           </button>
+          <ng-container *isAdmin>
           <button mat-menu-item routerLink="/activities">
             <mat-icon>list</mat-icon>
             <span>Activities</span>
           </button>
+          </ng-container>
           <button mat-menu-item routerLink="/statistics">
             <mat-icon>bar_chart</mat-icon>
             <span>Statistics</span>
