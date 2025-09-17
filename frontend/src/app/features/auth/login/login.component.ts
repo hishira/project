@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
@@ -6,23 +7,22 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators,
   FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
 } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { SnackBar } from '../../../core/services/snack-bar.service';
 import { LoginDto } from '../../../shared/models/auth.model';
 
 @Component({
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: SnackBar
   ) {
     this.loginForm = new FormGroup({
       identifier: new FormControl('', [Validators.required]),
@@ -79,27 +79,18 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid && !this.isLoading()) {
       this.isLoading.set(true);
       const loginData: LoginDto = this.loginForm.value;
-      
+
       // this.router.navigate(['/dashboard']);
       this.authService.login(loginData).subscribe({
         next: (response) => {
           this.isLoading.set(false);
-          this.snackBar.open('Login successful!', 'Close', {
-            duration: 3000,
-            panelClass: ['success-snackbar'],
-          });
+          this.snackBar.openSuccess('Login successful');
+
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           this.isLoading.set(false);
-          this.snackBar.open(
-            error || 'Login failed. Please try again.',
-            'Close',
-            {
-              duration: 5000,
-              panelClass: ['error-snackbar'],
-            }
-          );
+          this.snackBar.openError(error || 'Login failed. Please try again.');
         },
       });
     }

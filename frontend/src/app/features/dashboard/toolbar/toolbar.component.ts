@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { AdminDirective } from "../../../core/directives/admin.directive";
 import { AuthService } from '../../../core/services/auth.service';
 import { userSelector } from '../../../store/user';
+import { SnackBar } from '../../../core/services/snack-bar.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -28,7 +29,7 @@ export class ToolbarComponent implements OnInit {
   currentUser: any = this.authService.currentUser$.subscribe((user) => {
     this.currentUser = user;
   });
-  private readonly snackBar: MatSnackBar = inject(MatSnackBar);
+  private readonly snackBar: SnackBar = inject(SnackBar);
   private readonly store: Store = inject(Store);
 
   ngOnInit(): void {
@@ -37,10 +38,7 @@ export class ToolbarComponent implements OnInit {
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {
-        this.snackBar.open('Logged out successfully', 'Close', {
-          duration: 3000,
-          panelClass: ['success-snackbar'],
-        });
+        this.snackBar.openSuccess('Logged out successfully');
       },
       error: (error) => {
         console.error('Logout error:', error);

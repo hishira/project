@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import {
-  FormGroup,
   FormControl,
-  Validators,
-  ValidatorFn,
-  ValidationErrors,
+  FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -63,15 +63,15 @@ export const passwordMatchValidator: ValidatorFn =
     }
   };
 
-  export const registerComponentsImports = [
-     CommonModule,
-    ReactiveFormsModule,
-    RouterModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatSnackBarModule,
-  ];
+export const registerComponentsImports = [
+  CommonModule,
+  ReactiveFormsModule,
+  RouterModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatButtonModule,
+  MatIconModule,
+  MatProgressSpinnerModule,
+  MatSnackBarModule,
+];

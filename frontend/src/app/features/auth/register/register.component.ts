@@ -7,9 +7,9 @@ import {
   signal,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { SnackBar } from '../../../core/services/snack-bar.service';
 import { RegisterDto } from '../../../shared/models/auth.model';
 import { registerComponentsImports, registerFormGroup } from './consts';
 
@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: SnackBar
   ) {}
 
   updateHidePassword(): void {
@@ -70,25 +70,15 @@ export class RegisterComponent implements OnInit {
       this.authService.register(registerDto).subscribe({
         next: (response) => {
           this.isLoading.set(false);
-          this.snackBar.open(
-            'Registration successful! Welcome to Sports Activity Diary!',
-            'Close',
-            {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            }
+          this.snackBar.openSuccess(
+            'Registration successful! Welcome to Sports Activity Diary!'
           );
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           this.isLoading.set(false);
-          this.snackBar.open(
-            error || 'Registration failed. Please try again.',
-            'Close',
-            {
-              duration: 5000,
-              panelClass: ['error-snackbar'],
-            }
+          this.snackBar.openError(
+            error || 'Registration failed. Please try again.'
           );
         },
       });
