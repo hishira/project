@@ -80,9 +80,9 @@ export class LoginComponent implements OnInit {
       this.isLoading.set(true);
       const loginData: LoginDto = this.loginForm.value;
 
-      // this.router.navigate(['/dashboard']);
+      //this.router.navigate(['/dashboard']);
       this.authService.login(loginData).subscribe({
-        next: (response) => {
+        next: () => {
           this.isLoading.set(false);
           this.snackBar.openSuccess('Login successful');
 

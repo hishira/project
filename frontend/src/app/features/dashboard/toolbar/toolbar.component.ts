@@ -3,7 +3,6 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbar } from '@angular/material/toolbar';
 import { Store } from '@ngrx/store';
 import { AdminDirective } from "../../../core/directives/admin.directive";
@@ -22,6 +21,7 @@ import { SnackBar } from '../../../core/services/snack-bar.service';
     MatMenuModule,
     MatDivider,
     MatButtonModule,
+    AdminDirective
   ],
 })
 export class ToolbarComponent implements OnInit {

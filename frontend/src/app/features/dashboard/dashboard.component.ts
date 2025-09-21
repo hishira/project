@@ -1,21 +1,19 @@
-import { Component, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
+import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
-import { AuthService } from '../../core/services/auth.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
 import { ActivityService } from '../../core/services/activity.service';
 import { StatisticsService } from '../../core/services/statistics.service';
 import { Activity } from '../../shared/models/activity.model';
 import { UserStatistics } from '../../shared/models/statistics.model';
-import { User } from '../../shared/models/user.model';
 import { ToolbarComponent } from "./toolbar/toolbar.component";
 
 @Component({
@@ -33,7 +31,7 @@ import { ToolbarComponent } from "./toolbar/toolbar.component";
     MatSnackBarModule,
     MatChipsModule,
     MatDividerModule,
-    ToolbarComponent
+    ToolbarComponent,
 ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -51,8 +49,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDashboardData();
-    
-    // Subscribe to current user
   }
 
   loadDashboardData(): void {

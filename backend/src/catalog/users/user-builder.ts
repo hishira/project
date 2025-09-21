@@ -1,8 +1,10 @@
 import { Builder } from 'src/builders/builder';
 import { UserCredentialsBuilder } from 'src/builders/credentials.builder';
 import { User } from 'src/entities/users/user.entity';
-import { NormalUserRole } from '../roles/user-role';
 import { AdminUserRole } from '../roles/admin-user-role';
+import { EmployeeRole } from '../roles/employee-role';
+import { ManagerRole } from '../roles/manager-role';
+import { NormalUserRole } from '../roles/user-role';
 
 export class UserBuilder implements Builder<User> {
   user: User = new User();
@@ -43,5 +45,19 @@ export class AdminBuilder extends UserBuilder {
   constructor() {
     super();
     this.user.role = new AdminUserRole();
+  }
+}
+
+export class EmployeeBuilder extends UserBuilder {
+  constructor() {
+    super();
+    this.user.role = new EmployeeRole();
+  }
+}
+
+export class ManagerBuilder extends UserBuilder {
+  constructor() {
+    super();
+    this.user.role = new ManagerRole();
   }
 }
