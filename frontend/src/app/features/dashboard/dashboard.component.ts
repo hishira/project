@@ -13,8 +13,9 @@ import { RouterModule } from '@angular/router';
 import { ActivityService } from '../../core/services/activity.service';
 import { StatisticsService } from '../../core/services/statistics.service';
 import { Activity } from '../../shared/models/activity.model';
-import { UserStatistics } from '../../shared/models/statistics.model';
+import { AdminStatistics } from '../../shared/models/statistics.model';
 import { ToolbarComponent } from "./toolbar/toolbar.component";
+import { AdminDirective } from "../../core/directives/admin.directive";
 
 @Component({
   selector: 'app-dashboard',
@@ -32,13 +33,14 @@ import { ToolbarComponent } from "./toolbar/toolbar.component";
     MatChipsModule,
     MatDividerModule,
     ToolbarComponent,
+    AdminDirective
 ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
   recentActivities: WritableSignal<Activity[]> = signal([]);
-  statistics: UserStatistics | null = null;
+  statistics: AdminStatistics | null = null;
   overviewData: any = null;
   isLoading = true;
 
@@ -63,19 +65,23 @@ export class DashboardComponent implements OnInit {
         console.error('Error loading recent activities:', error);
       }
     });
-
+    
+    this.statistics = {
+      totalUsers: 67,
+      totalApps: 3,
+    } as AdminStatistics;
     // Load statistics
-    this.statisticsService.getUserStatistics().subscribe({
-      next: (stats) => {
-        this.statistics = stats;
-        this.overviewData = this.statisticsService.prepareOverviewData(stats);
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error loading statistics:', error);
-        this.isLoading = false;
-      }
-    });
+    // this.statisticsService.getUserStatistics().subscribe({
+    //   next: (stats) => {
+    //     //this.statistics = stats;
+    //     this.overviewData = this.statisticsService.prepareOverviewData(stats);
+    //     this.isLoading = false;
+    //   },
+    //   error: (error) => {
+    //     console.error('Error loading statistics:', error);
+    //     this.isLoading = false;
+    //   }
+    // });
   }
   getActivityIcon(type: string): string {
     return this.activityService.getActivityIcon(type);

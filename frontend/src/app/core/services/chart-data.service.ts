@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ChartData } from '../../shared/models/statistics.model';
-import { UserStatistics } from '../../shared/models/statistics.model';
+import { AdminStatistics } from '../../shared/models/statistics.model';
 import { Activity } from '../../shared/models/activity.model';
 import { DataFormatterService } from './data-formatter.service';
 
@@ -33,7 +33,7 @@ export class ChartDataService {
   /**
    * Generate activity type chart data
    */
-  getActivityTypeChartData(stats: UserStatistics): ChartData {
+  getActivityTypeChartData(stats: AdminStatistics): ChartData {
     const activities = [
       { label: 'Running', count: stats.totalRunningActivities ?? 0 },
       { label: 'Swimming', count: stats.totalSwimmingActivities ?? 0 },
@@ -138,7 +138,7 @@ export class ChartDataService {
   /**
    * Generate distance chart data
    */
-  getDistanceChartData(statistics: UserStatistics): ChartData {
+  getDistanceChartData(statistics: AdminStatistics): ChartData {
     const distanceActivities = [
       { label: 'Running', distance: statistics.totalRunningDistance },
       { label: 'Swimming', distance: statistics.totalSwimmingDistance },

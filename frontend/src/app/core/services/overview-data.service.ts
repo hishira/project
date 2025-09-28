@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { UserStatistics } from '../../shared/models/statistics.model';
+import { AdminStatistics } from '../../shared/models/statistics.model';
 import { DataFormatterService } from './data-formatter.service';
 
 export interface OverviewData {
@@ -31,7 +31,7 @@ export class OverviewDataService {
   /**
    * Prepare overview data from user statistics
    */
-  prepareOverviewData(statistics: UserStatistics): OverviewData {
+  prepareOverviewData(statistics: AdminStatistics): OverviewData {
     return {
       totalActivities: statistics.totalActivities,
       totalDuration: this.dataFormatter.formatDuration(statistics.totalDuration),
@@ -48,7 +48,7 @@ export class OverviewDataService {
   /**
    * Prepare best records data from user statistics
    */
-  prepareBestRecordsData(statistics: UserStatistics): RecordData[] {
+  prepareBestRecordsData(statistics: AdminStatistics): RecordData[] {
     const records: RecordData[] = [];
 
     // Process distance records
@@ -74,7 +74,7 @@ export class OverviewDataService {
   /**
    * Calculate activity summary statistics
    */
-  calculateActivitySummary(statistics: UserStatistics) {
+  calculateActivitySummary(statistics: AdminStatistics) {
     const totalDistanceActivities = [
       statistics.totalRunningDistance,
       statistics.totalSwimmingDistance,
@@ -115,7 +115,7 @@ export class OverviewDataService {
   /**
    * Get activity type breakdown
    */
-  getActivityTypeBreakdown(statistics: UserStatistics) {
+  getActivityTypeBreakdown(statistics: AdminStatistics) {
     const activities = [
       { type: 'Running', count: statistics.totalRunningActivities, distance: statistics.totalRunningDistance },
       { type: 'Swimming', count: statistics.totalSwimmingActivities, distance: statistics.totalSwimmingDistance },

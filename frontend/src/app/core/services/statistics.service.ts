@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { UserStatistics, ChartData } from '../../shared/models/statistics.model';
+import { AdminStatistics, ChartData } from '../../shared/models/statistics.model';
 import { environment } from '../../../environments/environment';
 import { ChartDataService } from './chart-data.service';
 import { OverviewDataService, OverviewData, RecordData } from './overview-data.service';
@@ -17,13 +17,13 @@ export class StatisticsService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getUserStatistics(): Observable<UserStatistics> {
-    return this.http.get<UserStatistics>(`${this.API_URL}/user-statistics`)
+  getUserStatistics(): Observable<AdminStatistics> {
+    return this.http.get<AdminStatistics>(`${this.API_URL}/user-statistics`)
       .pipe(catchError(this.handleError));
   }
 
-  recalculateStatistics(): Observable<UserStatistics> {
-    return this.http.post<UserStatistics>(`${this.API_URL}/user-statistics/recalculate`, {})
+  recalculateStatistics(): Observable<AdminStatistics> {
+    return this.http.post<AdminStatistics>(`${this.API_URL}/user-statistics/recalculate`, {})
       .pipe(catchError(this.handleError));
   }
 
@@ -32,7 +32,7 @@ export class StatisticsService {
   }
 
   // Chart data methods - delegate to ChartDataService
-  getActivityTypeChartData(stats: UserStatistics): ChartData {
+  getActivityTypeChartData(stats: AdminStatistics): ChartData {
     return this.chartDataService.getActivityTypeChartData(stats);
   }
 
@@ -44,20 +44,20 @@ export class StatisticsService {
     return this.chartDataService.getDurationTrendChartData(activities);
   }
 
-  prepareDistanceChartData(statistics: UserStatistics): ChartData {
+  prepareDistanceChartData(statistics: AdminStatistics): ChartData {
     return this.chartDataService.getDistanceChartData(statistics);
   }
 
-  prepareActivityCountChartData(statistics: UserStatistics): ChartData {
+  prepareActivityCountChartData(statistics: AdminStatistics): ChartData {
     return this.chartDataService.getActivityTypeChartData(statistics);
   }
 
   // Overview data methods - delegate to OverviewDataService
-  prepareOverviewData(statistics: UserStatistics): OverviewData {
+  prepareOverviewData(statistics: AdminStatistics): OverviewData {
     return this.overviewDataService.prepareOverviewData(statistics);
   }
 
-  prepareBestRecordsData(statistics: UserStatistics): RecordData[] {
+  prepareBestRecordsData(statistics: AdminStatistics): RecordData[] {
     return this.overviewDataService.prepareBestRecordsData(statistics);
   }
 

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import { Activity } from '../../shared/models/activity.model';
-import { UserStatistics } from '../../shared/models/statistics.model';
+import { AdminStatistics } from '../../shared/models/statistics.model';
 import { StatisticsService } from './statistics.service';
 import { ProgressCalculationService } from './progress-calculation.service';
 import { CHART_CONFIGURATIONS, CHART_COLORS } from '../constants/statistics-chart.constants';
@@ -29,7 +29,7 @@ export class ChartManagementService {
   /**
    * Update activity type chart with statistics data
    */
-  updateActivityTypeChart(stats: UserStatistics): ChartConfiguration {
+  updateActivityTypeChart(stats: AdminStatistics): ChartConfiguration {
     const chartData = this.statisticsService.getActivityTypeChartData(stats);
     return {
       ...CHART_CONFIGURATIONS.ACTIVITY_TYPE,
@@ -98,7 +98,7 @@ export class ChartManagementService {
   /**
    * Update all charts with new data
    */
-  updateAllCharts(stats: UserStatistics, activities: Activity[]) {
+  updateAllCharts(stats: AdminStatistics, activities: Activity[]) {
     return {
       activityTypeChart: this.updateActivityTypeChart(stats),
       intensityChart: this.updateIntensityChart(activities),

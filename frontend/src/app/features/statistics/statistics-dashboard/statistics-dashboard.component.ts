@@ -17,7 +17,7 @@ import { ActivityService } from '../../../core/services/activity.service';
 import { ChartManagementService } from '../../../core/services/chart-management.service';
 import { ProgressCalculationService } from '../../../core/services/progress-calculation.service';
 import { DataFormatterService } from '../../../core/services/data-formatter.service';
-import { UserStatistics } from '../../../shared/models/statistics.model';
+import { AdminStatistics } from '../../../shared/models/statistics.model';
 import { ActivityType, Activity } from '../../../shared/models/activity.model';
 
 Chart.register(...registerables);
@@ -50,7 +50,7 @@ export class StatisticsDashboardComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  statistics = signal<UserStatistics | null>(null);
+  statistics = signal<AdminStatistics | null>(null);
   activities = signal<Activity[]>([]);
   isLoading = signal(false);
 
@@ -128,7 +128,7 @@ export class StatisticsDashboardComponent implements OnInit {
   /**
    * Update all charts with new data
    */
-  private updateAllCharts(stats: UserStatistics, activities: Activity[]): void {
+  private updateAllCharts(stats: AdminStatistics, activities: Activity[]): void {
     const updatedCharts = this.chartManagementService.updateAllCharts(stats, activities);
     
     this.activityTypeChart = updatedCharts.activityTypeChart;

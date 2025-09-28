@@ -1,14 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { MatButtonModule } from "@angular/material/button";
+import { MatButtonModule } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbar } from '@angular/material/toolbar';
 import { Store } from '@ngrx/store';
-import { AdminDirective } from "../../../core/directives/admin.directive";
+import { AdminDirective } from '../../../core/directives/admin.directive';
 import { AuthService } from '../../../core/services/auth.service';
-import { userSelector } from '../../../store/user';
 import { SnackBar } from '../../../core/services/snack-bar.service';
+import { userSelector } from '../../../store/user';
 
 @Component({
   selector: 'app-toolbar',
@@ -21,7 +21,7 @@ import { SnackBar } from '../../../core/services/snack-bar.service';
     MatMenuModule,
     MatDivider,
     MatButtonModule,
-    AdminDirective
+    AdminDirective,
   ],
 })
 export class ToolbarComponent implements OnInit {

@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { getUserDtoFromUser, UserDTO } from 'src/users/dto/user.dto';
 import { Repository } from 'typeorm';
 import { User } from '../entities/users/user.entity';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -29,11 +30,15 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto): Promise<{
-    user: Omit<Partial<User>, 'password'>;
+    user: Omit<Partial<UserDTO>, 'password'>;
     access_token: string;
     refresh_token: string;
   }> {
-    return this.authenticationService.login(loginDto);
+    return this.authenticationService.login(loginDto).then((resp) => ({
+      access_token: resp.access_token,
+      refresh_token: resp.refresh_token,
+      user: getUserDtoFromUser(resp.user),
+    }));
   }
 
   async validateUser(userId: string): Promise<User | null> {

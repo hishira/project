@@ -29,7 +29,7 @@ export interface GeneralRecords {
   mostActivitiesInMonth?: BestRecord; // count
 }
 
-export interface UserStatistics {
+export interface AdminStatistics {
   id: string;
   userLogin: string;
   
@@ -83,6 +83,10 @@ export interface UserStatistics {
   
   createdAt: Date;
   updatedAt: Date;
+
+  totalUsers?: number;
+  totalApps?: number;
+  
 }
 
 export interface ActivityStatistics {
