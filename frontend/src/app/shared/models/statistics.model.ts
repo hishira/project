@@ -86,7 +86,7 @@ export interface AdminStatistics {
 
   totalUsers?: number;
   totalApps?: number;
-  
+  totalAgreements?: number;
 }
 
 export interface ActivityStatistics {

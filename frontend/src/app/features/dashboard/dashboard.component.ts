@@ -69,6 +69,7 @@ export class DashboardComponent implements OnInit {
     this.statistics = {
       totalUsers: 67,
       totalApps: 3,
+      totalAgreements: 5,
     } as AdminStatistics;
     // Load statistics
     // this.statisticsService.getUserStatistics().subscribe({
