@@ -32,7 +32,6 @@ import { AdminDirective } from "../../core/directives/admin.directive";
     MatSnackBarModule,
     MatChipsModule,
     MatDividerModule,
-    ToolbarComponent,
     AdminDirective
 ],
   templateUrl: './dashboard.component.html',

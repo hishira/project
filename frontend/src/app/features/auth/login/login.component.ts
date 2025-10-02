@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   OnInit,
@@ -28,6 +29,7 @@ import { LoginDto } from '../../../shared/models/auth.model';
 @Component({
   selector: 'app-login',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -71,7 +73,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     // Redirect if already authenticated
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['dashboard']);
     }
   }
 

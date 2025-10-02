@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   OnInit,
   Signal,
@@ -17,6 +18,7 @@ import { registerComponentsImports, registerFormGroup } from './consts';
   selector: 'app-register',
   standalone: true,
   imports: [...registerComponentsImports],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './register.component.html',
   styleUrl: './registe.component.scss',
 })
