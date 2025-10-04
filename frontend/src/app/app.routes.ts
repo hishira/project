@@ -11,10 +11,6 @@ export const routes: Routes = [
       ),
     children: [
       {
-        path: "**",
-        redirectTo: 'dashboard',
-      },
-      {
         path: 'dashboard',
         pathMatch: 'full',
         loadChildren: () =>
@@ -22,6 +18,19 @@ export const routes: Routes = [
             (m) => m.dashboardRoutes
           ),
         canActivate: [authGuard],
+      },
+      {
+        path: 'users',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./features/user-list/user-list-routes').then(
+            (m) => m.userListRoutes
+          ),
+        canActivate: [authGuard],
+      },
+      {
+        path: '**',
+        redirectTo: 'dashboard',
       },
     ],
   },

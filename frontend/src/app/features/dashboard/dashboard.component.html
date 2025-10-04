@@ -3,16 +3,16 @@
   <div class="dashboard-content">
     <!-- Quick Stats -->
     <div class="stats-section" *isAdmin>
-      <h2>Quick Overview</h2>
+      <h3>Quick Overview</h3>
       @if(statistics){
         <div class="stats-grid mt-4">
-          <mat-card class="stat-card">
+          <mat-card class="stat-card" [routerLink]="'../users'">
             <mat-card-content>
               <div class="stat-item">
                 <mat-icon class="stat-icon activities">account_circle</mat-icon>
                 <div class="stat-details">
                   <div class="stat-value">{{statistics?.totalUsers || 0}}</div>
-                  <div class="stat-label">Total userrs</div>
+                  <div class="stat-label" >Total users</div>
                 </div>
               </div>
             </mat-card-content>
@@ -45,10 +45,10 @@
           <mat-card class="stat-card">
             <mat-card-content>
               <div class="stat-item">
-                <mat-icon class="stat-icon distance">map</mat-icon>
+                <mat-icon class="stat-icon distance">bar_chart</mat-icon>
                 <div class="stat-details">
-                  <div class="stat-value">{{overviewData?.totalDistance || 0}} km</div>
-                  <div class="stat-label">Total Distance</div>
+                  <div class="stat-value">{{statistics?.charts || 0}}</div>
+                  <div class="stat-label">Charts</div>
                 </div>
               </div>
             </mat-card-content>

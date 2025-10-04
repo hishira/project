@@ -73,7 +73,7 @@ export class RegisterComponent implements OnInit {
         next: (response) => {
           this.isLoading.set(false);
           this.snackBar.openSuccess(
-            'Registration successful! Welcome to Sports Activity Diary!'
+            'Registration successful! Welcome to application!'
           );
           this.router.navigate(['/dashboard']);
         },

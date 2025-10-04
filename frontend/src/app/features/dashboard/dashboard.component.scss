@@ -4,7 +4,6 @@
     background-color: whitesmoke;
   }
 
-
   .dashboard-content {
     padding: 24px;
     max-width: 1200px;
@@ -43,7 +42,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
-  [class*='-card'] {
+  [class*="-card"] {
     cursor: pointer;
   }
   .stat-item {
@@ -77,6 +76,7 @@
   .stat-icon.distance {
     background-color: #e8f5e8;
     color: #388e3c;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
   }
 
   .stat-details {

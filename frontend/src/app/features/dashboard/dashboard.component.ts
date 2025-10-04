@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -9,17 +15,17 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
+import { AdminDirective } from '../../core/directives/admin.directive';
 import { ActivityService } from '../../core/services/activity.service';
 import { StatisticsService } from '../../core/services/statistics.service';
 import { Activity } from '../../shared/models/activity.model';
 import { AdminStatistics } from '../../shared/models/statistics.model';
-import { ToolbarComponent } from "./toolbar/toolbar.component";
-import { AdminDirective } from "../../core/directives/admin.directive";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
+  ///changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     RouterModule,
@@ -32,8 +38,10 @@ import { AdminDirective } from "../../core/directives/admin.directive";
     MatSnackBarModule,
     MatChipsModule,
     MatDividerModule,
-    AdminDirective
-],
+    AdminDirective,
+    RouterLink,
+    RouterModule,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -45,7 +53,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     public activityService: ActivityService,
-    private statisticsService: StatisticsService,
+    private statisticsService: StatisticsService
   ) {}
 
   ngOnInit(): void {
@@ -62,13 +70,14 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading recent activities:', error);
-      }
+      },
     });
-    
+
     this.statistics = {
       totalUsers: 67,
       totalApps: 3,
       totalAgreements: 5,
+      charts: 8,
     } as AdminStatistics;
     // Load statistics
     // this.statisticsService.getUserStatistics().subscribe({
@@ -97,10 +106,10 @@ export class DashboardComponent implements OnInit {
 
   getActivityLevelColor(level: string): string {
     const colors = {
-      'LOW': '#4CAF50',
-      'MODERATE': '#FFC107', 
-      'HIGH': '#FF9800',
-      'VERY_HIGH': '#F44336'
+      LOW: '#4CAF50',
+      MODERATE: '#FFC107',
+      HIGH: '#FF9800',
+      VERY_HIGH: '#F44336',
     };
     return colors[level as keyof typeof colors] || '#666';
   }
@@ -110,7 +119,7 @@ export class DashboardComponent implements OnInit {
     return dateObj.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     });
   }
 }

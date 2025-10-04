@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
@@ -13,6 +13,7 @@ import { userSelector } from '../../../store/user';
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./toolbar.component.scss'],
   standalone: true,
   imports: [
