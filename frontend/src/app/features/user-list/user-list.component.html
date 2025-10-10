@@ -1,1 +1,36 @@
-TEST
+@let data = users();
+<table mat-table [dataSource]="data" >
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let user"> {{user.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="firstName">
+    <th mat-header-cell *matHeaderCellDef> First Name </th>
+    <td mat-cell *matCellDef="let user"> {{user.firstName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="lastName">
+    <th mat-header-cell *matHeaderCellDef> Last Name </th>
+    <td mat-cell *matCellDef="let user"> {{user.lastName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef> Email </th>
+    <td mat-cell *matCellDef="let user"> {{user.credentials.email}} </td>
+  </ng-container>
+
+   <ng-container matColumnDef="role">
+    <th mat-header-cell *matHeaderCellDef> Role </th>
+    <td mat-cell *matCellDef="let user"> {{user.role}} </td>
+  </ng-container>
+
+   <ng-container matColumnDef="state">
+    <th mat-header-cell *matHeaderCellDef> State </th>
+    <td mat-cell *matCellDef="let user"> {{user.state}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['id', 'firstName', 'lastName', 'email', 'role', 'state']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['id', 'firstName', 'lastName', 'email', 'role', 'state'];"></tr>
+
+</table>

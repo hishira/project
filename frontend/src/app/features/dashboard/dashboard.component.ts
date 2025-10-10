@@ -25,7 +25,7 @@ import { AdminStatistics } from '../../shared/models/statistics.model';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  ///changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     RouterModule,
