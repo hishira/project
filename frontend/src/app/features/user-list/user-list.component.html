@@ -30,7 +30,7 @@
     <td mat-cell *matCellDef="let user"> {{user.state}} </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="['id', 'firstName', 'lastName', 'email', 'role', 'state']"></tr>
-  <tr mat-row *matRowDef="let row; columns: ['id', 'firstName', 'lastName', 'email', 'role', 'state'];"></tr>
+  <tr mat-header-row *matHeaderRowDef="columns()"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns();"></tr>
 
 </table>
