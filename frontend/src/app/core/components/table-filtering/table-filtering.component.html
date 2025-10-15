@@ -1,0 +1,10 @@
+@for (filter of filters(); track filter.filterType) {
+  @switch (filter.filterType) {
+    @case (FilterType.Selectable) {
+      <app-selectable-filter [filter]="filter" />
+    }
+    @default {
+      TEST
+    }
+  }
+}

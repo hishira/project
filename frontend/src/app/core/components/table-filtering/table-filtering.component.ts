@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { Filter } from './types';
+import { Filter, FilterType } from './types';
+import { SelectableFilterComponent } from "./filters/selectable-filter/selectable-filter.component";
 
 @Component({
   selector: 'app-table-filtering',
   templateUrl: './table-filtering.component.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [SelectableFilterComponent],
 })
 export class TableFilteringComponent {
-  filter = input.required<Filter[]>();
+  readonly filters = input.required<Filter[]>();
+  readonly FilterType = FilterType
 }

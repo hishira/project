@@ -1,10 +1,10 @@
 <mat-form-field>
-    <mat-label>{{label()}}</mat-label>
-    <mat-select>
-        @for (option of selectableOptions(); track option.label) {
-            <mat-option [value]="option.value">{{option.label}}</mat-option>
-        } @empty {
-            <mat-option [value]="null">No option available</mat-option>
-        }
-    </mat-select>
+  <mat-label>{{ label() }}</mat-label>
+  <mat-select>
+    @for (option of selectableOptions(); track option.label) {
+      <mat-option [value]="option.value">{{ option.label }}</mat-option>
+    } @empty {
+      <mat-option [value]="null">No option available</mat-option>
+    }
+  </mat-select>
 </mat-form-field>

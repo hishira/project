@@ -1,12 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,7 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 
-export const registerFormGroup = () =>
+export const registerFormGroup = (): FormGroup =>
   new FormGroup(
     {
       firstName: new FormControl(''),
@@ -27,21 +20,15 @@ export const registerFormGroup = () =>
         Validators.maxLength(50),
         Validators.pattern(/^[a-zA-Z0-9_-]+$/),
       ]),
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email,
-        Validators.maxLength(255),
-      ]),
+      email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(255)]),
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
-        Validators.pattern(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/
-        ),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/),
       ]),
       confirmPassword: new FormControl('', [Validators.required]),
     },
-    { validators: [passwordMatchValidator] }
+    { validators: [passwordMatchValidator] },
   );
 
 export const passwordMatchValidator: ValidatorFn =
