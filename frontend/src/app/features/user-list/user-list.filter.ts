@@ -16,4 +16,8 @@ export const userFilters: Filter[] = [{
         {label: 'Guest', value: 'guest'}
     ]
     }
+},{
+    filterType: FilterType.Date,
+    label: 'Created at',
+    config: {},
 }];

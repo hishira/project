@@ -1,12 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  Signal,
-} from '@angular/core';
-import { Filter, FilterOption, SelectableFilterConfig } from '../../types';
+import { ChangeDetectionStrategy, Component, computed, Signal } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
+import { FilterOption, SelectableFilterConfig } from '../../types';
+import { BaseFilterComponent } from '../base-filter/base-filter.component';
 
 @Component({
   selector: 'app-selectable-filter',
@@ -15,11 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
   imports: [MatSelectModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectableFilterComponent {
-  readonly filter = input.required<Filter>();
-  readonly label = computed(() => this.filter().label);
-  readonly config = computed(() => this.filter().config as SelectableFilterConfig);
-  readonly selectableOptions: Signal<FilterOption[]> = computed(
-    () => this.config().options,
-  );
+export class SelectableFilterComponent extends BaseFilterComponent<SelectableFilterConfig> {
+  readonly selectableOptions: Signal<FilterOption[]> = computed(() => this.config().options);
+  readonly isDisabled: Signal<boolean> = computed(() => !this.selectableOptions()?.length);
 }
