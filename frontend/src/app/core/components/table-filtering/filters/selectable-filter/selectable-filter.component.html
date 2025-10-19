@@ -1,10 +1,1 @@
-<mat-form-field appearance="outline">
-  <mat-label>{{ label() }}</mat-label>
-  <mat-select [disabled]="isDisabled()">
-    @for (option of selectableOptions(); track option.label) {
-      <mat-option [value]="option.value">{{ option.label }}</mat-option>
-    } @empty {
-      <mat-option [value]="null">No option available</mat-option>
-    }
-  </mat-select>
-</mat-form-field>
+<app-selectable [isDisabled]="isDisabled()" [label]="label()" [selectableOptions]="selectableOptions()" />
