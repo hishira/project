@@ -13,14 +13,11 @@ export class SnackBar {
       panelClass: ['success-snackbar'],
     });
   }
+  
   openError(message: string): void {
-    this.snackBar.open(
-            message,
-            'Close',
-            {
-              duration: 5000,
-              panelClass: ['error-snackbar'],
-            }
-          );
+    this.snackBar.open(message, 'Close', {
+      duration: 5000,
+      panelClass: ['error-snackbar'],
+    });
   }
 }

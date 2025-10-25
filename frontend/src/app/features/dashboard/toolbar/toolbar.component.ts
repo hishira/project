@@ -1,14 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatToolbar } from '@angular/material/toolbar';
-import { Store } from '@ngrx/store';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { map, Observable } from 'rxjs';
 import { AdminDirective } from '../../../core/directives/admin.directive';
 import { AuthService } from '../../../core/services/auth.service';
 import { SnackBar } from '../../../core/services/snack-bar.service';
-import { userSelector } from '../../../store/user';
+import { User } from '../../../shared/models/auth.model';
 
 @Component({
   selector: 'app-toolbar',
@@ -16,26 +17,22 @@ import { userSelector } from '../../../store/user';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./toolbar.component.scss'],
   standalone: true,
-  imports: [
-    MatToolbar,
-    MatIcon,
-    MatMenuModule,
-    MatDivider,
-    MatButtonModule,
-    AdminDirective,
-  ],
+  imports: [MatMenuModule, MatButtonModule, MatToolbarModule, MatIcon, MatDivider, AsyncPipe, AdminDirective],
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent {
   private readonly authService: AuthService = inject(AuthService);
-  currentUser: any = this.authService.currentUser$.subscribe((user) => {
-    this.currentUser = user;
-  });
   private readonly snackBar: SnackBar = inject(SnackBar);
-  private readonly store: Store = inject(Store);
+  readonly currentUser: Observable<User | null> = this.authService.currentUser$;
+  readonly currentUserNameView: Observable<string> = this.currentUser.pipe(
+    map(
+      (currentUser) =>
+        currentUser?.firstName || currentUser?.credentials?.login || currentUser?.role?.roleType?.roleType,
+    ),
+  );
+  readonly currentName: Observable<string> = this.currentUser.pipe(
+    map((currentUser) => currentUser?.firstName || currentUser?.credentials?.login),
+  );
 
-  ngOnInit(): void {
-    this.store.select(userSelector).subscribe(console.log);
-  }
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {

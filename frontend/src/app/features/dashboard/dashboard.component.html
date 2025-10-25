@@ -2,7 +2,7 @@
   <!-- Dashboard Content -->
   <div class="dashboard-content">
     <!-- Quick Stats -->
-    <div class="stats-section" *isAdmin>
+    <div *isAdmin class="stats-section">
       <h3>Quick Overview</h3>
       @if(statistics){
         <div class="stats-grid mt-4">
@@ -57,7 +57,7 @@
       } @else {
         <ng-template #loadingStats>
           <div class="loading-container">
-            <mat-spinner diameter="40"></mat-spinner>
+            <mat-spinner diameter="40" />
             <p>Loading statistics...</p>
           </div>
         </ng-template>

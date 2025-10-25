@@ -23,7 +23,7 @@ import {
   RefreshTokenEvents,
 } from '../../store/refresh-token';
 import { UserActions } from '../../store/user';
-import { authResponseMock } from '../mocks/response.mock';
+import { adminUserMock, authResponseMock } from '../mocks/response.mock';
 
 @Injectable({
   providedIn: 'root',
@@ -37,12 +37,12 @@ export class AuthService {
   private readonly currentUserSubject = new BehaviorSubject<User | null>(
     this.getUserFromStorage()
   );
-  public readonly currentUser$ = this.currentUserSubject.asObservable();
+  readonly currentUser$ = this.currentUserSubject.asObservable();
 
   private readonly isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.hasValidToken()
   );
-  public readonly isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  readonly isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor(
     private readonly http: HttpClient,
@@ -51,6 +51,7 @@ export class AuthService {
   ) {
     // Check token validity on service initialization
     this.validateStoredToken();
+    this.currentUserSubject.next(this.getUserFromStorage());
   }
 
   // Authentication methods
@@ -219,6 +220,7 @@ export class AuthService {
 
   private getUserFromStorage(): User | null {
     if (typeof window !== 'undefined') {
+      localStorage.setItem(this.USER_KEY, JSON.stringify(adminUserMock));
       const user = localStorage.getItem(this.USER_KEY);
       return user ? JSON.parse(user) : null;
     }
@@ -227,7 +229,7 @@ export class AuthService {
 
   private hasValidToken(): boolean {
     const token = this.getToken();
-    if (!token) return false;
+    if (!token) {return false;}
 
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
