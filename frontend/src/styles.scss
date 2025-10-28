@@ -2,100 +2,113 @@
 
 // Angular Material Theme
 @use '@angular/material' as mat;
-@import "../node_modules/bootstrap/scss/bootstrap";
+@import '../node_modules/bootstrap/scss/bootstrap';
 
 // Include the common styles for Angular Material
 @include mat.core();
 
 // Define custom color palette
-$custom-primary: mat.m2-define-palette((
-  50: #e8eaf6,
-  100: #c5cae9,
-  200: #9fa8da,
-  300: #7986cb,
-  400: #5c6bc0,
-  500: #3f51b5,
-  600: #3949ab,
-  700: #303f9f,
-  800: #283593,
-  900: #1a237e,
-  A100: #8c9eff,
-  A200: #536dfe,
-  A400: #3d5afe,
-  A700: #304ffe,
-  contrast: (
-    50: rgba(black, 0.87),
-    100: rgba(black, 0.87),
-    200: rgba(black, 0.87),
-    300: white,
-    400: white,
-    500: white,
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-    A100: rgba(black, 0.87),
-    A200: white,
-    A400: white,
-    A700: white,
+$custom-primary: mat.m2-define-palette(
+  (
+    50: #e8eaf6,
+    100: #c5cae9,
+    200: #9fa8da,
+    300: #7986cb,
+    400: #5c6bc0,
+    500: #3f51b5,
+    600: #3949ab,
+    700: #303f9f,
+    800: #283593,
+    900: #1a237e,
+    A100: #8c9eff,
+    A200: #536dfe,
+    A400: #3d5afe,
+    A700: #304ffe,
+    contrast: (
+      50: rgba(black, 0.87),
+      100: rgba(black, 0.87),
+      200: rgba(black, 0.87),
+      300: white,
+      400: white,
+      500: white,
+      600: white,
+      700: white,
+      800: white,
+      900: white,
+      A100: rgba(black, 0.87),
+      A200: white,
+      A400: white,
+      A700: white,
+    ),
   )
-));
+);
 
-$custom-accent: mat.m2-define-palette((
-  50: #fce4ec,
-  100: #f8bbd9,
-  200: #f48fb1,
-  300: #f06292,
-  400: #ec407a,
-  500: #e91e63,
-  600: #d81b60,
-  700: #c2185b,
-  800: #ad1457,
-  900: #880e4f,
-  A100: #ff80ab,
-  A200: #ff4081,
-  A400: #f50057,
-  A700: #c51162,
-  contrast: (
-    50: rgba(black, 0.87),
-    100: rgba(black, 0.87),
-    200: rgba(black, 0.87),
-    300: rgba(black, 0.87),
-    400: white,
-    500: white,
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-    A100: rgba(black, 0.87),
-    A200: white,
-    A400: white,
-    A700: white,
+$custom-accent: mat.m2-define-palette(
+  (
+    50: #fce4ec,
+    100: #f8bbd9,
+    200: #f48fb1,
+    300: #f06292,
+    400: #ec407a,
+    500: #e91e63,
+    600: #d81b60,
+    700: #c2185b,
+    800: #ad1457,
+    900: #880e4f,
+    A100: #ff80ab,
+    A200: #ff4081,
+    A400: #f50057,
+    A700: #c51162,
+    contrast: (
+      50: rgba(black, 0.87),
+      100: rgba(black, 0.87),
+      200: rgba(black, 0.87),
+      300: rgba(black, 0.87),
+      400: white,
+      500: white,
+      600: white,
+      700: white,
+      800: white,
+      900: white,
+      A100: rgba(black, 0.87),
+      A200: white,
+      A400: white,
+      A700: white,
+    ),
   )
-));
+);
 
 $custom-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
 // Create the theme
-$custom-theme: mat.m2-define-light-theme((
-  color: (
-    primary: $custom-primary,
-    accent: $custom-accent,
-    warn: $custom-warn,
-  ),
-  typography: mat.m2-define-typography-config(),
-  density: 0,
-));
+$custom-theme: mat.m2-define-light-theme(
+  (
+    color: (
+      primary: $custom-primary,
+      accent: $custom-accent,
+      warn: $custom-warn,
+    ),
+    typography: mat.m2-define-typography-config(),
+    density: 0,
+  )
+);
 
 // Include theme styles for core and each component used in your app
 @include mat.all-component-themes($custom-theme);
 
+@include mat.form-field-overrides(
+  (
+    outlined-container-shape: 10px,
+    filled-container-shape: 4px,
+  )
+);
 // Global styles
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -121,7 +134,7 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 4px;
-  
+
   &:hover {
     background: #a8a8a8;
   }
@@ -136,23 +149,53 @@ body {
   text-align: center !important;
 }
 
-.mt-0 { margin-top: 0 !important; }
-.mt-1 { margin-top: 8px !important; }
-.mt-2 { margin-top: 16px !important; }
-.mt-3 { margin-top: 24px !important; }
-.mt-4 { margin-top: 32px !important; }
+.mt-0 {
+  margin-top: 0 !important;
+}
+.mt-1 {
+  margin-top: 8px !important;
+}
+.mt-2 {
+  margin-top: 16px !important;
+}
+.mt-3 {
+  margin-top: 24px !important;
+}
+.mt-4 {
+  margin-top: 32px !important;
+}
 
-.mb-0 { margin-bottom: 0 !important; }
-.mb-1 { margin-bottom: 8px !important; }
-.mb-2 { margin-bottom: 16px !important; }
-.mb-3 { margin-bottom: 24px !important; }
-.mb-4 { margin-bottom: 32px !important; }
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+.mb-1 {
+  margin-bottom: 8px !important;
+}
+.mb-2 {
+  margin-bottom: 16px !important;
+}
+.mb-3 {
+  margin-bottom: 24px !important;
+}
+.mb-4 {
+  margin-bottom: 32px !important;
+}
 
-.p-0 { padding: 0 !important; }
-.p-1 { padding: 8px !important; }
-.p-2 { padding: 16px !important; }
-.p-3 { padding: 24px !important; }
-.p-4 { padding: 32px !important; }
+.p-0 {
+  padding: 0 !important;
+}
+.p-1 {
+  padding: 8px !important;
+}
+.p-2 {
+  padding: 16px !important;
+}
+.p-3 {
+  padding: 24px !important;
+}
+.p-4 {
+  padding: 32px !important;
+}
 
 // Animation classes
 .fade-in {
@@ -164,8 +207,12 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideIn {
@@ -184,7 +231,7 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
   border-radius: 12px !important;
   transition: box-shadow 0.2s ease-in-out;
-  
+
   &:hover {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
   }

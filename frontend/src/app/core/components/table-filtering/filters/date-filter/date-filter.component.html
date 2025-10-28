@@ -1,5 +1,5 @@
 @if (config().isRange) {
-  <app-date-range-picker />
+  <app-date-range-picker [formControl]="control" />
 } @else {
-  <app-date-picker />
+  <app-date-picker [formControl]="control"/>
 }
