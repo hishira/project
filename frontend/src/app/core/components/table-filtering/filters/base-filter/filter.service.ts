@@ -8,6 +8,7 @@ export class FilterService {
 
   updateFilters(filterValue: FilterValue): void {
     this._currentFilters.update((filters) => {
+      console.log(filters)
       if (filters.some((f) => f.filterLabel === filterValue.filterLabel)) {
         return filters;
       } else {

@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, forwardRef, input } from '@angular/core';
+import { FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -11,6 +11,13 @@ import { BaseInputComponent } from '../base-input/base-input.component';
   standalone: true,
   imports: [MatFormFieldModule, MatDatepickerModule, MatInputModule, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DatePickerComponent),
+      multi: true,
+    },
+  ],
 })
 export class DatePickerComponent extends BaseInputComponent<FormControl> {
   readonly label = input<string>('Choose a date');

@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, effect, forwardRef, input } from '@angular/core';
+import { FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatSelectModule } from '@angular/material/select';
 import { BaseInputComponent } from '../base-input/base-input.component';
 @Component({
@@ -8,6 +8,13 @@ import { BaseInputComponent } from '../base-input/base-input.component';
   standalone: true,
   imports: [MatFormField, MatSelectModule, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SelectableComponent),
+      multi: true,
+    },
+  ],
 })
 export class SelectableComponent extends BaseInputComponent<FormControl> {
   readonly label = input.required<string>();

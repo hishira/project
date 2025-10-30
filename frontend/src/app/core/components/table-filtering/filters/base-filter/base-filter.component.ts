@@ -12,5 +12,11 @@ export abstract class BaseFilterComponent<T extends FilterConfig> {
   readonly filterService = inject(FilterService);
   readonly control = new FormControl(null);
 
-  abstract saveFilterValue(): void;
+  abstract saveFilterValue(value: unknown): void;
+  constructor(){
+    this.control.valueChanges.subscribe(val=>{
+      console.log(val)
+      this.saveFilterValue(val)
+    });
+  }
 }

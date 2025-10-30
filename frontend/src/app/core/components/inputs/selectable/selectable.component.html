@@ -2,7 +2,7 @@
   <mat-label>{{ label() }}</mat-label>
   <mat-select [formControl]="control">
     @for (option of selectableOptions(); track option.label) {
-      <mat-option [value]="option.value">{{ option.label }}</mat-option>
+      <mat-option [value]="option">{{ option.label }}</mat-option>
     } @empty {
       <mat-option [value]="null">No option available</mat-option>
     }

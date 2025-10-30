@@ -1,13 +1,17 @@
-import { ChangeDetectionStrategy, Component, input } from "@angular/core";
-import { MatChipGrid, MatChipRow } from "@angular/material/chips";
+import { ChangeDetectionStrategy, Component, computed, inject, Signal } from '@angular/core';
+import { MatChipRow, MatChipSet } from '@angular/material/chips';
+import { FilterService } from '../filters/base-filter/filter.service';
 
 @Component({
-    selector: 'app-filter-chips',
-    templateUrl: './filter-chips.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [MatChipGrid, MatChipRow],
+  selector: 'app-filter-chips',
+  templateUrl: './filter-chips.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MatChipRow, MatChipSet],
 })
 export class FilterChipsComponent {
-    readonly filterValues = input<string[]>([]);
+  readonly filterService = inject(FilterService);
+  readonly filterValues: Signal<string[]> = computed(() =>
+    this.filterService.currentFilters().map((f) => String(f.value)),
+  );
 }
