@@ -11,7 +11,7 @@ import { FilterService } from '../filters/base-filter/filter.service';
 })
 export class FilterChipsComponent {
   readonly filterService = inject(FilterService);
-  readonly filterValues: Signal<string[]> = computed(() =>
-    this.filterService.currentFilters().map((f) => String(f.value)),
+  readonly filterValues: Signal<unknown[]> = computed(
+    () => this.filterService.currentFilters().map((f) => f.value).filter(Boolean) ?? [],
   );
 }

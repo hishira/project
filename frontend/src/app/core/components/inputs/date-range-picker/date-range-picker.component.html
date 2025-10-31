@@ -1,8 +1,8 @@
 <mat-form-field appearance="outline">
 	<mat-label>Enter a date range</mat-label>
-	<mat-date-range-input>
-		<input formControlName="start" matStartDate placeholder="Start date" />
-		<input formControlName="end" matEndDate placeholder="End date" />
+	<mat-date-range-input [formGroup]="control">
+		<input formControlName="from" matStartDate placeholder="Start date" />
+		<input formControlName="to" matEndDate placeholder="End date" />
 	</mat-date-range-input>
 	<mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
 	<mat-datepicker-toggle matIconSuffix [for]="picker" />

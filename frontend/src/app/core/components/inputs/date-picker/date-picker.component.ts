@@ -26,4 +26,11 @@ export class DatePickerComponent extends BaseInputComponent<FormControl> {
   override prepareControl(): void {
     this.control = new FormControl(null);
   }
+
+  override valueMapper(value: unknown): string {
+    if(value instanceof Date) {
+      return value.toISOString().split('T')[0];
+    }
+    return String(value);
+  }
 }

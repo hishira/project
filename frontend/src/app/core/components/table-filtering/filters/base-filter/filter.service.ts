@@ -8,12 +8,18 @@ export class FilterService {
 
   updateFilters(filterValue: FilterValue): void {
     this._currentFilters.update((filters) => {
-      console.log(filters)
-      if (filters.some((f) => f.filterLabel === filterValue.filterLabel)) {
-        return filters;
+      const updatedFilters = [...filters];
+      const existingIndex = updatedFilters.findIndex(
+        (f) => f.filterLabel === filterValue.filterLabel
+      );
+
+      if (existingIndex >= 0) {
+        updatedFilters[existingIndex] = filterValue;
       } else {
-        return [...filters, filterValue];
+        updatedFilters.push(filterValue);
       }
+
+      return updatedFilters.filter(Boolean);
     });
   }
 }

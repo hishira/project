@@ -14,11 +14,12 @@ import { BaseFilterComponent } from '../base-filter/base-filter.component';
 export class SelectableFilterComponent extends BaseFilterComponent<SelectableFilterConfig> {
   readonly selectableOptions: Signal<FilterOption[]> = computed(() => this.config().options);
   readonly isDisabled: Signal<boolean> = computed(() => !this.selectableOptions()?.length);
+
   override saveFilterValue(value: unknown): void {
     const { value: formValue } = this.control;
     this.filterService.updateFilters({
       filterLabel: this.label(),
-      value: value ?? formValue,
+      value: (value as FilterOption)?.label ?? (formValue as unknown as FilterOption)?.label,
     });
   }
 }
