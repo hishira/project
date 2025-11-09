@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { FilterService } from '../filters/base-filter/filter.service';
+import { FilterValue } from '../filters/base-filter/types';
 @Component({
   selector: 'app-filter-chips',
   templateUrl: './filter-chips.component.html',
@@ -12,12 +13,12 @@ import { FilterService } from '../filters/base-filter/filter.service';
 })
 export class FilterChipsComponent {
   readonly filterService = inject(FilterService);
-  readonly filterValues: Signal<unknown[]> = computed(
+  readonly filterValues: Signal<FilterValue[]> = computed(
     () =>
       this.filterService
         .currentFilters()
-        .map((f) => f.value)
-        .filter(Boolean) ?? [],
+        // eslint-disable-next-line no-constant-binary-expression, @typescript-eslint/no-explicit-any
+        .filter(v=> v !== null && v !== undefined) ?? [],
   );
   
   onChipRemove(event: unknown): void {
