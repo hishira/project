@@ -32,4 +32,8 @@ export class DateFilterComponent extends BaseFilterComponent<DateFilterConfig> {
       value: value ?? formValue,
     });
   }
+
+  override resetFilter(): void {
+    this.control.setValue(null);
+  }
 }

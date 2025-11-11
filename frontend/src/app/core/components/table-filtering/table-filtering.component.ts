@@ -4,6 +4,7 @@ import { SelectableFilterComponent } from "./filters/selectable-filter/selectabl
 import { DateFilterComponent } from "./filters/date-filter/date-filter.component";
 import { FilterChipsComponent } from "./filter-chips/filter-chips.component";
 import { FilterService } from './filters/base-filter/filter.service';
+import { FilterActionLogic } from './filters/base-filter/filter-action-logic.service';
 
 @Component({
   selector: 'app-table-filtering',
@@ -11,7 +12,7 @@ import { FilterService } from './filters/base-filter/filter.service';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [SelectableFilterComponent, DateFilterComponent, FilterChipsComponent],
-  providers: [FilterService],
+  providers: [FilterService, FilterActionLogic],
 })
 export class TableFilteringComponent {
   readonly filters = input.required<Filter[]>();

@@ -13,6 +13,8 @@ export abstract class BaseFilterComponent<T extends FilterConfig> {
 
   abstract saveFilterValue(value: unknown): void;
 
+  abstract resetFilter(): void;
+
   constructor() {
     this.control.valueChanges.pipe(takeUntilDestroyed()).subscribe((val) => {
       this.saveFilterValue(val);

@@ -22,4 +22,8 @@ export class SelectableFilterComponent extends BaseFilterComponent<SelectableFil
       value: (value as FilterOption)?.label ?? (formValue as unknown as FilterOption)?.label,
     });
   }
+
+   override resetFilter(): void {
+    this.control.setValue(null);
+  }
 }

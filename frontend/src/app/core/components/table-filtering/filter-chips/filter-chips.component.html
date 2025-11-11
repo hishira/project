@@ -1,12 +1,5 @@
 <mat-chip-set>
-  @for (filter of filterValues(); track filter) {
-    @if (filter?.value) {
-      <mat-chip-row (removed)="onChipRemove(filter)"
-        >{{ filter?.value }}
-        <button matChipRemove type="button">
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </mat-chip-row>
-    }
+  @for (filter of visibleFilters(); track filter) {
+    <app-filter-chip [filter]="filter" />
   }
 </mat-chip-set>

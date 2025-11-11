@@ -9,9 +9,7 @@ export class FilterService {
   updateFilters(filterValue: FilterValue): void {
     this._currentFilters.update((filters) => {
       const updatedFilters = [...filters];
-      const existingIndex = updatedFilters.findIndex(
-        (f) => f.filterLabel === filterValue.filterLabel
-      );
+      const existingIndex = updatedFilters.findIndex((f) => f.filterLabel === filterValue.filterLabel);
 
       if (existingIndex >= 0) {
         updatedFilters[existingIndex] = filterValue;
@@ -23,7 +21,7 @@ export class FilterService {
     });
   }
 
-  removeFilter(): void {
-    
+  removeFilter(filterValue: FilterValue): void {
+    this._currentFilters.update((filters) => filters.filter((f) => f.filterLabel !== filterValue.filterLabel));
   }
 }
