@@ -1,9 +1,11 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { FilterValue } from './types';
+import { FilterActionLogic } from './filter-action-logic.service';
 
 @Injectable()
 export class FilterService {
   private readonly _currentFilters: WritableSignal<FilterValue[]> = signal([]);
+  readonly filterActions = inject(FilterActionLogic);
   currentFilters = this._currentFilters.asReadonly();
 
   updateFilters(filterValue: FilterValue): void {
@@ -23,5 +25,6 @@ export class FilterService {
 
   removeFilter(filterValue: FilterValue): void {
     this._currentFilters.update((filters) => filters.filter((f) => f.filterLabel !== filterValue.filterLabel));
+    this.filterActions.resetFilterComponent(filterValue.filterLabel);
   }
 }

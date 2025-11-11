@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
-import { FilterValue } from '../../filters/base-filter/types';
 import { MatIconModule } from '@angular/material/icon';
 import { FilterService } from '../../filters/base-filter/filter.service';
+import { FilterValue } from '../../filters/base-filter/types';
 
 @Component({
   selector: 'app-filter-chip',
@@ -13,8 +13,8 @@ import { FilterService } from '../../filters/base-filter/filter.service';
 })
 export class FilterChipComponent {
   readonly filter = input.required<FilterValue>();
-    readonly filterService = inject(FilterService);
-
+  readonly filterService = inject(FilterService);
+  
   onChipRemove(filter: FilterValue): void {
     this.filterService.removeFilter(filter);
   }

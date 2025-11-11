@@ -31,6 +31,6 @@ export class DatePickerComponent extends BaseInputComponent<FormControl> {
     if(value instanceof Date) {
       return value.toISOString().split('T')[0];
     }
-    return String(value);
+    return value ? String(value) : value as string;
   }
 }
