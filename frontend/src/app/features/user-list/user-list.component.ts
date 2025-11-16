@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  Signal,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Signal, signal } from '@angular/core';
 import { usersListMocks } from '../../core/mocks/user.mocks';
 import { MatTableModule } from '@angular/material/table';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -13,8 +6,10 @@ import { Store } from '@ngrx/store';
 import { userSelector } from '../../store/user';
 import { User } from '../../shared/models/auth.model';
 import { userFilters } from './user-list.filter';
-import { TableFilteringComponent } from "../../core/components/table-filtering/table-filtering.component";
-import { MatCard, MatCardContent } from "@angular/material/card";
+import { TableFilteringComponent } from '../../core/components/table-filtering/table-filtering.component';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonRouterService } from '../../core/services/common-router.service';
 const adminColumns = ['id', 'firstName', 'lastName', 'email', 'role', 'state'];
 const otherColumns = ['firstName', 'lastName', 'email', 'role'];
 @Component({
@@ -24,16 +19,17 @@ const otherColumns = ['firstName', 'lastName', 'email', 'role'];
   standalone: true,
   imports: [MatTableModule, TableFilteringComponent, MatCard, MatCardContent],
   styleUrl: './user-list.component.scss',
+  providers: [CommonRouterService],
 })
 export class UserListComponent {
   readonly users = signal(usersListMocks);
-  readonly user: Signal<User | any> = toSignal(
-    inject(Store).select(userSelector)
-  );
+  readonly user: Signal<User | any> = toSignal(inject(Store).select(userSelector));
   readonly columns: Signal<string[]> = computed(() =>
-    this.user()?.role?.roleType?.roleType === 'admin'
-      ? adminColumns
-      : otherColumns
+    this.user()?.role?.roleType?.roleType === 'admin' ? adminColumns : otherColumns,
   );
   readonly filters = userFilters;
+  readonly commonRouter = inject(CommonRouterService);
+  onRowClick(row: User): void {
+    this.commonRouter.navitgateTo(['details', row.id]);
+  }
 }

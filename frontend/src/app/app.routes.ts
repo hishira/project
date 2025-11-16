@@ -21,7 +21,6 @@ export const routes: Routes = [
       },
       {
         path: 'users',
-        pathMatch: 'full',
         loadChildren: () =>
           import('./features/user-list/user-list-routes').then(
             (m) => m.userListRoutes
