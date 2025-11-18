@@ -280,3 +280,37 @@ export const usersListMocks: {
     state: State.Deleted,
   },
 ];
+
+export const userMock: {
+  id: string;
+  credentials: { login: string; email: string };
+  firstName: string;
+  lastName: string;
+  userType: UserType;
+  role: RoleType;
+  address: AddressDTO;
+  createdAt: string;
+  updatedAt: string;
+  state: State;} = {
+     id: 'usr_01a2b3c4d5e6f7g8h9i0j',
+    credentials: {
+      login: 'jdoe123',
+      email: 'john.doe@example.com',
+    },
+    firstName: 'John',
+    lastName: 'Doe',
+    userType: UserType.User,
+    role: RoleType.User,
+    address: {
+      street: 'Maple Avenue',
+      city: 'Springfield',
+      postacCode: '62704',
+      houseNumber: '123',
+      country: 'USA',
+      lng: -89.6501,
+      lat: 39.8017,
+    },
+    createdAt: '2023-01-15T08:30:00Z',
+    updatedAt: '2024-03-10T14:22:10Z',
+    state: State.Active,
+  }
