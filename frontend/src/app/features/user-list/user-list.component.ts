@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, inject, Signal, signal } from '@angular/core';
-import { usersListMocks } from '../../core/mocks/user.mocks';
-import { MatTableModule } from '@angular/material/table';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Store } from '@ngrx/store';
-import { userSelector } from '../../store/user';
-import { User } from '../../shared/models/auth.model';
-import { userFilters } from './user-list.filter';
-import { TableFilteringComponent } from '../../core/components/table-filtering/table-filtering.component';
 import { MatCard, MatCardContent } from '@angular/material/card';
-import { ActivatedRoute, Router } from '@angular/router';
+import { MatTableModule } from '@angular/material/table';
+import { Store } from '@ngrx/store';
+import { MainPageViewComponent } from '../../core/components/main-page-view/main-page-view.component';
+import { TableFilteringComponent } from '../../core/components/table-filtering/table-filtering.component';
+import { usersListMocks } from '../../core/mocks/user.mocks';
 import { CommonRouterService } from '../../core/services/common-router.service';
+import { User } from '../../shared/models/auth.model';
+import { userSelector } from '../../store/user';
+import { userFilters } from './user-list.filter';
 const adminColumns = ['id', 'firstName', 'lastName', 'email', 'role', 'state'];
 const otherColumns = ['firstName', 'lastName', 'email', 'role'];
 @Component({
@@ -17,7 +17,7 @@ const otherColumns = ['firstName', 'lastName', 'email', 'role'];
   templateUrl: './user-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatTableModule, TableFilteringComponent, MatCard, MatCardContent],
+  imports: [MatTableModule, TableFilteringComponent, MatCard, MatCardContent, MainPageViewComponent],
   styleUrl: './user-list.component.scss',
   providers: [CommonRouterService],
 })
