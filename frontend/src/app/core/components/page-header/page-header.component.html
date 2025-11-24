@@ -1,5 +1,12 @@
 <mat-toolbar>
-     <mat-toolbar-row>
-        Test
-     </mat-toolbar-row>
+  <mat-toolbar-row>
+    <span style="display: flex; align-items: center;">
+      @if (withBackButtons()) {
+        <app-page-back-button />
+      }
+      <ng-content select=".main-header" />
+    </span>
+    <span style="flex: 1 0 auto"></span>
+    <ng-content select=".main-header-buttons" />
+  </mat-toolbar-row>
 </mat-toolbar>
