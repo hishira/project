@@ -1,16 +1,19 @@
-
-<app-page-header >
-    <div class="main-header">User Details</div>
-    <div class="main-header-buttons">
-        <button mat-button type="button">Edit</button>
-        <button mat-button type="button">Delete</button>
-    </div>
+<app-page-header>
+  <div class="main-header">User {{ userName() }}</div>
+  <div class="main-header-buttons">
+    <button matButton type="button">Edit</button>
+    <button matButton type="button">Delete</button>
+  </div>
 </app-page-header>
 <app-main-page-view>
-<mat-card>
+  <mat-card>
     <mat-card-header>General information</mat-card-header>
-    <mat-card-content>
-        <app-read-only label="Test"></app-read-only>
+    <mat-card-content class="mt-2">
+      <div class="d-flex gap-5">
+        <app-read-only label="Name">{{ currentUser().firstName }}</app-read-only>
+        <app-read-only label="Last name">{{ currentUser().lastName }}</app-read-only>
+        <app-read-only label="Address">{{ currentAddress() }}</app-read-only>
+      </div>
     </mat-card-content>
-</mat-card>
+  </mat-card>
 </app-main-page-view>

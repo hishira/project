@@ -15,7 +15,7 @@ export enum UserType {
 export type AddressDTO = {
   street: string;
   city: string;
-  postacCode: string;
+  postalCode: string;
   houseNumber: string;
   country: string;
   lng?: number;
@@ -62,7 +62,7 @@ export const usersListMocks: {
     address: {
       street: 'Maple Avenue',
       city: 'Springfield',
-      postacCode: '62704',
+      postalCode: '62704',
       houseNumber: '123',
       country: 'USA',
       lng: -89.6501,
@@ -85,7 +85,7 @@ export const usersListMocks: {
     address: {
       street: 'Oak Street',
       city: 'Metropolis',
-      postacCode: '10001',
+      postalCode: '10001',
       houseNumber: '45B',
       country: 'USA',
       lng: -73.9857,
@@ -108,7 +108,7 @@ export const usersListMocks: {
     address: {
       street: 'Server Lane',
       city: 'Datacenter City',
-      postacCode: '90210',
+      postalCode: '90210',
       houseNumber: '1',
       country: 'USA',
       lng: -118.4065,
@@ -131,7 +131,7 @@ export const usersListMocks: {
     address: {
       street: 'Temporary Road',
       city: 'Nowhere',
-      postacCode: '00000',
+      postalCode: '00000',
       houseNumber: '0',
       country: 'Unknown',
       lng: 0,
@@ -154,7 +154,7 @@ export const usersListMocks: {
     address: {
       street: 'Forum Square',
       city: 'Communityville',
-      postacCode: '54321',
+      postalCode: '54321',
       houseNumber: '789',
       country: 'Canada',
       lng: -79.3832,
@@ -177,7 +177,7 @@ export const usersListMocks: {
     address: {
       street: 'Help Street',
       city: 'Assistance City',
-      postacCode: '11223',
+      postalCode: '11223',
       houseNumber: '55',
       country: 'UK',
       lng: -0.1278,
@@ -200,7 +200,7 @@ export const usersListMocks: {
     address: {
       street: 'Digital Highway',
       city: 'Cyber City',
-      postacCode: '10101',
+      postalCode: '10101',
       houseNumber: 'AI-01',
       country: 'Internet',
       lng: 0,
@@ -223,7 +223,7 @@ export const usersListMocks: {
     address: {
       street: 'Code Boulevard',
       city: 'Silicon Valley',
-      postacCode: '94043',
+      postalCode: '94043',
       houseNumber: '101',
       country: 'USA',
       lng: -122.0841,
@@ -246,7 +246,7 @@ export const usersListMocks: {
     address: {
       street: 'Shadow Lane',
       city: 'Penalty Town',
-      postacCode: '99999',
+      postalCode: '99999',
       houseNumber: '666',
       country: 'Nowhere',
       lng: null as any, // Optional fields can be omitted or set to undefined
@@ -269,7 +269,7 @@ export const usersListMocks: {
     address: {
       street: '',
       city: '',
-      postacCode: '',
+      postalCode: '',
       houseNumber: '',
       country: '',
       lng: undefined,
@@ -281,7 +281,7 @@ export const usersListMocks: {
   },
 ];
 
-export const userMock: {
+export type UserMock = {
   id: string;
   credentials: { login: string; email: string };
   firstName: string;
@@ -292,7 +292,8 @@ export const userMock: {
   createdAt: string;
   updatedAt: string;
   state: State;
-} = {
+}
+export const userMock: UserMock = {
   id: 'usr_01a2b3c4d5e6f7g8h9i0j',
   credentials: {
     login: 'jdoe123',
@@ -305,7 +306,7 @@ export const userMock: {
   address: {
     street: 'Maple Avenue',
     city: 'Springfield',
-    postacCode: '62704',
+    postalCode: '62704',
     houseNumber: '123',
     country: 'USA',
     lng: -89.6501,
