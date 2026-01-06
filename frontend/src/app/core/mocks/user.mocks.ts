@@ -22,13 +22,13 @@ export type AddressDTO = {
   lat?: number;
 };
 export enum RoleType {
-  User = 'user',
-  Admin = 'admin',
-  SuperAdmin = 'superadmin',
-  Employee = 'employee',
-  Manager = 'manager',
-  Guest = 'guest',
-  Unknown = 'unknown',
+  User = 'User',
+  Admin = 'Admin',
+  SuperAdmin = 'SuperAdmin',
+  Employee = 'Employee',
+  Manager = 'Manager',
+  Guest = 'Guest',
+  Unknown = 'Unknown',
 }
 export enum State {
   Active = 'active',
@@ -283,7 +283,7 @@ export const usersListMocks: {
 
 export type UserMock = {
   id: string;
-  credentials: { login: string; email: string };
+  credentials: UserMockCredentials;
   firstName: string;
   lastName: string;
   userType: UserType;
@@ -293,6 +293,10 @@ export type UserMock = {
   updatedAt: string;
   state: State;
 }
+export type UserMockCredentials = {
+  login: string;
+  email: string;
+};
 export const userMock: UserMock = {
   id: 'usr_01a2b3c4d5e6f7g8h9i0j',
   credentials: {

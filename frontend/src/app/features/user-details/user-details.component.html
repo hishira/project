@@ -10,10 +10,34 @@
     <mat-card-header>General information</mat-card-header>
     <mat-card-content class="mt-2">
       <div class="d-flex gap-5">
-        <app-read-only label="Name">{{ currentUser().firstName }}</app-read-only>
-        <app-read-only label="Last name">{{ currentUser().lastName }}</app-read-only>
-        <app-read-only label="Address">{{ currentAddress() }}</app-read-only>
+        <div class="col-2">
+          <app-read-only label="Name">{{ currentUser().firstName }}</app-read-only>
+        </div>
+        <div class="col-2">
+          <app-read-only label="Last name">{{ currentUser().lastName }}</app-read-only>
+        </div>
+        <div class="col-2">
+          <app-read-only label="Address">{{ currentAddress() }}</app-read-only>
+        </div>
       </div>
+      <div *isAdmin class="d-flex gap-5 mt-2">
+        <div class="col-2">
+          <app-read-only label="Login">{{ userCredentials().login }}</app-read-only>
+        </div>
+        <div class="col-2">
+          <app-read-only label="Email">{{ userCredentials().email }}</app-read-only>
+        </div>
+        <div class="col-2">
+          <app-read-only label="Role">{{ currentUser().role }}</app-read-only>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <div class="mt-3"></div>
+  <mat-card>
+    <mat-card-header> Agreements </mat-card-header>
+    <mat-card-content>
+      <app-empty-state />
     </mat-card-content>
   </mat-card>
 </app-main-page-view>
