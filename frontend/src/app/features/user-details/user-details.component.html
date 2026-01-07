@@ -37,7 +37,9 @@
   <mat-card>
     <mat-card-header> Agreements </mat-card-header>
     <mat-card-content>
-      <app-empty-state />
+      <app-empty-state [isEmpty]="true" [label]="'No agreements found'">
+        Agreements will be displayed here when assigned to the user.
+      </app-empty-state>
     </mat-card-content>
   </mat-card>
 </app-main-page-view>
