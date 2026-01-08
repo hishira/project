@@ -8,6 +8,7 @@ import { ReadonlyOnlyComponent } from '../../core/components/read-only/read-only
 import { userMock, UserMock, UserMockCredentials } from '../../core/mocks/user.mocks';
 import { AdminDirective } from './../../core/directives/admin.directive';
 import { EmptyStateComponent } from '../../core/components/empty-state/empty-state.component';
+  import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-user-details',
@@ -15,14 +16,15 @@ import { EmptyStateComponent } from '../../core/components/empty-state/empty-sta
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    MatCardModule,
+  MatCardModule,
     ReadonlyOnlyComponent,
     MainPageViewComponent,
     PageHeaderComponent,
     MatButtonModule,
     AdminDirective,
     MatIconModule,
-    EmptyStateComponent
+    EmptyStateComponent,
+    MatChipsModule
   ],
 })
 export class UserDetailsComponent {
@@ -33,4 +35,5 @@ export class UserDetailsComponent {
     return `${address.houseNumber} ${address.street}, ${address.city}, ${address.postalCode}, ${address.country}`;
   });
   readonly userCredentials: Signal<UserMockCredentials> = computed(() => this.currentUser().credentials);
+  readonly userRole: Signal<string> = computed(() => this.currentUser().role);
 }

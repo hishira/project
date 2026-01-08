@@ -1,13 +1,19 @@
 <app-page-header>
-  <div class="main-header">User {{ userName() }}</div>
+  <div class="main-header d-flex gap-2">
+    {{ userName() }} <mat-chip>{{ userRole() }}</mat-chip>
+  </div>
   <div class="main-header-buttons">
-    <button matButton type="button">Edit</button>
-    <button matButton type="button">Delete</button>
+    <button class="text-bg-danger" matButton type="button">Delete</button>
   </div>
 </app-page-header>
 <app-main-page-view>
   <mat-card>
-    <mat-card-header>General information</mat-card-header>
+    <mat-card-header>
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <div>General information</div>
+        <button matButton type="button">Edit</button>
+      </div>
+    </mat-card-header>
     <mat-card-content class="mt-2">
       <div class="d-flex gap-5">
         <div class="col-2">
@@ -26,9 +32,6 @@
         </div>
         <div class="col-2">
           <app-read-only label="Email">{{ userCredentials().email }}</app-read-only>
-        </div>
-        <div class="col-2">
-          <app-read-only label="Role">{{ currentUser().role }}</app-read-only>
         </div>
       </div>
     </mat-card-content>
