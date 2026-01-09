@@ -10,15 +10,16 @@ import { CommonRouterService } from '../../core/services/common-router.service';
 import { User } from '../../shared/models/auth.model';
 import { userSelector } from '../../store/user';
 import { userFilters } from './user-list.filter';
+
 const adminColumns = ['id', 'firstName', 'lastName', 'email', 'role', 'state'];
 const otherColumns = ['firstName', 'lastName', 'email', 'role'];
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
+  styleUrl: './user-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [MatTableModule, TableFilteringComponent, MatCard, MatCardContent, MainPageViewComponent],
-  styleUrl: './user-list.component.scss',
   providers: [CommonRouterService],
 })
 export class UserListComponent {
@@ -29,6 +30,7 @@ export class UserListComponent {
   );
   readonly filters = userFilters;
   readonly commonRouter = inject(CommonRouterService);
+
   onRowClick(row: User): void {
     this.commonRouter.navitgateTo(['details', row.id]);
   }

@@ -1,0 +1,29 @@
+ <mat-card>
+    <mat-card-header>
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <div>General information</div>
+        <button matButton type="button">Edit</button>
+      </div>
+    </mat-card-header>
+    <mat-card-content class="mt-2">
+      <div class="d-flex gap-5">
+        <div class="col-2">
+          <app-read-only label="Name">{{ user().firstName }}</app-read-only>
+        </div>
+        <div class="col-2">
+          <app-read-only label="Last name">{{ user().lastName }}</app-read-only>
+        </div>
+        <div class="col-2">
+          <app-read-only label="Address">{{ currentAddress() }}</app-read-only>
+        </div>
+      </div>
+      <div *isAdmin class="d-flex gap-5 mt-2">
+        <div class="col-2">
+          <app-read-only label="Login">{{ userCredentials().login }}</app-read-only>
+        </div>
+        <div class="col-2">
+          <app-read-only label="Email">{{ userCredentials().email }}</app-read-only>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
