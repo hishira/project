@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, computed, input, Signal } from '@an
 import { MatCardModule } from '@angular/material/card';
 import { ReadonlyOnlyComponent } from '../../../core/components/read-only/read-only.component';
 import { UserMock, UserMockCredentials } from '../../../core/mocks/user.mocks';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-user-general-information',
   templateUrl: './user-general-information.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatCardModule, ReadonlyOnlyComponent],
+  imports: [MatCardModule, ReadonlyOnlyComponent, MatButtonModule],
 })
 export class UserGeneralInformationComponent {
   readonly user = input.required<UserMock>();

@@ -1,0 +1,11 @@
+@switch (inputType()) {
+  @default {
+    <mat-form-field class="example-full-width">
+      <mat-label>{{ genericInput.label }}</mat-label>
+      <input matInput [formControl]="formControl" [type]="genericInput.type" />
+      <mat-error>
+        <crm-errors [control]="formControl"></crm-errors>
+      </mat-error>
+    </mat-form-field>
+  }
+}
