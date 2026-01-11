@@ -1,0 +1,10 @@
+<mat-form-field appearance="outline" class="full-width">
+  <mat-label>{{ label() }}</mat-label>
+  <input matInput [formControl]="control" [placeholder]="placeholder()" [type]="inputType()" />
+  @if (icon()) {
+    <mat-icon matSuffix>{{ icon() }}</mat-icon>
+  }
+  <!-- @if (loginForm.get('identifier')?.hasError('required')) {
+    <mat-error> Email or username is required </mat-error>
+  } -->
+</mat-form-field>

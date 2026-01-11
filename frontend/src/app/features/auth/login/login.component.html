@@ -3,7 +3,7 @@
     <mat-card-header>
       <mat-card-title>
         <div class="auth-header">
-          <mat-icon class="auth-icon ">admin_panel_settings</mat-icon>
+          <mat-icon class="auth-icon">admin_panel_settings</mat-icon>
           <h1>Admin panel</h1>
         </div>
       </mat-card-title>
@@ -11,8 +11,15 @@
     </mat-card-header>
 
     <mat-card-content>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
-        <mat-form-field appearance="outline" class="full-width">
+      <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <app-text-input 
+        formControlName="identifier"
+        icon="person"
+         label="Email or Username" 
+         placeholder="Enter your email or username"
+         [errorsMap]="{'required': 'Email or username is required'}"
+         />
+        <!-- <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email or Username</mat-label>
           <input matInput type="text" formControlName="identifier" placeholder="Enter your email or username">
           <mat-icon matSuffix>person</mat-icon>
@@ -22,36 +29,44 @@
           </mat-error>
           }
 
-        </mat-form-field>
+        </mat-form-field> -->
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Password</mat-label>
-          <input matInput [type]="passwordType()" formControlName="password" placeholder="Enter your password">
-          <button mat-icon-button matSuffix type="button" (click)="passwordHide()" [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hidePassword()">
-            <mat-icon>{{passwordIcon()}}</mat-icon>
+          <input formControlName="password" matInput placeholder="Enter your password" [type]="passwordType()" />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword()"
+            (click)="passwordHide()">
+            <mat-icon>{{ passwordIcon() }}</mat-icon>
           </button>
-          @if(loginForm.get('password')?.hasError('required')){
-          <mat-error>
-            Password is required
-          </mat-error>
+          @if (loginForm.get('password')?.hasError('required')) {
+            <mat-error> Password is required </mat-error>
           }
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" class="full-width auth-button"
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="full-width auth-button"
           [disabled]="loginForm.invalid || isLoading()">
-          @if(isLoading()) {
-          <mat-spinner diameter="20"></mat-spinner>
+          @if (isLoading()) {
+            <mat-spinner diameter="20"></mat-spinner>
           }
-          @if(!isLoading()) {
-          <span>Sign In</span>
+          @if (!isLoading()) {
+            <span>Sign In</span>
           }
         </button>
       </form>
     </mat-card-content>
 
     <mat-card-actions class="auth-actions">
-      <p>Don't have an account?
+      <p>
+        Don't have an account?
         <a routerLink="/auth/register" class="auth-link">Sign up</a>
       </p>
     </mat-card-actions>

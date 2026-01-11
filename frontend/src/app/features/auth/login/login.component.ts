@@ -25,6 +25,7 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { SnackBar } from '../../../core/services/snack-bar.service';
 import { LoginDto } from '../../../shared/models/auth.model';
+import { TextInputComponent } from '../../../core/components/inputs/text-input/text-input.component';
 
 @Component({
   selector: 'app-login',
@@ -41,6 +42,7 @@ import { LoginDto } from '../../../shared/models/auth.model';
     MatIconModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    TextInputComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -72,9 +74,9 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     // Redirect if already authenticated
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['dashboard']);
-    }
+    // if (this.authService.isAuthenticated()) {
+    //   this.router.navigate(['dashboard']);
+    // }
   }
 
   onSubmit(): void {
