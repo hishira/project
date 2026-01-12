@@ -1,14 +1,14 @@
-import { Directive, inject, OnInit } from '@angular/core';
+import { Directive, input, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AbstractControl, ControlValueAccessor, NgControl } from '@angular/forms';
+import { AbstractControl, ControlValueAccessor } from '@angular/forms';
 import { map } from 'rxjs';
+import { InputValidation } from '../types';
 
 @Directive({
   standalone: true,
 })
 export abstract class BaseInputComponent<T extends AbstractControl> implements ControlValueAccessor, OnInit {
   protected control!: T;
-  rawControl = inject(NgControl, { optional: true });
 
   abstract prepareControl(): void;
 
@@ -24,6 +24,7 @@ export abstract class BaseInputComponent<T extends AbstractControl> implements C
   protected onInit(): void {}
   
   ngOnInit(): void {
+    console.log('asd')
     this.onInit();
   }
   valueMapper(value: unknown): unknown {

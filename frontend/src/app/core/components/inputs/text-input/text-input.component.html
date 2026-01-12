@@ -4,7 +4,7 @@
   @if (icon()) {
     <mat-icon matSuffix>{{ icon() }}</mat-icon>
   }
-  <!-- @if (loginForm.get('identifier')?.hasError('required')) {
-    <mat-error> Email or username is required </mat-error>
-  } -->
+    @for(error of errorsMessage; track error){
+      <mat-error> {{ error }} </mat-error>
+    }
 </mat-form-field>

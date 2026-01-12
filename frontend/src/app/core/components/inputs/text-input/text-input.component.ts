@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, forwardRef, inject, Injector, input } from '@angular/core';
-import { FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, forwardRef, Host, Injector, input, Optional } from '@angular/core';
+import { FormControl, FormControlName, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { BaseInputComponent } from '../base-input/base-input.component';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 type ErrorsMap = {
   [key: string]: string;
 };
@@ -27,18 +26,34 @@ export class TextInputComponent extends BaseInputComponent<FormControl> {
   readonly placeholder = input<string>('');
   readonly inputType = input<'text' | 'password' | 'email'>('text');
   readonly icon = input<string>('');
-  readonly errorsMap = input<ErrorsMap>();
+  readonly errorsMap = input<ErrorsMap>({});
   errorsMessage: string[] = [];
-  override prepareControl(): void {
-    console.log(this.rawControl);
-    this.control = (this.rawControl?.control as FormControl) ?? new FormControl(null);
+  // eslint-disable-next-line @angular-eslint/prefer-inject
+  constructor(@Optional() @Host() private injector: Injector) {
+    super();
   }
 
+  override prepareControl(): void {
+    this.control = new FormControl(null);
+  }
+  ngAfterViewInit(): void {
+    const control = this.injector.get(FormControlName, null);
+    this.control.addValidators(control?.control?.validator ?? []);
+    this.control.addAsyncValidators(control?.control?.asyncValidator ?? []);
+  }
   protected override onInit(): void {
+    const control = this.injector.get(FormControlName, null);
+    console.log('valid', control);
+    this.control.addValidators(control?.control?.validator ?? []);
+    this.control.addAsyncValidators(control?.control?.asyncValidator ?? []);
+    console.log(this.control);
     this.control.valueChanges.subscribe(() => {
-      Object.keys(this.errorsMap() ?? {}).forEach((errorKey) => {
+      console.log(this.control);
+
+      Object.keys(this.errorsMap() ?? {}).forEach((errorKey: string) => {
         if (this.control.hasError(errorKey)) {
-          this.errorsMap()?.[errorKey] && this.errorsMessage.push(this.errorsMap()?.[errorKey] as unknown as string);
+          const customMessage: string = this.errorsMap()?.[errorKey] as string;
+          customMessage && this.errorsMessage.push(customMessage);
         }
       });
     });

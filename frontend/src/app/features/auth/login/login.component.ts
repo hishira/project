@@ -49,6 +49,7 @@ import { TextInputComponent } from '../../../core/components/inputs/text-input/t
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  
   readonly hidePassword: WritableSignal<boolean> = signal(true);
   readonly isLoading: WritableSignal<boolean> = signal(false);
   readonly passwordType: Signal<'password' | 'text'> = computed(() =>
