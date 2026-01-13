@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, forwardRef, Host, Injector, input, Optional } from '@angular/core';
-import { FormControl, FormControlName, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, effect, forwardRef, Host, Injector, input, Optional } from '@angular/core';
+import { AbstractControl, FormControl, FormControlName, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -19,43 +19,52 @@ type ErrorsMap = {
       useExisting: forwardRef(() => TextInputComponent),
       multi: true,
     },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => TextInputComponent),
+      multi: true,
+    },
   ],
 })
-export class TextInputComponent extends BaseInputComponent<FormControl> {
+export class TextInputComponent extends BaseInputComponent<FormControl> implements Validator {
   readonly label = input.required<string>();
   readonly placeholder = input<string>('');
   readonly inputType = input<'text' | 'password' | 'email'>('text');
   readonly icon = input<string>('');
   readonly errorsMap = input<ErrorsMap>({});
-  errorsMessage: string[] = [];
+  errorsMessage: Set<string> = new Set<string>([]);
   // eslint-disable-next-line @angular-eslint/prefer-inject
-  constructor(@Optional() @Host() private injector: Injector) {
+  constructor() {
     super();
+    effect(()=>{
+      this.control?.reset();
+      const validators = this.inputValidation()?.map(v=>v.validator)?.filter(v=>!!v)??[];
+      const asyncValidators = this.inputValidation()?.map(v=>v.asyncValidator)?.filter(v=>!!v)?? [];
+      this.control?.setValidators(validators);
+      this.control?.setAsyncValidators(asyncValidators);
+      this.control?.updateValueAndValidity();
+    })
   }
 
   override prepareControl(): void {
     this.control = new FormControl(null);
   }
-  ngAfterViewInit(): void {
-    const control = this.injector.get(FormControlName, null);
-    this.control.addValidators(control?.control?.validator ?? []);
-    this.control.addAsyncValidators(control?.control?.asyncValidator ?? []);
-  }
+  
   protected override onInit(): void {
-    const control = this.injector.get(FormControlName, null);
-    console.log('valid', control);
-    this.control.addValidators(control?.control?.validator ?? []);
-    this.control.addAsyncValidators(control?.control?.asyncValidator ?? []);
-    console.log(this.control);
     this.control.valueChanges.subscribe(() => {
-      console.log(this.control);
-
-      Object.keys(this.errorsMap() ?? {}).forEach((errorKey: string) => {
-        if (this.control.hasError(errorKey)) {
-          const customMessage: string = this.errorsMap()?.[errorKey] as string;
-          customMessage && this.errorsMessage.push(customMessage);
+    
+      this.inputValidation().forEach((validation) => {
+        if(this.control.hasError(validation.name) && validation.message){
+          this.errorsMessage.add(validation.message);
         }
-      });
+      })
     });
+  }
+  validate(control: AbstractControl): ValidationErrors | null {
+    console.log(control.hasError('required'))
+    if(control.hasError('required')){
+      this.errorsMessage.add('This field is required');
+    }
+    return this.control.errors;
   }
 }

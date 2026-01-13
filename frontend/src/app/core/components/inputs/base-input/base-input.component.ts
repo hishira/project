@@ -8,6 +8,7 @@ import { InputValidation } from '../types';
   standalone: true,
 })
 export abstract class BaseInputComponent<T extends AbstractControl> implements ControlValueAccessor, OnInit {
+  readonly inputValidation = input<InputValidation[]>([]);
   protected control!: T;
 
   abstract prepareControl(): void;
