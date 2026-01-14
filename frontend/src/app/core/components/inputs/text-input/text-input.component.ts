@@ -1,9 +1,22 @@
-import { ChangeDetectionStrategy, Component, effect, forwardRef, Host, Injector, input, Optional } from '@angular/core';
-import { AbstractControl, FormControl, FormControlName, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, effect, forwardRef, inject, input } from '@angular/core';
+import {
+  AbstractControl,
+  FormControl,
+  FormControlName,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  NgControl,
+  ReactiveFormsModule,
+  TouchedChangeEvent,
+  ValidationErrors,
+  Validator,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { filter } from 'rxjs';
 import { BaseInputComponent } from '../base-input/base-input.component';
+import { PasswordInputComponent } from './password-input/password-input.component';
 type ErrorsMap = {
   [key: string]: string;
 };
@@ -12,7 +25,7 @@ type ErrorsMap = {
   templateUrl: './text-input.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule],
+  imports: [MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule, PasswordInputComponent],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -33,36 +46,52 @@ export class TextInputComponent extends BaseInputComponent<FormControl> implemen
   readonly icon = input<string>('');
   readonly errorsMap = input<ErrorsMap>({});
   errorsMessage: Set<string> = new Set<string>([]);
+  //ngControl: FormControlName  = inject(FormControlName , {self: true, optional: true})!;
+
+  get Control() {
+    return this.control;
+  }
   // eslint-disable-next-line @angular-eslint/prefer-inject
   constructor() {
     super();
-    effect(()=>{
+    effect(() => {
       this.control?.reset();
-      const validators = this.inputValidation()?.map(v=>v.validator)?.filter(v=>!!v)??[];
-      const asyncValidators = this.inputValidation()?.map(v=>v.asyncValidator)?.filter(v=>!!v)?? [];
+      const validators =
+        this.inputValidation()
+          ?.map((v) => v.validator)
+          ?.filter((v) => !!v) ?? [];
+      const asyncValidators =
+        this.inputValidation()
+          ?.map((v) => v.asyncValidator)
+          ?.filter((v) => !!v) ?? [];
       this.control?.setValidators(validators);
       this.control?.setAsyncValidators(asyncValidators);
       this.control?.updateValueAndValidity();
-    })
+    });
   }
 
   override prepareControl(): void {
     this.control = new FormControl(null);
   }
-  
+
   protected override onInit(): void {
-    this.control.valueChanges.subscribe(() => {
-    
+    this.control.events.subscribe(() => {
       this.inputValidation().forEach((validation) => {
-        if(this.control.hasError(validation.name) && validation.message){
+        if (this.control.hasError(validation.name) && validation.message) {
           this.errorsMessage.add(validation.message);
         }
-      })
+      });
+    });
+
+    this.control.events.pipe(filter((event) => event instanceof TouchedChangeEvent)).subscribe((event) => {
+      if (event.touched) {
+        //console.log(this.ngControl);
+      }
     });
   }
   validate(control: AbstractControl): ValidationErrors | null {
-    console.log(control.hasError('required'))
-    if(control.hasError('required')){
+    console.log(control.hasError('required'));
+    if (control.hasError('required')) {
       this.errorsMessage.add('This field is required');
     }
     return this.control.errors;

@@ -20,7 +20,14 @@
          [errorsMap]="{'required': 'Email or username is required'}"
          />
 
-        <mat-form-field appearance="outline" class="full-width">
+         <app-text-input
+          formControlName="password"
+          inputType="password"
+          label="Password"
+          placeholder="Enter your password"
+         />
+
+        <!-- <mat-form-field appearance="outline" class="full-width">
           <mat-label>Password</mat-label>
           <input formControlName="password" matInput placeholder="Enter your password" [type]="passwordType()" />
           <button
@@ -35,7 +42,7 @@
           @if (loginForm.get('password')?.hasError('required')) {
             <mat-error> Password is required </mat-error>
           }
-        </mat-form-field>
+        </mat-form-field> -->
 
         <button
           mat-raised-button

@@ -1,10 +1,17 @@
-<mat-form-field appearance="outline" class="full-width">
-  <mat-label>{{ label() }}</mat-label>
-  <input matInput [formControl]="control" [placeholder]="placeholder()" [type]="inputType()" />
-  @if (icon()) {
-    <mat-icon matSuffix>{{ icon() }}</mat-icon>
-  }
-    @for(error of errorsMessage; track error){
+@if (inputType() === 'password') {
+  <app-password-input
+    [control]="Control"
+    [label]="label()"
+    [placeholder]="placeholder()" />
+} @else {
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>{{ label() }}</mat-label>
+    <input matInput [formControl]="control" [placeholder]="placeholder()" [type]="inputType()" />
+    @if (icon()) {
+      <mat-icon matSuffix>{{ icon() }}</mat-icon>
+    }
+    @for (error of errorsMessage; track error) {
       <mat-error> {{ error }} </mat-error>
     }
-</mat-form-field>
+  </mat-form-field>
+}
