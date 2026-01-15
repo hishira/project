@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
+import { TextInputComponent } from '../../../core/components/inputs/text-input/text-input.component';
 
 export const registerFormGroup = (): FormGroup =>
   new FormGroup(
@@ -55,10 +56,8 @@ export const registerComponentsImports = [
   ReactiveFormsModule,
   RouterModule,
   MatCardModule,
-  MatFormFieldModule,
-  MatInputModule,
   MatButtonModule,
-  MatIconModule,
   MatProgressSpinnerModule,
   MatSnackBarModule,
+  TextInputComponent,
 ];

@@ -7,48 +7,29 @@
           <h1>Admin panel</h1>
         </div>
       </mat-card-title>
-      <mat-card-subtitle>Sign in to your account</mat-card-subtitle>
+      <mat-card-subtitle class="d-flex justify-content-center">Sign in to your account</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <app-text-input 
+        <app-text-input
           formControlName="identifier"
-         icon="person"
-         label="Email or Username" 
-         placeholder="Enter your email or username"
-         [errorsMap]="{'required': 'Email or username is required'}"
-         />
+          icon="person"
+          label="Email or Username"
+          placeholder="Enter your email or username"
+          [errorsMap]="{ required: 'Email or username is required' }" />
 
-         <app-text-input
+        <app-text-input
           formControlName="password"
           inputType="password"
           label="Password"
-          placeholder="Enter your password"
-         />
-
-        <!-- <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input formControlName="password" matInput placeholder="Enter your password" [type]="passwordType()" />
-          <button
-            mat-icon-button
-            matSuffix
-            type="button"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hidePassword()"
-            (click)="passwordHide()">
-            <mat-icon>{{ passwordIcon() }}</mat-icon>
-          </button>
-          @if (loginForm.get('password')?.hasError('required')) {
-            <mat-error> Password is required </mat-error>
-          }
-        </mat-form-field> -->
+          placeholder="Enter your password" />
 
         <button
-          mat-raised-button
-          color="primary"
-          type="submit"
           class="full-width auth-button"
+          color="primary"
+          mat-raised-button
+          type="submit"
           [disabled]="loginForm.invalid || isLoading()">
           @if (isLoading()) {
             <mat-spinner diameter="20"></mat-spinner>

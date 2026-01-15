@@ -7,7 +7,7 @@
           <h1>Sports Activity Diary</h1>
         </div>
       </mat-card-title>
-      <mat-card-subtitle>
+      <mat-card-subtitle class="d-flex justify-content-center">
         <div class="mt-4">Create your account</div>
       </mat-card-subtitle>
     </mat-card-header>
@@ -15,20 +15,36 @@
     <mat-card-content>
       <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="name-row">
-          <mat-form-field appearance="outline" class="half-width">
+          <app-text-input
+            formControlName="firstName"
+            icon="person"
+            label="First Name"
+            placeholder="Enter your first name"
+            [errorsMap]="{ required: 'First name is required' }" />
+          <!-- <mat-form-field appearance="outline" class="half-width">
             <mat-label>First Name</mat-label>
             <input formControlName="firstName" matInput placeholder="Enter your first name" type="text" />
             <mat-icon matSuffix>person</mat-icon>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="half-width">
+          </mat-form-field> -->
+          <app-text-input
+            formControlName="lastName"
+            icon="person"
+            label="Last Name"
+            placeholder="Enter your last name"
+            [errorsMap]="{ required: 'First name is required' }" />
+          <!-- <mat-form-field appearance="outline" class="half-width">
             <mat-label>Last Name</mat-label>
             <input formControlName="lastName" matInput placeholder="Enter your last name" type="text" />
             <mat-icon matSuffix>person</mat-icon>
-          </mat-form-field>
+          </mat-form-field> -->
         </div>
-
-        <mat-form-field appearance="outline" class="full-width">
+        <app-text-input
+          formControlName="login"
+          icon="account_circle"
+          label="Username"
+          placeholder="Choose a username"
+          [errorsMap]="{ required: 'Username is required' }" />
+        <!-- <mat-form-field appearance="outline" class="full-width">
           <mat-label>Username</mat-label>
           <input formControlName="login" matInput placeholder="Choose a username" type="text" />
           <mat-icon matSuffix>account_circle</mat-icon>
@@ -41,9 +57,15 @@
           @if (registerForm.get('login')?.hasError('pattern')) {
             <mat-error> Username can only contain letters, numbers, underscores, and hyphens </mat-error>
           }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
+        </mat-form-field> -->
+        <app-text-input
+          formControlName="email"
+          icon="email"
+          inputType="email"
+          label="Email"
+          placeholder="Enter your email"
+          [errorsMap]="{ required: 'Email is required' }" />
+        <!-- <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email</mat-label>
           <input formControlName="email" matInput placeholder="Enter your email" type="email" />
           <mat-icon matSuffix>email</mat-icon>
@@ -53,9 +75,14 @@
           @if (registerForm.get('email')?.hasError('email')) {
             <mat-error> Please enter a valid email address </mat-error>
           }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width poosition-relative">
+        </mat-form-field> -->
+        <app-text-input
+          formControlName="password"
+          inputType="password"
+          label="Password"
+          placeholder="Enter your password"
+          [errorsMap]="{ required: 'Password is required' }" />
+        <!-- <mat-form-field appearance="outline" class="full-width poosition-relative">
           <mat-label>Password</mat-label>
           <input formControlName="password" matInput placeholder="Enter your password" [type]="passwordType()" />
           <button
@@ -79,9 +106,14 @@
               character
             </mat-error>
           }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
+        </mat-form-field> -->
+        <app-text-input
+          formControlName="confirmPassword"
+          inputType="password"
+          label="Confirm Password"
+          placeholder="Confirm your password"
+          [errorsMap]="{ required: 'Password is required' }" />
+        <!-- <mat-form-field appearance="outline" class="full-width">
           <mat-label>Confirm Password</mat-label>
           <input
             formControlName="confirmPassword"
@@ -103,7 +135,7 @@
           @if (registerForm.get('confirmPassword')?.hasError('passwordMismatch')) {
             <mat-error> Passwords do not match </mat-error>
           }
-        </mat-form-field>
+        </mat-form-field> -->
 
         <button
           class="full-width auth-button"

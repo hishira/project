@@ -2,10 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
-  Signal,
-  WritableSignal,
-  computed,
   signal,
+  WritableSignal
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,29 +14,15 @@ import { registerComponentsImports, registerFormGroup } from './consts';
 
 @Component({
   selector: 'app-register',
-  standalone: true,
-  imports: [...registerComponentsImports],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './register.component.html',
   styleUrl: './registe.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [...registerComponentsImports],
 })
 export class RegisterComponent implements OnInit {
   readonly registerForm: FormGroup = registerFormGroup();
-  readonly hidePassword: WritableSignal<boolean> = signal(true);
-  readonly passwordType: Signal<'password' | 'text'> = computed(() =>
-    this.hidePassword() ? 'password' : 'text'
-  );
-  readonly iconVisibility: Signal<'visibility_off' | 'visibility'> = computed(
-    () => (this.hidePassword() ? 'visibility_off' : 'visibility')
-  );
-  readonly hideConfirmPassword: WritableSignal<boolean> = signal(true);
-  readonly confirmPasswordType: Signal<'password' | 'text'> = computed(() =>
-    this.hideConfirmPassword() ? 'password' : 'text'
-  );
-  readonly confirmIconVisibility: Signal<'visibility_off' | 'visibility'> =
-    computed(() =>
-      this.hideConfirmPassword() ? 'visibility_off' : 'visibility'
-    );
+  
   readonly isLoading: WritableSignal<boolean> = signal(false);
 
   constructor(
@@ -46,14 +30,6 @@ export class RegisterComponent implements OnInit {
     private readonly router: Router,
     private readonly snackBar: SnackBar
   ) {}
-
-  updateHidePassword(): void {
-    this.hidePassword.update((hide) => !hide);
-  }
-
-  updateConfirmHidePassword(): void {
-    this.hideConfirmPassword.update((hide) => !hide);
-  }
 
   ngOnInit(): void {
     // Redirect if already authenticated

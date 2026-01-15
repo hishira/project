@@ -1,5 +1,5 @@
 :host {
-    ::ng-deep {
+  ::ng-deep {
     & mat-form-field {
       & div.mat-mdc-form-field-error-wrapper {
         position: relative !important;
@@ -11,6 +11,7 @@
       width: 100%;
     }
   }
+
   .auth-container {
     display: flex;
     justify-content: center;

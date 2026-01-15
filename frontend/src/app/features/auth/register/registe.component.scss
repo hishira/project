@@ -70,6 +70,10 @@
   .name-row {
     display: flex;
     gap: 16px;
+    
+    & app-text-input {
+      display: contents
+    }
   }
 
   .full-width {

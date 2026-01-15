@@ -50,14 +50,8 @@ import { TextInputComponent } from '../../../core/components/inputs/text-input/t
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   
-  readonly hidePassword: WritableSignal<boolean> = signal(true);
   readonly isLoading: WritableSignal<boolean> = signal(false);
-  readonly passwordType: Signal<'password' | 'text'> = computed(() =>
-    this.hidePassword() ? 'password' : 'text'
-  );
-  readonly passwordIcon: Signal<'visibility_off' | 'visibility'> = computed(
-    () => (this.hidePassword() ? 'visibility_off' : 'visibility')
-  );
+  
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
@@ -69,10 +63,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  passwordHide(): void {
-    this.hidePassword.update((hide) => !hide);
-  }
-
+  
   ngOnInit(): void {
     // Redirect if already authenticated
     // if (this.authService.isAuthenticated()) {
