@@ -21,122 +21,40 @@
             label="First Name"
             placeholder="Enter your first name"
             [errorsMap]="{ required: 'First name is required' }" />
-          <!-- <mat-form-field appearance="outline" class="half-width">
-            <mat-label>First Name</mat-label>
-            <input formControlName="firstName" matInput placeholder="Enter your first name" type="text" />
-            <mat-icon matSuffix>person</mat-icon>
-          </mat-form-field> -->
           <app-text-input
             formControlName="lastName"
             icon="person"
             label="Last Name"
             placeholder="Enter your last name"
-            [errorsMap]="{ required: 'First name is required' }" />
-          <!-- <mat-form-field appearance="outline" class="half-width">
-            <mat-label>Last Name</mat-label>
-            <input formControlName="lastName" matInput placeholder="Enter your last name" type="text" />
-            <mat-icon matSuffix>person</mat-icon>
-          </mat-form-field> -->
+            [errorsMap]="{ required: 'Last name is required' }" />
         </div>
         <app-text-input
           formControlName="login"
           icon="account_circle"
           label="Username"
           placeholder="Choose a username"
-          [errorsMap]="{ required: 'Username is required' }" />
-        <!-- <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Username</mat-label>
-          <input formControlName="login" matInput placeholder="Choose a username" type="text" />
-          <mat-icon matSuffix>account_circle</mat-icon>
-          @if (registerForm.get('login')?.hasError('required')) {
-            <mat-error> Username is required </mat-error>
-          }
-          @if (registerForm.get('login')?.hasError('minlength')) {
-            <mat-error> Username must be at least 3 characters long </mat-error>
-          }
-          @if (registerForm.get('login')?.hasError('pattern')) {
-            <mat-error> Username can only contain letters, numbers, underscores, and hyphens </mat-error>
-          }
-        </mat-form-field> -->
+          [errorsMap]="{ required: 'Username is required', minlength: 'Username must be at least 3 characters long', pattern: 'Username can only contain letters, numbers, underscores, and hyphens' }" />
         <app-text-input
           formControlName="email"
           icon="email"
           inputType="email"
           label="Email"
           placeholder="Enter your email"
-          [errorsMap]="{ required: 'Email is required' }" />
-        <!-- <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
-          <input formControlName="email" matInput placeholder="Enter your email" type="email" />
-          <mat-icon matSuffix>email</mat-icon>
-          @if (registerForm.get('email')?.hasError('required')) {
-            <mat-error> Email is required </mat-error>
-          }
-          @if (registerForm.get('email')?.hasError('email')) {
-            <mat-error> Please enter a valid email address </mat-error>
-          }
-        </mat-form-field> -->
-        <app-text-input
+          [errorsMap]="{ required: 'Email is required', email: 'Please enter a valid email address' }" />
+      <app-text-input
           formControlName="password"
           inputType="password"
           label="Password"
           placeholder="Enter your password"
-          [errorsMap]="{ required: 'Password is required' }" />
-        <!-- <mat-form-field appearance="outline" class="full-width poosition-relative">
-          <mat-label>Password</mat-label>
-          <input formControlName="password" matInput placeholder="Enter your password" [type]="passwordType()" />
-          <button
-            mat-icon-button
-            matSuffix
-            type="button"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hidePassword()"
-            (click)="updateHidePassword()">
-            <mat-icon>{{ iconVisibility() }}</mat-icon>
-          </button>
-          @if (registerForm.get('password')?.hasError('required')) {
-            <mat-error> Password is required </mat-error>
-          }
-          @if (registerForm.get('password')?.hasError('minlength')) {
-            <mat-error> Password must be at least 8 characters long </mat-error>
-          }
-          @if (registerForm.get('password')?.hasError('pattern')) {
-            <mat-error>
-              Password must contain at least one uppercase letter, one lowercase letter, one number, and one special
-              character
-            </mat-error>
-          }
-        </mat-form-field> -->
+          [errorsMap]="{ required: 'Password is required', minlength: 'Password must be at least 8 characters long', pattern: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character' }" />
+       
         <app-text-input
           formControlName="confirmPassword"
           inputType="password"
           label="Confirm Password"
           placeholder="Confirm your password"
-          [errorsMap]="{ required: 'Password is required' }" />
-        <!-- <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Confirm Password</mat-label>
-          <input
-            formControlName="confirmPassword"
-            matInput
-            placeholder="Confirm your password"
-            [type]="confirmPasswordType()" />
-          <button
-            mat-icon-button
-            matSuffix
-            type="button"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hideConfirmPassword()"
-            (click)="updateConfirmHidePassword()">
-            <mat-icon>{{ confirmIconVisibility() }}</mat-icon>
-          </button>
-          @if (registerForm.get('confirmPassword')?.hasError('required')) {
-            <mat-error> Please confirm your password </mat-error>
-          }
-          @if (registerForm.get('confirmPassword')?.hasError('passwordMismatch')) {
-            <mat-error> Passwords do not match </mat-error>
-          }
-        </mat-form-field> -->
-
+          [errorsMap]="{ required: 'Password is required', passwordMismatch: 'Passwords do not match' }" />
+       
         <button
           class="full-width auth-button"
           color="primary"

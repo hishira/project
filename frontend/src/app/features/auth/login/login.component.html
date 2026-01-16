@@ -23,7 +23,9 @@
           formControlName="password"
           inputType="password"
           label="Password"
-          placeholder="Enter your password" />
+          placeholder="Enter your password" 
+          [errorsMap]="{ required: 'Password is required' }"
+          />
 
         <button
           class="full-width auth-button"

@@ -60,4 +60,5 @@ export const registerComponentsImports = [
   MatProgressSpinnerModule,
   MatSnackBarModule,
   TextInputComponent,
+  MatIconModule
 ];
