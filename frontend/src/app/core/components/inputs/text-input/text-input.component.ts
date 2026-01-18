@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, effect, forwardRef, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, forwardRef, input, Optional, Self } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
-  FormControlName,
+  FormResetEvent,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   NgControl,
   ReactiveFormsModule,
+  StatusChangeEvent,
   TouchedChangeEvent,
   ValidationErrors,
   Validator,
@@ -14,12 +15,15 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { filter } from 'rxjs';
+import { filter, skip } from 'rxjs';
 import { BaseInputComponent } from '../base-input/base-input.component';
 import { PasswordInputComponent } from './password-input/password-input.component';
+import { InputValidation } from '../types';
 type ErrorsMap = {
   [key: string]: string;
 };
+
+//TODO: User validators as input.
 @Component({
   selector: 'app-text-input',
   templateUrl: './text-input.component.html',
@@ -40,20 +44,29 @@ type ErrorsMap = {
   ],
 })
 export class TextInputComponent extends BaseInputComponent<FormControl> implements Validator {
+
   readonly label = input.required<string>();
   readonly placeholder = input<string>('');
   readonly inputType = input<'text' | 'password' | 'email'>('text');
   readonly icon = input<string>('');
   readonly errorsMap = input<ErrorsMap>({});
   errorsMessage: Set<string> = new Set<string>([]);
-  //ngControl: FormControlName  = inject(FormControlName , {self: true, optional: true})!;
-
+  //ngControl: ControlContainer  = inject(ControlContainer , {self: true, optional: true})!;
+  
   get Control() {
     return this.control;
   }
-  // eslint-disable-next-line @angular-eslint/prefer-inject
-  constructor() {
+
+  constructor(
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+  //  @Self() @Optional() public ngControl: NgControl,
+  ) {
     super();
+
+    // if (this.ngControl) {
+    //   this.ngControl.valueAccessor = this;
+    //   //this.control = this.ngControl.control as FormControl;
+    // }
     effect(() => {
       this.control?.reset();
       const validators =
@@ -75,25 +88,26 @@ export class TextInputComponent extends BaseInputComponent<FormControl> implemen
   }
 
   protected override onInit(): void {
-    this.control.events.subscribe(() => {
-      this.inputValidation().forEach((validation) => {
-        if (this.control.hasError(validation.name) && validation.message) {
-          this.errorsMessage.add(validation.message);
-        }
-      });
-    });
-
-    this.control.events.pipe(filter((event) => event instanceof TouchedChangeEvent)).subscribe((event) => {
-      if (event.touched) {
-        //console.log(this.ngControl);
-      }
-    });
+    // this.control.events.subscribe(() => {
+    //   this.inputValidation().forEach((validation) => {
+    //     if (this.control.hasError(validation.name) && validation.message) {
+    //       //this.errorsMessage.add(validation.message);
+    //     }
+    //   });
+    // });
+    // const validators$ = this.control.valueChanges.pipe().subscribe(a=>{
+    //   console.log(a)
+    //   this.validate(this.ngControl.control!)
+    // });
   }
   validate(control: AbstractControl): ValidationErrors | null {
-    console.log(control.hasError('required'));
-    if (control.hasError('required')) {
-      this.errorsMessage.add('This field is required');
-    }
+    // console.log('TOUCHED', this.control.touched);
+    // console.log(control?.validator)
+    // if(!this.control.dirty) return null;
+    // this.control.clearValidators();
+    // // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    // control?.validator && this.control.addValidators([control.validator!]);
+    // this.control.updateValueAndValidity();
     return this.control.errors;
   }
 }

@@ -9,6 +9,7 @@ import { InputValidation } from '../types';
 })
 export abstract class BaseInputComponent<T extends AbstractControl> implements ControlValueAccessor, OnInit {
   readonly inputValidation = input<InputValidation[]>([]);
+
   protected control!: T;
 
   abstract prepareControl(): void;
@@ -23,9 +24,9 @@ export abstract class BaseInputComponent<T extends AbstractControl> implements C
   }
 
   protected onInit(): void {}
-  
+
   ngOnInit(): void {
-    console.log('asd')
+    console.log('asd');
     this.onInit();
   }
   valueMapper(value: unknown): unknown {

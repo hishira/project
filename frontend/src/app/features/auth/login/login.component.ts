@@ -26,6 +26,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { SnackBar } from '../../../core/services/snack-bar.service';
 import { LoginDto } from '../../../shared/models/auth.model';
 import { TextInputComponent } from '../../../core/components/inputs/text-input/text-input.component';
+import { loginValidators } from './login-validators';
 
 @Component({
   selector: 'app-login',
@@ -50,6 +51,7 @@ import { TextInputComponent } from '../../../core/components/inputs/text-input/t
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   
+  readonly loginValidators = loginValidators;
   readonly isLoading: WritableSignal<boolean> = signal(false);
   
   constructor(
@@ -65,6 +67,7 @@ export class LoginComponent implements OnInit {
 
   
   ngOnInit(): void {
+    this.loginForm.valueChanges.subscribe(a=>console.log('FORM', a))
     // Redirect if already authenticated
     // if (this.authService.isAuthenticated()) {
     //   this.router.navigate(['dashboard']);

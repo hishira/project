@@ -10,8 +10,9 @@
     @if (icon()) {
       <mat-icon matSuffix>{{ icon() }}</mat-icon>
     }
-    @for (error of errorsMessage; track error) {
+   
+  </mat-form-field>
+   @for (error of errorsMessage; track error) {
       <mat-error> {{ error }} </mat-error>
     }
-  </mat-form-field>
 }

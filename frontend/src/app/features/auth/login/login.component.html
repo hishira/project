@@ -17,14 +17,16 @@
           icon="person"
           label="Email or Username"
           placeholder="Enter your email or username"
-          [errorsMap]="{ required: 'Email or username is required' }" />
+          [inputValidation]="loginValidators.login"
+
+          />
 
         <app-text-input
           formControlName="password"
           inputType="password"
           label="Password"
           placeholder="Enter your password" 
-          [errorsMap]="{ required: 'Password is required' }"
+          [inputValidation]="loginValidators.password"
           />
 
         <button

@@ -16,6 +16,7 @@ export class PasswordInputComponent {
   readonly control = input.required<FormControl>();
   readonly label = input.required<string>();
   readonly placeholder = input<string>('Enter your password');
+  
   readonly hidePassword: WritableSignal<boolean> = signal(true);
   readonly isLoading: WritableSignal<boolean> = signal(false);
   readonly passwordType: Signal<'password' | 'text'> = computed(() => (this.hidePassword() ? 'password' : 'text'));
