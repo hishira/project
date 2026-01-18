@@ -1,0 +1,63 @@
+<ng-container *ngIf="addressFormGroup" [formGroup]="addressFormGroup">
+  <div class="flex__container">
+    <mat-form-field class="example-full-width">
+      <mat-label>Ulica i nr</mat-label>
+      <input formControlName="street" matInput value="Google" />
+      <mat-error>
+        <crm-errors [control]="addressFormGroup.get('street')"></crm-errors>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Address korespondencyjny</mat-label>
+      <input matInput formControlName="secondAddress" />
+      <mat-error>
+        <crm-errors
+          [control]="addressFormGroup.get('secondAddress')"
+        ></crm-errors>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="flex__container">
+    <mat-form-field class="example-full-width">
+      <mat-label>Kod pocztowy</mat-label>
+      <input formControlName="postalCode" matInput />
+      <mat-error>
+        <crm-errors [control]="addressFormGroup.get('postalCode')"></crm-errors>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Miasto</mat-label>
+      <input formControlName="city" matInput />
+      <mat-error>
+        <crm-errors [control]="addressFormGroup.get('city')"></crm-errors>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="flex__container">
+    <div class="example-full-width">
+      <!--TODO: Fix with mat-input -->
+      <crm-selectable
+        formControlName="zone"
+        label="Województwo"
+        [selectableConfig]="selectableConfig"
+        [values]="zones"
+        [validators]="this.addressValidatorObject?.zone ?? []"
+      />
+    </div>
+    <mat-form-field class="example-full-width">
+      <mat-label>Rejon</mat-label>
+      <input formControlName="region" matInput />
+      <mat-error>
+        <crm-errors [control]="addressFormGroup.get('region')"></crm-errors>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <!--TODO: Map to country name, np: PL -> Poland | Polska-->
+  <mat-form-field class="example-full-width" style="width: calc(50% - 1rem)">
+    <mat-label>Kraj</mat-label>
+    <input formControlName="country" matInput />
+    <mat-error>
+      <crm-errors [control]="addressFormGroup.get('country')"></crm-errors>
+    </mat-error>
+  </mat-form-field>
+</ng-container>

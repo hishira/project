@@ -1,0 +1,11 @@
+<ng-container>
+    <mat-form-field class="example-full-width">
+        <mat-label>{{label}}</mat-label>
+        <input type="text" matInput [formControl]="formControl" [matAutocomplete]="auto" crm-parse-value-input [dataVariable]="'value'">
+        <mat-autocomplete #auto="matAutocomplete" >
+          <mat-option  *ngFor="let option of options | async" [value]="option.controlData">
+            {{option.viewData}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+</ng-container>

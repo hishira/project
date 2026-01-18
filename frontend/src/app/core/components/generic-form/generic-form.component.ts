@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+import { GenericEdit } from "./types";
 
 @Component({
     selector: 'app-generic-input',
@@ -7,4 +8,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
     standalone: true,
     imports: [],
 })
-export class GenericInputComponent {}
+export class GenericFormComponent {
+    readonly genericEditDescription = input.required<GenericEdit>()
+}

@@ -1,0 +1,13 @@
+:host ::ng-deep {
+  width: 100%;
+  padding: 0 2rem;
+  & > div {
+    width: 100%;
+    & > ca-address, crm-chip-selectable {
+      width: 100%;
+    }
+  }
+  & mat-form-field {
+    width: 100%;
+  }
+}

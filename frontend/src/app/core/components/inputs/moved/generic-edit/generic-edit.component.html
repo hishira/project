@@ -1,0 +1,8 @@
+<ng-container *ngFor="let genericGroupsControls of genericEditInfo">
+    <crm-generic-group
+        [genericEditGroup]="genericGroupsControls"
+        [groupForm]="getGroupname(genericGroupsControls.group.groupName)"
+    >
+
+    </crm-generic-group>
+</ng-container>

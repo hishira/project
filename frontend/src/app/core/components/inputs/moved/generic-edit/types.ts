@@ -1,4 +1,7 @@
-import { InputValidation } from '../inputs/types';
+import { ValidatorFn } from '@angular/forms';
+import { FetchingAutoCompleteSerivce } from '../autocomplete/autocomplete.component';
+import { SelectableConfig } from '../selectable/selectable.component';
+import { ObjectValidators } from '../address/types';
 
 export type GenericInputType =
   | 'email'
@@ -11,23 +14,20 @@ export type GenericInputType =
   | 'autocomplete'
   | 'chip-selectable'
   | 'multi-search-select';
-
 export type GenericInput = {
   type: GenericInputType;
-  //addressObjectValidator?: ObjectValidators;
+  validators?: ValidatorFn[];
+  addressObjectValidator?: ObjectValidators;
   formControlName: string;
   label: string;
   useSelectablePipe?: boolean;
   selectablePipeModule?: string;
   placeholder: string;
   selectableValues?: (string | Record<string, any>)[];
-  //selectableConfig?: SelectableConfig;
-  //fetchingService?: FetchingAutoCompleteSerivce;
+  selectableConfig?: SelectableConfig;
+  fetchingService?: FetchingAutoCompleteSerivce;
   cols: '2' | '4';
-  validators?: InputValidation[];
-  icon?: string;
-  usingNormal?: boolean;
-  textInputType?: 'text' | 'password' | 'email';
+  usingNormal?: boolean
 };
 export type GenericEdit = {
   group: {
@@ -35,7 +35,6 @@ export type GenericEdit = {
     tooltip?: string;
     groupName: string;
   };
-  
   rowHeight: string;
   inputs: GenericInput[];
 };

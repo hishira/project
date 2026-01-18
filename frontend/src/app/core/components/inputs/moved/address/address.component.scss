@@ -1,0 +1,9 @@
+:host ::ng-deep {
+    .flex__container{
+        display: flex;
+        gap: 2rem;
+    }
+    .example-full-width{
+        width: 100%;
+    }
+}

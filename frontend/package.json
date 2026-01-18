@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "lint": "ng lint"
+    "start": "nx serve",
+    "build": "nx build",
+    "watch": "nx build --watch --configuration development",
+    "test": "nx test",
+    "lint": "nx lint"
   },
   "private": true,
   "dependencies": {
@@ -31,9 +31,14 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
+    "@angular-devkit/core": "^20.1.6",
+    "@angular-devkit/schematics": "^20.1.6",
     "@angular/build": "^20.1.6",
     "@angular/cli": "^20.1.6",
     "@angular/compiler-cli": "^20.1.7",
+    "@nx/angular": "22.3.3",
+    "@nx/workspace": "22.3.3",
+    "@schematics/angular": "^20.1.6",
     "@types/jasmine": "~5.1.0",
     "angular-eslint": "20.4.0",
     "eslint": "^9.37.0",
@@ -45,6 +50,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "nx": "22.3.3",
     "prettier": "^3.6.2",
     "typescript": "~5.8.3",
     "typescript-eslint": "8.46.0"

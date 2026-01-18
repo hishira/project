@@ -1,0 +1,23 @@
+<mat-form-field class="example-full-width">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    crm-parse-value-input
+    matInput
+    type="text"
+    [dataVariable]="'value'"
+    [formControl]="inputFormControl"
+    [matAutocomplete]="auto" />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="handle($event)">
+    <mat-option *ngFor="let option of options | async" [disabled]="isDisabled(option)" [value]="option.controlData">
+      {{ option.viewData }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+<div *ngIf="ControlArrays.length">Selected :</div>
+<ng-container *ngFor="let control of ControlArrays; let i = index">
+  <div class="list">
+    <span>{{ control.value.value }} </span>
+
+    <mat-icon (click)="remove(i)">cancel</mat-icon>
+  </div>
+</ng-container>

@@ -1,0 +1,28 @@
+<ng-container *ngIf="genericEditGroup" [formGroup]="groupForm">
+  <div>
+    <h2>{{ genericEditGroup.group.label }}</h2>
+  </div>
+  <div>
+    <mat-grid-list cols="4" [rowHeight]="genericEditGroup.rowHeight">
+      <ng-container *ngFor="let input of genericEditGroup.inputs">
+        <ng-container *ngIf="!input.usingNormal">
+          <mat-grid-tile [colspan]="input.cols" [rowspan]="1">
+            <crm-generic-input
+              [genericInput]="input"
+              [formControlName]="input.formControlName"
+            ></crm-generic-input>
+          </mat-grid-tile>
+        </ng-container>
+      </ng-container>
+    </mat-grid-list>
+    <ng-container *ngFor="let input of genericEditGroup.inputs">
+      <ng-container *ngIf="input.usingNormal">
+        <crm-generic-input
+          class="normal-input"
+          [genericInput]="input"
+          [formControlName]="input.formControlName"
+        ></crm-generic-input>
+      </ng-container>
+    </ng-container>
+  </div>
+</ng-container>

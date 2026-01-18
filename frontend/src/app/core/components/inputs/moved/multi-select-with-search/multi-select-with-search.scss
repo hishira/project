@@ -1,0 +1,16 @@
+:host ::ng-deep {
+    .list{
+        display: flex;
+        margin-top: 12px;
+        width: 80%;
+        justify-content: space-between;
+        padding: 0 12px;
+        gap: 12px;
+        & > mat-icon{
+            cursor: pointer;
+            &:hover{
+                background-color: slategray;
+            }
+        }
+    }   
+}

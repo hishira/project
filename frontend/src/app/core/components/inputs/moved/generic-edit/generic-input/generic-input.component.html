@@ -1,0 +1,94 @@
+<ng-container *ngIf="formControl">
+  <ng-container [ngSwitch]="genericInput.type">
+    <ng-container *ngSwitchCase="'address'">
+      <div>
+        <h2>{{ genericInput.label }}</h2>
+        <div class="company-address">
+          <crm-address
+            [formControl]="formControl"
+            [addressValidatorObject]="genericInput.addressObjectValidator"
+          ></crm-address>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="'selectable'">
+      <div class="example-full-width">
+        <crm-selectable
+          matInput
+          [label]="genericInput.label"
+          [validators]="genericInput.validators"
+          [formControl]="formControl"
+          [selectableConfig]="genericInput.selectableConfig ?? DefaultSelectableConfig"
+          [usePipe]="genericInput.useSelectablePipe"
+          [pipeModule]="genericInput.selectablePipeModule"
+          [values]="genericInput.selectableValues"
+        />
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="'chip-selectable'">
+      <div class="example-full-width">
+        <crm-chip-selectable
+          matInput
+          [validators]="genericInput.validators ?? []"
+          [label]="genericInput.label"
+          [formControl]="formControl"
+        />
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="'date'">
+      <mat-form-field class="example-full-width">
+        <mat-label>{{ genericInput.label }}</mat-label>
+        <input matInput [formControl]="formControl" [matDatepicker]="picker" />
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </ng-container>
+    <ng-container *ngSwitchCase="'number'">
+      <mat-form-field class="example-full-width">
+        <mat-label>{{ genericInput.label }}</mat-label>
+        <input number-directive matInput [formControl]="formControl" />
+        <mat-error>
+          <crm-errors
+            [control]="formControl"
+          ></crm-errors>
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+    <ng-container *ngSwitchCase="'autocomplete'">
+      <div class="example-full-width">
+        <crm-autocomplete
+          [label]="genericInput.label"
+          [formControl]="formControl"
+          [fetchingService]="genericInput.fetchingService"
+        />
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="'multi-search-select'">
+      <div class="example-full-width">
+        <crm-multi-select-with-search
+          [label]="genericInput.label"
+          [formControl]="formControl"
+          [fetchingService]="genericInput.fetchingService"
+        />
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <mat-form-field class="example-full-width">
+        <mat-label>{{ genericInput.label }}</mat-label>
+        <input
+          [type]="genericInput.type"
+          matInput
+          [formControl]="formControl"
+        />
+        <mat-error>
+          <crm-errors
+            [control]="formControl"
+          ></crm-errors>
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+  </ng-container>
+</ng-container>

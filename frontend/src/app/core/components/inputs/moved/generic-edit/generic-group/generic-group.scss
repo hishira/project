@@ -1,0 +1,11 @@
+:host ::ng-deep {
+    & > div:first-child {
+        display: flex;
+        padding: 0 2rem;
+    }
+    .normal-input {
+        padding: 0 2rem;
+        width: 45%;
+        display: block;
+    }
+}

@@ -1,8 +1,5 @@
 @if (inputType() === 'password') {
-  <app-password-input
-    [control]="Control"
-    [label]="label()"
-    [placeholder]="placeholder()" />
+  <app-password-input [control]="Control" [label]="label()" [placeholder]="placeholder()" />
 } @else {
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>{{ label() }}</mat-label>
@@ -10,9 +7,8 @@
     @if (icon()) {
       <mat-icon matSuffix>{{ icon() }}</mat-icon>
     }
-   
   </mat-form-field>
-   @for (error of errorsMessage; track error) {
-      <mat-error> {{ error }} </mat-error>
-    }
+  @for (error of errorsMessage; track error) {
+    <mat-error> {{ error }} </mat-error>
+  }
 }

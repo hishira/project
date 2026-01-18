@@ -1,0 +1,26 @@
+<mat-form-field>
+  <mat-label>{{ label }}</mat-label>
+  <mat-select [formControl]="valueControl" multiple>
+    <mat-select-trigger>
+      <mat-chip-listbox>
+        <mat-chip-option
+          *ngFor="let keyword of selectedChipValues"
+          (removed)="removeKeyword(keyword)"
+        >
+          {{ keyword }}
+          <button matChipRemove aria-label="'remove ' + keyword">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-option>
+      </mat-chip-listbox>
+    </mat-select-trigger>
+    <mat-option *ngFor="let topping of selectableValues" [value]="topping.value">{{
+      topping.viewData
+    }}</mat-option>
+  </mat-select>
+  <mat-error>
+    <crm-errors
+      [control]="valueControl"
+    ></crm-errors>
+  </mat-error>
+</mat-form-field>

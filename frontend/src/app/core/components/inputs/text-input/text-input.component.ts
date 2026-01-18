@@ -1,29 +1,22 @@
-import { ChangeDetectionStrategy, Component, effect, forwardRef, input, Optional, Self } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, forwardRef, input } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
-  FormResetEvent,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  NgControl,
   ReactiveFormsModule,
-  StatusChangeEvent,
-  TouchedChangeEvent,
   ValidationErrors,
-  Validator,
+  Validator
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { filter, skip } from 'rxjs';
 import { BaseInputComponent } from '../base-input/base-input.component';
 import { PasswordInputComponent } from './password-input/password-input.component';
-import { InputValidation } from '../types';
 type ErrorsMap = {
   [key: string]: string;
 };
 
-//TODO: User validators as input.
 @Component({
   selector: 'app-text-input',
   templateUrl: './text-input.component.html',
