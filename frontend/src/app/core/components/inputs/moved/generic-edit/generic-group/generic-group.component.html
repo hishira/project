@@ -8,9 +8,9 @@
         <ng-container *ngIf="!input.usingNormal">
           <mat-grid-tile [colspan]="input.cols" [rowspan]="1">
             <crm-generic-input
-              [genericInput]="input"
               [formControlName]="input.formControlName"
-            ></crm-generic-input>
+              [genericInput]="input"
+            />
           </mat-grid-tile>
         </ng-container>
       </ng-container>
@@ -19,9 +19,9 @@
       <ng-container *ngIf="input.usingNormal">
         <crm-generic-input
           class="normal-input"
-          [genericInput]="input"
           [formControlName]="input.formControlName"
-        ></crm-generic-input>
+          [genericInput]="input"
+        />
       </ng-container>
     </ng-container>
   </div>

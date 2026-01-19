@@ -26,7 +26,8 @@ import { AuthService } from '../../../core/services/auth.service';
 import { SnackBar } from '../../../core/services/snack-bar.service';
 import { LoginDto } from '../../../shared/models/auth.model';
 import { TextInputComponent } from '../../../core/components/inputs/text-input/text-input.component';
-import { loginValidators } from './login-validators';
+import { CompanyGenericEdit, emptyFormGroup, loginValidators } from './login-validators';
+import { GenericEditComponent } from '../../../core/components/inputs/moved/generic-edit/generic-edit.component';
 
 @Component({
   selector: 'app-login',
@@ -44,6 +45,7 @@ import { loginValidators } from './login-validators';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     TextInputComponent,
+    GenericEditComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -53,7 +55,8 @@ export class LoginComponent implements OnInit {
   
   readonly loginValidators = loginValidators;
   readonly isLoading: WritableSignal<boolean> = signal(false);
-  
+  genericEditDefinition = CompanyGenericEdit();
+  group = emptyFormGroup()
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,

@@ -1,5 +1,5 @@
 import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -29,9 +29,11 @@ import {
   GenericInputValidationStrategy,
   StrategyValidateFunction,
 } from './types';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'crm-generic-input',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './generic-input.component.html',
   styleUrls: ['./generic-input.scss'],
   standalone: true,
@@ -46,6 +48,7 @@ import {
       useExisting: GenericInputComponent,
       multi: true,
     },
+    provideNativeDateAdapter()
   ],
   imports: [
     NgSwitch,
