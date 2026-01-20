@@ -1,16 +1,14 @@
-<ng-container *ngIf="formControl">
-  <ng-container [ngSwitch]="genericInput.type">
-    <ng-container *ngSwitchCase="'address'">
+@if (formControl) {
+  @switch (genericInput.type) {
+    @switch ('address') {
       <div>
         <h2>{{ genericInput.label }}</h2>
         <div class="company-address">
-          <crm-address
-            [addressValidatorObject]="genericInput.addressObjectValidator"
-            [formControl]="formControl"></crm-address>
+          <crm-address [addressValidatorObject]="genericInput.addressObjectValidator" [formControl]="formControl" />
         </div>
       </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="'selectable'">
+    }
+    @switch ('selectable') {
       <div class="example-full-width">
         <crm-selectable
           matInput
@@ -22,8 +20,8 @@
           [validators]="genericInput.validators"
           [values]="genericInput.selectableValues" />
       </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="'chip-selectable'">
+    }
+    @switch ('chip-selectable') {
       <div class="example-full-width">
         <crm-chip-selectable
           matInput
@@ -31,16 +29,16 @@
           [label]="genericInput.label"
           [validators]="genericInput.validators ?? []" />
       </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="'date'">
+    }
+    @switch ('date') {
       <mat-form-field class="example-full-width">
         <mat-label>{{ genericInput.label }}</mat-label>
         <input matInput [formControl]="formControl" [matDatepicker]="picker" />
         <mat-datepicker-toggle matIconSuffix [for]="picker" />
         <mat-datepicker #picker />
       </mat-form-field>
-    </ng-container>
-    <ng-container *ngSwitchCase="'number'">
+    }
+    @switch ('number') {
       <mat-form-field class="example-full-width">
         <mat-label>{{ genericInput.label }}</mat-label>
         <input matInput number-directive [formControl]="formControl" />
@@ -48,24 +46,24 @@
           <crm-errors [control]="formControl" />
         </mat-error>
       </mat-form-field>
-    </ng-container>
-    <ng-container *ngSwitchCase="'autocomplete'">
+    }
+    @switch ('autocomplete') {
       <div class="example-full-width">
         <crm-autocomplete
           [fetchingService]="genericInput.fetchingService"
           [formControl]="formControl"
           [label]="genericInput.label" />
       </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="'multi-search-select'">
+    }
+    @switch ('multi-search-select') {
       <div class="example-full-width">
         <crm-multi-select-with-search
           [fetchingService]="genericInput.fetchingService"
           [formControl]="formControl"
           [label]="genericInput.label" />
       </div>
-    </ng-container>
-    <ng-container *ngSwitchDefault>
+    }
+    @default {
       <mat-form-field class="example-full-width">
         <mat-label>{{ genericInput.label }}</mat-label>
         <input matInput [formControl]="formControl" [type]="genericInput.type" />
@@ -73,6 +71,6 @@
           <crm-errors [control]="formControl" />
         </mat-error>
       </mat-form-field>
-    </ng-container>
-  </ng-container>
-</ng-container>
+    }
+  }
+}

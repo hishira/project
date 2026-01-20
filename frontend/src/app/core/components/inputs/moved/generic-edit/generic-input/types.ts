@@ -3,7 +3,7 @@ import { GenericInputType } from '../types';
 
 export type StrategyValidateFunction = (
   formControl: FormControl,
-  validators?: ValidatorFn[]
+  validators?: ValidatorFn[],
 ) => ValidationErrors | null;
 export type GenericInputValidationStrategy = {
   [type in GenericInputType]?: StrategyValidateFunction;
