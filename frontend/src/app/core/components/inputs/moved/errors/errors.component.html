@@ -1,3 +1,4 @@
-<ng-container *ngFor="let error of errorsTable">
+@for(error of errorsTable; track error.value){
   {{ error.value }}
-</ng-container>
+
+}

@@ -1,17 +1,20 @@
 <mat-form-field>
   <mat-label>{{ label }}</mat-label>
   <mat-select [formControl]="valueControl">
-    <mat-option [value]="null"></mat-option>
-    <mat-option *ngFor="let state of mappedValues" [value]="state.value">
-      <ng-container *ngIf="usePipe && pipeModule; else withoutPipe">
-        {{ state.viewData | databaseTranslation:pipeModule }}
-      </ng-container>
-      <ng-template #withoutPipe> {{ state.viewData }}</ng-template>
-    </mat-option>
+    <mat-option [value]="null" />
+    @for (state of mappedValues; track state.value) {
+      <mat-option [value]="state.value">
+        @if (usePipe && pipeModule) {
+          <ng-container>
+            {{ state.viewData | databaseTranslation: pipeModule }}
+          </ng-container>
+        } @else {
+          <ng-template> {{ state.viewData }}</ng-template>
+        }
+      </mat-option>
+    }
   </mat-select>
   <mat-error>
-    <crm-errors
-      [control]="valueControl"
-    ></crm-errors>
+    <crm-errors [control]="valueControl" />
   </mat-error>
 </mat-form-field>
