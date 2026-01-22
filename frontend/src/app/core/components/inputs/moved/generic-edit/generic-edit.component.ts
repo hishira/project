@@ -1,5 +1,5 @@
 import { NgFor } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { GenericGroupComponent } from './generic-group/generic-group.component';
 import { GenericEdit } from './types';
@@ -11,10 +11,13 @@ import { GenericEdit } from './types';
   imports: [NgFor, GenericGroupComponent],
 })
 export class GenericEditComponent {
-  @Input() genericEditInfo!: GenericEdit[];
-  @Input() formGroup!: FormGroup;
+  readonly genericEditInfo = input.required<GenericEdit[]>();
+  readonly formGroup = input.required<FormGroup>();
+  //
+  // @Input() genericEditInfo!: GenericEdit[];
+  // @Input() formGroup!: FormGroup;
 
   getGroupname(groupName: string): FormGroup {
-    return this.formGroup.get(groupName) as FormGroup;
+    return this.formGroup().get(groupName) as FormGroup;
   }
 }

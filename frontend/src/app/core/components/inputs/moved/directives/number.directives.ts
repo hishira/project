@@ -19,7 +19,7 @@ export class NumberDirective {
 
     control.registerOnChange = (fn: (_: unknown) => void) => {
       return orginalOnChangeFunction.call(control, (value: string) => {
-        const ff = value.replace(/\D/g, '');
+        const ff = value.replaceAll(/\D/g, '');
         control.writeValue(ff);
         fn(ff);
       });

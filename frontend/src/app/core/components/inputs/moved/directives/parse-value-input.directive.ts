@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { Directive, input } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { ViewContainerRef, Input } from '@angular/core';
 @Directive({
@@ -6,7 +6,8 @@ import { ViewContainerRef, Input } from '@angular/core';
   standalone: true,
 })
 export class ParseValueInptuDirective {
-    @Input({required: true}) dataVariable: string | null = null;
+    dataVariable = input.required<string | null>()
+    //@Input({required: true}) dataVariable: string | null = null;
     inputElement: HTMLInputElement;
     constructor(
     private ngControl: NgControl,
@@ -26,8 +27,8 @@ export class ParseValueInptuDirective {
     control.registerOnChange = (fn: (_: unknown)=>void)=>{
         return orginalOnChangeFunction.call(control, (value: string | Record<string, any>)=>{
           if(typeof value === 'object'){
-                if(this.dataVariable && this.dataVariable in value){
-                    this.inputElement.value = value[this.dataVariable];
+                if(this.dataVariable() && this.dataVariable() in value){
+                    this.inputElement.value = value[this.dataVariable()];
                 }
             }
             fn(value);

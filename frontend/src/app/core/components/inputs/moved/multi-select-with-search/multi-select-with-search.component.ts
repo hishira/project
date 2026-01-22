@@ -1,5 +1,5 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy, input } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -38,6 +38,7 @@ import {
 @Component({
   selector: 'crm-multi-select-with-search',
   templateUrl: './multi-select-with-search.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   styleUrls: ['./multi-select-with-search.scss'],
   imports: [
@@ -62,12 +63,10 @@ import {
 export class MutliSelectWithSearchComponent
   implements ControlValueAccessor, OnInit, OnDestroy
 {
-  @Input({ required: true }) fetchingService:
-    | FetchingAutoCompleteSerivce
-    | undefined = {
-    getData: () => from([]),
-  };
-  @Input() label = '';
+
+  readonly fetchingService = input.required<FetchingAutoCompleteSerivce
+    | undefined>()
+  readonly label = input<string>('');
 
   inputFormControl: FormControl = new FormControl();
   formArray: FormArray = new FormArray<any>([]);
@@ -87,7 +86,7 @@ export class MutliSelectWithSearchComponent
 
   ngOnInit(): void {
     const fetchingStream$ =
-      this.fetchingService?.getData()?.pipe(this.piper) ?? from([]);
+      this.fetchingService()?.getData()?.pipe(this.piper) ?? from([]);
     const controlStream$ = this.inputFormControl.valueChanges.pipe(
       startWith('')
     );
