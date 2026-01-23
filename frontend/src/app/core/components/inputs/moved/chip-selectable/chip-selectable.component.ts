@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy, input } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -16,6 +16,7 @@ import { ChipSelectableType } from './types';
 //TODO: First way of implement multiselecting
 @Component({
   selector: 'crm-chip-selectable',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './chip-selectable.component.html',
   styleUrls: ['./chip-selectable.scss'],
   providers: [
@@ -34,12 +35,11 @@ import { ChipSelectableType } from './types';
   imports: Imports,
 })
 export class ChipSelectableComponent
-  implements ControlValueAccessor, OnInit, OnDestroy, Validator
-{
+  implements ControlValueAccessor, OnInit, OnDestroy, Validator {
   //TODO: Make more generic
-  @Input() selectableValues: ChipSelectableType[] = ChipDefaultValues;
-  @Input() validators: ValidatorFn[] = [];
-  @Input() label = '';
+  readonly selectableValues = input<ChipSelectableType[]>(ChipDefaultValues);
+  readonly validators = input<ValidatorFn[]>([]);
+  readonly label = input<string>('');
   selectedChipValues: string[] = [];
   valueControl!: FormControl<string[] | ChipSelectableType[]>;
   subscription: Subscription = new Subscription();
@@ -48,7 +48,7 @@ export class ChipSelectableComponent
 
   validate(control: AbstractControl<any, any>): ValidationErrors | null {
     let errors = {};
-    this.validators?.forEach((validator) => {
+    this.validators()?.forEach((validator) => {
       errors = validator(this.valueControl) ?? {};
     });
     return errors ?? null;
@@ -58,34 +58,33 @@ export class ChipSelectableComponent
       [],
       {
         nonNullable: true,
-        validators: this.validators ?? [],
+        validators: this.validators() ?? [],
       }
     );
     this.subscription.add(
       this.valueControl.valueChanges.subscribe(
         (value: string[] | ChipSelectableType[]) => {
           const mappedValues = this.mappedSelectedValues(value);
-          if (Array.isArray(value) && Array.isArray(mappedValues))
-            this.selectedChipValues = mappedValues;
+          if (Array.isArray(value) && Array.isArray(mappedValues)) { this.selectedChipValues = mappedValues; }
           this.onChange(value);
         }
       )
     );
   }
 
-  mappedSelectedValues(value: string[] | ChipSelectableType[]) {
+  mappedSelectedValues(value: string[] | ChipSelectableType[]): any[] {
     return Array.isArray(value)
       ? value.map((t) =>
-          typeof t === 'object'
-            ? (t as any)?.viewData
-            : this.selectableValues.find((a) => a.value === t)?.viewData
-        )
+        typeof t === 'object'
+          ? (t as any)?.viewData
+          : this.selectableValues().find((a) => a.value === t)?.viewData
+      )
       : value;
   }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-  removeKeyword(keyword: string) {
+  removeKeyword(keyword: string): void {
     const index = this.selectedChipValues.indexOf(keyword);
     if (index >= 0) {
       this.selectedChipValues.splice(index, 1);

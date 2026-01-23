@@ -1,5 +1,5 @@
 import { AsyncPipe, NgFor } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, input, output } from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
@@ -11,15 +11,15 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {
-  Observable,
-  Subscription,
   combineLatest,
   from,
   map,
   noop,
+  Observable,
   pipe,
   shareReplay,
   startWith,
+  Subscription,
 } from 'rxjs';
 import { ParseValueInptuDirective } from '../directives/parse-value-input.directive';
 
@@ -42,6 +42,7 @@ export interface FetchingAutoCompleteSerivce {
 
 @Component({
   selector: 'crm-autocomplete',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './autocomplete.component.html',
   standalone: true,
   providers: [
@@ -63,15 +64,14 @@ export interface FetchingAutoCompleteSerivce {
   ],
 })
 export class AutocompleteComponent implements ControlValueAccessor, OnInit {
-  @Input({ required: true }) fetchingService:
-    | FetchingAutoCompleteSerivce
-    | undefined = {
-    getData: () => from([]),
-  };
-  @Input() label = '';
+  readonly fetchingService
+    = input<FetchingAutoCompleteSerivce>(
+      { getData: () => from([]) }
+    )
+  readonly label = input<string>('');
 
   //TODO: Fix problem with valuechange => onChange not emit value and not work like in crm-address or selectable
-  @Output() valueChange: EventEmitter<ControlData> = new EventEmitter();
+  readonly valueChange = output<ControlData>()
 
   options: Observable<ViewDataAuto[]> = from([]);
   formControl: FormControl<any | null> = new FormControl<string | null>(null);
@@ -83,9 +83,9 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit {
   onChange: (value: ControlData) => void = () => noop;
   onTouch: (value: ControlData) => void = () => noop;
 
-  ngOnInit() {
+  ngOnInit(): void {
     const fetchingStream$ =
-      this.fetchingService?.getData()?.pipe(this.piper) ?? from([]);
+      this.fetchingService()?.getData()?.pipe(this.piper) ?? from([]);
     const controlStream$ = this.formControl.valueChanges.pipe(startWith(''));
     this.options = combineLatest([controlStream$, fetchingStream$]).pipe(
       map(([controlValue, fetchedData]) => {

@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy, inject, input } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -25,6 +25,7 @@ import { AddressFormGroup, ObjectValidators } from './types';
 
 @Component({
   selector: 'crm-address',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './address.component.html',
   styleUrls: ['./address.component.scss'],
   providers: [
@@ -51,7 +52,8 @@ export class AddressComponent
   implements ControlValueAccessor, OnDestroy, OnInit, Validator
 {
   //TODO: Add optional address2, like stored in database: address2
-  @Input() addressValidatorObject!: ObjectValidators | undefined;
+  readonly addressValidatorObject = input.required<ObjectValidators>();
+  //@Input() addressValidatorObject!: ObjectValidators | undefined;
   addressFormGroup!: FormGroup<AddressFormGroup>;
 
   readonly DefaultAddressErrors = DefaultErrors;
@@ -65,17 +67,17 @@ export class AddressComponent
     viewProperty: 'viewValue'
   }
   readonly zones: (string | object)[] = companyZones;//zones.map((zone) => zone.name);
-  constructor(private formBuilder: FormBuilder) {}
+  readonly formBuilder = inject(FormBuilder);
 
   ngOnInit(): void {
     this.addressFormGroup = this.formBuilder.group<AddressFormGroup>({
-      street: new FormControl(null, this.addressValidatorObject?.street ?? []),
-      postalCode: new FormControl('', this.addressValidatorObject?.postalCode ?? []),
-      city: new FormControl('', this.addressValidatorObject?.city ?? []),
-      zone: new FormControl('', this.addressValidatorObject?.zone ?? []),
-      region: new FormControl('', this.addressValidatorObject?.region ?? []),
-      country: new FormControl('', this.addressValidatorObject?.country ?? []),
-      secondAddress: new FormControl('', this.addressValidatorObject?.secondAddress ?? []),
+      street: new FormControl(null, this.addressValidatorObject()?.street ?? []),
+      postalCode: new FormControl('', this.addressValidatorObject()?.postalCode ?? []),
+      city: new FormControl('', this.addressValidatorObject()?.city ?? []),
+      zone: new FormControl('', this.addressValidatorObject()?.zone ?? []),
+      region: new FormControl('', this.addressValidatorObject()?.region ?? []),
+      country: new FormControl('', this.addressValidatorObject()?.country ?? []),
+      secondAddress: new FormControl('', this.addressValidatorObject()?.secondAddress ?? []),
     });
     this.subscription.add(
       this.addressFormGroup.valueChanges.subscribe((_) => this.onChange(_))

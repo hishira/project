@@ -1,26 +1,23 @@
 <mat-form-field>
-  <mat-label>{{ label }}</mat-label>
-  <mat-select [formControl]="valueControl" multiple>
+  <mat-label>{{ label() }}</mat-label>
+  <mat-select multiple [formControl]="valueControl">
     <mat-select-trigger>
       <mat-chip-listbox>
-        <mat-chip-option
-          *ngFor="let keyword of selectedChipValues"
-          (removed)="removeKeyword(keyword)"
-        >
-          {{ keyword }}
-          <button matChipRemove aria-label="'remove ' + keyword">
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </mat-chip-option>
+        @for (keyword of selectedChipValues; track keyword) {
+          <mat-chip-option (removed)="removeKeyword(keyword)">
+            {{ keyword }}
+            <button aria-label="'remove ' + keyword" matChipRemove type="button">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-option>
+        }
       </mat-chip-listbox>
     </mat-select-trigger>
-    <mat-option *ngFor="let topping of selectableValues" [value]="topping.value">{{
-      topping.viewData
-    }}</mat-option>
+    @for (topping of selectableValues(); track topping.value) {
+      <mat-option [value]="topping.value">{{ topping.viewData }}</mat-option>
+    }
   </mat-select>
   <mat-error>
-    <crm-errors
-      [control]="valueControl"
-    ></crm-errors>
+    <crm-errors [control]="valueControl" />
   </mat-error>
 </mat-form-field>
