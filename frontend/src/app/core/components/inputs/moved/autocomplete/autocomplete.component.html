@@ -8,7 +8,7 @@
     [formControl]="formControl"
     [matAutocomplete]="auto" />
   <mat-autocomplete #auto="matAutocomplete">
-    @for (option of options | async) {
+    @for (option of options | async; track option.viewData) {
       <mat-option [value]="option.controlData">
         {{ option.viewData }}
       </mat-option>

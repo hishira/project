@@ -1,0 +1,11 @@
+import { inject, Injectable } from "@angular/core";
+import { MatDialog } from '@angular/material/dialog'
+
+@Injectable()
+export class ModalService {
+    private readonly dialog = inject(MatDialog)
+
+    open(component: any): void {
+        this.dialog.open(component);
+    }
+}

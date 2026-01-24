@@ -1,5 +1,5 @@
-import { AsyncPipe, NgFor } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy, input, output } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input, OnInit, output } from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
@@ -57,7 +57,6 @@ export interface FetchingAutoCompleteSerivce {
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    NgFor,
     AsyncPipe,
     ParseValueInptuDirective,
     FormsModule,
@@ -65,7 +64,7 @@ export interface FetchingAutoCompleteSerivce {
 })
 export class AutocompleteComponent implements ControlValueAccessor, OnInit {
   readonly fetchingService
-    = input<FetchingAutoCompleteSerivce>(
+    = input<FetchingAutoCompleteSerivce | null>(
       { getData: () => from([]) }
     )
   readonly label = input<string>('');

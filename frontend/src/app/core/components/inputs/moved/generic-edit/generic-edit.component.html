@@ -1,4 +1,4 @@
-@for (genericGroupsControls of genericEditInfo()) {
+@for (genericGroupsControls of genericEditInfo(); track genericGroupsControls.group.groupName) {
   <crm-generic-group
     [genericEditGroup]="genericGroupsControls"
     [groupForm]="getGroupname(genericGroupsControls.group.groupName)" />

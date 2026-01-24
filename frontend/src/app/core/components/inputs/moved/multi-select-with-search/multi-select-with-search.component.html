@@ -18,7 +18,7 @@
 @if (ControlArrays.length) {
   <div>Selected :</div>
 }
-@for (control of ControlArrays; let i = $index) {
+@for (control of ControlArrays; let i = $index; track i) {
   <div class="list">
     <span>{{ control.value.value }} </span>
 

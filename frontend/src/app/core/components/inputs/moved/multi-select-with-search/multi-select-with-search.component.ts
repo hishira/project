@@ -1,5 +1,5 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy, input } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, input } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -27,13 +27,13 @@ import {
   shareReplay,
   startWith,
 } from 'rxjs';
-import { ParseValueInptuDirective } from '../directives/parse-value-input.directive';
 import {
   AutocomepleteDataView,
   ControlData,
   FetchingAutoCompleteSerivce,
   ViewDataAuto,
 } from '../autocomplete/autocomplete.component';
+import { ParseValueInptuDirective } from '../directives/parse-value-input.directive';
 
 @Component({
   selector: 'crm-multi-select-with-search',
@@ -48,8 +48,6 @@ import {
     MatAutocompleteModule,
     ParseValueInptuDirective,
     AsyncPipe,
-    NgFor,
-    NgIf,
     MatIconModule,
   ],
   providers: [
@@ -61,8 +59,7 @@ import {
   ],
 })
 export class MutliSelectWithSearchComponent
-  implements ControlValueAccessor, OnInit, OnDestroy
-{
+  implements ControlValueAccessor, OnInit, OnDestroy {
 
   readonly fetchingService = input.required<FetchingAutoCompleteSerivce
     | undefined>()
@@ -99,7 +96,7 @@ export class MutliSelectWithSearchComponent
   }
 
   ngOnDestroy(): void {
-      this.subscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
   writeValue(obj: any): void {
     if (Array.isArray(obj)) {
@@ -112,7 +109,7 @@ export class MutliSelectWithSearchComponent
   registerOnTouched(fn: any): void {
     this.onTouch = fn;
   }
-  setDisabledState?(isDisabled: boolean): void {}
+  setDisabledState?(isDisabled: boolean): void { }
 
   isDisabled(option: ViewDataAuto): boolean {
     return (

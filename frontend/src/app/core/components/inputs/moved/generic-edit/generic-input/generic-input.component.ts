@@ -1,5 +1,4 @@
-import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -10,13 +9,14 @@ import {
   ValidationErrors,
   Validator,
 } from '@angular/forms';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription, noop } from 'rxjs';
-import { NumberDirective } from '../../directives/number.directives';
 import { AddressComponent } from '../../address/address.component';
 import { AutocompleteComponent } from '../../autocomplete/autocomplete.component';
 import { ChipSelectableComponent } from '../../chip-selectable/chip-selectable.component';
+import { NumberDirective } from '../../directives/number.directives';
 import { DefaultErrors, ErrorsComponent } from '../../errors/errors.component';
 import { MutliSelectWithSearchComponent } from '../../multi-select-with-search/multi-select-with-search.component';
 import {
@@ -29,7 +29,6 @@ import {
   GenericInputValidationStrategy,
   StrategyValidateFunction,
 } from './types';
-import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'crm-generic-input',
@@ -51,15 +50,11 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     provideNativeDateAdapter()
   ],
   imports: [
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
     AddressComponent,
     ReactiveFormsModule,
     MatInputModule,
     MatDatepickerModule,
     SelectableComponent,
-    NgIf,
     NumberDirective,
     AutocompleteComponent,
     ChipSelectableComponent,
@@ -68,10 +63,8 @@ import { provideNativeDateAdapter } from '@angular/material/core';
   ],
 })
 export class GenericInputComponent
-  implements OnInit, ControlValueAccessor, OnDestroy, Validator
-{
-  @Input({ required: true })
-  genericInput!: GenericInput;
+  implements OnInit, ControlValueAccessor, OnDestroy, Validator {
+  readonly genericInput = input.required<GenericInput>()
   formControl!: FormControl;
   subscription: Subscription = new Subscription();
   DefaultAddressErrors = DefaultErrors;
@@ -84,7 +77,7 @@ export class GenericInputComponent
     GenericInputDefaultStrategy;
 
   ngOnInit(): void {
-    this.formControl = new FormControl(null, this.genericInput.validators);
+    this.formControl = new FormControl(null, this.genericInput().validators);
     this.subscription.add(
       this.formControl.valueChanges.subscribe((formValue) => {
         this.onChange(formValue);
@@ -93,9 +86,9 @@ export class GenericInputComponent
   }
 
   validate(_: AbstractControl): ValidationErrors | null {
-    const mainErrors = this.validationStrategy[this.genericInput.type]?.(
+    const mainErrors = this.validationStrategy[this.genericInput().type]?.(
       this.formControl,
-      this.genericInput?.validators ?? []
+      this.genericInput()?.validators ?? []
     );
 
     return mainErrors ?? null;

@@ -1,72 +1,72 @@
 @if (formControl) {
-  @switch (genericInput.type) {
-    @switch ('address') {
+  @switch (genericInput().type) {
+    @case ('address') {
       <div>
-        <h2>{{ genericInput.label }}</h2>
+        <h2>{{ genericInput().label }}</h2>
         <div class="company-address">
-          <crm-address [addressValidatorObject]="genericInput.addressObjectValidator" [formControl]="formControl" />
+          <crm-address [addressValidatorObject]="genericInput().addressObjectValidator ?? {}" [formControl]="formControl" />
         </div>
       </div>
     }
-    @switch ('selectable') {
+    @case ('selectable') {
       <div class="example-full-width">
         <crm-selectable
           matInput
           [formControl]="formControl"
-          [label]="genericInput.label"
-          [pipeModule]="genericInput.selectablePipeModule"
-          [selectableConfig]="genericInput.selectableConfig ?? DefaultSelectableConfig"
-          [usePipe]="genericInput.useSelectablePipe"
-          [validators]="genericInput.validators"
-          [values]="genericInput.selectableValues" />
+          [label]="genericInput().label"
+          [pipeModule]="genericInput().selectablePipeModule"
+          [selectableConfig]="genericInput().selectableConfig ?? DefaultSelectableConfig"
+          [usePipe]="genericInput().useSelectablePipe"
+          [validators]="genericInput().validators"
+          [values]="genericInput().selectableValues" />
       </div>
     }
-    @switch ('chip-selectable') {
+    @case ('chip-selectable') {
       <div class="example-full-width">
         <crm-chip-selectable
           matInput
           [formControl]="formControl"
-          [label]="genericInput.label"
-          [validators]="genericInput.validators ?? []" />
+          [label]="genericInput().label"
+          [validators]="genericInput().validators ?? []" />
       </div>
     }
-    @switch ('date') {
+    @case ('date') {
       <mat-form-field class="example-full-width">
-        <mat-label>{{ genericInput.label }}</mat-label>
+        <mat-label>{{ genericInput().label }}</mat-label>
         <input matInput [formControl]="formControl" [matDatepicker]="picker" />
         <mat-datepicker-toggle matIconSuffix [for]="picker" />
         <mat-datepicker #picker />
       </mat-form-field>
     }
-    @switch ('number') {
+    @case ('number') {
       <mat-form-field class="example-full-width">
-        <mat-label>{{ genericInput.label }}</mat-label>
+        <mat-label>{{ genericInput().label }}</mat-label>
         <input matInput number-directive [formControl]="formControl" />
         <mat-error>
           <crm-errors [control]="formControl" />
         </mat-error>
       </mat-form-field>
     }
-    @switch ('autocomplete') {
+    @case ('autocomplete') {
       <div class="example-full-width">
         <crm-autocomplete
-          [fetchingService]="genericInput.fetchingService"
+          [fetchingService]="genericInput().fetchingService ?? null"
           [formControl]="formControl"
-          [label]="genericInput.label" />
+          [label]="genericInput().label" />
       </div>
     }
-    @switch ('multi-search-select') {
+    @case ('multi-search-select') {
       <div class="example-full-width">
         <crm-multi-select-with-search
-          [fetchingService]="genericInput.fetchingService"
+          [fetchingService]="genericInput().fetchingService"
           [formControl]="formControl"
-          [label]="genericInput.label" />
+          [label]="genericInput().label" />
       </div>
     }
     @default {
       <mat-form-field class="example-full-width">
-        <mat-label>{{ genericInput.label }}</mat-label>
-        <input matInput [formControl]="formControl" [type]="genericInput.type" />
+        <mat-label>{{ genericInput().label }}</mat-label>
+        <input matInput [formControl]="formControl" [type]="genericInput().type" />
         <mat-error>
           <crm-errors [control]="formControl" />
         </mat-error>
