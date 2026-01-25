@@ -1,12 +1,13 @@
-<mat-form-field>
-  <mat-label>{{ label }}</mat-label>
+@let isPipeDefined = usePipe() && pipeModule();
+<mat-form-field [appearance]="controlAppearance()">
+  <mat-label>{{ label() }}</mat-label>
   <mat-select [formControl]="valueControl">
     <mat-option [value]="null" />
     @for (state of mappedValues; track state.value) {
       <mat-option [value]="state.value">
-        @if (usePipe && pipeModule) {
+        @if (isPipeDefined) {
           <ng-container>
-            {{ state.viewData | databaseTranslation: pipeModule }}
+            {{ state.viewData | databaseTranslation: (pipeModule() ?? '') }}
           </ng-container>
         } @else {
           <ng-template> {{ state.viewData }}</ng-template>

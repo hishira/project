@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy, inject, input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy, inject, input, computed } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -44,16 +44,16 @@ import { AddressFormGroup, ObjectValidators } from './types';
     MatFormFieldModule,
     FormsModule,
     MatGridListModule,
-    NgIf,
     ErrorsComponent,
   ],
 })
 export class AddressComponent
   implements ControlValueAccessor, OnDestroy, OnInit, Validator
 {
+  readonly outlineControl = input<boolean>(false)
   //TODO: Add optional address2, like stored in database: address2
   readonly addressValidatorObject = input.required<ObjectValidators>();
-  //@Input() addressValidatorObject!: ObjectValidators | undefined;
+  readonly controlType = computed(()=>this.outlineControl() ? 'outline': 'fill');
   addressFormGroup!: FormGroup<AddressFormGroup>;
 
   readonly DefaultAddressErrors = DefaultErrors;

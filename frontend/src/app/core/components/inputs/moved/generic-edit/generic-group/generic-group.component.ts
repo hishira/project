@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { GenericInputComponent } from '../generic-input/generic-input.component';
@@ -14,11 +14,11 @@ import { GenericEdit } from '../types';
     MatGridListModule,
     GenericInputComponent,
     ReactiveFormsModule,
-    NgFor,
-    NgIf,
   ],
 })
 export class GenericGroupComponent {
-  @Input() genericEditGroup!: GenericEdit;
-  @Input() groupForm!: FormGroup;
+  readonly genericEditGroup = input.required<GenericEdit>();
+  readonly groupForm = input.required<FormGroup>();
+  //@Input() genericEditGroup!: GenericEdit;
+  //@Input() groupForm!: FormGroup;
 }

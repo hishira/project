@@ -14,7 +14,9 @@ export const editUserGeneralInfoDefinition: GenericEdit = {
             formControlName: 'name',
             label: 'Name',
             placeholder: 'Enter name',
-            cols: '2'
+            cols: '2',
+            outlineControl: true,
+
         },
         {
             type: 'text',
@@ -22,20 +24,22 @@ export const editUserGeneralInfoDefinition: GenericEdit = {
             formControlName: 'lastName',
             label: 'Last name',
             placeholder: 'Enter last name',
-            cols: '2'
+            cols: '2',
+            outlineControl: true,
         },
-         {
-        type: 'address',
-        validators: [],
-        formControlName: 'address',
-        addressObjectValidator: {
-          street: [Validators.required],
-          city: [Validators.required],
-          country: [Validators.required],
+        {
+            type: 'address',
+            validators: [],
+            formControlName: 'address',
+            addressObjectValidator: {
+                street: [Validators.required],
+                city: [Validators.required],
+                country: [Validators.required],
+            },
+            label: '',
+            placeholder: '',
+            cols: '4',
+            outlineControl: true,
         },
-        label: '',
-        placeholder: '',
-        cols: '4',
-      },
     ]
 }

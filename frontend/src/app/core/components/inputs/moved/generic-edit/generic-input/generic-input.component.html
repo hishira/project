@@ -4,7 +4,10 @@
       <div>
         <h2>{{ genericInput().label }}</h2>
         <div class="company-address">
-          <crm-address [addressValidatorObject]="genericInput().addressObjectValidator ?? {}" [formControl]="formControl" />
+          <crm-address 
+          [addressValidatorObject]="genericInput().addressObjectValidator ?? {}" [formControl]="formControl"
+          [outlineControl]="!!genericInput().outlineControl"
+          />
         </div>
       </div>
     }
@@ -14,11 +17,11 @@
           matInput
           [formControl]="formControl"
           [label]="genericInput().label"
-          [pipeModule]="genericInput().selectablePipeModule"
+          [pipeModule]="genericInput().selectablePipeModule "
           [selectableConfig]="genericInput().selectableConfig ?? DefaultSelectableConfig"
-          [usePipe]="genericInput().useSelectablePipe"
-          [validators]="genericInput().validators"
-          [values]="genericInput().selectableValues" />
+          [usePipe]="!!genericInput().useSelectablePipe"
+          [validators]="genericInput().validators ?? []"
+          [values]="genericInput().selectableValues ?? []" />
       </div>
     }
     @case ('chip-selectable') {
@@ -64,7 +67,7 @@
       </div>
     }
     @default {
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="example-full-width" [appearance]="inputApprearance()">
         <mat-label>{{ genericInput().label }}</mat-label>
         <input matInput [formControl]="formControl" [type]="genericInput().type" />
         <mat-error>

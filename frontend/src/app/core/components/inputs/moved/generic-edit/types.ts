@@ -27,7 +27,8 @@ export type GenericInput = {
   selectableConfig?: SelectableConfig;
   fetchingService?: FetchingAutoCompleteSerivce;
   cols: '2' | '4';
-  usingNormal?: boolean
+  usingNormal?: boolean;
+  outlineControl?: boolean;
 };
 export type GenericEdit = {
   group: {

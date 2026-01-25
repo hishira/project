@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, input } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -26,6 +26,7 @@ export const DefaultSelectableConfig: SelectableConfig = {
 //TODO: validacja
 @Component({
   selector: 'crm-selectable',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './selectable.component.html',
   standalone: true,
   providers: [
@@ -39,14 +40,17 @@ export const DefaultSelectableConfig: SelectableConfig = {
   imports: Imports,
 })
 export class SelectableComponent
-  implements ControlValueAccessor, OnInit, OnDestroy, Validator
-{
-  @Input() values: (string | Record<string, any>)[] | undefined = [];
-  @Input() label = '';
-  @Input() usePipe: boolean | undefined = undefined;
-  @Input() pipeModule: string | undefined = undefined;
-  @Input() validators?: ValidatorFn[] = [];
-  @Input() selectableConfig: SelectableConfig = DefaultSelectableConfig;
+  implements ControlValueAccessor, OnInit, OnDestroy, Validator {
+
+  readonly values = input<(string | Record<string, any>)[]>([]);//: (string | Record<string, any>)[] | undefined = [];
+  readonly label = input<string>('');// = '';
+  readonly usePipe = input<boolean>(false);//: boolean | undefined = undefined;
+  readonly pipeModule = input<string | undefined>(undefined);//: string | undefined = undefined;
+  readonly validators = input<ValidatorFn[]>([]);//?: ValidatorFn[] = [];
+  readonly selectableConfig = input<SelectableConfig>(DefaultSelectableConfig);//: SelectableConfig = DefaultSelectableConfig;
+  readonly outlineControl = input<boolean>(false);
+  
+  readonly controlAppearance = computed(()=>this.outlineControl() ? 'outline' : 'fill')
   valueControl!: FormControl<string | null>;
   subscription: Subscription = new Subscription();
   mappedValues: { value: any; viewData: string }[] = [];
@@ -66,26 +70,25 @@ export class SelectableComponent
   }
   validate(_: AbstractControl): ValidationErrors | null {
     let errors = {};
-    this.validators?.forEach((validator) => {
+    this.validators()?.forEach((validator) => {
       errors = validator(this.valueControl) ?? {};
     });
     return errors ?? null;
   }
 
   ngOnInit(): void {
-    this.selectableConfig = this.selectableConfig ?? DefaultSelectableConfig;
     this.mappedValues =
-      this.values?.map((value: string | Record<string, any>) => {
+      this.values()?.map((value: string | Record<string, any>) => {
         if (
-          SelectableComponent.isObjectTypeInValues(this.selectableConfig, value)
+          SelectableComponent.isObjectTypeInValues(this.selectableConfig() ?? DefaultSelectableConfig, value)
         ) {
           // type sh*t, isObject check is value is object and propertis are not null :| but we must do this
           return {
             value: (value as Record<string, any>)[
-              this.selectableConfig.dataProperty as string
+              this.selectableConfig().dataProperty as string
             ],
             viewData: (value as Record<string, any>)[
-              this.selectableConfig.viewProperty as string
+              this.selectableConfig().viewProperty as string
             ],
           };
         }
@@ -96,7 +99,7 @@ export class SelectableComponent
       }) ?? [];
     this.valueControl = new FormControl<string | null>(null, {
       nonNullable: true,
-      validators: this.validators,
+      validators: this.validators(),
     });
     this.subscription.add(
       this.valueControl.valueChanges.subscribe((_) => {

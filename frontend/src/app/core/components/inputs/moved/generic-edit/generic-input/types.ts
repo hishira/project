@@ -1,4 +1,4 @@
-import { FormControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { GenericInputType } from '../types';
 
 export type StrategyValidateFunction = (

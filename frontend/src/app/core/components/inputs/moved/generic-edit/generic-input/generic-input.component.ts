@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -65,6 +65,7 @@ import {
 export class GenericInputComponent
   implements OnInit, ControlValueAccessor, OnDestroy, Validator {
   readonly genericInput = input.required<GenericInput>()
+  readonly inputApprearance = computed(()=> this.genericInput().outlineControl ? 'outline': 'fill')
   formControl!: FormControl;
   subscription: Subscription = new Subscription();
   DefaultAddressErrors = DefaultErrors;

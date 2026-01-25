@@ -16,16 +16,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import {
-  Observable,
-  OperatorFunction,
-  Subscription,
   combineLatest,
   from,
   map,
   noop,
+  Observable,
+  OperatorFunction,
   pipe,
   shareReplay,
   startWith,
+  Subscription,
 } from 'rxjs';
 import {
   AutocomepleteDataView,
