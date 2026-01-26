@@ -42,18 +42,20 @@ export const DefaultSelectableConfig: SelectableConfig = {
 export class SelectableComponent
   implements ControlValueAccessor, OnInit, OnDestroy, Validator {
 
-  readonly values = input<(string | Record<string, any>)[]>([]);//: (string | Record<string, any>)[] | undefined = [];
-  readonly label = input<string>('');// = '';
-  readonly usePipe = input<boolean>(false);//: boolean | undefined = undefined;
-  readonly pipeModule = input<string | undefined>(undefined);//: string | undefined = undefined;
-  readonly validators = input<ValidatorFn[]>([]);//?: ValidatorFn[] = [];
-  readonly selectableConfig = input<SelectableConfig>(DefaultSelectableConfig);//: SelectableConfig = DefaultSelectableConfig;
+  readonly values = input<(string | Record<string, any>)[]>([]);
+  readonly label = input<string>('');
+  readonly usePipe = input<boolean>(false);;
+  readonly pipeModule = input<string | undefined>(undefined);
+  readonly validators = input<ValidatorFn[]>([]);
+  readonly selectableConfig = input<SelectableConfig>(DefaultSelectableConfig);
   readonly outlineControl = input<boolean>(false);
   
   readonly controlAppearance = computed(()=>this.outlineControl() ? 'outline' : 'fill')
+  
   valueControl!: FormControl<string | null>;
   subscription: Subscription = new Subscription();
   mappedValues: { value: any; viewData: string }[] = [];
+  
   onChange: (val: any) => void = noop;
   onTouch: () => void = noop;
 

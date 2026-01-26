@@ -6,4 +6,22 @@
     .example-full-width{
         width: 100%;
     }
+    mat-form-field:hover {
+      & label > mat-label,span {
+        color: red !important;
+        position: relative;
+        //left: -100px;
+        animation-duration: 2s;
+        animation-name: moveLabel;
+       }
+    }
+}
+
+@keyframes moveLabel {
+    0% {
+        left: 0px;
+    }
+    100% {
+        left: -100px;
+    }
 }

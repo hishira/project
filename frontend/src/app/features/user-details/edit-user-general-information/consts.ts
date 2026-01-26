@@ -6,7 +6,7 @@ export const editUserGeneralInfoDefinition: GenericEdit = {
         label: 'Edit general information',
         groupName: 'test'
     },
-    rowHeight: '200px',
+    rowHeight: '150px',
     inputs: [
         {
             type: 'text',
@@ -28,6 +28,7 @@ export const editUserGeneralInfoDefinition: GenericEdit = {
             outlineControl: true,
         },
         {
+            usingNormal: true,
             type: 'address',
             validators: [],
             formControlName: 'address',

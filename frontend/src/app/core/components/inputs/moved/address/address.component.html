@@ -8,7 +8,7 @@
           <crm-errors [control]="addressFormGroup.get('street')" />
         </mat-error>
       </mat-form-field>
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="example-full-width" [appearance]="controlType()">
         <mat-label>Address korespondencyjny</mat-label>
         <input formControlName="secondAddress" matInput />
         <mat-error>

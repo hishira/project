@@ -13,10 +13,7 @@ import { GenericEdit } from './types';
 export class GenericEditComponent {
   readonly genericEditInfo = input.required<GenericEdit[]>();
   readonly formGroup = input.required<FormGroup>();
-  //
-  // @Input() genericEditInfo!: GenericEdit[];
-  // @Input() formGroup!: FormGroup;
-
+  
   getGroupname(groupName: string): FormGroup {
     return this.formGroup().get(groupName) as FormGroup;
   }
