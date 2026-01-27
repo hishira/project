@@ -10,6 +10,7 @@ import { accessTokenReducer } from './store/access-token';
 import { refreshTokenReducer } from './store/refresh-token';
 import { userReducer } from './store/user';
 import { MoveBackService } from './core/services/move-back.service';
+import { LabelFloatDirective } from './core/directives/label-float.directive';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,7 +31,6 @@ export const appConfig: ApplicationConfig = {
       name: 'refreshToken',
       reducer: refreshTokenReducer,
     }),
-    MoveBackService
-  
+    MoveBackService,
   ],
 };

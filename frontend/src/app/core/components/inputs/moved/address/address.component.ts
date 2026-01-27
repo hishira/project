@@ -22,6 +22,7 @@ import { SelectableComponent, SelectableConfig } from '../selectable/selectable.
 import { companyZones, zones } from './consts';
 import { DefaultErrors, ErrorsComponent } from '../errors/errors.component';
 import { AddressFormGroup, ObjectValidators } from './types';
+import { LabelFloatDirective } from '../../../../directives/label-float.directive';
 
 @Component({
   selector: 'crm-address',
@@ -45,6 +46,7 @@ import { AddressFormGroup, ObjectValidators } from './types';
     FormsModule,
     MatGridListModule,
     ErrorsComponent,
+    LabelFloatDirective
   ],
 })
 export class AddressComponent
