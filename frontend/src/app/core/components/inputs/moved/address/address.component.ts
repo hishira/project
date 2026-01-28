@@ -53,7 +53,6 @@ export class AddressComponent
   implements ControlValueAccessor, OnDestroy, OnInit, Validator
 {
   readonly outlineControl = input<boolean>(false)
-  //TODO: Add optional address2, like stored in database: address2
   readonly addressValidatorObject = input.required<ObjectValidators>();
   readonly controlType = computed(()=>this.outlineControl() ? 'outline': 'fill');
   addressFormGroup!: FormGroup<AddressFormGroup>;

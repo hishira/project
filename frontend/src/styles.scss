@@ -298,3 +298,20 @@ body {
 canvas {
   font-family: 'Roboto', 'Helvetica Neue', sans-serif !important;
 }
+
+.text-class {
+  &:hover {
+    position: relative;
+    animation-duration: 2s;
+    animation-name: moveLabel;
+  }
+}
+
+@keyframes moveLabel {
+  0% {
+    left: 0px;
+  }
+  100% {
+    left: -100px;
+  }
+}

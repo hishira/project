@@ -7,12 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { EmptyStateComponent } from '../../core/components/empty-state/empty-state.component';
 import { MainPageViewComponent } from '../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../core/components/page-header/page-header.component';
-import { ReadonlyOnlyComponent } from '../../core/components/read-only/read-only.component';
-import { userMock, UserMock, UserMockCredentials } from '../../core/mocks/user.mocks';
+import { userMock, UserMock } from '../../core/mocks/user.mocks';
 import { AdminDirective } from './../../core/directives/admin.directive';
 import { UserTypeCssClass } from './types';
-import { usetTypeToCssClassMapper } from './utils';
 import { UserGeneralInformationComponent } from './user-general-information/user-general-information.component';
+import { usetTypeToCssClassMapper } from './utils';
 
 @Component({
   selector: 'app-user-details',

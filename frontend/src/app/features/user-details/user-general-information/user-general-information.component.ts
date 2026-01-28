@@ -5,6 +5,7 @@ import { UserMock, UserMockCredentials } from '../../../core/mocks/user.mocks';
 import { MatButtonModule } from '@angular/material/button';
 import { ModalService } from '../../../core/services/modal.service';
 import { EditUserGeneralInformation } from '../edit-user-general-information/edit-user-general-information';
+import { CreateModalData } from '../../../core/components/modal/modal-common.component';
 
 @Component({
   selector: 'app-user-general-information',
@@ -23,6 +24,6 @@ export class UserGeneralInformationComponent {
   });
   readonly modalServie: ModalService = inject(ModalService);
   openEditModal(): void {
-    this.modalServie.open(EditUserGeneralInformation)
+    this.modalServie.open(EditUserGeneralInformation, CreateModalData({username: 'test'}))
   }
 }
