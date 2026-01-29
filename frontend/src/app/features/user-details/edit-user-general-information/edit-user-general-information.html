@@ -1,6 +1,12 @@
-<div class="p-2 w-100">
-  <crm-generic-edit [formGroup]="genericEditFormGroup" [genericEditInfo]="[editUserGeneralInfoDefinition]" />
-  <div class="d-flex justify-content-center">
-    <button class="w-50" matButton="outlined" type="button" (click)="editForm()">Edit</button>
+<mat-dialog-content>
+  <div class="p-2 w-100">
+    <crm-generic-edit [formGroup]="genericEditFormGroup" [genericEditInfo]="[editUserGeneralInfoDefinition]" />
   </div>
-</div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="d-flex justify-content-between w-100">
+    <button class="w-25" mat-dialog-close matButton type="button">Close</button>
+    <button class="w-25" matButton="filled" type="button" (click)="editForm()">Edit</button>
+  </div>
+</mat-dialog-actions>
