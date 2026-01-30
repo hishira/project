@@ -26,6 +26,6 @@ export class UserGeneralInformationComponent {
   
   openEditModal(): void {
     this.modalServie.open(EditUserGeneralInformation,
-      CreateModalData({ name: this.user().firstName, lastName: this.user().lastName }))
+      {...CreateModalData({ name: this.user().firstName, lastName: this.user().lastName, address: this.user().address }), disableClose: true})
   }
 }
