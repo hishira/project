@@ -1,6 +1,6 @@
 <app-page-header>
   <div class="main-header d-flex gap-2">
-    {{ userName() }} 
+    {{ userName() }}
     <mat-chip>{{ userRole() }}</mat-chip>
     <mat-chip [class]="currentStateClass()">{{ userState() | titlecase }}</mat-chip>
   </div>
@@ -9,7 +9,7 @@
   </div>
 </app-page-header>
 <app-main-page-view>
- <app-user-general-information [user]="currentUser()" />
+  <app-user-general-information [user]="currentUser()" />
   <div class="mt-3"></div>
   <mat-card>
     <mat-card-header> Agreements </mat-card-header>

@@ -1,5 +1,6 @@
-import { Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { GenericEdit } from "../../../core/components/inputs/moved/generic-edit/types";
+import { EditUserGeneralInformationDataProps } from "./edit-user-general-information";
 
 export const editUserGeneralInfoDefinition: GenericEdit = {
     group: {
@@ -44,3 +45,20 @@ export const editUserGeneralInfoDefinition: GenericEdit = {
         },
     ]
 }
+
+export const createEditUserFormGroup = (data: EditUserGeneralInformationDataProps) => new FormGroup({
+    test: new FormGroup({
+        name: new FormControl(data?.name ?? ''),
+        lastName: new FormControl(data?.lastName ?? ''),
+        address: new FormGroup({
+            street: new FormControl(data?.address?.street ?? null),
+            postalCode: new FormControl(data?.address?.postalCode ?? null),
+            city: new FormControl(data?.address?.city ?? null),
+            zone: new FormControl(data?.address?.city ?? null),
+            region: new FormControl(data?.address?.country ?? null),
+            country: new FormControl(data?.address?.country ?? null),
+            secondAddress: new FormControl(data?.address?.city ?? null),
+
+        })
+    })
+});

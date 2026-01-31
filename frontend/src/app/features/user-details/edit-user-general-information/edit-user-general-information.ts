@@ -5,7 +5,7 @@ import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } fr
 import { GenericEditComponent } from '../../../core/components/inputs/moved/generic-edit/generic-edit.component';
 import { CommonModal } from '../../../core/components/modal/modal-common.component';
 import { AddressDTO } from '../../../core/mocks/user.mocks';
-import { editUserGeneralInfoDefinition } from './consts';
+import { createEditUserFormGroup, editUserGeneralInfoDefinition } from './consts';
 
 export type EditUserGeneralInformationDataProps = {
   name?: string;
@@ -20,27 +20,10 @@ export type EditUserGeneralInformationDataProps = {
   imports: [GenericEditComponent, MatButtonModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose],
 })
 export class EditUserGeneralInformation extends CommonModal<EditUserGeneralInformationDataProps> {
-  // eslint-disable-next-line complexity
-  readonly genericEditFormGroup = new FormGroup({
-    test: new FormGroup({
-      name: new FormControl(this.data?.name ?? ''),
-      lastName: new FormControl(this.data?.lastName ?? ''),
-      address: new FormGroup({
-        street: new FormControl(this.data?.address?.street ?? null),
-        postalCode: new FormControl(this.data?.address?.postalCode ?? null),
-        city: new FormControl(this.data?.address?.city ?? null),
-        zone: new FormControl(this.data?.address?.city ?? null),
-        region: new FormControl(this.data?.address?.country ?? null),
-        country: new FormControl(this.data?.address?.country ?? null),
-        secondAddress: new FormControl(this.data?.address?.city ?? null),
-
-      })
-    })
-  });
+  readonly genericEditFormGroup = createEditUserFormGroup(this.data)
   editUserGeneralInfoDefinition = editUserGeneralInfoDefinition;
 
   editForm(): void {
     console.log(this.data);
-    console.log('HI');
   }
 }
