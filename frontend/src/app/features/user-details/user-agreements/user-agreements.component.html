@@ -1,1 +1,275 @@
-TEST
+<div class="agreements-container">
+  <!-- Nagłówek -->
+  <div class="table-header">
+    <h2>Agreements Management</h2>
+    <div class="header-actions">
+      <span class="total-count">{{ agreements().length }} agreements</span>
+      <button color="primary" mat-raised-button>
+        <mat-icon>add</mat-icon>
+        New Agreement
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabela z expandable rows -->
+  <table class="agreements-table mat-elevation-z8" mat-table multiTemplateDataRows [dataSource]="agreements()">
+    
+    <!-- Expand Column -->
+    <ng-container matColumnDef="expand">
+      <th *matHeaderCellDef mat-header-cell></th>
+      <td *matCellDef="let element; let i = index" mat-cell>
+        <button 
+          aria-label="Expand row" 
+          mat-icon-button 
+          [attr.aria-expanded]="expandedElement === element"
+          (click)="toggleRow(element)"
+        >
+          <mat-icon>{{ expandedElement === element ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Contract ID Column -->
+    <ng-container matColumnDef="contractId">
+      <th *matHeaderCellDef mat-header-cell>Contract ID</th>
+      <td *matCellDef="let element" class="contract-id-cell" mat-cell>
+        <strong>{{ element.contractId }}</strong>
+        <div class="sub-text">{{ formatDate(element.effectiveDate) }}</div>
+      </td>
+    </ng-container>
+
+    <!-- Title Column -->
+    <ng-container matColumnDef="title">
+      <th *matHeaderCellDef mat-header-cell>Title</th>
+      <td *matCellDef="let element" mat-cell>
+        <div class="title-cell">
+          <div class="title-text">{{ element.title }}</div>
+          <div class="sub-text">{{ element.productName }}</div>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <th *matHeaderCellDef mat-header-cell>Status</th>
+      <td *matCellDef="let element" mat-cell>
+        <mat-chip 
+          class="status-chip" 
+          [color]="getStatusColor(element.status)"
+        >
+          {{ element.statusDisplay }}
+        </mat-chip>
+        
+        @if (element.expirationDate) {
+          <div class="expiry-info">
+            <mat-icon 
+              inline="true" 
+              [color]="getDaysUntilExpiration(element.expirationDate) < 30 ? 'warn' : 'accent'"
+            >
+              calendar_today
+            </mat-icon>
+            {{ getDaysUntilExpiration(element.expirationDate) }} days
+          </div>
+        }
+      </td>
+    </ng-container>
+
+    <!-- Product Column -->
+    <ng-container matColumnDef="product">
+      <th *matHeaderCellDef mat-header-cell>Product</th>
+      <td *matCellDef="let element" mat-cell>
+        <div class="product-cell">
+          <mat-icon class="product-icon">widgets</mat-icon>
+          <div>
+            <div>{{ element.productName }}</div>
+            <div class="sub-text">License</div>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Parties Column -->
+    <ng-container matColumnDef="parties">
+      <th *matHeaderCellDef mat-header-cell>Parties</th>
+      <td *matCellDef="let element" mat-cell>
+        <div class="parties-cell">
+          <div class="party">
+            <mat-icon class="party-icon">person</mat-icon>
+            <span>{{ element.customer }}</span>
+          </div>
+          <div class="party">
+            <mat-icon class="party-icon">business</mat-icon>
+            <span>{{ element.vendor }}</span>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Dates Column -->
+    <ng-container matColumnDef="dates">
+      <th *matHeaderCellDef mat-header-cell>Dates</th>
+      <td *matCellDef="let element" mat-cell>
+        <div class="dates-cell">
+          <div class="date-item">
+            <span class="date-label">Effective:</span>
+            <span class="date-value">{{ formatDate(element.effectiveDate) }}</span>
+          </div>
+          
+          @if (element.expirationDate) {
+            <div class="date-item">
+              <span class="date-label">Expires:</span>
+              <span class="date-value">{{ formatDate(element.expirationDate) }}</span>
+            </div>
+          }
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Value Column -->
+    <ng-container matColumnDef="value">
+      <th *matHeaderCellDef mat-header-cell>Value</th>
+      <td *matCellDef="let element" mat-cell>
+        <div class="value-cell">
+          <div class="value-amount">{{ formatCurrency(element.totalValue, element.currency) }}</div>
+          <div class="sub-text">{{ element.currency }} • Annual</div>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Risk Column -->
+    <ng-container matColumnDef="risk">
+      <th *matHeaderCellDef mat-header-cell>Risk</th>
+      <td *matCellDef="let element" mat-cell>
+        <div class="risk-cell">
+          <mat-chip 
+            class="risk-chip" 
+            [color]="getRiskColor(element.riskLevel)"
+          >
+            {{ element.riskLevel }}
+          </mat-chip>
+          <mat-progress-bar 
+            mode="determinate" 
+            [color]="getRiskColor(element.riskLevel)" 
+            [value]="element.riskScore"
+          />
+          <div class="risk-score">Score: {{ element.riskScore }}/100</div>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Signatures Column -->
+    <ng-container matColumnDef="signatures">
+      <th *matHeaderCellDef mat-header-cell>Signatures</th>
+      <td *matCellDef="let element" mat-cell>
+        <div class="signatures-cell">
+          <div class="signature-progress">
+            <div class="signature-count">
+              {{ element.signaturesCount }}/{{ element.requiredSignatures }}
+            </div>
+            <mat-progress-bar 
+              mode="determinate" 
+              [color]="element.signaturesCount >= element.requiredSignatures ? 'accent' : 'primary'"
+              [value]="(element.signaturesCount / element.requiredSignatures) * 100"
+            />
+          </div>
+          
+          @if (element.signaturesCount < element.requiredSignatures) {
+            <div class="signature-warning">
+              <mat-icon class="warning-icon" color="warn">warning</mat-icon>
+              Pending
+            </div>
+          }
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th *matHeaderCellDef mat-header-cell>Actions</th>
+      <td *matCellDef="let element" mat-cell>
+        <div class="actions-cell">
+          <button aria-label="Actions menu" mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>visibility</mat-icon>
+              <span>View Details</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>file_copy</mat-icon>
+              <span>Duplicate</span>
+            </button>
+            <mat-divider></mat-divider>
+            @if (element.status === 'ACTIVE') {
+              <button color="warn" mat-menu-item>
+                <mat-icon>pause</mat-icon>
+                <span>Suspend</span>
+              </button>
+            } @else {
+              <button color="primary" mat-menu-item>
+                <mat-icon>play_arrow</mat-icon>
+                <span>Activate</span>
+              </button>
+            }
+          </mat-menu>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Expanded Detail Column - używamy specialnej kolumny dla expandowanych treści -->
+    <ng-container matColumnDef="expandedDetail">
+      <td *matCellDef="let element" mat-cell [attr.colspan]="displayedColumns.length">
+        <!-- Treść rozwiniętego wiersza -->
+        <div appUserAgreementExpandRow 
+             class="expanded-content-wrapper"
+             [class.expanded]="expandedElement === element"
+             [element]="element"
+             [expandedElement]="expandedElement"
+             >
+         
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Standardowe wiersze -->
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" 
+        class="agreement-row" 
+        mat-row
+        [class.expanded-row]="expandedElement === row">
+    </tr>
+    
+    <!-- Wiersz expandowany - wyświetlany pod wierszem głównym -->
+    <tr *matRowDef="let row; columns: ['expandedDetail']" 
+        class="expanded-row-detail" 
+        mat-row
+        [class.expanded]="expandedElement === row">
+    </tr>
+  </table>
+
+  <!-- Paginator (opcjonalnie) -->
+  <div class="table-footer">
+    <div class="footer-info">
+      Showing {{ agreements().length }} of {{ agreements().length }} agreements
+    </div>
+    <div class="footer-actions">
+      <button mat-button type="button">
+        <mat-icon>filter_list</mat-icon>
+        Filter
+      </button>
+      <button mat-button type="button">
+        <mat-icon>sort</mat-icon>
+        Sort
+      </button>
+      <button mat-button type="button">
+        <mat-icon>refresh</mat-icon>
+        Refresh
+      </button>
+    </div>
+  </div>
+</div>

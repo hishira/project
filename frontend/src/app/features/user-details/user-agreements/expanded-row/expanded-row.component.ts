@@ -1,29 +1,28 @@
-/* eslint-disable max-lines */
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTableModule } from '@angular/material/table';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { AgreementTableItem } from "./types";
-import {MatDividerModule} from '@angular/material/divider'
-import { smnallSamples } from './mocks';
-import { UserAgreementExpandedRow } from './expanded-row/expanded-row.component';
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+import { AgreementTableItem } from "../types";
+import { CommonModule } from "@angular/common";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { MatIconModule } from "@angular/material/icon";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatTableModule } from "@angular/material/table";
+import { MatTooltipModule } from "@angular/material/tooltip";
+
 @Component({
-    selector: 'app-user-agreements',
+    // eslint-disable-next-line @angular-eslint/component-selector
+    selector: '[appUserAgreementExpandRow]',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    templateUrl: './user-agreements.component.html',
-    styleUrls: ['./user-agreements.component.scss'],
-    standalone: true,
-    imports: [
-        CommonModule,
+    templateUrl: './expanded-row.component.html',
+    styleUrls: [
+        './expans-row.scss'
+    ],
+    imports: [CommonModule,
         MatTableModule,
         MatIconModule,
         MatButtonModule,
@@ -35,32 +34,11 @@ import { UserAgreementExpandedRow } from './expanded-row/expanded-row.component'
         MatMenuModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        MatDividerModule,
-        UserAgreementExpandedRow
-    ],
-    
+        MatDividerModule],
 })
-export class UserAgreementsComponent {
-    displayedColumns: string[] = [
-        'expand',
-        'contractId',
-        'title',
-        'status',
-        'product',
-        'parties',
-        'dates',
-        'value',
-        'risk',
-        'signatures',
-        'actions'
-    ];
-
-    // Przykładowe dane - zamienione na signal
-    readonly agreements = signal<AgreementTableItem[]>(smnallSamples as AgreementTableItem[]);
-
-    expandedElement: AgreementTableItem | null = null;
-
-    // Status colors
+export class UserAgreementExpandedRow {
+    readonly expandedElement = input<AgreementTableItem | null>(null);
+    readonly element = input.required<AgreementTableItem | any>();
     getStatusColor(status: string): string {
         switch (status) {
             case 'ACTIVE': return 'accent';
@@ -122,16 +100,11 @@ export class UserAgreementsComponent {
         });
     }
 
-    // Toggle row expansion
-    toggleRow(element: AgreementTableItem): void {
-        this.expandedElement = this.expandedElement === element ? null : element;
-    }
-
+    
     // Get pending payment
     getPendingPayment(paymentSchedule: any[]): any {
         return paymentSchedule?.find(p => p.status === 'PENDING');
     }
 
     // Sample data generator
-
 }

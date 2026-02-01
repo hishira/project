@@ -1,0 +1,162 @@
+@if (expandedElement() === element()) {
+  <div class="expanded-content">
+    <!-- Lewa kolumna: Podstawowe informacje -->
+    <div class="expanded-section">
+      <h4>Contract Details</h4>
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Contract ID:</span>
+          <span class="detail-value">{{ element().fullData?.contractId || element().contractId }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Version:</span>
+          <span class="detail-value">{{ element().fullData?.version?.version || '1.0.0' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Created:</span>
+          <span class="detail-value">
+            {{ formatDate(element().fullData?.createdAt || element().effectiveDate) }}
+          </span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Last Updated:</span>
+          <span class="detail-value">
+            {{ formatDate(element().fullData?.updatedAt || element().effectiveDate) }}
+          </span>
+        </div>
+      </div>
+
+      <h4>Product Information</h4>
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Product Name:</span>
+          <span class="detail-value">{{ element().fullData?.product?.name || element().productName }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Category:</span>
+          <span class="detail-value">{{ element().fullData?.product?.category || 'SOFTWARE_LICENSE' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Applications:</span>
+          <span class="detail-value">
+            @if (element().fullData?.product?.specifications?.applications) {
+              {{ element().fullData.product.specifications.applications.join(', ') }}
+            } @else {
+              N/A
+            }
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Środkowa kolumna: Finanse i ryzyko -->
+    <div class="expanded-section">
+      <h4>Financial Details</h4>
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Total Value:</span>
+          <span class="detail-value">{{ formatCurrency(element().totalValue, element().currency) }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Payment Schedule:</span>
+          <span class="detail-value"> {{ element().fullData?.paymentSchedule?.length || 0 }} installments </span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Next Payment:</span>
+          <span class="detail-value">
+            @if (element().fullData?.paymentSchedule) {
+              @let pendingPayment = getPendingPayment(element().fullData.paymentSchedule);
+              @if (pendingPayment && pendingPayment.dueDate) {
+                {{ formatDate(pendingPayment.dueDate) }}
+              } @else {
+                None
+              }
+            } @else {
+              None
+            }
+          </span>
+        </div>
+      </div>
+
+      <h4 class="mt-4">Risk Assessment</h4>
+      <div class="risk-details">
+        <div class="risk-item">
+          <span class="risk-label">Level:</span>
+          <mat-chip class="risk-chip-small" [color]="getRiskColor(element().riskLevel)">
+            {{ element().riskLevel }}
+          </mat-chip>
+        </div>
+        <div class="risk-item">
+          <span class="risk-label">Score:</span>
+          <span class="risk-value">{{ element().riskScore }}/100</span>
+        </div>
+
+        @if (element().fullData?.riskAssessment?.mitigationPlan) {
+          <div class="risk-item">
+            <span class="risk-label">Mitigation:</span>
+            <span class="risk-value">
+              {{ element().fullData.riskAssessment.mitigationPlan.slice(0, 100) }}
+              @if (element().fullData.riskAssessment.mitigationPlan.length > 100) {
+                ...
+              }
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Prawa kolumna: Tagi i akcje -->
+    <div class="expanded-section">
+      <h4>Tags & Categories</h4>
+      <div class="tags-container d-flex gap-2">
+        @for (tag of element().fullData?.tags || element().tags || []; track tag) {
+          <mat-chip color="primary">{{ tag }}</mat-chip>
+        }
+
+        @if (element().fullData?.isMasterContract) {
+          <mat-chip color="accent">Master Contract</mat-chip>
+        }
+      </div>
+
+      <h4>Quick Actions</h4>
+      <div class="action-buttons">
+        <button class="action-button" color="primary" mat-stroked-button>
+          <mat-icon>visibility</mat-icon>
+          View Full
+        </button>
+        <button class="action-button" color="accent" mat-stroked-button>
+          <mat-icon>download</mat-icon>
+          Export
+        </button>
+
+        @if (element().status === 'ACTIVE') {
+          <button class="action-button" color="warn" mat-stroked-button>
+            <mat-icon>pause</mat-icon>
+            Suspend
+          </button>
+        }
+
+        @if (element().status !== 'ACTIVE') {
+          <button class="action-button" mat-stroked-button>
+            <mat-icon>play_arrow</mat-icon>
+            Activate
+          </button>
+        }
+      </div>
+
+      @if (element().fullData?.signatures) {
+        <div class="signature-status">
+          <h5>Signatures ({{ element().signaturesCount }}/{{ element().requiredSignatures }})</h5>
+          <div class="signature-list">
+            @for (signature of element().fullData.signatures; track signature.userId) {
+              <div class="signature-item">
+                <mat-icon class="signature-icon">check_circle</mat-icon>
+                <span>{{ signature.userId }} - {{ formatDate(signature.signedAt) }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}

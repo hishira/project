@@ -1,14 +1,14 @@
 /* eslint-disable max-lines */
 // ==================== CORE TYPES ====================
 
-interface Timestamps {
+export interface Timestamps {
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
   archivedAt?: Date;
 }
 
-interface AuditLog {
+export interface AuditLog {
   id: string;
   action: string;
   performedBy: string;
@@ -20,7 +20,7 @@ interface AuditLog {
 
 // ==================== USER & ROLES ====================
 
-type SystemRole = 
+export type SystemRole = 
   | 'SUPER_ADMIN'     // Full system access
   | 'ADMIN'           // System administration
   | 'MANAGER'         // Team/Department management
@@ -30,7 +30,7 @@ type SystemRole =
   | 'SYSTEM'          // Automated system actions
   | 'UNKNOWN';        // Unauthenticated/legacy
 
-type ContractRole =
+export type ContractRole =
   | 'CONTRACT_OWNER'      // Primary responsible
   | 'CONTRACT_MANAGER'    // Manages contract execution
   | 'SIGNATORY'          // Authorized to sign
@@ -45,7 +45,7 @@ type ContractRole =
   | 'FINANCE'           // Financial oversight
   | 'LEGAL'             ; // Legal department
 
-interface User {
+export interface User {
   id: string;
   email: string;
   name: string;
@@ -58,7 +58,7 @@ interface User {
 
 // ==================== CONTRACT VERSIONING ====================
 
-interface ContractVersion {
+export interface ContractVersion {
   version: string; // Format: "1.0.0" or "2024.01.001"
   versionNumber: number;
   previousVersionId?: string;
@@ -73,7 +73,7 @@ interface ContractVersion {
 
 // ==================== PRODUCT/SERVICE TYPES ====================
 
-type ProductCategory = 
+export type ProductCategory = 
   | 'SOFTWARE_LICENSE'
   | 'CLOUD_SERVICE'
   | 'CONSULTING'
@@ -85,7 +85,7 @@ type ProductCategory =
   | 'OUTSOURCING'
   | 'LEASING';
 
-interface ContractProduct {
+export interface ContractProduct {
   id: string;
   name: string;
   category: ProductCategory;
@@ -107,7 +107,7 @@ interface ContractProduct {
   customFields: Record<string, any>;
 }
 
-interface ServiceLevelAgreement {
+export interface ServiceLevelAgreement {
   uptimePercentage: number;
   responseTime: number;
   resolutionTime: number;
@@ -115,15 +115,22 @@ interface ServiceLevelAgreement {
   penalties: SLAPenalty[];
 }
 
-interface SLAPenalty {
+export interface SLAPenalty {
   condition: string;
   penaltyAmount: number;
   penaltyType: 'PERCENTAGE' | 'FIXED';
 }
 
+export interface DeliveryTerms {
+  implementationTime?: string;
+  trainingIncluded?: boolean;
+  migrationSupport?: boolean;
+  [key: string]: any;
+}
+
 // ==================== CONTRACT TERMS & CONDITIONS ====================
 
-interface ContractClause {
+export interface ContractClause {
   id: string;
   clauseNumber: string;
   title: string;
@@ -135,7 +142,7 @@ interface ContractClause {
   variables: ClauseVariable[];
 }
 
-interface ClauseVariable {
+export interface ClauseVariable {
   name: string;
   value: any;
   type: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'SELECT';
@@ -143,7 +150,7 @@ interface ClauseVariable {
   isEditable: boolean;
 }
 
-interface TerminationClause {
+export interface TerminationClause {
   noticePeriodDays: number;
   terminationReason?: string[];
   penalties?: TerminationPenalty[];
@@ -151,7 +158,7 @@ interface TerminationClause {
   renewalNoticeDays: number;
 }
 
-interface TerminationPenalty {
+export interface TerminationPenalty {
   type: 'FIXED_FEE' | 'REMAINING_VALUE' | 'NEGOTIATED';
   amount: number;
   conditions: string[];
@@ -159,9 +166,9 @@ interface TerminationPenalty {
 
 // ==================== APPROVAL WORKFLOW ====================
 
-type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CHANGES_REQUESTED';
+export type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CHANGES_REQUESTED';
 
-interface ApprovalStep {
+export interface ApprovalStep {
   id: string;
   stepNumber: number;
   name: string;
@@ -172,13 +179,13 @@ interface ApprovalStep {
   conditions?: ApprovalCondition[];
 }
 
-interface ApprovalCondition {
+export interface ApprovalCondition {
   field: string;
   operator: 'EQUALS' | 'GREATER_THAN' | 'CONTAINS' | 'IN';
   value: any;
 }
 
-interface Approval {
+export interface Approval {
   id: string;
   stepId: string;
   contractId: string;
@@ -189,7 +196,7 @@ interface Approval {
   attachments?: string[]; // Attachment IDs
 }
 
-interface Workflow {
+export interface Workflow {
   id: string;
   name: string;
   steps: ApprovalStep[];
@@ -200,7 +207,7 @@ interface Workflow {
 
 // ==================== NOTIFICATIONS ====================
 
-type NotificationType = 
+export type NotificationType = 
   | 'CONTRACT_EXPIRY'
   | 'APPROVAL_REQUIRED'
   | 'SIGNATURE_REQUIRED'
@@ -212,7 +219,7 @@ type NotificationType =
   | 'REMINDER'
   | 'ESCALATION';
 
-interface Notification {
+export interface Notification {
   id: string;
   type: NotificationType;
   recipient: string; // User ID or role
@@ -227,7 +234,7 @@ interface Notification {
   metadata: Record<string, any>;
 }
 
-interface NotificationPreference {
+export interface NotificationPreference {
   userId: string;
   emailNotifications: boolean;
   pushNotifications: boolean;
@@ -238,7 +245,7 @@ interface NotificationPreference {
 
 // ==================== ATTACHMENTS & SUB-CONTRACTS ====================
 
-interface DocumentAttachment {
+export interface DocumentAttachment {
   id: string;
   name: string;
   type: 'CONTRACT' | 'AMENDMENT' | 'ADDENDUM' | 'ANNEX' | 'CERTIFICATE' | 'OTHER';
@@ -249,11 +256,11 @@ interface DocumentAttachment {
   uploadedAt: Date;
   version: string;
   isSigned: boolean;
-  signatureMetadata?: SignatureMetadata;
+  signatureMetadata?: any;
   encryptionKey?: string;
 }
 
-interface SubContract {
+export interface SubContract {
   id: string;
   parentContractId: string;
   title: string;
@@ -267,7 +274,7 @@ interface SubContract {
 
 // ==================== REPORTING & ANALYTICS ====================
 
-interface ReportFilter {
+export interface ReportFilter {
   dateRange?: { start: Date; end: Date };
   contractStatus?: ContractStatus[];
   productCategories?: ProductCategory[];
@@ -276,7 +283,7 @@ interface ReportFilter {
   riskLevel?: RiskLevel[];
 }
 
-interface AnalyticsMetric {
+export interface AnalyticsMetric {
   totalContracts: number;
   totalValue: number;
   activeContracts: number;
@@ -287,7 +294,7 @@ interface AnalyticsMetric {
   slaComplianceRate: number;
 }
 
-interface RiskAssessment {
+export interface RiskAssessment {
   level: RiskLevel;
   score: number;
   factors: RiskFactor[];
@@ -295,9 +302,9 @@ interface RiskAssessment {
   mitigationPlan?: string;
 }
 
-type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
-interface RiskFactor {
+export interface RiskFactor {
   category: 'FINANCIAL' | 'LEGAL' | 'OPERATIONAL' | 'COMPLIANCE' | 'REPUTATIONAL';
   description: string;
   impact: number; // 1-10
@@ -306,7 +313,7 @@ interface RiskFactor {
 
 // ==================== MAIN CONTRACT INTERFACE ====================
 
-interface Contract<TProduct = ContractProduct, TMetadata = any> extends Timestamps {
+export interface Contract<TProduct = ContractProduct, TMetadata = any> extends Timestamps {
   // Basic Identification
   id: string;
   contractId: string; // Human-readable: CNT-2024-001
@@ -391,7 +398,7 @@ interface Contract<TProduct = ContractProduct, TMetadata = any> extends Timestam
 
 // ==================== SUPPORTING INTERFACES ====================
 
-type ContractStatus = 
+export type ContractStatus = 
   | 'DRAFT'
   | 'UNDER_REVIEW'
   | 'PENDING_APPROVAL'
@@ -404,7 +411,25 @@ type ContractStatus =
   | 'RENEWED'
   | 'ARCHIVED';
 
-interface ContractParty {
+export interface SigningAuthority {
+  level: string;
+  [key: string]: any;
+}
+
+export interface ContactInfo {
+  email?: string;
+  phone?: string;
+  address?: string;
+  [key: string]: any;
+}
+
+export interface GeoLocation {
+  city?: string;
+  country?: string;
+  [key: string]: any;
+}
+
+export interface ContractParty {
   user: User;
   contractRole: ContractRole;
   signingAuthority: SigningAuthority;
@@ -414,7 +439,7 @@ interface ContractParty {
   responsibilities: string[];
 }
 
-interface AdditionalParty extends ContractParty {
+export interface AdditionalParty extends ContractParty {
   addedBy: string;
   addedAt: Date;
   validUntil?: Date;
@@ -422,7 +447,7 @@ interface AdditionalParty extends ContractParty {
   accessLevel: 'FULL' | 'LIMITED' | 'VIEW_ONLY';
 }
 
-type PartyPermission = 
+export type PartyPermission = 
   | 'VIEW_CONTRACT'
   | 'EDIT_DETAILS'
   | 'MANAGE_PARTIES'
@@ -432,17 +457,17 @@ type PartyPermission =
   | 'SEND_NOTIFICATIONS'
   | 'TERMINATE_CONTRACT';
 
-interface DigitalSignature {
+export interface DigitalSignature {
   userId: string;
   signedAt: Date;
   signatureHash: string;
   certificate?: string;
   signingMethod: 'DIGITAL_CERTIFICATE' | 'EMAIL' | 'SMS' | 'BIOMETRIC';
   ipAddress?: string;
-  location?: Geolocation;
+  location?: GeoLocation;
 }
 
-interface StatusChange {
+export interface StatusChange {
   from: ContractStatus;
   to: ContractStatus;
   changedAt: Date;
@@ -451,7 +476,7 @@ interface StatusChange {
   comments?: string;
 }
 
-interface NotificationSettings {
+export interface NotificationSettings {
   reminders: {
     daysBeforeExpiry: number[];
     notifyRoles: ContractRole[];
@@ -463,7 +488,7 @@ interface NotificationSettings {
   digestSchedule: 'DAILY' | 'WEEKLY' | 'MONTHLY';
 }
 
-interface ComplianceItem {
+export interface ComplianceItem {
   requirement: string;
   isCompliant: boolean;
   checkedBy?: string;
@@ -472,7 +497,7 @@ interface ComplianceItem {
   dueDate?: Date;
 }
 
-interface PaymentSchedule {
+export interface PaymentSchedule {
   installmentNumber: number;
   dueDate: Date;
   amount: number;
@@ -481,7 +506,7 @@ interface PaymentSchedule {
   invoiceId?: string;
 }
 
-interface InvoiceReference {
+export interface InvoiceReference {
   invoiceId: string;
   amount: number;
   issueDate: Date;
@@ -492,7 +517,7 @@ interface InvoiceReference {
 
 // ==================== REPORT TYPES ====================
 
-interface ContractReport {
+export interface ContractReport {
   type: ReportType;
   filters: ReportFilter;
   generatedAt: Date;
@@ -501,7 +526,7 @@ interface ContractReport {
   format: 'PDF' | 'EXCEL' | 'JSON' | 'CSV';
 }
 
-type ReportType = 
+export type ReportType = 
   | 'CONTRACTS_OVERVIEW'
   | 'FINANCIAL_SUMMARY'
   | 'EXPIRY_FORECAST'
@@ -513,7 +538,7 @@ type ReportType =
   | 'COST_ANALYSIS'
   | 'CUSTOM_REPORT';
 
-interface ReportData {
+export interface ReportData {
   summary: AnalyticsMetric;
   contracts: Contract[];
   charts: ChartData[];
@@ -521,7 +546,7 @@ interface ReportData {
   risks?: RiskFactor[];
 }
 
-interface ChartData {
+export interface ChartData {
   type: 'BAR' | 'LINE' | 'PIE' | 'HEATMAP';
   title: string;
   data: Record<string, any>[];
@@ -532,7 +557,7 @@ interface ChartData {
 // ==================== EXAMPLE USAGE ====================
 
 // Example: Creating a complex contract
-const enterpriseContract: Contract = {
+export const enterpriseContract: Contract = {
   id: "cnt_ent_2024_001",
   contractId: "CNT-ENTERPRISE-2024-001",
   title: "Enterprise Cloud Services Agreement",
@@ -586,10 +611,10 @@ const enterpriseContract: Contract = {
   },
   
   // ... rest of the implementation would continue
-};
+} as Contract;
 
 // Example: Report generation function
-async function generateContractReport(
+export async function generateContractReport(
   type: ReportType,
   filters: ReportFilter
 ): Promise<ContractReport> {
@@ -615,4 +640,27 @@ async function generateContractReport(
     },
     format: "PDF"
   };
+}
+
+// Interface dla uproszczonego widoku
+// Interface dla uproszczonego widoku
+export interface AgreementTableItem {
+  id: string;
+  contractId: string;
+  title: string;
+  status: 'DRAFT' | 'ACTIVE' | 'EXPIRED' | 'PENDING_APPROVAL' | 'SUSPENDED';
+  statusDisplay: string;
+  productName: string;
+  customer: string;
+  vendor: string;
+  effectiveDate: Date;
+  expirationDate?: Date;
+  totalValue: number;
+  currency: string;
+  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  riskScore: number;
+  signaturesCount: number;
+  requiredSignatures: number;
+  // Pełne dane dla expandowanego widoku
+  fullData: any;
 }

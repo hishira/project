@@ -12,6 +12,7 @@ import { AdminDirective } from './../../core/directives/admin.directive';
 import { UserTypeCssClass } from './types';
 import { UserGeneralInformationComponent } from './user-general-information/user-general-information.component';
 import { usetTypeToCssClassMapper } from './utils';
+import { UserAgreementsComponent } from './user-agreements/user-agreements.component';
 
 @Component({
   selector: 'app-user-details',
@@ -29,6 +30,7 @@ import { usetTypeToCssClassMapper } from './utils';
     MatChipsModule,
     TitleCasePipe,
     UserGeneralInformationComponent,
+    UserAgreementsComponent
   ],
 })
 export class UserDetailsComponent {

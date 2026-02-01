@@ -6,13 +6,14 @@ import { ReadonlyOnlyComponent } from '../../../core/components/read-only/read-o
 import { UserMock, UserMockCredentials } from '../../../core/mocks/user.mocks';
 import { ModalService } from '../../../core/services/modal.service';
 import { EditUserGeneralInformation } from '../edit-user-general-information/edit-user-general-information';
+import { UserAgreementsComponent } from '../user-agreements/user-agreements.component';
 
 @Component({
   selector: 'app-user-general-information',
   templateUrl: './user-general-information.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatCardModule, ReadonlyOnlyComponent, MatButtonModule],
+  imports: [MatCardModule, ReadonlyOnlyComponent, MatButtonModule, UserAgreementsComponent],
   providers: [ModalService]
 })
 export class UserGeneralInformationComponent {
@@ -23,9 +24,16 @@ export class UserGeneralInformationComponent {
     return `${address.houseNumber} ${address.street}, ${address.city}, ${address.postalCode}, ${address.country}`;
   });
   readonly modalServie: ModalService = inject(ModalService);
-  
+
   openEditModal(): void {
     this.modalServie.open(EditUserGeneralInformation,
-      {...CreateModalData({ name: this.user().firstName, lastName: this.user().lastName, address: this.user().address }), disableClose: true})
+      {
+        ...CreateModalData({
+          name: this.user().firstName,
+          lastName: this.user().lastName,
+          address: this.user().address
+        }),
+        disableClose: true
+      })
   }
 }
