@@ -119,25 +119,25 @@
       </div>
 
       <h4>Quick Actions</h4>
-      <div class="action-buttons">
-        <button class="action-button" color="primary" mat-stroked-button>
+      <div class="action-buttons d-flex gap-2">
+        <button class="action-button" color="primary" mat-stroked-button type="button">
           <mat-icon>visibility</mat-icon>
           View Full
         </button>
-        <button class="action-button" color="accent" mat-stroked-button>
+        <button class="action-button" color="accent" mat-stroked-button type="button">
           <mat-icon>download</mat-icon>
           Export
         </button>
 
         @if (element().status === 'ACTIVE') {
-          <button class="action-button" color="warn" mat-stroked-button>
+          <button class="action-button" color="warn" mat-stroked-button type="button">
             <mat-icon>pause</mat-icon>
             Suspend
           </button>
         }
 
         @if (element().status !== 'ACTIVE') {
-          <button class="action-button" mat-stroked-button>
+          <button class="action-button" mat-stroked-button type="button">
             <mat-icon>play_arrow</mat-icon>
             Activate
           </button>

@@ -13,7 +13,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AgreementTableItem } from "./types";
-import {MatDividerModule} from '@angular/material/divider'
+import { MatDividerModule } from '@angular/material/divider'
 import { smnallSamples } from './mocks';
 import { UserAgreementExpandedRow } from './expanded-row/expanded-row.component';
 @Component({
@@ -38,7 +38,7 @@ import { UserAgreementExpandedRow } from './expanded-row/expanded-row.component'
         MatDividerModule,
         UserAgreementExpandedRow
     ],
-    
+
 })
 export class UserAgreementsComponent {
     displayedColumns: string[] = [

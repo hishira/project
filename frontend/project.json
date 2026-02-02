@@ -76,24 +76,10 @@
       "executor": "@angular/build:extract-i18n"
     },
     "test": {
-      "executor": "@angular/build:karma",
+     "executor": "@nx/jest:jest",  
       "options": {
-        "polyfills": [
-          "zone.js",
-          "zone.js/testing"
-        ],
-        "tsConfig": "tsconfig.spec.json",
-        "inlineStyleLanguage": "scss",
-        "assets": [
-          {
-            "glob": "**/*",
-            "input": "public"
-          }
-        ],
-        "styles": [
-          "src/styles.scss"
-        ],
-        "scripts": []
+        "jestConfig": "{projectRoot}/jest.config.ts",  
+        "passWithNoTests": true
       }
     },
     "lint": {

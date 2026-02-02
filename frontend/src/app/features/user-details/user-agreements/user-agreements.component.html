@@ -1,5 +1,4 @@
 <div class="agreements-container">
-  <!-- Nagłówek -->
   <div class="table-header">
     <h2>Agreements Management</h2>
     <div class="header-actions">
@@ -11,10 +10,8 @@
     </div>
   </div>
 
-  <!-- Tabela z expandable rows -->
   <table class="agreements-table mat-elevation-z8" mat-table multiTemplateDataRows [dataSource]="agreements()">
     
-    <!-- Expand Column -->
     <ng-container matColumnDef="expand">
       <th *matHeaderCellDef mat-header-cell></th>
       <td *matCellDef="let element; let i = index" mat-cell>
