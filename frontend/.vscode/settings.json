@@ -2,5 +2,11 @@
     "html.format.templating": [
         "angular"
     ],
-    "html.format.indentHandlebars": true
+    "html.format.indentHandlebars": true,
+    "testing.automaticallyOpenTestResults": "neverOpen",
+    "jest.outputConfig": {
+        "revealOn": "run",
+        "revealWithFocus": "none",
+        "clearOnRun": "none"
+    }
 }

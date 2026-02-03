@@ -1,5 +1,5 @@
 .agreements-container {
-  padding: 24px;
+  //padding: 24px;
   //background: #f5f5f5;
   min-height: 100vh;
 }
@@ -54,6 +54,7 @@
 
 .expanded-row-detail {
   border-bottom: 1px solid #e0e0e0;
+  height: 0px;
 }
 
 .expanded-row-detail.expanded {
