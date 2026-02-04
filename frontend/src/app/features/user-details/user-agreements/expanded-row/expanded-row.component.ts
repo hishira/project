@@ -50,7 +50,6 @@ export class UserAgreementExpandedRow {
         }
     }
 
-    // Risk colors
     getRiskColor(riskLevel: string): string {
         switch (riskLevel) {
             case 'LOW': return 'accent';
@@ -61,7 +60,6 @@ export class UserAgreementExpandedRow {
         }
     }
 
-    // Calculate days until expiration
     getDaysUntilExpiration(expirationDate: Date): number {
         const now = new Date();
         const exp = new Date(expirationDate);
@@ -69,7 +67,6 @@ export class UserAgreementExpandedRow {
         return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     }
 
-    // Format currency
     formatCurrency(value: number, currency: string): string {
         if (!value || !currency) return 'N/A';
 
@@ -85,7 +82,6 @@ export class UserAgreementExpandedRow {
         }
     }
 
-    // Format date
     formatDate(date: Date | string | undefined): string {
         if (!date) return 'N/A';
 
@@ -101,10 +97,9 @@ export class UserAgreementExpandedRow {
     }
 
     
-    // Get pending payment
     getPendingPayment(paymentSchedule: any[]): any {
         return paymentSchedule?.find(p => p.status === 'PENDING');
     }
 
-    // Sample data generator
+
 }
