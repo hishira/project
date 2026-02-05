@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, input } from "@angular/core";
-import { AgreementTableItem } from "../types";
 import { CommonModule } from "@angular/common";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatChipsModule } from "@angular/material/chips";
@@ -13,6 +12,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTableModule } from "@angular/material/table";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { AgreementTableItem } from "../types";
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -22,7 +22,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     styleUrls: [
         './expans-row.scss'
     ],
-    imports: [CommonModule,
+    imports: [
+        CommonModule,
         MatTableModule,
         MatIconModule,
         MatButtonModule,
@@ -96,7 +97,7 @@ export class UserAgreementExpandedRow {
         });
     }
 
-    
+
     getPendingPayment(paymentSchedule: any[]): any {
         return paymentSchedule?.find(p => p.status === 'PENDING');
     }
