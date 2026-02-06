@@ -1,18 +1,6 @@
-import { CommonModule } from "@angular/common";
 import { ChangeDetectionStrategy, Component, input } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
-import { MatCardModule } from "@angular/material/card";
-import { MatChipsModule } from "@angular/material/chips";
-import { MatNativeDateModule } from "@angular/material/core";
-import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatDividerModule } from "@angular/material/divider";
-import { MatExpansionModule } from "@angular/material/expansion";
-import { MatIconModule } from "@angular/material/icon";
-import { MatMenuModule } from "@angular/material/menu";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatTableModule } from "@angular/material/table";
-import { MatTooltipModule } from "@angular/material/tooltip";
 import { AgreementTableItem } from "../types";
+import { imports } from "./expand-row.component.dependencies";
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -23,19 +11,7 @@ import { AgreementTableItem } from "../types";
         './expans-row.scss'
     ],
     imports: [
-        CommonModule,
-        MatTableModule,
-        MatIconModule,
-        MatButtonModule,
-        MatCardModule,
-        MatChipsModule,
-        MatExpansionModule,
-        MatTooltipModule,
-        MatProgressBarModule,
-        MatMenuModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatDividerModule],
+        ...imports],
 })
 export class UserAgreementExpandedRow {
     readonly expandedElement = input<AgreementTableItem | null>(null);

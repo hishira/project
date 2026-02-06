@@ -25,7 +25,6 @@
       </td>
     </ng-container>
 
-    <!-- Contract ID Column -->
     <ng-container matColumnDef="contractId">
       <th *matHeaderCellDef mat-header-cell>Contract ID</th>
       <td *matCellDef="let element" class="contract-id-cell" mat-cell>
@@ -34,7 +33,6 @@
       </td>
     </ng-container>
 
-    <!-- Title Column -->
     <ng-container matColumnDef="title">
       <th *matHeaderCellDef mat-header-cell>Title</th>
       <td *matCellDef="let element" mat-cell>
@@ -45,7 +43,6 @@
       </td>
     </ng-container>
 
-    <!-- Status Column -->
     <ng-container matColumnDef="status">
       <th *matHeaderCellDef mat-header-cell>Status</th>
       <td *matCellDef="let element" mat-cell>
@@ -64,21 +61,21 @@
       </td>
     </ng-container>
 
-    <!-- Product Column -->
     <ng-container matColumnDef="product">
       <th *matHeaderCellDef mat-header-cell>Product</th>
       <td *matCellDef="let element" mat-cell>
-        <div class="product-cell">
+        <div class="product-cell d-flex align-items-center gap-2">
           <mat-icon class="product-icon">widgets</mat-icon>
           <div>
-            <div>{{ element.productName }}</div>
-            <div class="sub-text">License</div>
+            <div>
+              <span>{{ element.productName }}, </span>
+              <span class="sub-text text-secondary">License</span>
+            </div>
           </div>
         </div>
       </td>
     </ng-container>
 
-    <!-- Parties Column -->
     <ng-container matColumnDef="parties">
       <th *matHeaderCellDef mat-header-cell>Parties</th>
       <td *matCellDef="let element" mat-cell>
@@ -95,7 +92,6 @@
       </td>
     </ng-container>
 
-    <!-- Dates Column -->
     <ng-container matColumnDef="dates">
       <th *matHeaderCellDef mat-header-cell>Dates</th>
       <td *matCellDef="let element" mat-cell>
@@ -115,7 +111,6 @@
       </td>
     </ng-container>
 
-    <!-- Value Column -->
     <ng-container matColumnDef="value">
       <th *matHeaderCellDef mat-header-cell>Value</th>
       <td *matCellDef="let element" mat-cell>
@@ -126,7 +121,6 @@
       </td>
     </ng-container>
 
-    <!-- Risk Column -->
     <ng-container matColumnDef="risk">
       <th *matHeaderCellDef mat-header-cell>Risk</th>
       <td *matCellDef="let element" mat-cell>
@@ -134,13 +128,10 @@
           <mat-chip class="risk-chip" [color]="getRiskColor(element.riskLevel)">
             {{ element.riskLevel }}
           </mat-chip>
-          <mat-progress-bar mode="determinate" [color]="getRiskColor(element.riskLevel)" [value]="element.riskScore" />
-          <div class="risk-score">Score: {{ element.riskScore }}/100</div>
         </div>
       </td>
     </ng-container>
 
-    <!-- Signatures Column -->
     <ng-container matColumnDef="signatures">
       <th *matHeaderCellDef mat-header-cell>Signatures</th>
       <td *matCellDef="let element" mat-cell>
@@ -163,7 +154,6 @@
       </td>
     </ng-container>
 
-    <!-- Actions Column -->
     <ng-container matColumnDef="actions">
       <th *matHeaderCellDef mat-header-cell>Actions</th>
       <td *matCellDef="let element" mat-cell>
@@ -201,10 +191,8 @@
       </td>
     </ng-container>
 
-    <!-- Expanded Detail Column - używamy specialnej kolumny dla expandowanych treści -->
     <ng-container matColumnDef="expandedDetail">
       <td *matCellDef="let element" mat-cell [attr.colspan]="displayedColumns.length">
-        <!-- Treść rozwiniętego wiersza -->
         <div
           appUserAgreementExpandRow
           class="expanded-content-wrapper"
@@ -214,7 +202,6 @@
       </td>
     </ng-container>
 
-    <!-- Standardowe wiersze -->
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
     <tr
       *matRowDef="let row; columns: displayedColumns"
@@ -222,20 +209,11 @@
       mat-row
       [class.expanded-row]="expandedElement === row"></tr>
 
-    <!-- Wiersz expandowany - wyświetlany pod wierszem głównym -->
-    <ng-container
-    *matRowDef="let row; columns: ['expandedDetail']"
-    >
-      <tr
-      class="expanded-row-detail"
-      mat-row
-      [class.expanded]="expandedElement === row"
-   ></tr>
-  </ng-container>
-  
+    <ng-container *matRowDef="let row; columns: ['expandedDetail']">
+      <tr class="expanded-row-detail" mat-row [class.expanded]="expandedElement === row"></tr>
+    </ng-container>
   </table>
 
-  <!-- Paginator (opcjonalnie) -->
   <div class="table-footer p-2 mt-2">
     <div class="footer-info">Showing {{ agreements().length }} of {{ agreements().length }} agreements</div>
     <div class="footer-actions">

@@ -16,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { UserAgreementExpandedRow } from './expanded-row/expanded-row.component';
 import { smnallSamples } from './mocks';
 import { AgreementTableItem } from "./types";
+
 @Component({
     selector: 'app-user-agreements',
     changeDetection: ChangeDetectionStrategy.OnPush,
