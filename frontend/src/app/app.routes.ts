@@ -8,7 +8,7 @@ export const routes: Routes = [
       import('./features/auth/auth.routes').then((m) => m.authRoutes),
   },
 
-   {
+  {
     path: '',
     canActivate: [authGuard],
     loadComponent: () =>
@@ -32,6 +32,11 @@ export const routes: Routes = [
             (m) => m.userListRoutes
           ),
         canActivate: [authGuard],
+      },
+      {
+        path: 'agreements',
+        loadChildren: () => import('./features/agreements/agreements.routes').then(m => m.agreementsRoutes),
+        canActivate: [authGuard]
       },
       {
         path: '**',

@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/core";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -16,6 +16,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { UserAgreementExpandedRow } from './expanded-row/expanded-row.component';
 import { smnallSamples } from './mocks';
 import { AgreementTableItem } from "./types";
+import { Router } from '@angular/router';
+import { CommonRouterService } from '../../../core/services/common-router.service';
 
 @Component({
     selector: 'app-user-agreements',
@@ -39,6 +41,7 @@ import { AgreementTableItem } from "./types";
         MatDividerModule,
         UserAgreementExpandedRow
     ],
+    providers: [CommonRouterService]
 
 })
 export class UserAgreementsComponent {
@@ -56,6 +59,7 @@ export class UserAgreementsComponent {
         'actions'
     ];
 
+    private readonly router = inject(CommonRouterService); 
     readonly agreements = signal<AgreementTableItem[]>(smnallSamples as AgreementTableItem[]);
 
     expandedElement: AgreementTableItem | null = null;
@@ -123,6 +127,10 @@ export class UserAgreementsComponent {
 
     getPendingPayment(paymentSchedule: any[]): any {
         return paymentSchedule?.find(p => p.status === 'PENDING');
+    }
+
+    goToDetails(): void {
+        this.router.navitgateTo(['agreements/details/test-id'], false);
     }
 
 }

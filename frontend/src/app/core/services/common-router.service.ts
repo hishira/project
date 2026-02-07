@@ -6,7 +6,11 @@ export class CommonRouterService {
   private readonly router = inject(Router);
   private readonly activeRoute = inject(ActivatedRoute);
 
-  navitgateTo(paths: string[]): void {
-    this.router.navigate(paths, { relativeTo: this.activeRoute });
+  navigateToByString(path: string, pathSeparator: string): void {
+    this.router.navigate(path.split(pathSeparator), { relativeTo: this.activeRoute });
+  }
+
+  navitgateTo(paths: string[], usingRelative = true): void {
+    this.router.navigate(paths, usingRelative ? { relativeTo: this.activeRoute } : {});
   }
 }
