@@ -1,0 +1,92 @@
+.agreement-details {
+  padding: 16px;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-badge.active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.expired {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.status-badge.draft {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.status-badge.pending {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.payment-status {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.payment-status.paid {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.payment-status.pending {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.payment-status.overdue {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.risk-assessment {
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.risk-assessment.low {
+  background-color: #e8f5e9;
+  border-left: 4px solid #4caf50;
+}
+
+.risk-assessment.medium {
+  background-color: #fff3e0;
+  border-left: 4px solid #ff9800;
+}
+
+.risk-assessment.high {
+  background-color: #ffebee;
+  border-left: 4px solid #f44336;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+  .main-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  
+  .main-header-buttons {
+    margin-top: 8px;
+    width: 100%;
+  }
+  
+  .main-header-buttons button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+}

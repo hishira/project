@@ -1,1 +1,259 @@
-TEST
+<app-page-header>
+  <div class="main-header d-flex gap-2">
+    TEST page header</div>
+  <div class="main-header-buttons">
+  </div>
+</app-page-header>
+
+<app-main-page-view>
+  <div class="agreement-details">
+    
+    <!-- Nagłówek umowy -->
+    <mat-card class="mb-4">
+      <mat-card-header>
+        <mat-card-title>{{ agreement().title }}</mat-card-title>
+        <mat-card-subtitle>{{ agreement().description }}</mat-card-subtitle>
+        <div class="status-badge ms-auto" [class]="getStatusClass(agreement().status)">
+          {{ agreement().status }}
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <p><strong>ID Umowy:</strong> {{ agreement().contractId }}</p>
+            <p><strong>Wersja:</strong> {{ agreement().version.version }} ({{ agreement().version.versionNumber }})</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Wartość całkowita:</strong> {{ agreement().totalValue }} {{ agreement().currency }}</p>
+            <p><strong>Okres obowiązywania:</strong> 
+              {{ agreement().effectiveDate | date:'dd.MM.yyyy' }} - 
+              {{ agreement().expirationDate | date:'dd.MM.yyyy' }}
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="row">
+      <!-- Lewa kolumna -->
+      <div class="col-md-6">
+        <!-- Informacje o produkcie -->
+        <mat-card class="mb-4">
+          <mat-card-header>
+            <mat-card-title>Informacje o produkcie</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p><strong>Nazwa:</strong> {{ agreement().product.name }}</p>
+            <p><strong>Kategoria:</strong> {{ agreement().product.category }}</p>
+            <p><strong>Cena:</strong> {{ agreement().product.price }} {{ agreement().currency }}</p>
+            <mat-divider class="my-3"></mat-divider>
+            <h5>Specyfikacje:</h5>
+            <p><strong>Aplikacje:</strong> 
+              @for (app of agreement().product.specifications.applications; track $index; let last = $last) {
+                {{ app }}{{ last ? '' : ', ' }}
+              }
+            </p>
+            <p><strong>Licencje użytkowników:</strong> {{ agreement().product.specifications.userLicenses }}</p>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Strony umowy -->
+        <mat-card class="mb-4">
+          <mat-card-header>
+            <mat-card-title>Strony umowy</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row">
+              <div class="col-6">
+                <h6>Strona A:</h6>
+                <p><strong>{{ agreement().primaryParties.partyA.name }}</strong></p>
+                <p>{{ agreement().primaryParties.partyA.email }}</p>
+              </div>
+              <div class="col-6">
+                <h6>Strona B:</h6>
+                <p><strong>{{ agreement().primaryParties.partyB.name }}</strong></p>
+                <p>{{ agreement().primaryParties.partyB.email }}</p>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Prawa kolumna -->
+      <div class="col-md-6">
+        <!-- Harmonogram płatności -->
+        <mat-card class="mb-4">
+          <mat-card-header>
+            <mat-card-title>Harmonogram płatności</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (agreement().paymentSchedule && agreement().paymentSchedule.length > 0) {
+              <table mat-table [dataSource]="agreement().paymentSchedule" class="mat-elevation-z0 w-100">
+                <!-- Nr raty Column -->
+                <ng-container matColumnDef="installmentNumber">
+                  <th mat-header-cell *matHeaderCellDef> Nr raty </th>
+                  <td mat-cell *matCellDef="let element"> {{ element.installmentNumber }} </td>
+                </ng-container>
+
+                <!-- Termin płatności Column -->
+                <ng-container matColumnDef="dueDate">
+                  <th mat-header-cell *matHeaderCellDef> Termin płatności </th>
+                  <td mat-cell *matCellDef="let element"> {{ element.dueDate | date:'dd.MM.yyyy' }} </td>
+                </ng-container>
+
+                <!-- Kwota Column -->
+                <ng-container matColumnDef="amount">
+                  <th mat-header-cell *matHeaderCellDef> Kwota </th>
+                  <td mat-cell *matCellDef="let element"> {{ element.amount }} {{ agreement().currency }} </td>
+                </ng-container>
+
+                <!-- Status Column -->
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef> Status </th>
+                  <td mat-cell *matCellDef="let element">
+                    <span class="payment-status" [class]="getPaymentStatusClass(element.status)">
+                      {{ element.status }}
+                    </span>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            } @else {
+              <p class="text-muted">Brak zaplanowanych płatności</p>
+            }
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Podpisy i ocena ryzyka -->
+        <mat-card class="mb-4">
+          <mat-card-header>
+            <mat-card-title>Dodatkowe informacje</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row">
+              <div class="col-6">
+                <h6>Podpisy:</h6>
+                @if (agreement().signatures && agreement().signatures.length > 0) {
+                  @for (signature of agreement().signatures; track signature.userId) {
+                    <div class="mb-2">
+                      <p class="mb-0"><small>Użytkownik: {{ signature.userId }}</small></p>
+                      <p class="mb-0"><small>Data: {{ signature.signedAt | date:'dd.MM.yyyy' }}</small></p>
+                    </div>
+                  }
+                } @else {
+                  <p class="text-muted"><small>Brak podpisów</small></p>
+                }
+              </div>
+              <div class="col-6">
+                <h6>Ocena ryzyka:</h6>
+                <div class="risk-assessment" [class]="getRiskClass(agreement().riskAssessment.level)">
+                  <p class="mb-1"><strong>Poziom: {{ agreement().riskAssessment.level }}</strong></p>
+                  <p class="mb-0">Wynik: {{ agreement().riskAssessment.score }}</p>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Tagi -->
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Tagi</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (agreement().tags && agreement().tags.length > 0) {
+              <mat-chip-listbox>
+                @for (tag of agreement().tags; track $index) {
+                  <mat-chip>{{ tag }}</mat-chip>
+                }
+              </mat-chip-listbox>
+            } @else {
+              <p class="text-muted">Brak tagów</p>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Sekcja z przełącznikiem dla różnych akcji -->
+    @switch (agreement().status) {
+      @case ('ACTIVE') {
+        <div class="mt-4">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Akcje dla aktywnej umowy</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="d-flex gap-2">
+                <button mat-raised-button color="warn">
+                  <mat-icon>pause</mat-icon>
+                  Wstrzymaj
+                </button>
+                <button mat-raised-button color="primary">
+                  <mat-icon>autorenew</mat-icon>
+                  Odnów
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      }
+      @case ('EXPIRED') {
+        <div class="mt-4">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Akcje dla wygasłej umowy</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="d-flex gap-2">
+                <button mat-raised-button color="primary">
+                  <mat-icon>autorenew</mat-icon>
+                  Odnów umowę
+                </button>
+                <button mat-raised-button color="basic">
+                  <mat-icon>content_copy</mat-icon>
+                  Utwórz nową wersję
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      }
+      @case ('DRAFT') {
+        <div class="mt-4">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Akcje dla szkicu umowy</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="d-flex gap-2">
+                <button mat-raised-button color="primary">
+                  <mat-icon>send</mat-icon>
+                  Wyślij do akceptacji
+                </button>
+                <button mat-raised-button color="accent">
+                  <mat-icon>delete</mat-icon>
+                  Usuń szkic
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      }
+      @default {
+        <div class="mt-4">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Dostępne akcje</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Brak specjalnych akcji dla tego statusu umowy.</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      }
+    }
+  </div>
+</app-main-page-view>
