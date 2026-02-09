@@ -9,6 +9,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MainPageViewComponent } from "../../../core/components/main-page-view/main-page-view.component";
 import { PageHeaderComponent } from "../../../core/components/page-header/page-header.component";
 import { agreement } from "./mock";
+import { agreementStatusLowerCase } from "./utils";
 
 @Component({
     selector: 'app-agreement-details',
@@ -34,13 +35,7 @@ export class AgreemmentDetailsComponent {
 
     // Helper function do określenia klasy CSS dla statusu
     getStatusClass(status: string): string {
-        switch (status.toLowerCase()) {
-            case 'active': return 'active';
-            case 'expired': return 'expired';
-            case 'draft': return 'draft';
-            case 'pending': return 'pending';
-            default: return '';
-        }
+       return agreementStatusLowerCase(status);
     }
 
     // Helper function dla klasy ryzyka

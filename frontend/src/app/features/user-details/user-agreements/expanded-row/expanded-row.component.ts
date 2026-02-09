@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+import { agreementRiskColorMap, agreementStatusColorMap } from "../../../agreements/agreement-details/utils";
+import { AgreementRiskStatus, AgreementStatus, AgreementStatusColor } from "../../../agreements/types";
 import { AgreementTableItem } from "../types";
 import { imports } from "./expand-row.component.dependencies";
 
@@ -11,30 +13,19 @@ import { imports } from "./expand-row.component.dependencies";
         './expans-row.scss'
     ],
     imports: [
-        ...imports],
+        ...imports
+    ],
 })
 export class UserAgreementExpandedRow {
     readonly expandedElement = input<AgreementTableItem | null>(null);
     readonly element = input.required<AgreementTableItem | any>();
-    getStatusColor(status: string): string {
-        switch (status) {
-            case 'ACTIVE': return 'accent';
-            case 'EXPIRED': return 'warn';
-            case 'PENDING_APPROVAL': return 'primary';
-            case 'DRAFT': return 'basic';
-            case 'SUSPENDED': return 'warn';
-            default: return 'basic';
-        }
+
+    getStatusColor(status: AgreementStatus): AgreementStatusColor {
+        return agreementStatusColorMap(status)
     }
 
-    getRiskColor(riskLevel: string): string {
-        switch (riskLevel) {
-            case 'LOW': return 'accent';
-            case 'MEDIUM': return 'primary';
-            case 'HIGH': return 'warn';
-            case 'CRITICAL': return 'warn';
-            default: return 'basic';
-        }
+    getRiskColor(riskLevel: AgreementRiskStatus): AgreementStatusColor {
+        return agreementRiskColorMap(riskLevel)
     }
 
     getDaysUntilExpiration(expirationDate: Date): number {

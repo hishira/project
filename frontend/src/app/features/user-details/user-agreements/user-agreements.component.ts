@@ -18,6 +18,8 @@ import { smnallSamples } from './mocks';
 import { AgreementTableItem } from "./types";
 import { Router } from '@angular/router';
 import { CommonRouterService } from '../../../core/services/common-router.service';
+import { agreementRiskColorMap, agreementStatusColorMap } from '../../agreements/agreement-details/utils';
+import { AgreementRiskStatus, AgreementStatus, AgreementStatusColor } from '../../agreements/types';
 
 @Component({
     selector: 'app-user-agreements',
@@ -64,25 +66,12 @@ export class UserAgreementsComponent {
 
     expandedElement: AgreementTableItem | null = null;
 
-    getStatusColor(status: string): string {
-        switch (status) {
-            case 'ACTIVE': return 'accent';
-            case 'EXPIRED': return 'warn';
-            case 'PENDING_APPROVAL': return 'primary';
-            case 'DRAFT': return 'basic';
-            case 'SUSPENDED': return 'warn';
-            default: return 'basic';
-        }
+    getStatusColor(status: AgreementStatus): AgreementStatusColor {
+        return agreementStatusColorMap(status)
     }
 
-    getRiskColor(riskLevel: string): string {
-        switch (riskLevel) {
-            case 'LOW': return 'accent';
-            case 'MEDIUM': return 'primary';
-            case 'HIGH': return 'warn';
-            case 'CRITICAL': return 'warn';
-            default: return 'basic';
-        }
+    getRiskColor(riskLevel: AgreementRiskStatus): AgreementStatusColor {
+        return agreementRiskColorMap(riskLevel);
     }
 
     getDaysUntilExpiration(expirationDate: Date): number {
