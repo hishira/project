@@ -31,19 +31,16 @@ import { agreementStatusLowerCase } from "./utils";
 })
 export class AgreemmentDetailsComponent {
     readonly agreement = signal(agreement);
-    displayedColumns: string[] = ['installmentNumber', 'dueDate', 'amount', 'status'];
+    readonly displayedColumns: string[] = ['installmentNumber', 'dueDate', 'amount', 'status'];
 
-    // Helper function do określenia klasy CSS dla statusu
     getStatusClass(status: string): string {
-       return agreementStatusLowerCase(status);
+        return agreementStatusLowerCase(status);
     }
 
-    // Helper function dla klasy ryzyka
     getRiskClass(level: string): string {
         return level.toLowerCase();
     }
 
-    // Helper function dla statusu płatności
     getPaymentStatusClass(status: string): string {
         return status.toLowerCase();
     }
