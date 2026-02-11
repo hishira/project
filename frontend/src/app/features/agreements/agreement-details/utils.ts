@@ -21,5 +21,5 @@ export const agreementRiskColorMap = (riskLevel: AgreementRiskStatus): Agreement
     }
 }
 
-export const agreementStatusLowerCase = <T extends string>(status: T): Lowercase<T>=>
-     (status ? status.toLowerCase() : '') as Lowercase<T>;
+export const agreementStatusLowerCase = <T extends string>(status: T): Lowercase<T> =>
+    (status ? status.toLowerCase() : '') as Lowercase<T>;

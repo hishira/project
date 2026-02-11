@@ -13,17 +13,17 @@ import { MatTableModule } from "@angular/material/table";
 import { MatTooltipModule } from "@angular/material/tooltip";
 
 export const imports = [
-            CommonModule,
-        MatTableModule,
-        MatIconModule,
-        MatButtonModule,
-        MatCardModule,
-        MatChipsModule,
-        MatExpansionModule,
-        MatTooltipModule,
-        MatProgressBarModule,
-        MatMenuModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatDividerModule
+    CommonModule,
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    MatChipsModule,
+    MatExpansionModule,
+    MatTooltipModule,
+    MatProgressBarModule,
+    MatMenuModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatDividerModule
 ]
