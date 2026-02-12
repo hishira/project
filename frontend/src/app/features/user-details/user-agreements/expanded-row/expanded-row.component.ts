@@ -9,9 +9,7 @@ import { imports } from "./expand-row.component.dependencies";
     selector: '[appUserAgreementExpandRow]',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './expanded-row.component.html',
-    styleUrls: [
-        './expans-row.scss'
-    ],
+    styleUrl: './expans-row.scss',
     imports: [
         ...imports
     ],

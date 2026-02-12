@@ -1,25 +1,11 @@
 /* eslint-disable max-lines */
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/core";
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTableModule } from '@angular/material/table';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { UserAgreementExpandedRow } from './expanded-row/expanded-row.component';
-import { smnallSamples } from './mocks';
-import { AgreementTableItem } from "./types";
-import { Router } from '@angular/router';
 import { CommonRouterService } from '../../../core/services/common-router.service';
 import { agreementRiskColorMap, agreementStatusColorMap } from '../../agreements/agreement-details/utils';
 import { AgreementRiskStatus, AgreementStatus, AgreementStatusColor } from '../../agreements/types';
+import { smnallSamples } from './mocks';
+import { AgreementTableItem } from "./types";
+import { imports } from './user-agreements.component.dependencies';
 
 @Component({
     selector: 'app-user-agreements',
@@ -28,20 +14,7 @@ import { AgreementRiskStatus, AgreementStatus, AgreementStatusColor } from '../.
     styleUrls: ['./user-agreements.component.scss'],
     standalone: true,
     imports: [
-        CommonModule,
-        MatTableModule,
-        MatIconModule,
-        MatButtonModule,
-        MatCardModule,
-        MatChipsModule,
-        MatExpansionModule,
-        MatTooltipModule,
-        MatProgressBarModule,
-        MatMenuModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatDividerModule,
-        UserAgreementExpandedRow
+        ...imports
     ],
     providers: [CommonRouterService]
 
@@ -61,7 +34,7 @@ export class UserAgreementsComponent {
         'actions'
     ];
 
-    private readonly router = inject(CommonRouterService); 
+    private readonly router = inject(CommonRouterService);
     readonly agreements = signal<AgreementTableItem[]>(smnallSamples as AgreementTableItem[]);
 
     expandedElement: AgreementTableItem | null = null;
