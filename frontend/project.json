@@ -62,6 +62,7 @@
     },
     "serve": {
       "executor": "@angular/build:dev-server",
+      "cache": false,
       "configurations": {
         "production": {
           "buildTarget": "frontend:build:production"

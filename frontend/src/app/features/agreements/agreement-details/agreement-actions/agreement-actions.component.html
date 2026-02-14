@@ -1,0 +1,77 @@
+@switch (agreement().status) {
+  @case ('ACTIVE') {
+    <div class="mt-4">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Akcje dla aktywnej umowy</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="d-flex gap-2">
+            <button color="warn" mat-raised-button type="button">
+              <mat-icon>pause</mat-icon>
+              Wstrzymaj
+            </button>
+            <button color="primary" mat-raised-button type="button">
+              <mat-icon>autorenew</mat-icon>
+              Odnów
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+  @case ('EXPIRED') {
+    <div class="mt-4">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Akcje dla wygasłej umowy</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="d-flex gap-2">
+            <button color="primary" mat-raised-button type="button">
+              <mat-icon>autorenew</mat-icon>
+              Odnów umowę
+            </button>
+            <button color="basic" mat-raised-button type="button">
+              <mat-icon>content_copy</mat-icon>
+              Utwórz nową wersję
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+  @case ('DRAFT') {
+    <div class="mt-4">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Akcje dla szkicu umowy</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="d-flex gap-2">
+            <button color="primary" mat-raised-button type="button">
+              <mat-icon>send</mat-icon>
+              Wyślij do akceptacji
+            </button>
+            <button color="accent" mat-raised-button type="button">
+              <mat-icon>delete</mat-icon>
+              Usuń szkic
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+  @default {
+    <div class="mt-4">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Dostępne akcje</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Brak specjalnych akcji dla tego statusu umowy.</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+}

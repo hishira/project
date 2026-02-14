@@ -11,6 +11,8 @@ import { PageHeaderComponent } from "../../../core/components/page-header/page-h
 import { Agreement, agreement } from "./mock";
 import { agreementStatusLowerCase } from "./utils";
 import { AgreementDetailStore } from "./agreement-details.store";
+import { AgreementActionsComponent } from "./agreement-actions/agreement-actions.component";
+import { PaymentScheduleComponent } from "./agreement-payments/agreement-payments.component";
 
 @Component({
     selector: 'app-agreement-details',
@@ -28,6 +30,8 @@ import { AgreementDetailStore } from "./agreement-details.store";
         MatIconModule,
         MatButtonModule,
         DatePipe,
+        AgreementActionsComponent,
+        PaymentScheduleComponent
     ],
     providers: [AgreementDetailStore],
 })

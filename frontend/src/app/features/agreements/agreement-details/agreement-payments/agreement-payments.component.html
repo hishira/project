@@ -1,0 +1,39 @@
+<mat-card class="mb-4">
+  <mat-card-header>
+    <mat-card-title>Harmonogram płatności</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (agreementStore.isPaymentScheduleDefined()) {
+      <table class="mat-elevation-z0 w-100" mat-table [dataSource]="paymentSchedule()">
+        <ng-container matColumnDef="installmentNumber">
+          <th *matHeaderCellDef mat-header-cell>Nr raty</th>
+          <td *matCellDef="let element" mat-cell>{{ element.installmentNumber }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dueDate">
+          <th *matHeaderCellDef mat-header-cell>Termin płatności</th>
+          <td *matCellDef="let element" mat-cell>{{ element.dueDate | date: 'dd.MM.yyyy' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th *matHeaderCellDef mat-header-cell>Kwota</th>
+          <td *matCellDef="let element" mat-cell>{{ element.amount }} {{ currency }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th *matHeaderCellDef mat-header-cell>Status</th>
+          <td *matCellDef="let element" mat-cell>
+            <span class="payment-status" [class]="getPaymentStatusClass(element.status)">
+              {{ element.status }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+      </table>
+    } @else {
+      <p class="text-muted">Brak zaplanowanych płatności</p>
+    }
+  </mat-card-content>
+</mat-card>
