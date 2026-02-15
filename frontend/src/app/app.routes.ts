@@ -39,6 +39,10 @@ export const routes: Routes = [
         canActivate: [authGuard]
       },
       {
+        path: 'raports',
+        loadChildren: () => import('./features/raports/raports-routes').then(m => m.raportRoutes),
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
       },

@@ -11,6 +11,7 @@ import { refreshTokenReducer } from './store/refresh-token';
 import { userReducer } from './store/user';
 import { MoveBackService } from './core/services/move-back.service';
 import { LabelFloatDirective } from './core/directives/label-float.directive';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,5 +33,6 @@ export const appConfig: ApplicationConfig = {
       reducer: refreshTokenReducer,
     }),
     MoveBackService,
+        provideCharts(withDefaultRegisterables())
   ],
 };

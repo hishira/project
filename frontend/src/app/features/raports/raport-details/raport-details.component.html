@@ -1,0 +1,183 @@
+@if (report) {
+  <app-page-header>
+    <div class="main-header">
+      <div class="d-flex align-items-center gap-3">
+        <h1>{{ report.name }}</h1>
+        <span class="report-id">#{{ report.id }}</span>
+      </div>
+    </div>
+  </app-page-header>
+  <app-main-page-view>
+    <div class="detail-container">
+      <!-- Nagłówek z przyciskiem powrotu i pobieraniem -->
+
+      <div class="content-grid">
+        <!-- Lewa kolumna: metadane -->
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Informacje o raporcie</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="info-row">
+              <mat-icon>schedule</mat-icon>
+              <span class="label">Wygenerowano:</span>
+              <span class="value">{{ report.generatedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+            </div>
+            @if (report.expiresAt) {
+              <div class="info-row">
+                <mat-icon>hourglass_empty</mat-icon>
+                <span class="label">Wygasa:</span>
+                <span class="value">{{ report.expiresAt | date: 'dd MMM yyyy' }}</span>
+              </div>
+            }
+            <div class="info-row">
+              <mat-icon>source</mat-icon>
+              <span class="label">Źródło:</span>
+              <span class="value">{{ report.metadata.sourceSystem }}</span>
+            </div>
+            @if (report.metadata.createdBy) {
+              <div class="info-row">
+                <mat-icon>person</mat-icon>
+                <span class="label">Utworzył:</span>
+                <span class="value">{{ report.metadata.createdBy }}</span>
+              </div>
+            }
+            <div class="info-row">
+              <mat-icon>category</mat-icon>
+              <span class="label">Typ:</span>
+              <span class="value">
+                <mat-chip class="chip-type-{{ report.type }}">{{ report.type }}</mat-chip>
+              </span>
+            </div>
+            <div class="info-row">
+              <mat-icon>format_shapes</mat-icon>
+              <span class="label">Format:</span>
+              <span class="value">
+                <mat-chip class="chip-format-{{ report.format }}">{{ report.format }}</mat-chip>
+              </span>
+            </div>
+            @if (report.metadata.version) {
+              <div class="info-row">
+                <mat-icon>tag</mat-icon>
+                <span class="label">Wersja:</span>
+                <span class="value">{{ report.metadata.version }}</span>
+              </div>
+            }
+            @if (report.metadata.parameters) {
+              <div class="info-row">
+                <mat-icon>tune</mat-icon>
+                <span class="label">Parametry:</span>
+                <pre class="parameters">{{ report.metadata.parameters | json }}</pre>
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Prawa kolumna: dane właściwe -->
+        <mat-card class="data-card">
+          <mat-card-header>
+            <mat-card-title>Dane raportu</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @switch (report.type) {
+              @case ('dashboard') {
+                @if (chartData) {
+                  <div class="chart-container">
+                    <canvas
+                      baseChart
+                      [data]="chartData"
+                      [labels]="chartLabels"
+                      [options]="chartOptions"
+                      [type]="chartType">
+                    </canvas>
+                  </div>
+                } @else {
+                  <p>Brak danych do wyświetlenia wykresu.</p>
+                }
+              }
+              @case ('tabular') {
+                @if (isTableData(report.data)) {
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        @for (col of getTableColumns(report.data); track col) {
+                          <th>{{ col }}</th>
+                        }
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (row of report.data; track row) {
+                        <tr>
+                          @for (col of getTableColumns(report.data); track col) {
+                            <td>{{ row[col] }}</td>
+                          }
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                } @else {
+                  <pre>{{ report.data | json }}</pre>
+                }
+              }
+              @case ('summary') {
+                @if (isSummaryObject(report.data)) {
+                  <div class="summary-grid">
+                    @for (item of report.data | keyvalue; track item.key) {
+                      <div class="summary-item">
+                        <span class="summary-key">{{ item.key }}</span>
+                        <span class="summary-value">{{ item.value }}</span>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <pre>{{ report.data | json }}</pre>
+                }
+              }
+              @case ('detailed') {
+                @if (isTableData(report.data)) {
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        @for (col of getTableColumns(report.data); track col) {
+                          <th>{{ col }}</th>
+                        }
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (row of report.data; track row) {
+                        <tr>
+                          @for (col of getTableColumns(report.data); track col) {
+                            <td>{{ row[col] }}</td>
+                          }
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                } @else {
+                  <pre>{{ report.data | json }}</pre>
+                }
+              }
+              @case ('custom') {
+                @if (report.format === 'image') {
+                  <div class="image-container">
+                    <img [src]="report.data.imageUrl" [alt]="report.data.description" />
+                    @if (report.data.description) {
+                      <p>{{ report.data.description }}</p>
+                    }
+                  </div>
+                } @else {
+                  <pre>{{ report.data | json }}</pre>
+                }
+              }
+              @default {
+                <pre>{{ report.data | json }}</pre>
+              }
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </app-main-page-view>
+} @else {
+  <div class="loading">Ładowanie raportu...</div>
+}

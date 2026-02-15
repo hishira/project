@@ -1,0 +1,61 @@
+<div class="report-list-container">
+  <h1>Lista raportów</h1>
+  <div class="report-grid">
+    @for (report of reportService.reports(); track report.id) {
+      <mat-card appearance="outlined" class="report-card">
+        <mat-card-header>
+          <div class="report-avatar" mat-card-avatar [style.background]="getAvatarColor(report.type)">
+            {{ getAvatarLetter(report.type) }}
+          </div>
+          <mat-card-title>{{ report.name }}</mat-card-title>
+          <mat-card-subtitle>
+            <span class="report-id">#{{ report.id }}</span>
+            <span class="report-date">{{ report.generatedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="report-content">
+          <div class="report-metadata-grid">
+            <div class="metadata-item">
+              <mat-icon>source</mat-icon>
+               <span class="metadata-label">Źródło:</span>
+              <span class="metadata-value">{{ formatSourceSystem(report.metadata.sourceSystem) }}</span>
+            </div>
+            @if (report.metadata.createdBy) {
+              <div class="metadata-item">
+                <mat-icon>person</mat-icon>
+                <span class="metadata-label">Utworzył:</span>
+                <span class="metadata-value">{{ report.metadata.createdBy }}</span>
+              </div>
+            }
+            @if (report.expiresAt) {
+              <div class="metadata-item" [class.expiring-soon]="isExpiringSoon(report.expiresAt)">
+                <mat-icon>schedule</mat-icon>
+                <span class="metadata-label">Wygasa:</span>
+                <span class="metadata-value">{{ report.expiresAt | date: 'dd MMM yyyy' }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="report-chips">
+            <mat-chip-set>
+              <mat-chip  [class]="'chip-type-' + report.type">
+                {{ report.type }}
+              </mat-chip>
+              <mat-chip [class]="'chip-format-' + report.format">
+                {{ report.format }}
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+          <button color="primary" mat-button type="button" (click)="previewReport(report)">
+            <mat-icon>visibility</mat-icon> Podgląd
+          </button>
+          <button mat-button type="button" (click)="downloadReport(report)"><mat-icon>download</mat-icon> Pobierz</button>
+        </mat-card-actions>
+      </mat-card>
+    }
+  </div>
+</div>
