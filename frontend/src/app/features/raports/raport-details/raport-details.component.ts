@@ -12,6 +12,7 @@ import { SAMPLE_REPORT_DETAILS } from './samples';
 import { Report } from '../types';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { RaportTypesComponent } from './raport-types/raport-types.component';
 
 @Component({
   selector: 'app-report-details',
@@ -27,7 +28,8 @@ import { MainPageViewComponent } from '../../../core/components/main-page-view/m
     MatDividerModule,
     BaseChartDirective,
     PageHeaderComponent,
-    MainPageViewComponent
+    MainPageViewComponent,
+    RaportTypesComponent,
   ],
   templateUrl: './raport-details.component.html',
   styleUrls: ['./report-details.components.scss']

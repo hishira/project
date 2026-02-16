@@ -1,0 +1,89 @@
+@switch (report().type) {
+  @case ('dashboard') {
+    @if (chartData()) {
+      <div class="chart-container">
+        <canvas baseChart [data]="chartData()" [labels]="chartLabels()" [options]="chartOptions" [type]="chartType">
+        </canvas>
+      </div>
+    } @else {
+      <p>Brak danych do wyświetlenia wykresu.</p>
+    }
+  }
+  @case ('tabular') {
+    @if (isTableData(report().data)) {
+      <table class="data-table">
+        <thead>
+          <tr>
+            @for (col of getTableColumns(report().data); track col) {
+              <th>{{ col }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of report().data; track row) {
+            <tr>
+              @for (col of getTableColumns(report().data); track col) {
+                <td>{{ row[col] }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <pre>{{ report().data | json }}</pre>
+    }
+  }
+  @case ('summary') {
+    @if (isSummaryObject(report().data)) {
+      <div class="summary-grid">
+        @for (item of report().data | keyvalue; track item.key) {
+          <div class="summary-item">
+            <span class="summary-key">{{ item.key }}</span>
+            <span class="summary-value">{{ item.value }}</span>
+          </div>
+        }
+      </div>
+    } @else {
+      <pre>{{ report().data | json }}</pre>
+    }
+  }
+  @case ('detailed') {
+    @if (isTableData(report().data)) {
+      <table class="data-table">
+        <thead>
+          <tr>
+            @for (col of getTableColumns(report().data); track col) {
+              <th>{{ col }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of report().data; track row) {
+            <tr>
+              @for (col of getTableColumns(report().data); track col) {
+                <td>{{ row[col] }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <pre>{{ report().data | json }}</pre>
+    }
+  }
+  @case ('custom') {
+    @if (report().format === 'image') {
+      <div class="image-container">
+        <img [src]="report().data.imageUrl" [alt]="report().data.description" />
+        @if (report().data.description) {
+          <p>{{ report().data.description }}</p>
+        }
+      </div>
+    } @else {
+      <pre>{{ report().data | json }}</pre>
+    }
+  }
+  @default {
+    <pre>{{ report().data | json }}</pre>
+  }
+}
