@@ -34,6 +34,10 @@ export const routes: Routes = [
         canActivate: [authGuard],
       },
       {
+        path: 'tickets',
+        loadChildren: () => import('./features/tickets/ticket.routes').then(m => m.ticketRoutes)
+      },
+      {
         path: 'agreements',
         loadChildren: () => import('./features/agreements/agreements.routes').then(m => m.agreementsRoutes),
         canActivate: [authGuard]

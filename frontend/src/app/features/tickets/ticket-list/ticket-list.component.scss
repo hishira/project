@@ -1,0 +1,292 @@
+.ticket-list-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 400;
+    color: #1e293b;
+    flex: 1;
+  }
+
+  button {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+  }
+}
+
+.tickets {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ticket-card {
+  border-radius: 12px !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05) !important;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+  }
+}
+
+.ticket-header {
+  padding: 0 16px !important;
+  height: auto !important;
+  min-height: 72px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ticket-checkbox {
+  margin-right: 4px;
+}
+
+.type-icon {
+  &.crm {
+    color: #1976d2;
+  }
+  &.pm {
+    color: #7b1fa2;
+  }
+}
+
+.ticket-main {
+  flex: 2;
+  min-width: 200px;
+
+  .ticket-number {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 500;
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    margin-right: 12px;
+    color: #334155;
+  }
+
+  .ticket-title {
+    font-weight: 500;
+    color: #0f172a;
+  }
+
+  .customer-badge,
+  .issue-type-badge {
+    display: inline-block;
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .issue-type-badge {
+    background: #ede7f6;
+    color: #5e35b1;
+  }
+}
+
+.priority-chip {
+  min-width: 90px;
+
+  .mat-mdc-chip {
+    padding: 0 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    height: 28px;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+    }
+  }
+}
+
+.status-chip {
+  .mat-mdc-chip {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0 12px;
+    height: 28px;
+    background-color: #f1f5f9;
+    color: #1e293b;
+  }
+
+  // Klasy dla poszczególnych statusów
+  .status-new {
+    background-color: #e3f2fd !important;
+    color: #0d47a1 !important;
+  }
+  .status-in-progress {
+    background-color: #fff3e0 !important;
+    color: #b45309 !important;
+  }
+  .status-waiting-for-customer {
+    background-color: #f3e5f5 !important;
+    color: #7b1fa2 !important;
+  }
+  .status-resolved {
+    background-color: #e8f5e8 !important;
+    color: #2e7d32 !important;
+  }
+  .status-closed {
+    background-color: #e0e0e0 !important;
+    color: #424242 !important;
+  }
+  .status-todo {
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+  }
+  .status-doing {
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
+  }
+  .status-done {
+    background-color: #d1fae5 !important;
+    color: #065f46 !important;
+  }
+}
+
+.assignee-info {
+  display: flex;
+  align-items: center;
+  min-width: 40px;
+  justify-content: center;
+
+  .avatar-group {
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  }
+
+  .unassigned {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+}
+
+.counters {
+  display: flex;
+  gap: 12px;
+  color: #64748b;
+
+  .counter {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+.expanded-content {
+  padding: 16px 0 8px;
+}
+
+.description {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 0 0 16px 0;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.meta-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #475569;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: #64748b;
+    }
+  }
+}
+
+.tags {
+  .mat-mdc-chip {
+    background-color: #f1f5f9;
+    color: #334155;
+  }
+}
+
+// Responsywność
+@media (max-width: 900px) {
+  .header-content {
+    gap: 8px;
+  }
+
+  .ticket-main {
+    min-width: 150px;
+  }
+
+  .priority-chip,
+  .status-chip {
+    min-width: auto;
+  }
+
+  .counters {
+    display: none; // na małych ekranach ukrywamy liczniki dla oszczędności miejsca
+  }
+}
+
+@media (max-width: 600px) {
+  .ticket-header {
+    flex-wrap: wrap;
+  }
+
+  .assignee-info {
+    order: 3;
+  }
+
+  .ticket-main {
+    width: 100%;
+    order: 1;
+    margin-bottom: 8px;
+  }
+}
