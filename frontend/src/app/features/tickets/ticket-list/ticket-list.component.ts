@@ -11,6 +11,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { TicketService } from '../ticket.service';
 import { TicketListItem, TicketPriority, TicketStatus, TicketType } from '../types';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { CommonRouterService } from '../../../core/services/common-router.service';
 
 @Component({
     selector: 'app-ticket-list',
@@ -26,21 +29,23 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         MatMenuModule,
         MatDividerModule,
         MatExpansionModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        PageHeaderComponent,
+        MainPageViewComponent,
     ],
     templateUrl: './ticket-list.component.html',
-    styleUrls: ['./ticket-list.component.scss']
+    styleUrls: ['./ticket-list.component.scss'],
+    providers: [CommonRouterService],
 })
 export class TicketListComponent {
-    ticketService = inject(TicketService);
-    //tickets = this.ticketService.tickets;
-    ticketsResource = this.ticketService.ticketsResource;
+    readonly ticketService = inject(TicketService);
+    readonly commouRouter = inject(CommonRouterService);
+    readonly ticketsResource = this.ticketService.ticketsResource;
 
-    // Dla wygody w szablonie – sygnały
-    tickets = this.ticketsResource.value;
-    isLoading = this.ticketsResource.isLoading;
-    error = this.ticketsResource.error;
-    // Pomocnicze metody do szablonu
+    readonly tickets = this.ticketsResource.value;
+    readonly isLoading = this.ticketsResource.isLoading;
+    readonly error = this.ticketsResource.error;
+    
     getPriorityIcon(priority: TicketPriority): string {
         const icons: Record<TicketPriority, string> = {
             low: 'arrow_downward',
@@ -99,5 +104,8 @@ export class TicketListComponent {
         // W rzeczywistości pobieramy pełny ticket z innego źródła
         // Tutaj tylko przykładowy tekst
         return `Szczegółowy opis ticketu ${ticket.ticketNumber}. Wersja demonstracyjna.`;
+    }
+    onDetails(tiket: TicketListItem): void {
+        this.commouRouter.navitgateTo(['../details/test']);
     }
 }

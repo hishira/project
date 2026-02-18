@@ -6,7 +6,7 @@ export type TicketPriority = 'low' | 'medium' | 'high' | 'critical';
 export type TicketChannel = 'email' | 'phone' | 'chat' | 'portal' | 'internal';
 export type UserRole = 'agent' | 'manager' | 'developer' | 'admin';
 
-interface User {
+export interface User {
   id: string;
   fullName: string;
   email: string;
@@ -14,7 +14,7 @@ interface User {
   role: UserRole;
 }
 
-interface Comment {
+export interface Comment {
   id: string;
   content: string;
   createdAt: Date;
@@ -23,7 +23,7 @@ interface Comment {
   isInternal: boolean; // komentarz wewnętrzny (niewidoczny dla klienta)
 }
 
-interface Attachment {
+export interface Attachment {
   id: string;
   fileName: string;
   fileSize: number; // w bajtach
@@ -35,7 +35,7 @@ interface Attachment {
 
 // ==================== Encje domenowe ====================
 
-interface BaseTicket {
+export interface BaseTicket {
   id: string;
   ticketNumber: string; // np. "REQ-1234" lub "BUG-5678"
   type: TicketType;
@@ -52,7 +52,7 @@ interface BaseTicket {
   attachments: Attachment[];
 }
 
-interface CrmTicket extends BaseTicket {
+export interface CrmTicket extends BaseTicket {
   type: 'crm';
   customer: User; // klient (może być inny niż createdBy)
   account?: string; // nazwa firmy
@@ -62,7 +62,7 @@ interface CrmTicket extends BaseTicket {
   product?: string; // produkt, którego dotyczy
 }
 
-interface PmIssue extends BaseTicket {
+export interface PmIssue extends BaseTicket {
   type: 'pm';
   issueType: 'bug' | 'feature' | 'task' | 'improvement';
   storyPoints?: number;
@@ -73,12 +73,12 @@ interface PmIssue extends BaseTicket {
 }
 
 // Suma wszystkich typów ticketów
-type Ticket = CrmTicket | PmIssue;
+export type Ticket = CrmTicket | PmIssue;
 
 // ==================== Typy dla listy ticketów (widok tabeli/kart) ====================
 
 // Opcje filtrowania i sortowania na froncie
-interface TicketFilters {
+export interface TicketFilters {
   status?: TicketStatus[];
   priority?: TicketPriority[];
   type?: TicketType[];
@@ -89,7 +89,7 @@ interface TicketFilters {
   dateRange?: { from: Date; to: Date };
 }
 
-interface TicketSort {
+export interface TicketSort {
   field: 'createdAt' | 'updatedAt' | 'priority' | 'status';
   direction: 'asc' | 'desc';
 }

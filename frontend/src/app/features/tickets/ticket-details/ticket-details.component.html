@@ -1,0 +1,306 @@
+<app-page-header>
+  <div class="main-header">
+    <div class="header">
+      <h1>Szczegóły zgłoszenia</h1>
+    </div>
+  </div>
+  <div class="main-header-buttons">
+    <button mat-icon-button [disabled]="isLoading()" (click)="loadRandomTicket()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+</app-page-header>
+
+<app-main-page-view>
+  <div class="detail-container">
+    <!-- Stan ładowania -->
+    @if (isLoading()) {
+      <div class="loading-spinner">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Ładowanie danych ticketu...</p>
+      </div>
+    }
+
+    <!-- Błąd -->
+    @if (error) {
+      <div class="error-message">
+        <mat-icon>error</mat-icon>
+        <span>{{ error }}</span>
+        <button mat-button color="primary" (click)="loadRandomTicket()">Spróbuj ponownie</button>
+      </div>
+    }
+
+    <!-- Główna zawartość -->
+    @if (!isLoading() && !error && ticketDetails()) {
+      <div class="content">
+        <!-- Karta główna -->
+        <mat-card class="main-card">
+          <mat-card-header>
+            <div class="header-row">
+              <mat-card-title>
+                {{ ticketDetails().title }}
+                <span class="ticket-number">#{{ ticketDetails().ticketNumber }}</span>
+              </mat-card-title>
+              <div class="header-actions">
+                <button mat-stroked-button color="primary">Edytuj</button>
+                <button mat-stroked-button>Przypisz</button>
+              </div>
+            </div>
+            <mat-card-subtitle>
+              <div class="subtitle-row">
+                <mat-chip-set>
+                  <mat-chip
+                    [style.background]="getPriorityColor(ticketDetails().priority)"
+                    [style.color]="'white'"
+                    [matTooltip]="'Priorytet: ' + ticketDetails().priority">
+                    <mat-icon>{{ getPriorityIcon(ticketDetails().priority) }}</mat-icon>
+                    {{ ticketDetails().priority }}
+                  </mat-chip>
+                  <mat-chip [class]="getStatusChipClass(ticketDetails().status)">
+                    {{ ticketDetails().status?.replace?.('_', ' ') }}
+                  </mat-chip>
+                  <mat-chip [class]="ticketDetails().type === 'crm' ? 'type-crm' : 'type-pm'">
+                    {{ ticketDetails().type === 'crm' ? 'CRM' : 'Projekt' }}
+                  </mat-chip>
+                </mat-chip-set>
+              </div>
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <!-- Opis -->
+            <section class="section">
+              <h3>Opis</h3>
+              <p class="description">{{ ticketDetails().description }}</p>
+            </section>
+
+            <mat-divider></mat-divider>
+
+            <!-- Metadane -->
+            <section class="section metadata-grid">
+              <div class="metadata-item">
+                <mat-icon>person</mat-icon>
+                <span class="label">Utworzył:</span>
+                <span class="value">{{ ticketDetails().createdBy.fullName }}</span>
+                <span class="role-badge">{{ ticketDetails().createdBy.role }}</span>
+              </div>
+              <div class="metadata-item">
+                <mat-icon>schedule</mat-icon>
+                <span class="label">Utworzono:</span>
+                <span class="value">{{ ticketDetails().createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+              </div>
+              <div class="metadata-item">
+                <mat-icon>update</mat-icon>
+                <span class="label">Aktualizacja:</span>
+                <span class="value">{{ ticketDetails().updatedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+              </div>
+              @if (ticketDetails().assignedTo) {
+                <div class="metadata-item">
+                  <mat-icon>assignment_ind</mat-icon>
+                  <span class="label">Przypisany:</span>
+                  <span class="value">{{ ticketDetails().assignedTo.fullName }}</span>
+                </div>
+              }
+              <!-- Pola specyficzne dla CRM -->
+              @if (isCrmTicket(ticketDetails())) {
+                <div class="metadata-item">
+                  <mat-icon>business</mat-icon>
+                  <span class="label">Klient:</span>
+                  <span class="value">{{ ticketDetails().customer.fullName }}</span>
+                </div>
+                @if (ticketDetails().account) {
+                  <div class="metadata-item">
+                    <mat-icon>apartment</mat-icon>
+                    <span class="label">Firma:</span>
+                    <span class="value">{{ ticketDetails().account }}</span>
+                  </div>
+                }
+                <div class="metadata-item">
+                  <mat-icon>chat</mat-icon>
+                  <span class="label">Kanał:</span>
+                  <span class="value">{{ ticketDetails().channel }}</span>
+                </div>
+                @if (ticketDetails().slaDeadline) {
+                  <div class="metadata-item" [class.sla-warning]="ticketDetails().slaDeadline">
+                    <mat-icon>timer</mat-icon>
+                    <span class="label">SLA:</span>
+                    <span class="value">{{ ticketDetails().slaDeadline | date: 'dd MMM yyyy' }}</span>
+                  </div>
+                }
+                @if (ticketDetails().product) {
+                  <div class="metadata-item">
+                    <mat-icon>inventory_2</mat-icon>
+                    <span class="label">Produkt:</span>
+                    <span class="value">{{ ticketDetails().product }}</span>
+                  </div>
+                }
+              }
+              <!-- Pola specyficzne dla PM -->
+              @if (isPmIssue(ticketDetails())) {
+                <div class="metadata-item">
+                  <mat-icon>bug_report</mat-icon>
+                  <span class="label">Typ:</span>
+                  <span class="value">{{ ticketDetails().issueType }}</span>
+                </div>
+                @if (ticketDetails().storyPoints) {
+                  <div class="metadata-item">
+                    <mat-icon>fitness_center</mat-icon>
+                    <span class="label">Story points:</span>
+                    <span class="value">{{ ticketDetails().storyPoints }}</span>
+                  </div>
+                }
+                @if (ticketDetails().sprint) {
+                  <div class="metadata-item">
+                    <mat-icon>sprint</mat-icon>
+                    <span class="label">Sprint:</span>
+                    <span class="value">{{ ticketDetails().sprint }}</span>
+                  </div>
+                }
+                @if (ticketDetails().affectedVersions?.length) {
+                  <div class="metadata-item">
+                    <mat-icon>warning</mat-icon>
+                    <span class="label">Wersje dotknięte:</span>
+                    <span class="value">{{ ticketDetails().affectedVersions?.join?.(', ') }}</span>
+                  </div>
+                }
+                @if (ticketDetails().fixedVersions?.length) {
+                  <div class="metadata-item">
+                    <mat-icon>check_circle</mat-icon>
+                    <span class="label">Naprawione w:</span>
+                    <span class="value">{{ ticketDetails().fixedVersions?.join?.(', ') }}</span>
+                  </div>
+                }
+              }
+              <!-- Tagi -->
+              @if (ticketDetails().tags.length) {
+                <div class="metadata-item tags-item">
+                  <mat-icon>local_offer</mat-icon>
+                  <span class="label">Tagi:</span>
+                  <mat-chip-set>
+                    @for (tag of ticketDetails().tags; track tag) {
+                      <mat-chip>{{ tag }}</mat-chip>
+                    }
+                  </mat-chip-set>
+                </div>
+              }
+            </section>
+
+            <!-- Time tracking (jeśli dostępne) -->
+            @if (ticketDetails().timeTracking) {
+              <mat-divider></mat-divider>
+              <section class="section time-tracking">
+                <h3>Time tracking</h3>
+                <div class="time-row">
+                  <span class="label">Czas spędzony:</span>
+                  <span class="value">{{ ticketDetails().timeTracking?.totalTimeSpent }} min</span>
+                </div>
+                @if (ticketDetails().timeTracking?.timeRemaining) {
+                  <div class="time-row">
+                    <span class="label">Pozostało:</span>
+                    <span class="value">{{ ticketDetails().timeTracking?.timeRemaining }} min</span>
+                  </div>
+                }
+              </section>
+            }
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Komentarze -->
+        <mat-card class="comments-card">
+          <mat-card-header>
+            <mat-card-title>Komentarze ({{ ticketDetails().comments.length }})</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (ticketDetails().comments.length === 0) {
+              <p class="empty-state">Brak komentarzy</p>
+            } @else {
+              <mat-list>
+                @for (comment of ticketDetails().comments; track comment.id) {
+                  <mat-list-item class="comment-item">
+                    <div class="comment-header">
+                      <img [src]="comment.author.avatarUrl" alt="avatar" class="avatar" />
+                      <div class="comment-author">
+                        <span>{{ comment.author.fullName }}</span>
+                        <span class="comment-date">{{ comment.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+                      </div>
+                      @if (comment.isInternal) {
+                        <mat-chip class="internal-chip">wewnętrzny</mat-chip>
+                      }
+                    </div>
+                    <div class="comment-content">{{ comment.content }}</div>
+                  </mat-list-item>
+                }
+              </mat-list>
+            }
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Załączniki -->
+        <mat-card class="attachments-card">
+          <mat-card-header>
+            <mat-card-title>Załączniki ({{ ticketDetails().attachments.length }})</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (ticketDetails().attachments.length === 0) {
+              <p class="empty-state">Brak załączników</p>
+            } @else {
+              <mat-list>
+                @for (attachment of ticketDetails().attachments; track attachment.id) {
+                  <mat-list-item class="attachment-item">
+                    <mat-icon [matTooltip]="attachment.mimeType">{{ getFileIcon(attachment.mimeType) }}</mat-icon>
+                    <div class="attachment-details">
+                      <a [href]="attachment.url" target="_blank" class="attachment-name">{{ attachment.fileName }}</a>
+                      <span class="attachment-meta"
+                        >{{ formatFileSize(attachment.fileSize) }} • dodany
+                        {{ attachment.uploadedAt | date: 'dd MMM yyyy' }} przez
+                        {{ attachment.uploadedBy.fullName }}</span
+                      >
+                    </div>
+                  </mat-list-item>
+                }
+              </mat-list>
+            }
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Powiązane tickety -->
+        @if (ticketDetails().relatedTickets?.length) {
+          <mat-card class="related-card">
+            <mat-card-header>
+              <mat-card-title>Powiązane zgłoszenia ({{ ticketDetails().relatedTickets?.length }})</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-list>
+                @for (related of ticketDetails().relatedTickets; track related.id) {
+                  <mat-list-item class="related-item">
+                    <mat-icon [class]="related.type === 'crm' ? 'crm' : 'pm'">
+                      {{ related.type === 'crm' ? 'support_agent' : 'bug_report' }}
+                    </mat-icon>
+                    <div class="related-info">
+                      <span class="related-number">#{{ related.ticketNumber }}</span>
+                      <span class="related-title">{{ related.title }}</span>
+                      <mat-chip-set>
+                        <mat-chip
+                          [style.background]="getPriorityColor(related.priority)"
+                          [style.color]="'white'"
+                          class="small-chip">
+                          {{ related.priority }}
+                        </mat-chip>
+                        <mat-chip [class]="getStatusChipClass(related.status)" class="small-chip">
+                          {{ related.status.replace('_', ' ') }}
+                        </mat-chip>
+                      </mat-chip-set>
+                    </div>
+                    <button mat-icon-button [routerLink]="['/tickets', related.id]">
+                      <mat-icon>open_in_new</mat-icon>
+                    </button>
+                  </mat-list-item>
+                }
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    }
+  </div>
+</app-main-page-view>

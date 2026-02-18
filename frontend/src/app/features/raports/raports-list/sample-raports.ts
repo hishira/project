@@ -23,7 +23,7 @@ export const SAMPLE_REPORTS: Report[] = [
     name: 'Lista klientów',
     type: 'tabular',
     format: 'csv',
-    data: [ /* dane klientów */ ],
+    data: [ /* dane klientów */],
     metadata: {
       sourceSystem: 'crm',
       createdBy: 'annnowak',
@@ -49,7 +49,7 @@ export const SAMPLE_REPORTS: Report[] = [
     name: 'Szczegóły zamówień',
     type: 'detailed',
     format: 'xlsx',
-    data: [ /* szczegóły */ ],
+    data: [ /* szczegóły */],
     metadata: {
       sourceSystem: 'crm',
       createdBy: 'magdalenaz',
@@ -88,7 +88,7 @@ export const SAMPLE_REPORTS: Report[] = [
     name: 'Dashboard KPI',
     type: 'dashboard',
     format: 'json',
-    data: { kpi: [ /* dane */ ] },
+    data: { kpi: [ /* dane */] },
     metadata: {
       sourceSystem: 'product-management',
       createdBy: 'adamN',
@@ -101,7 +101,7 @@ export const SAMPLE_REPORTS: Report[] = [
     name: 'Zestawienie wydatków',
     type: 'summary',
     format: 'csv',
-    data: [ /* dane wydatków */ ],
+    data: [ /* dane wydatków */],
     metadata: {
       sourceSystem: 'crm',
       createdBy: 'katarzynaP',
