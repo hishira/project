@@ -16,7 +16,7 @@
     <!-- Stan ładowania -->
     @if (isLoading()) {
       <div class="loading-spinner">
-        <mat-spinner diameter="50"></mat-spinner>
+        <mat-spinner diameter="50" />
         <p>Ładowanie danych ticketu...</p>
       </div>
     }
@@ -26,7 +26,7 @@
       <div class="error-message">
         <mat-icon>error</mat-icon>
         <span>{{ error }}</span>
-        <button mat-button color="primary" (click)="loadRandomTicket()">Spróbuj ponownie</button>
+        <button color="primary" mat-button (click)="loadRandomTicket()">Spróbuj ponownie</button>
       </div>
     }
 
@@ -41,8 +41,8 @@
                 {{ ticketDetails().title }}
                 <span class="ticket-number">#{{ ticketDetails().ticketNumber }}</span>
               </mat-card-title>
-              <div class="header-actions">
-                <button mat-stroked-button color="primary">Edytuj</button>
+              <div class="header-actions d-flex gap-2">
+                <button color="primary" mat-stroked-button>Edytuj</button>
                 <button mat-stroked-button>Przypisz</button>
               </div>
             </div>
@@ -50,11 +50,13 @@
               <div class="subtitle-row">
                 <mat-chip-set>
                   <mat-chip
+                    [matTooltip]="'Priorytet: ' + ticketDetails().priority"
                     [style.background]="getPriorityColor(ticketDetails().priority)"
-                    [style.color]="'white'"
-                    [matTooltip]="'Priorytet: ' + ticketDetails().priority">
+                    [style.color]="'white'">
+                    <div class="d-flex align-items-center gap-1">
                     <mat-icon>{{ getPriorityIcon(ticketDetails().priority) }}</mat-icon>
-                    {{ ticketDetails().priority }}
+                    <span>{{ ticketDetails().priority }}</span>
+                    </div>
                   </mat-chip>
                   <mat-chip [class]="getStatusChipClass(ticketDetails().status)">
                     {{ ticketDetails().status?.replace?.('_', ' ') }}
@@ -74,120 +76,13 @@
               <p class="description">{{ ticketDetails().description }}</p>
             </section>
 
-            <mat-divider></mat-divider>
-
-            <!-- Metadane -->
-            <section class="section metadata-grid">
-              <div class="metadata-item">
-                <mat-icon>person</mat-icon>
-                <span class="label">Utworzył:</span>
-                <span class="value">{{ ticketDetails().createdBy.fullName }}</span>
-                <span class="role-badge">{{ ticketDetails().createdBy.role }}</span>
-              </div>
-              <div class="metadata-item">
-                <mat-icon>schedule</mat-icon>
-                <span class="label">Utworzono:</span>
-                <span class="value">{{ ticketDetails().createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
-              </div>
-              <div class="metadata-item">
-                <mat-icon>update</mat-icon>
-                <span class="label">Aktualizacja:</span>
-                <span class="value">{{ ticketDetails().updatedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
-              </div>
-              @if (ticketDetails().assignedTo) {
-                <div class="metadata-item">
-                  <mat-icon>assignment_ind</mat-icon>
-                  <span class="label">Przypisany:</span>
-                  <span class="value">{{ ticketDetails().assignedTo.fullName }}</span>
-                </div>
-              }
-              <!-- Pola specyficzne dla CRM -->
-              @if (isCrmTicket(ticketDetails())) {
-                <div class="metadata-item">
-                  <mat-icon>business</mat-icon>
-                  <span class="label">Klient:</span>
-                  <span class="value">{{ ticketDetails().customer.fullName }}</span>
-                </div>
-                @if (ticketDetails().account) {
-                  <div class="metadata-item">
-                    <mat-icon>apartment</mat-icon>
-                    <span class="label">Firma:</span>
-                    <span class="value">{{ ticketDetails().account }}</span>
-                  </div>
-                }
-                <div class="metadata-item">
-                  <mat-icon>chat</mat-icon>
-                  <span class="label">Kanał:</span>
-                  <span class="value">{{ ticketDetails().channel }}</span>
-                </div>
-                @if (ticketDetails().slaDeadline) {
-                  <div class="metadata-item" [class.sla-warning]="ticketDetails().slaDeadline">
-                    <mat-icon>timer</mat-icon>
-                    <span class="label">SLA:</span>
-                    <span class="value">{{ ticketDetails().slaDeadline | date: 'dd MMM yyyy' }}</span>
-                  </div>
-                }
-                @if (ticketDetails().product) {
-                  <div class="metadata-item">
-                    <mat-icon>inventory_2</mat-icon>
-                    <span class="label">Produkt:</span>
-                    <span class="value">{{ ticketDetails().product }}</span>
-                  </div>
-                }
-              }
-              <!-- Pola specyficzne dla PM -->
-              @if (isPmIssue(ticketDetails())) {
-                <div class="metadata-item">
-                  <mat-icon>bug_report</mat-icon>
-                  <span class="label">Typ:</span>
-                  <span class="value">{{ ticketDetails().issueType }}</span>
-                </div>
-                @if (ticketDetails().storyPoints) {
-                  <div class="metadata-item">
-                    <mat-icon>fitness_center</mat-icon>
-                    <span class="label">Story points:</span>
-                    <span class="value">{{ ticketDetails().storyPoints }}</span>
-                  </div>
-                }
-                @if (ticketDetails().sprint) {
-                  <div class="metadata-item">
-                    <mat-icon>sprint</mat-icon>
-                    <span class="label">Sprint:</span>
-                    <span class="value">{{ ticketDetails().sprint }}</span>
-                  </div>
-                }
-                @if (ticketDetails().affectedVersions?.length) {
-                  <div class="metadata-item">
-                    <mat-icon>warning</mat-icon>
-                    <span class="label">Wersje dotknięte:</span>
-                    <span class="value">{{ ticketDetails().affectedVersions?.join?.(', ') }}</span>
-                  </div>
-                }
-                @if (ticketDetails().fixedVersions?.length) {
-                  <div class="metadata-item">
-                    <mat-icon>check_circle</mat-icon>
-                    <span class="label">Naprawione w:</span>
-                    <span class="value">{{ ticketDetails().fixedVersions?.join?.(', ') }}</span>
-                  </div>
-                }
-              }
-              <!-- Tagi -->
-              @if (ticketDetails().tags.length) {
-                <div class="metadata-item tags-item">
-                  <mat-icon>local_offer</mat-icon>
-                  <span class="label">Tagi:</span>
-                  <mat-chip-set>
-                    @for (tag of ticketDetails().tags; track tag) {
-                      <mat-chip>{{ tag }}</mat-chip>
-                    }
-                  </mat-chip-set>
-                </div>
-              }
-            </section>
-
+            <mat-divider />
+            
+            <app-ticket-metadata [ticketDetails]="ticketDetails()" />
+    
             <!-- Time tracking (jeśli dostępne) -->
             @if (ticketDetails().timeTracking) {
-              <mat-divider></mat-divider>
+              <mat-divider />
               <section class="section time-tracking">
                 <h3>Time tracking</h3>
                 <div class="time-row">
@@ -218,7 +113,7 @@
                 @for (comment of ticketDetails().comments; track comment.id) {
                   <mat-list-item class="comment-item">
                     <div class="comment-header">
-                      <img [src]="comment.author.avatarUrl" alt="avatar" class="avatar" />
+                      <img alt="avatar" class="avatar" [src]="comment.author.avatarUrl" />
                       <div class="comment-author">
                         <span>{{ comment.author.fullName }}</span>
                         <span class="comment-date">{{ comment.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
@@ -235,33 +130,7 @@
           </mat-card-content>
         </mat-card>
 
-        <!-- Załączniki -->
-        <mat-card class="attachments-card">
-          <mat-card-header>
-            <mat-card-title>Załączniki ({{ ticketDetails().attachments.length }})</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            @if (ticketDetails().attachments.length === 0) {
-              <p class="empty-state">Brak załączników</p>
-            } @else {
-              <mat-list>
-                @for (attachment of ticketDetails().attachments; track attachment.id) {
-                  <mat-list-item class="attachment-item">
-                    <mat-icon [matTooltip]="attachment.mimeType">{{ getFileIcon(attachment.mimeType) }}</mat-icon>
-                    <div class="attachment-details">
-                      <a [href]="attachment.url" target="_blank" class="attachment-name">{{ attachment.fileName }}</a>
-                      <span class="attachment-meta"
-                        >{{ formatFileSize(attachment.fileSize) }} • dodany
-                        {{ attachment.uploadedAt | date: 'dd MMM yyyy' }} przez
-                        {{ attachment.uploadedBy.fullName }}</span
-                      >
-                    </div>
-                  </mat-list-item>
-                }
-              </mat-list>
-            }
-          </mat-card-content>
-        </mat-card>
+        <app-ticket-attachments [ticketDetails]="ticketDetails()" />
 
         <!-- Powiązane tickety -->
         @if (ticketDetails().relatedTickets?.length) {
@@ -281,12 +150,12 @@
                       <span class="related-title">{{ related.title }}</span>
                       <mat-chip-set>
                         <mat-chip
+                          class="small-chip"
                           [style.background]="getPriorityColor(related.priority)"
-                          [style.color]="'white'"
-                          class="small-chip">
+                          [style.color]="'white'">
                           {{ related.priority }}
                         </mat-chip>
-                        <mat-chip [class]="getStatusChipClass(related.status)" class="small-chip">
+                        <mat-chip class="small-chip" [class]="getStatusChipClass(related.status)">
                           {{ related.status.replace('_', ' ') }}
                         </mat-chip>
                       </mat-chip-set>

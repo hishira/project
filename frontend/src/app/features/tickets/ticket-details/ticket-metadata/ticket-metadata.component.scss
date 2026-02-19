@@ -1,0 +1,79 @@
+.section {
+        margin: 24px 0;
+
+}
+.metadata-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.metadata-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+
+    mat-icon {
+        color: #64748b;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        margin-top: 2px;
+    }
+
+    .label {
+        color: #64748b;
+        font-weight: 500;
+        min-width: 100px;
+    }
+
+    .value {
+        color: #1e293b;
+        word-break: break-word;
+    }
+
+    .role-badge {
+        background: #e2e8f0;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        margin-left: 8px;
+        color: #334155;
+        text-transform: uppercase;
+    }
+
+    &.sla-warning {
+        .value {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+    }
+
+    &.tags-item {
+        grid-column: 1 / -1;
+        align-items: center;
+        .label {
+            min-width: auto;
+        }
+
+        mat-chip-set {
+            display: inline-flex;
+            margin-left: 8px;
+        }
+    }
+}
+
+
+
+
+// Responsywność
+@media (max-width: 700px) {
+    .metadata-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

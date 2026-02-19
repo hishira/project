@@ -1,0 +1,25 @@
+<mat-card class="attachments-card">
+  <mat-card-header>
+    <mat-card-title>Załączniki ({{ ticketDetails().attachments.length }})</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (ticketDetails().attachments.length === 0) {
+      <p class="empty-state">Brak załączników</p>
+    } @else {
+      <mat-list>
+        @for (attachment of ticketDetails().attachments; track attachment.id) {
+          <mat-list-item class="attachment-item">
+            <mat-icon [matTooltip]="attachment.mimeType">{{ getFileIcon(attachment.mimeType) }}</mat-icon>
+            <div class="attachment-details">
+              <a class="attachment-name" target="_blank" [href]="attachment.url">{{ attachment.fileName }}</a>
+              <span class="attachment-meta"
+                >{{ formatFileSize(attachment.fileSize) }} • dodany
+                {{ attachment.uploadedAt | date: 'dd MMM yyyy' }} przez {{ attachment.uploadedBy.fullName }}</span
+              >
+            </div>
+          </mat-list-item>
+        }
+      </mat-list>
+    }
+  </mat-card-content>
+</mat-card>

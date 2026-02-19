@@ -1,18 +1,20 @@
-import { ChangeDetectionStrategy, Component, OnInit, Signal, WritableSignal, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
+import { ChangeDetectionStrategy, Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TicketDetailService } from './ticket-details.service';
-import { CrmTicket, PmIssue, TicketDetails, TicketListItem, TicketPriority, TicketStatus } from '../types';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { CrmTicket, PmIssue, TicketDetails, TicketListItem, TicketPriority, TicketStatus } from '../types';
+import { TicketDetailService } from './ticket-details.service';
+import { TicketMetadataComponent } from './ticket-metadata/ticket-metadata.component';
+import { TicketAttachmentsComponent } from './ticket-attachments/ticket-attachments.component';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -29,8 +31,10 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
     MatListModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-      PageHeaderComponent,
+    PageHeaderComponent,
     MainPageViewComponent,
+    TicketMetadataComponent,
+    TicketAttachmentsComponent
   ],
   templateUrl: './ticket-details.component.html',
   styleUrls: ['./ticket-details.component.scss']
@@ -39,7 +43,7 @@ export class TicketDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private ticketService = inject(TicketDetailService);
 
-  ticketDetails: WritableSignal< any> = signal({} as any);
+  ticketDetails: WritableSignal<any> = signal({} as any);
   isLoading: WritableSignal<boolean> = signal(true);
   error: string | null = null;
 
@@ -49,7 +53,7 @@ export class TicketDetailComponent implements OnInit {
     this.loadRandomTicket();
   }
 
-   loadRandomTicket(): void {
+  loadRandomTicket(): void {
     this.isLoading.set(true);
     this.error = null;
     this.ticketService.getRandomTicketDetails().subscribe({

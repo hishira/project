@@ -1,0 +1,41 @@
+.attachments-card {
+    .empty-state {
+        color: #94a3b8;
+        text-align: center;
+        padding: 24px;
+        font-style: italic;
+    }
+}
+.attachment-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: auto !important;
+    padding: 12px 0;
+
+    mat-icon {
+        color: #64748b;
+    }
+
+    .attachment-details {
+        flex: 1;
+
+        .attachment-name {
+            display: block;
+            color: #1e293b;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 4px;
+
+            &:hover {
+                text-decoration: underline;
+                color: #1976d2;
+            }
+        }
+
+        .attachment-meta {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+    }
+}
