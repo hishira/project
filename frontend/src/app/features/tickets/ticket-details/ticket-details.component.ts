@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Signal, WritableSignal, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -12,9 +12,9 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { CrmTicket, PmIssue, TicketDetails, TicketListItem, TicketPriority, TicketStatus } from '../types';
+import { TicketAttachmentsComponent } from './ticket-attachments/ticket-attachments.component';
 import { TicketDetailService } from './ticket-details.service';
 import { TicketMetadataComponent } from './ticket-metadata/ticket-metadata.component';
-import { TicketAttachmentsComponent } from './ticket-attachments/ticket-attachments.component';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -39,35 +39,15 @@ import { TicketAttachmentsComponent } from './ticket-attachments/ticket-attachme
   templateUrl: './ticket-details.component.html',
   styleUrls: ['./ticket-details.component.scss']
 })
-export class TicketDetailComponent implements OnInit {
-  private route = inject(ActivatedRoute);
+export class TicketDetailComponent {
   private ticketService = inject(TicketDetailService);
+  private reouserceRes = this.ticketService.getResource();
 
-  ticketDetails: WritableSignal<any> = signal({} as any);
-  isLoading: WritableSignal<boolean> = signal(true);
-  error: string | null = null;
+  readonly ticketDetails: WritableSignal<any> = this.reouserceRes.value;
+  readonly isLoading: Signal<boolean> = this.reouserceRes.isLoading;
+  readonly error: Signal<boolean> = computed(() => this.reouserceRes.status() === 'error');
+  readonly reaload = ()=>this.reouserceRes.reload();
 
-  ngOnInit(): void {
-    // Pobieramy ID z parametru, ale w tym demo losujemy ticket niezależnie od ID
-    // Można to zmienić, by pobierać konkretny ticket po ID z serwisu
-    this.loadRandomTicket();
-  }
-
-  loadRandomTicket(): void {
-    this.isLoading.set(true);
-    this.error = null;
-    this.ticketService.getRandomTicketDetails().subscribe({
-      next: (details) => {
-        this.isLoading.set(false);
-        this.ticketDetails.set(details);
-      },
-      error: (err) => {
-        this.error = 'Nie udało się załadować danych ticketu.';
-        this.isLoading.set(false);
-        console.error(err);
-      }
-    });
-  }
 
   // Metody pomocnicze dla szablonu
   getPriorityIcon(priority: TicketPriority): string {

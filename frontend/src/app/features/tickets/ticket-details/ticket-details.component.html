@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="main-header-buttons">
-    <button mat-icon-button [disabled]="isLoading()" (click)="loadRandomTicket()">
+    <button mat-icon-button [disabled]="isLoading()"  (click)="reaload()">
       <mat-icon>refresh</mat-icon>
     </button>
   </div>
@@ -22,16 +22,16 @@
     }
 
     <!-- Błąd -->
-    @if (error) {
+    @if (error()) {
       <div class="error-message">
         <mat-icon>error</mat-icon>
-        <span>{{ error }}</span>
-        <button color="primary" mat-button (click)="loadRandomTicket()">Spróbuj ponownie</button>
+        <span>{{ error() }}</span>
+        <button color="primary" mat-button (click)="reaload()">Spróbuj ponownie</button>
       </div>
     }
 
     <!-- Główna zawartość -->
-    @if (!isLoading() && !error && ticketDetails()) {
+    @if (!isLoading() && !error() && ticketDetails()) {
       <div class="content">
         <!-- Karta główna -->
         <mat-card class="main-card">

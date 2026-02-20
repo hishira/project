@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ResourceRef } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { CrmTicket, PmIssue, Ticket, TicketDetails, TicketListItem, User } from '../types';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class TicketDetailService {
@@ -270,8 +271,15 @@ export class TicketDetailService {
 
     private allTickets: Ticket[] = [...this.mockCrmTickets, ...this.mockPmIssues];
 
+    getResource(): ResourceRef<TicketDetails | undefined> {
+        return rxResource<TicketDetails, any>({
+            params: ()=> ({id: 'test'}),
+            stream: ({params})=> this.getRandomTicketDetails(),
+            defaultValue: undefined,
+        })
+    }
     // Symuluje pobieranie losowego ticketu z opóźnieniem
-    getRandomTicketDetails(): Observable<TicketDetails> {
+    private getRandomTicketDetails(): Observable<TicketDetails> {
         const randomIndex = Math.floor(Math.random() * this.allTickets.length);
         const ticket = this.allTickets[randomIndex];
 
