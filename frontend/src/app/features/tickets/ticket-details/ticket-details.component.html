@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="main-header-buttons">
-    <button mat-icon-button [disabled]="isLoading()"  (click)="reaload()">
+    <button mat-icon-button type="button" [disabled]="isLoading()"  (click)="reaload()">
       <mat-icon>refresh</mat-icon>
     </button>
   </div>
@@ -100,36 +100,8 @@
           </mat-card-content>
         </mat-card>
 
-        <!-- Komentarze -->
-        <mat-card class="comments-card">
-          <mat-card-header>
-            <mat-card-title>Komentarze ({{ ticketDetails().comments.length }})</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            @if (ticketDetails().comments.length === 0) {
-              <p class="empty-state">Brak komentarzy</p>
-            } @else {
-              <mat-list>
-                @for (comment of ticketDetails().comments; track comment.id) {
-                  <mat-list-item class="comment-item">
-                    <div class="comment-header">
-                      <img alt="avatar" class="avatar" [src]="comment.author.avatarUrl" />
-                      <div class="comment-author">
-                        <span>{{ comment.author.fullName }}</span>
-                        <span class="comment-date">{{ comment.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
-                      </div>
-                      @if (comment.isInternal) {
-                        <mat-chip class="internal-chip">wewnętrzny</mat-chip>
-                      }
-                    </div>
-                    <div class="comment-content">{{ comment.content }}</div>
-                  </mat-list-item>
-                }
-              </mat-list>
-            }
-          </mat-card-content>
-        </mat-card>
-
+        <app-ticket-comments [ticketDetails]="ticketDetails()" />
+      
         <app-ticket-attachments [ticketDetails]="ticketDetails()" />
 
         <!-- Powiązane tickety -->

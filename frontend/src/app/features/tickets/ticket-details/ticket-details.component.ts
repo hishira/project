@@ -1,40 +1,14 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Signal, WritableSignal, computed, inject } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
-import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { CrmTicket, PmIssue, TicketDetails, TicketListItem, TicketPriority, TicketStatus } from '../types';
-import { TicketAttachmentsComponent } from './ticket-attachments/ticket-attachments.component';
+import { imports } from './ticket-details.dependency';
 import { TicketDetailService } from './ticket-details.service';
-import { TicketMetadataComponent } from './ticket-metadata/ticket-metadata.component';
 
 @Component({
   selector: 'app-ticket-detail',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    CommonModule,
-    RouterLink,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatChipsModule,
-    MatDividerModule,
-    MatListModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-    PageHeaderComponent,
-    MainPageViewComponent,
-    TicketMetadataComponent,
-    TicketAttachmentsComponent
+    ...imports
   ],
   templateUrl: './ticket-details.component.html',
   styleUrls: ['./ticket-details.component.scss']
@@ -46,7 +20,7 @@ export class TicketDetailComponent {
   readonly ticketDetails: WritableSignal<any> = this.reouserceRes.value;
   readonly isLoading: Signal<boolean> = this.reouserceRes.isLoading;
   readonly error: Signal<boolean> = computed(() => this.reouserceRes.status() === 'error');
-  readonly reaload = ()=>this.reouserceRes.reload();
+  readonly reaload = (): boolean => this.reouserceRes.reload();
 
 
   // Metody pomocnicze dla szablonu
