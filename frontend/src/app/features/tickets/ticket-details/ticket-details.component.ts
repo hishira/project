@@ -6,7 +6,6 @@ import { TicketDetailService } from './ticket-details.service';
 @Component({
   selector: 'app-ticket-detail',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
     ...imports
   ],

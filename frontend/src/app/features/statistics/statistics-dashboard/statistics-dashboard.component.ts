@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-import { BaseChartDirective } from 'ng2-charts';
+//import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { firstValueFrom } from 'rxjs';
 import { StatisticsService } from '../../../core/services/statistics.service';
@@ -36,7 +36,7 @@ Chart.register(...registerables);
     MatFormFieldModule,
     MatProgressSpinnerModule,
     MatTabsModule,
-    BaseChartDirective
+   // BaseChartDirective
   ],
   templateUrl: './statistics-dashboard.component.html',
   styleUrls: ['./statistics-dashboard.component.scss']

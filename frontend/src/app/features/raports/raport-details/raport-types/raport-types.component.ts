@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
-import { BaseChartDirective } from 'ng2-charts';
+//import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { Report } from '../../types';
 
@@ -23,7 +23,7 @@ import { Report } from '../../types';
     MatIconModule,
     MatChipsModule,
     MatDividerModule,
-    BaseChartDirective
+ //   BaseChartDirective
   ],
   templateUrl: './raport-types.component.html',
   styleUrls: ['./raport-types.component.scss']

@@ -1,13 +1,18 @@
-import { defineConfig } from 'vitest/config';
-//import angular from '@analogjs/vite-plugin-angular';
-export default defineConfig({
+/// <reference types="vitest" />
+import { defineConfig } from 'vite';
+import angular from '@analogjs/vite-plugin-angular';
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    angular(), // Niezbędny do kompilacji komponentów Angular
+    nxViteTsPaths() // Obsługuje aliasy ścieżek zdefiniowane w Nx
+  ],
   test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['src/test-setup.ts'],
-    include: ['src/**/*.spec.ts'],
-    deps: {
-      inline: ['@angular/core', '@angular/common'] // możesz potrzebować inline dla Angular
-    }
-  }
-});
+    globals: true, // Pozwala używać 'describe', 'it' bez importowania
+    environment: 'jsdom', // Emuluje przeglądarkę w Node.js
+    setupFiles: ['src/test-setup.ts'], // Plik inicjalizujący Angular TestBed
+    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    reporters: ['default'],
+  },
+}));

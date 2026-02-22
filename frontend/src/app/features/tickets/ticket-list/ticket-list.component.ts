@@ -18,7 +18,6 @@ import { CommonRouterService } from '../../../core/services/common-router.servic
 @Component({
     selector: 'app-ticket-list',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         CommonModule,
         MatCheckboxModule,

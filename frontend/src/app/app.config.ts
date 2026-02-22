@@ -3,7 +3,7 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { provideState, provideStore } from '@ngrx/store';
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+// import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { MoveBackService } from './core/services/move-back.service';
@@ -31,6 +31,6 @@ export const appConfig: ApplicationConfig = {
       reducer: refreshTokenReducer,
     }),
     MoveBackService,
-    provideCharts(withDefaultRegisterables())
+    //provideCharts(withDefaultRegisterables())
   ],
 };

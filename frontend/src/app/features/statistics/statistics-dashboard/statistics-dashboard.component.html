@@ -109,11 +109,11 @@
               <mat-card-content>
                 @if (activityTypeChart.data.datasets[0].data.length > 0) {
                   <div class="chart-container">
-                    <canvas baseChart
+                    <!-- <canvas baseChart
                       [data]="activityTypeChart.data"
                       [options]="activityTypeChart.options"
                       [type]="activityTypeChart.type">
-                    </canvas>
+                    </canvas> -->
                   </div>
                 } @else {
                   <div class="no-data">
@@ -131,11 +131,11 @@
               <mat-card-content>
                 @if (intensityChart.data.datasets[0].data.length > 0) {
                   <div class="chart-container">
-                    <canvas baseChart
+                    <!-- <canvas baseChart
                       [data]="intensityChart.data"
                       [options]="intensityChart.options"
                       [type]="intensityChart.type">
-                    </canvas>
+                    </canvas> -->
                   </div>
                 } @else {
                   <div class="no-data">
@@ -159,11 +159,11 @@
             <mat-card-content>
               @if (durationTrendChart.data.datasets[0].data.length > 0) {
                 <div class="chart-container">
-                  <canvas baseChart
+                  <!-- <canvas baseChart
                     [data]="durationTrendChart.data"
                     [options]="durationTrendChart.options"
                     [type]="durationTrendChart.type">
-                  </canvas>
+                  </canvas> -->
                 </div>
               } @else {
                 <div class="no-data">
@@ -187,11 +187,11 @@
               <mat-card-content>
                 <div class="goal-progress">
                   <div class="progress-circle">
-                    <canvas baseChart
+                    <!-- <canvas baseChart
                       [data]="weeklyGoalChart.data"
                       [options]="weeklyGoalChart.options"
                       [type]="weeklyGoalChart.type">
-                    </canvas>
+                    </canvas> -->
                   </div>
                   <div class="goal-info">
                     <h3>{{ getWeeklyProgress() }}%</h3>
@@ -208,11 +208,11 @@
               <mat-card-content>
                 <div class="goal-progress">
                   <div class="progress-circle">
-                    <canvas baseChart
+                    <!-- <canvas baseChart
                       [data]="monthlyGoalChart.data"
                       [options]="monthlyGoalChart.options"
                       [type]="monthlyGoalChart.type">
-                    </canvas>
+                    </canvas> -->
                   </div>
                   <div class="goal-info">
                     <h3>{{ getMonthlyProgress() }}%</h3>
