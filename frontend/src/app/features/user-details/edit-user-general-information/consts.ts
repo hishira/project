@@ -1,8 +1,7 @@
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { GenericEdit } from "../../../core/components/inputs/moved/generic-edit/types";
 import { EditUserGeneralInformationDataProps } from "./edit-user-general-information";
 
-export const editUserGeneralInfoDefinition: GenericEdit = {
+export const editUserGeneralInfoDefinition: any = {
     group: {
         label: 'Edit general information',
         groupName: 'test'

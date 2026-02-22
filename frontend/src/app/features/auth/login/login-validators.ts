@@ -1,6 +1,5 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { inject } from "@angular/core";
-import { GenericEdit } from "../../../core/components/inputs/moved/generic-edit/types";
 
 export const loginValidators = {
     login: [{

@@ -1,7 +1,7 @@
 import { ValidatorFn } from '@angular/forms';
-import { FetchingAutoCompleteSerivce } from '../autocomplete/autocomplete.component';
-import { SelectableConfig } from '../selectable/selectable.component';
-import { ObjectValidators } from '../address/types';
+import { FetchingAutoCompleteSerivce } from './autocomplete/autocomplete.component';
+import { SelectableConfig } from './selectable/selectable.component';
+import { ObjectValidators } from './address/types';
 
 export type GenericInputType =
   | 'email'

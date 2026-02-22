@@ -27,8 +27,7 @@ import { SnackBar } from '../../../core/services/snack-bar.service';
 import { LoginDto } from '../../../shared/models/auth.model';
 import { TextInputComponent } from '../../../core/components/inputs/text-input/text-input.component';
 import { CompanyGenericEdit, emptyFormGroup, loginValidators } from './login-validators';
-import { GenericEditComponent } from '../../../core/components/inputs/moved/generic-edit/generic-edit.component';
-
+import {GenericForm} from 'generic-form'
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -45,7 +44,7 @@ import { GenericEditComponent } from '../../../core/components/inputs/moved/gene
     MatProgressSpinnerModule,
     MatSnackBarModule,
     TextInputComponent,
-    GenericEditComponent
+    GenericForm
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',

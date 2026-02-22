@@ -13,16 +13,16 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription, noop } from 'rxjs';
-import { AddressComponent } from '../../address/address.component';
-import { AutocompleteComponent } from '../../autocomplete/autocomplete.component';
-import { ChipSelectableComponent } from '../../chip-selectable/chip-selectable.component';
-import { NumberDirective } from '../../directives/number.directives';
-import { DefaultErrors, ErrorsComponent } from '../../errors/errors.component';
-import { MutliSelectWithSearchComponent } from '../../multi-select-with-search/multi-select-with-search.component';
+import { AddressComponent } from '../address/address.component';
+import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
+import { ChipSelectableComponent } from '../chip-selectable/chip-selectable.component';
+import { NumberDirective } from '../directives/number.directives';
+import { DefaultErrors, ErrorsComponent } from '../errors/errors.component';
+import { MutliSelectWithSearchComponent } from '../multi-select-with-search/multi-select-with-search.component';
 import {
   DefaultSelectableConfig,
   SelectableComponent,
-} from '../../selectable/selectable.component';
+} from '../selectable/selectable.component';
 import { GenericInput } from '../types';
 import { DefaultFunction, GenericInputDefaultStrategy } from './const';
 import {
