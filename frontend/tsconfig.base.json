@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "generic-form": ["libs/shared/generic-form/src/index.ts"]
+      "generic-form": ["libs/shared/generic-form/src/index.ts"],
+      "common-forms": ["libs/shared/common-forms/src/index.ts"]
     }
   }
 }

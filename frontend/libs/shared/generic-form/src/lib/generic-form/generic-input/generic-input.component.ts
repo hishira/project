@@ -13,23 +13,17 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription, noop } from 'rxjs';
-import { AddressComponent } from '../address/address.component';
-import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
-import { ChipSelectableComponent } from '../chip-selectable/chip-selectable.component';
-import { NumberDirective } from '../directives/number.directives';
-import { DefaultErrors, ErrorsComponent } from '../errors/errors.component';
-import { MutliSelectWithSearchComponent } from '../multi-select-with-search/multi-select-with-search.component';
-import {
-  DefaultSelectableConfig,
-  SelectableComponent,
-} from '../selectable/selectable.component';
+
 import { GenericInput } from '../types';
 import { DefaultFunction, GenericInputDefaultStrategy } from './const';
 import {
   GenericInputValidationStrategy,
   StrategyValidateFunction,
 } from './types';
-
+import {
+  AddressComponent, AutocompleteComponent, ChipSelectableComponent, NumberDirective, DefaultErrors, ErrorsComponent, MutliSelectWithSearchComponent, DefaultSelectableConfig,
+  SelectableComponent,
+} from 'common-forms';
 @Component({
   selector: 'crm-generic-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -65,7 +59,7 @@ import {
 export class GenericInputComponent
   implements OnInit, ControlValueAccessor, OnDestroy, Validator {
   readonly genericInput = input.required<GenericInput>()
-  readonly inputApprearance = computed(()=> this.genericInput().outlineControl ? 'outline': 'fill')
+  readonly inputApprearance = computed(() => this.genericInput().outlineControl ? 'outline' : 'fill')
   formControl!: FormControl;
   subscription: Subscription = new Subscription();
   DefaultAddressErrors = DefaultErrors;
