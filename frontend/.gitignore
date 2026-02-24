@@ -48,3 +48,6 @@ Thumbs.db
 .angular
 
 vitest.config.*.timestamp*
+
+.vscode
+.nx
