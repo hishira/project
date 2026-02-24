@@ -10,7 +10,7 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { noop, Subscription } from 'rxjs';
-import { Imports } from './consts';
+import { ChipDefaultValues, Imports } from './consts';
 import { ChipSelectableType } from './types';
 
 //TODO: First way of implement multiselecting
@@ -37,7 +37,7 @@ import { ChipSelectableType } from './types';
 export class ChipSelectableComponent
   implements ControlValueAccessor, OnInit, OnDestroy, Validator {
   //TODO: Make more generic
-  readonly selectableValues = input<ChipSelectableType[]>([]);
+  readonly selectableValues = input<ChipSelectableType[]>(ChipDefaultValues);
   readonly validators = input<ValidatorFn[]>([]);
   readonly label = input<string>('');
   selectedChipValues: string[] = [];

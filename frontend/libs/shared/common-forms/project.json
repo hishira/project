@@ -11,7 +11,7 @@
       "outputs": ["{options.reportsDirectory}"],
       "options": {
         "reportsDirectory": "../../../coverage/libs/shared/common-forms"
-      }
+      }      
     },
     "lint": {
       "executor": "@nx/eslint:lint"

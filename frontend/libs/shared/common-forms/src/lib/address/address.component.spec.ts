@@ -83,3 +83,141 @@
 
 //   })
 // });
+// address.component.spec.ts
+import { render, screen } from '@testing-library/angular';
+import userEvent from '@testing-library/user-event';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { vi } from 'vitest'; // lub jeśli masz globals, możesz pominąć import, ale lepiej jawnie
+import { AddressComponent } from './address.component';
+import { SelectableComponent } from '../selectable/selectable.component';
+import { ErrorsComponent } from '../errors/errors.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatInputModule } from '@angular/material/input';
+import { LabelFloatDirective } from '../directives/label-float.directive';
+
+describe('AddressComponent', () => {
+  const defaultValidatorObject = {};
+
+  const setup = async (inputs: Partial<AddressComponent> = {}) => {
+    const view = await render(AddressComponent, {
+      imports: [SelectableComponent, ErrorsComponent,  MatInputModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatGridListModule,
+    LabelFloatDirective],
+      componentInputs: {
+        addressValidatorObject: defaultValidatorObject,
+        ...inputs,
+      },
+    });
+    return { ...view, user: userEvent.setup() };
+  };
+
+  it('powinien wyrenderować wszystkie pola formularza', async () => {
+    await setup();
+    expect(screen.getAllByRole('textbox')).toHaveLength(6);
+    expect(screen.getByLabelText(/województwo/i)).toBeInTheDocument();
+  });
+
+  it('powinien aktualizować wartości formularza podczas wpisywania', async () => {
+    const { fixture, user } = await setup();
+
+    const streetInput = screen.getByLabelText(/ulica/i);
+    const postalInput = screen.getByLabelText(/kod pocztowy/i);
+
+    await user.type(streetInput, 'Testowa 1');
+    await user.type(postalInput, '00-001');
+
+    expect(fixture.componentInstance.addressFormGroup.value).toMatchObject({
+      street: 'Testowa 1',
+      postalCode: '00-001',
+    });
+  });
+
+  it('powinien wywołać onChange przy każdej zmianie wartości', async () => {
+    const { fixture, user } = await setup();
+    const onChangeSpy = vi.fn(); // zamiast jest.fn()
+    fixture.componentInstance.registerOnChange(onChangeSpy);
+
+    const streetInput = screen.getByLabelText(/ulica/i);
+    await user.type(streetInput, 'x');
+
+    expect(onChangeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ street: 'x' })
+    );
+  });
+
+  it('powinien ustawić wartość formularza przez writeValue', async () => {
+    const { fixture } = await setup();
+    const testValue = {
+      street: 'Piękna 5',
+      postalCode: '01-234',
+      city: 'Warszawa',
+      zone: 'MA',
+      region: '',
+      country: 'Polska',
+      secondAddress: '',
+    };
+
+    fixture.componentInstance.writeValue(testValue);
+    expect(fixture.componentInstance.addressFormGroup.value).toEqual(testValue);
+  });
+
+  describe('walidacja', () => {
+    it('powinien być nieprawidłowy, gdy pole wymagane jest puste', async () => {
+      const validatorObject = {
+        street: [Validators.required],
+      };
+      const { fixture } = await setup({ addressValidatorObject: validatorObject });
+
+      expect(fixture.componentInstance.addressFormGroup.invalid).toBe(true);
+    });
+
+    it('powinien zwracać błąd walidacji przez validate(), gdy formularz jest nieprawidłowy', async () => {
+      const validatorObject = {
+        street: [Validators.required],
+      };
+      const { fixture } = await setup({ addressValidatorObject: validatorObject });
+
+      const errors = fixture.componentInstance.validate(null as any);
+      expect(errors).toEqual({ addressError: true });
+    });
+
+    it('powinien zwracać null przez validate(), gdy formularz jest prawidłowy', async () => {
+      const { fixture } = await setup();
+      expect(fixture.componentInstance.validate(null as any)).toBeNull();
+    });
+
+    it('powinien reagować na walidator email', async () => {
+      const validatorObject = {
+        street: [Validators.email],
+      };
+      const { fixture, user } = await setup({ addressValidatorObject: validatorObject });
+
+      const streetInput = screen.getByLabelText(/ulica/i);
+      await user.type(streetInput, 'niepoprawny-email');
+
+      expect(fixture.componentInstance.addressFormGroup.invalid).toBe(true);
+    });
+  });
+
+  it('powinien zmieniać appearance w zależności od outlineControl', async () => {
+    const { fixture } = await setup({ outlineControl: false });
+    expect(fixture.componentInstance.controlType()).toBe('fill');
+
+    fixture.componentRef.setInput('outlineControl', true);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.controlType()).toBe('outline');
+  });
+
+  it('pozwala ustawić wartość pola zone programowo', async () => {
+    const { fixture } = await setup();
+    const zoneControl = fixture.componentInstance.addressFormGroup.get('zone');
+    zoneControl?.setValue('MA');
+
+    expect(zoneControl?.value).toBe('MA');
+    expect(fixture.componentInstance.addressFormGroup.value.zone).toBe('MA');
+  });
+});
