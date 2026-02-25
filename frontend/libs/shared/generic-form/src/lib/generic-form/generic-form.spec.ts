@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormGroup } from '@angular/forms';
 import { GenericForm } from './generic-form';
 
 describe('GenericForm', () => {
@@ -11,6 +12,8 @@ describe('GenericForm', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(GenericForm);
+    fixture.componentRef.setInput('genericEditInfo', []);
+    fixture.componentRef.setInput('formGroup', new FormGroup({}));
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

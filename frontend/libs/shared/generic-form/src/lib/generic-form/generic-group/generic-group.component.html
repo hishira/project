@@ -3,23 +3,19 @@
     <div>
       <h2>{{ genericEditGroup().group.label }}</h2>
     </div>
-    <div>
-      <mat-grid-list cols="4" [rowHeight]="genericEditGroup().rowHeight">
-        @for(input of genericEditGroup().inputs; track input.formControlName) {
-          @if (!input.usingNormal) {
-            <mat-grid-tile [colspan]="input.cols" [rowspan]="1">
-              <crm-generic-input [formControlName]="input.formControlName" [genericInput]="input" />
-            </mat-grid-tile>
-          }
-
+    <mat-grid-list cols="4" [rowHeight]="genericEditGroup().rowHeight">
+      @for (input of genericEditGroup().inputs; track input.formControlName) {
+        @if (!input.usingNormal) {
+          <mat-grid-tile [colspan]="input.cols" [rowspan]="1">
+            <crm-generic-input [formControlName]="input.formControlName" [genericInput]="input" />
+          </mat-grid-tile>
         }
-      </mat-grid-list>
-      @for(input of genericEditGroup().inputs; track input.formControlName) {
-        @if (input.usingNormal) {
-          <crm-generic-input class="normal-input" [formControlName]="input.formControlName" [genericInput]="input" />
-        }
-
       }
-    </div>
+    </mat-grid-list>
+    @for (input of genericEditGroup().inputs; track input.formControlName) {
+      @if (input.usingNormal) {
+        <crm-generic-input class="normal-input" [formControlName]="input.formControlName" [genericInput]="input" />
+      }
+    }
   </ng-container>
 }

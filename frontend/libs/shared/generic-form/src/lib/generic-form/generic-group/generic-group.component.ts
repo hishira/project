@@ -18,6 +18,4 @@ import { GenericEdit } from '../types';
 export class GenericGroupComponent {
   readonly genericEditGroup = input.required<GenericEdit>();
   readonly groupForm = input.required<FormGroup>();
-  //@Input() genericEditGroup!: GenericEdit;
-  //@Input() groupForm!: FormGroup;
 }

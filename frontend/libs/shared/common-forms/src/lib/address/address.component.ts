@@ -1,5 +1,4 @@
-import { NgIf } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy, inject, input, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, input } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -11,18 +10,17 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
   ValidationErrors,
-  Validator,
-  ValidatorFn,
+  Validator
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription, noop } from 'rxjs';
-import { SelectableComponent, SelectableConfig } from '../selectable/selectable.component';
-import { companyZones, zones } from './consts';
-import { DefaultErrors, ErrorsComponent } from '../errors/errors.component';
-import { AddressFormGroup, ObjectValidators } from './types';
 import { LabelFloatDirective } from '../directives/label-float.directive';
+import { DefaultErrors, ErrorsComponent } from '../errors/errors.component';
+import { SelectableComponent, SelectableConfig } from '../selectable/selectable.component';
+import { companyZones } from './consts';
+import { AddressFormGroup, ObjectValidators } from './types';
 
 @Component({
   selector: 'crm-address',
@@ -50,11 +48,10 @@ import { LabelFloatDirective } from '../directives/label-float.directive';
   ],
 })
 export class AddressComponent
-  implements ControlValueAccessor, OnDestroy, OnInit, Validator
-{
+  implements ControlValueAccessor, OnDestroy, OnInit, Validator {
   readonly outlineControl = input<boolean>(false)
   readonly addressValidatorObject = input.required<ObjectValidators>();
-  readonly controlType = computed(()=>this.outlineControl() ? 'outline': 'fill');
+  readonly controlType = computed(() => this.outlineControl() ? 'outline' : 'fill');
   addressFormGroup!: FormGroup<AddressFormGroup>;
 
   readonly DefaultAddressErrors = DefaultErrors;
