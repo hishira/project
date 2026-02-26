@@ -1,13 +1,8 @@
 @switch (report().type) {
   @case ('dashboard') {
-    @if (chartData()) {
-      <div class="chart-container">
-        <!-- <canvas baseChart [data]="chartData()" [labels]="chartLabels()" [options]="chartOptions" [type]="chartType">
-        </canvas> -->
-      </div>
-    } @else {
-      <p>Brak danych do wyświetlenia wykresu.</p>
-    }
+    <div class="chart-container">
+      <app-raport-chart-data [report]="report()" style="display: unset; height: auto;" />
+    </div>
   }
   @case ('tabular') {
     @if (isTableData(report().data)) {
