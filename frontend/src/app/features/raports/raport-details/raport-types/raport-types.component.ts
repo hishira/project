@@ -26,9 +26,8 @@ import { RaportChartData } from './rarport-chart-data/rarport-chart-data.compone
   styleUrls: ['./raport-types.component.scss']
 })
 export class RaportTypesComponent {
-
   // Sygnał przechowujący aktualny raport
-  report = input.required<Report>();
+  readonly report = input.required<Report>();
 
   /**
     * Sprawdza, czy dane nadają się do wyświetlenia w tabeli.

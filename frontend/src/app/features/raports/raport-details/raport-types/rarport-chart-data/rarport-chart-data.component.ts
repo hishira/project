@@ -21,16 +21,17 @@ import { Report } from "../../../types";
 export class RaportChartData implements AfterViewInit, OnDestroy {
     readonly report = input.required<Report>();
 
-    readonly chartCanvas: Signal<ElementRef<HTMLCanvasElement> | undefined> = viewChild<ElementRef<HTMLCanvasElement> | undefined>('chartCanvas');
+    readonly chartData = signal<ChartData | null>(null); 
+    
+    private readonly chartCanvas: Signal<ElementRef<HTMLCanvasElement> | undefined> = viewChild<ElementRef<HTMLCanvasElement> | undefined>('chartCanvas');
     private chart: Chart | undefined;
     // Sygnały dla danych wykresu (używane tylko gdy report.type === 'dashboard')
-    readonly chartData = signal<ChartData | null>(null);   // zamiast {} as ChartData
-    readonly chartLabels = signal<string[]>([]);
-    chartOptions: ChartConfiguration['options'] = {
+    private readonly chartLabels = signal<string[]>([]);
+    private chartOptions: ChartConfiguration['options'] = {
         responsive: true,
         maintainAspectRatio: false,
     };
-    chartType: ChartType = 'bar';
+    private chartType: ChartType = 'bar';
 
     constructor() {
         // Automatyczna aktualizacja wykresu przy zmianie raportu
@@ -50,6 +51,15 @@ export class RaportChartData implements AfterViewInit, OnDestroy {
 
         });
     }
+
+    ngAfterViewInit(): void {
+        this.createChart();
+    }
+
+    ngOnDestroy(): void {
+        this.chart?.destroy();
+    }
+
     private updateChart(): void {
         if (!this.chart) return;
         const currentData = this.chartData();
@@ -96,48 +106,5 @@ export class RaportChartData implements AfterViewInit, OnDestroy {
             data: data,
             options: this.chartOptions,
         });
-    }
-
-    ngAfterViewInit(): void {
-        this.createChart();
-    }
-
-    ngOnDestroy(): void {
-        this.chart?.destroy();
-    }
-    /**
-     * Sprawdza, czy dane nadają się do wyświetlenia w tabeli.
-     * (zgodność z logiką w szablonie)
-     */
-    isTableData(data: any): boolean {
-        return Array.isArray(data) && data.length > 0 && typeof data[0] === 'object';
-    }
-
-    /**
-     * Zwraca nazwy kolumn dla danych tabelarycznych.
-     * UWAGA: Metoda wywoływana wielokrotnie w szablonie – w celach optymalizacyjnych
-     * warto rozważyć obliczenie kolumn raz (patrz sugestie poniżej).
-     */
-    getTableColumns(data: any[]): string[] {
-        if (data.length === 0) return [];
-        return Object.keys(data[0]);
-    }
-
-    /**
-     * Sprawdza, czy dane są obiektem (nie tablicą) – dla widoku podsumowania.
-     */
-    isSummaryObject(data: any): boolean {
-        return data !== null && typeof data === 'object' && !Array.isArray(data);
-    }
-
-    /**
-     * Symulacja pobierania raportu.
-     */
-    downloadReport(): void {
-        const currentReport = this.report();
-        if (currentReport) {
-            console.log('Pobieranie raportu:', currentReport);
-            alert(`Symulacja pobierania raportu: ${currentReport.name}`);
-        }
     }
 }
