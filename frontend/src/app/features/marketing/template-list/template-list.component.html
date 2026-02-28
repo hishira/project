@@ -1,0 +1,77 @@
+<div class="list-container">
+  <div class="header">
+    <h1>Szablony wiadomości</h1>
+    <button mat-raised-button color="primary" routerLink="new">
+      <mat-icon>add</mat-icon> Nowy szablon
+    </button>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="templates()" class="template-table">
+        <!-- Nazwa -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nazwa szablonu</th>
+          <td mat-cell *matCellDef="let template">
+            <div class="cell-with-icon">
+              <mat-icon [class]="getTypeClass(template.type)">{{ getTypeIcon(template.type) }}</mat-icon>
+              <span>{{ template.name }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Typ -->
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Typ</th>
+          <td mat-cell *matCellDef="let template">
+            <mat-chip [class]="'type-chip ' + getTypeClass(template.type)">
+              {{ template.type }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Temat (dla e-mail) -->
+        <ng-container matColumnDef="subject">
+          <th mat-header-cell *matHeaderCellDef>Temat</th>
+          <td mat-cell *matCellDef="let template">
+            @if (template.subject) {
+              <span>{{ template.subject }}</span>
+            } @else {
+              <span class="no-subject">—</span>
+            }
+          </td>
+        </ng-container>
+
+        <!-- Data aktualizacji -->
+        <ng-container matColumnDef="updatedAt">
+          <th mat-header-cell *matHeaderCellDef>Ostatnia aktualizacja</th>
+          <td mat-cell *matCellDef="let template">
+            {{ formatDate(template.updatedAt) }}
+          </td>
+        </ng-container>
+
+        <!-- Akcje -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let template">
+            <button mat-icon-button [routerLink]="[template.id]" matTooltip="Podgląd">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button [routerLink]="[template.id, 'edit']" matTooltip="Edytuj">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button  matTooltip="Usuń">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button  matTooltip="Użyj w kampanii">
+              <mat-icon>campaign</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="[row.id]" class="clickable-row"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

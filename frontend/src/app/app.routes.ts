@@ -47,17 +47,16 @@ export const routes: Routes = [
         loadChildren: () => import('./features/raports/raports-routes').then(m => m.raportRoutes),
       },
       {
+        path: 'marketing',
+        loadChildren: () => import('./features/marketing/marketing.routes').then(m => m.MARKETING_ROUTES)
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
       },
     ],
   },
-  {
-    path: 'activities',
-    loadChildren: () =>
-      import('./features/activities/activities.routes').then((m) => m.routes),
-    canActivate: [authGuard],
-  },
+
   {
     path: 'statistics',
     loadChildren: () =>

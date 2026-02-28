@@ -53,7 +53,7 @@
       "e2eTestRunner": "none",
       "linter": "eslint",
       "style": "scss",
-      "unitTestRunner": "jest"
+      "unitTestRunner": "vitest-analog"
     },
     "@nx/angular:library": {
       "linter": "eslint",

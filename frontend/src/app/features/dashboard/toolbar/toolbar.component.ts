@@ -1,9 +1,10 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { map, Observable } from 'rxjs';
 import { AdminDirective } from '../../../core/directives/admin.directive';
@@ -17,11 +18,20 @@ import { User } from '../../../shared/models/auth.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./toolbar.component.scss'],
   standalone: true,
-  imports: [MatMenuModule, MatButtonModule, MatToolbarModule, MatIcon, MatDivider, AsyncPipe, AdminDirective],
+  imports: [
+    MatMenuModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatIcon,
+    MatDivider,
+    AsyncPipe,
+    AdminDirective
+  ],
 })
 export class ToolbarComponent {
   private readonly authService: AuthService = inject(AuthService);
   private readonly snackBar: SnackBar = inject(SnackBar);
+  drawer = output();
   readonly currentUser: Observable<User | null> = this.authService.currentUser$;
   readonly currentUserNameView: Observable<string> = this.currentUser.pipe(
     map(

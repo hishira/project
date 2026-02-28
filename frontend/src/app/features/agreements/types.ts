@@ -1,9 +1,9 @@
 export enum AgreementStatus {
- ACTIVE = 'ACTIVE',
- EXPIRED = 'EXPIRED',
- PENDING_APPROVAL = 'PENDING_APPROVAL',
- DRAFT = 'DRAFT',
- SUSPENDED = 'SUSPENDED',   
+    ACTIVE = 'ACTIVE',
+    EXPIRED = 'EXPIRED',
+    PENDING_APPROVAL = 'PENDING_APPROVAL',
+    DRAFT = 'DRAFT',
+    SUSPENDED = 'SUSPENDED',
 }
 export type AgreementStatusColor = 'accent' | 'warn' | 'primary' | 'basic';
 

@@ -1,6 +1,7 @@
 :host {
   .app-container {
     min-height: 100vh;
+    position: relative;
     background-color: whitesmoke;
   }
   .content {
@@ -12,4 +13,5 @@
     margin-top: 24px;
     border-radius: 10px;
   }
+
 }

@@ -1,0 +1,151 @@
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Marketing Dashboard</h1>
+    <button mat-raised-button color="primary" routerLink="campaigns/new">
+      <mat-icon>add</mat-icon> Nowa kampania
+    </button>
+  </div>
+
+  <!-- Karty z podsumowaniem -->
+  <div class="stats-grid">
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon">
+          <mat-icon>campaign</mat-icon>
+        </div>
+        <div class="stat-details">
+          <span class="stat-value">{{ summary.totalCampaigns }}</span>
+          <span class="stat-label">Wszystkie kampanie</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon">
+          <mat-icon>play_circle</mat-icon>
+        </div>
+        <div class="stat-details">
+          <span class="stat-value">{{ summary.activeCampaigns }}</span>
+          <span class="stat-label">Aktywne kampanie</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon">
+          <mat-icon>people</mat-icon>
+        </div>
+        <div class="stat-details">
+          <span class="stat-value">{{ summary.totalRecipients | number }}</span>
+          <span class="stat-label">Łącznie odbiorców</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon">
+          <mat-icon>bar_chart</mat-icon>
+        </div>
+        <div class="stat-details">
+          <span class="stat-value">{{ summary.averageOpenRate }}%</span>
+          <span class="stat-label">Średnia otwarć</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon">
+          <mat-icon>mouse</mat-icon>
+        </div>
+        <div class="stat-details">
+          <span class="stat-value">{{ summary.averageClickRate }}%</span>
+          <span class="stat-label">Średnia kliknięć</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon">
+          <mat-icon>segment</mat-icon>
+        </div>
+        <div class="stat-details">
+          <span class="stat-value">{{ summary.segmentsCount }}</span>
+          <span class="stat-label">Segmenty</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon">
+          <mat-icon>description</mat-icon>
+        </div>
+        <div class="stat-details">
+          <span class="stat-value">{{ summary.templatesCount }}</span>
+          <span class="stat-label">Szablony</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Dwie kolumny: ostatnie kampanie i najlepsze kampanie -->
+  <div class="dashboard-row">
+    <!-- Ostatnie kampanie -->
+    <mat-card class="recent-card">
+      <mat-card-header>
+        <mat-card-title>Ostatnio utworzone</mat-card-title>
+        <button mat-button routerLink="campaigns">Zobacz wszystkie</button>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          @for (campaign of summary.recentCampaigns; track campaign.id) {
+            <mat-list-item class="campaign-item" [routerLink]="['campaigns', campaign.id]">
+              <div class="campaign-row">
+                <mat-icon [class]="'type-icon ' + campaign.type">{{ getTypeIcon(campaign.type) }}</mat-icon>
+                <div class="campaign-info">
+                  <span class="campaign-name">{{ campaign.name }}</span>
+                  <span class="campaign-date">{{ campaign.createdAt | date:'dd MMM yyyy' }}</span>
+                </div>
+                <mat-chip [class]="getStatusClass(campaign.status)" class="status-chip">
+                  {{ campaign.status }}
+                </mat-chip>
+              </div>
+            </mat-list-item>
+          }
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Najlepsze kampanie (wg open rate) -->
+    <mat-card class="top-card">
+      <mat-card-header>
+        <mat-card-title>Najwyższa otwieralność</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          @for (campaign of summary.topPerforming; track campaign.id) {
+            <mat-list-item class="campaign-item" [routerLink]="['campaigns', campaign.id]">
+              <div class="campaign-row">
+                <div class="rank">{{ $index + 1 }}</div>
+                <div class="campaign-info">
+                  <span class="campaign-name">{{ campaign.name }}</span>
+                  <span class="campaign-stats">
+                    {{ (campaign.stats.opened / campaign.stats.recipients * 100) | number:'1.0-1' }}% otwarć
+                  </span>
+                </div>
+                <mat-chip [class]="getStatusClass(campaign.status)" class="status-chip">
+                  {{ campaign.status }}
+                </mat-chip>
+              </div>
+            </mat-list-item>
+          }
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

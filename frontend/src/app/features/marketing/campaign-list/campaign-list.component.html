@@ -1,0 +1,95 @@
+<div class="list-container">
+  <div class="header">
+    <h1>Kampanie marketingowe</h1>
+    <button mat-raised-button color="primary" routerLink="new">
+      <mat-icon>add</mat-icon> Nowa kampania
+    </button>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="campaigns()" class="campaign-table">
+        <!-- Nazwa -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nazwa kampanii</th>
+          <td mat-cell *matCellDef="let campaign">
+            <div class="cell-with-icon">
+              <mat-icon [class]="'type-icon ' + campaign.type">{{ getTypeIcon(campaign.type) }}</mat-icon>
+              <span>{{ campaign.name }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Typ -->
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Typ</th>
+          <td mat-cell *matCellDef="let campaign">
+            <mat-chip class="type-chip">{{ campaign.type }}</mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Status -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let campaign">
+            <mat-chip [class]="getStatusClass(campaign.status)" class="status-chip">
+              {{ campaign.status }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Statystyki -->
+        <ng-container matColumnDef="stats">
+          <th mat-header-cell *matHeaderCellDef>Wyniki</th>
+          <td mat-cell *matCellDef="let campaign">
+            @if (campaign.stats.recipients > 0) {
+              <div class="stats-cell">
+                <span class="stat-item" matTooltip="Odbiorcy">
+                  <mat-icon>people</mat-icon> {{ campaign.stats.recipients | number }}
+                </span>
+                <span class="stat-item" matTooltip="Otwarć">
+                  <mat-icon>mark_email_read</mat-icon> {{ campaign.stats.opened | number }}
+                </span>
+                <span class="stat-item" matTooltip="Kliknięć">
+                  <mat-icon>mouse</mat-icon> {{ campaign.stats.clicked | number }}
+                </span>
+              </div>
+            } @else {
+              <span class="no-stats">Brak danych</span>
+            }
+          </td>
+        </ng-container>
+
+        <!-- Termin -->
+        <ng-container matColumnDef="schedule">
+          <th mat-header-cell *matHeaderCellDef>Termin</th>
+          <td mat-cell *matCellDef="let campaign">
+            @if (campaign.scheduledAt) {
+              <span>Zaplanowano: {{ campaign.scheduledAt | date:'dd MMM yyyy' }}</span>
+            } @else if (campaign.sentAt) {
+              <span>Wysłano: {{ campaign.sentAt | date:'dd MMM yyyy' }}</span>
+            } @else {
+              <span class="no-date">—</span>
+            }
+          </td>
+        </ng-container>
+
+        <!-- Akcje -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let campaign">
+            <button mat-icon-button [routerLink]="[campaign.id]" matTooltip="Szczegóły">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="Edytuj">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="[row.id]" class="clickable-row"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

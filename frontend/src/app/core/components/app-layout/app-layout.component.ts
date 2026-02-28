@@ -10,4 +10,4 @@ import { ToolbarComponent } from '../../../features/dashboard/toolbar/toolbar.co
   standalone: true,
   imports: [RouterOutlet, ToolbarComponent],
 })
-export class AppLayoutComponent {}
+export class AppLayoutComponent { }

@@ -1,0 +1,63 @@
+.list-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 400;
+    color: #1e293b;
+  }
+}
+
+.segment-table {
+  width: 100%;
+
+  .mat-mdc-row {
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background-color: #f8fafc;
+    }
+  }
+
+  .cell-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    mat-icon {
+      color: #0284c7;
+    }
+  }
+
+  .description {
+    color: #475569;
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+
+  .contacts-count {
+    font-weight: 500;
+    color: #0f172a;
+  }
+
+  .mat-column-actions {
+    text-align: right;
+    button {
+      margin: 0 4px;
+    }
+  }
+}
