@@ -31,6 +31,5 @@ export const appConfig: ApplicationConfig = {
       reducer: refreshTokenReducer,
     }),
     MoveBackService,
-    //provideCharts(withDefaultRegisterables())
   ],
 };

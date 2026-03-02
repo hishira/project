@@ -55,6 +55,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/documents/documents.routes').then(m => m.DOCUMENTS_ROUTES)
       },
       {
+        path: 'clients',
+        loadChildren: () => import('./features/clients/clients.routes').then(m => m.CLIENTS_ROUTES),
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
       },
