@@ -1,0 +1,87 @@
+.detail-container {
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: #1e293b;
+  }
+}
+
+.article-card {
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 8px 0;
+  }
+
+  .tags {
+    margin: 8px 0;
+  }
+
+  .content {
+    padding: 16px 0;
+    line-height: 1.7;
+    color: #1e293b;
+    white-space: pre-wrap;
+  }
+
+  .stats {
+    display: flex;
+    gap: 24px;
+    color: #64748b;
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+  }
+
+  .mat-mdc-card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-top: 1px solid #e2e8f0;
+  }
+}
+
+.not-found {
+  text-align: center;
+  padding: 48px;
+  color: #64748b;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin-bottom: 24px;
+  }
+}

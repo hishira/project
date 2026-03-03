@@ -59,6 +59,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/clients/clients.routes').then(m => m.CLIENTS_ROUTES),
       },
       {
+        path: 'knowledge-base',
+        loadChildren: () => import('./features/knowledge-base/knowledge-base.routes').then(m => m.KNOWLEDGE_BASE_ROUTES)
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
       },

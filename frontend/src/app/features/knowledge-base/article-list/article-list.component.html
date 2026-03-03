@@ -1,0 +1,64 @@
+<div class="kb-container">
+  <div class="header">
+    <h1>Baza wiedzy</h1>
+    <button mat-raised-button color="primary" (click)="onAdd()"><mat-icon>add</mat-icon> Nowy artykuł</button>
+  </div>
+
+  <!-- Zakładki kategorii -->
+  <mat-tab-group
+    [selectedIndex]="selectedTabIndex"
+    (selectedIndexChange)="activeCategory = categories[$event].value"
+    class="category-tabs">
+    @for (cat of categories; track cat.value) {
+      <mat-tab [label]="cat.label"></mat-tab>
+    }
+  </mat-tab-group>
+
+  <!-- Lista artykułów w aktywnej kategorii -->
+  <div class="articles-grid">
+    @for (article of filteredArticles; track article.id) {
+      <mat-card class="article-card" [routerLink]="[article.id]">
+        <mat-card-header>
+          <mat-card-title>{{ article.title }}</mat-card-title>
+          <mat-card-subtitle>
+            <span class="meta">Dodano: {{ article.createdAt | date: 'dd MMM yyyy' }}</span>
+            <span class="meta">Aktualizacja: {{ article.updatedAt | date: 'dd MMM yyyy' }}</span>
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p class="excerpt">{{ article.content | slice: 0 : 120 }}...</p>
+
+          @if (article.tags && article.tags.length) {
+            <div class="tags">
+              <mat-chip-set>
+                @for (tag of article.tags; track tag) {
+                  <mat-chip>{{ tag }}</mat-chip>
+                }
+              </mat-chip-set>
+            </div>
+          }
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+          <div class="stats">
+            <span class="stat" matTooltip="Wyświetlenia"> <mat-icon>visibility</mat-icon> {{ article.views }} </span>
+            <span class="stat" matTooltip="Pomocne"> <mat-icon>thumb_up</mat-icon> {{ article.helpful }} </span>
+          </div>
+          <button mat-icon-button (click)="onEdit(article, $event)" matTooltip="Edytuj">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onDelete(article, $event)" matTooltip="Usuń">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    } @empty {
+      <div class="empty-state">
+        <mat-icon>library_books</mat-icon>
+        <p>Brak artykułów w tej kategorii.</p>
+        <button mat-stroked-button color="primary" (click)="onAdd()">Dodaj pierwszy</button>
+      </div>
+    }
+  </div>
+</div>
