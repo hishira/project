@@ -29,7 +29,7 @@ import { LinebreaksPipe } from './line-breaks.pipe';
 export class ArticleDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly kbService = inject(KnowledgeBaseService);
-  article = signal<KnowledgeArticle | undefined>(undefined);
+  readonly article = signal<KnowledgeArticle | undefined>(undefined);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');

@@ -1,14 +1,14 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
+import { ArticleCategory, KnowledgeArticle } from '../knowledge-base.model';
 import { KnowledgeBaseService } from '../knowledge-base.service';
-import { KnowledgeArticle, ArticleCategory } from '../knowledge-base.model';
 
 @Component({
     selector: 'app-article-list',
@@ -27,8 +27,8 @@ import { KnowledgeArticle, ArticleCategory } from '../knowledge-base.model';
     styleUrls: ['./article-list.component.scss']
 })
 export class ArticleListComponent {
-    private kbService = inject(KnowledgeBaseService);
-    articles = this.kbService.articles;
+    private readonly kbService = inject(KnowledgeBaseService);
+    readonly articles = this.kbService.articles;
 
     // Kategorie do zakładek
     categories: { value: ArticleCategory; label: string }[] = [
