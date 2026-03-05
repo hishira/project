@@ -63,6 +63,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/knowledge-base/knowledge-base.routes').then(m => m.KNOWLEDGE_BASE_ROUTES)
       },
       {
+        path: 'tasks',
+        loadChildren: () => import('./features/tasks/task.routes').then(m => m.TASKS_ROUTES)
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
       },

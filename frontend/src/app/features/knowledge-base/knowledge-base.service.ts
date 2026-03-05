@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { KnowledgeArticle, ArticleCategory } from './knowledge-base.model';
+import { ArticleCategory, KnowledgeArticle } from './knowledge-base.model';
 
 @Injectable({ providedIn: 'root' })
 export class KnowledgeBaseService {

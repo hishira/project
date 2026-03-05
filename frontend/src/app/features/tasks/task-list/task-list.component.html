@@ -1,0 +1,79 @@
+<div class="tasks-container">
+  <div class="header">
+    <h1>Zadania i spotkania</h1>
+    <button mat-raised-button color="primary" (click)="onAdd()">
+      <mat-icon>add</mat-icon> Nowe zadanie
+    </button>
+  </div>
+
+  <!-- Zakładki filtrów -->
+  <mat-tab-group [(selectedIndex)]="activeFilter" class="filter-tabs">
+    <mat-tab label="Moje zadania" value="my"></mat-tab>
+    <mat-tab label="Zespołowe" value="team"></mat-tab>
+    <mat-tab label="Zakończone" value="done"></mat-tab>
+  </mat-tab-group>
+
+  <!-- Lista zadań -->
+  <div class="tasks-list">
+    @for (task of filteredTasks; track task.id) {
+      <mat-card class="task-card" [routerLink]="[task.id]">
+        <mat-card-header>
+          <div class="task-header">
+            <mat-checkbox
+              [checked]="task.status === 'done'"
+              (click)="$event.stopPropagation()"
+              (change)="onToggleDone(task, $event)"
+              class="task-checkbox"
+            ></mat-checkbox>
+            <mat-icon [class]="'type-icon ' + task.type">{{ getTypeIcon(task.type) }}</mat-icon>
+            <div class="task-title">
+              <span class="title">{{ task.title }}</span>
+              @if (task.relatedTo) {
+                <span class="related" [matTooltip]="'Powiązane: ' + task.relatedTo.name">
+                  <mat-icon>link</mat-icon> {{ task.relatedTo.name }}
+                </span>
+              }
+            </div>
+            <div class="task-meta">
+              @if (task.dueDate) {
+                <span class="due-date" [class.overdue]="task.dueDate < now && task.status !== 'done'">
+                  <mat-icon>event</mat-icon> {{ task.dueDate | date:'dd MMM' }}
+                </span>
+              }
+              <mat-chip [class]="'priority-' + task.priority" class="priority-chip">
+                <mat-icon>{{ getPriorityIcon(task.priority) }}</mat-icon>
+                {{ task.priority }}
+              </mat-chip>
+            </div>
+          </div>
+        </mat-card-header>
+
+        <mat-card-content>
+          @if (task.description) {
+            <p class="description">{{ task.description | slice:0:100 }}{{ task.description.length > 100 ? '...' : '' }}</p>
+          }
+          <div class="footer">
+            <div class="assignee">
+              @if (task.assignedTo) {
+                <img [src]="task.assignedTo.avatarUrl" alt="avatar" class="avatar" />
+                <span>{{ task.assignedTo.fullName }}</span>
+              } @else {
+                <span class="unassigned">Nieprzypisane</span>
+              }
+            </div>
+            <div class="actions">
+              <button mat-icon-button (click)="onEdit(task, $event)" matTooltip="Edytuj">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    } @empty {
+      <div class="empty-state">
+        <mat-icon>assignment</mat-icon>
+        <p>Brak zadań w tej kategorii.</p>
+      </div>
+    }
+  </div>
+</div>

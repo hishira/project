@@ -1,0 +1,66 @@
+<div class="calendar-container">
+  <div class="header">
+    <h1>Kalendarz</h1>
+    <div class="header-actions">
+      <button mat-stroked-button (click)="today()">Dziś</button>
+      <button mat-icon-button (click)="previousMonth()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <span class="current-month">{{ currentDate() | date:'MMMM yyyy' }}</span>
+      <button mat-icon-button (click)="nextMonth()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+      <mat-button-toggle-group [(ngModel)]="viewMode" class="view-toggle">
+        <mat-button-toggle value="month">Miesiąc</mat-button-toggle>
+        <mat-button-toggle value="week">Tydzień</mat-button-toggle>
+      </mat-button-toggle-group>
+      <button mat-raised-button color="primary" (click)="onAdd()">
+        <mat-icon>add</mat-icon> Nowe
+      </button>
+    </div>
+  </div>
+
+  @if (viewMode === 'month') {
+    <mat-card class="calendar-card">
+      <mat-card-content>
+        <!-- Nagłówki dni tygodnia -->
+        <div class="weekdays">
+          @for (day of ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota']; track $index) {
+            <div class="weekday">{{ day }}</div>
+          }
+        </div>
+
+        <!-- Siatka dni -->
+        <div class="calendar-grid">
+          @for (day of calendarDays(); track day) {
+            <div class="day-cell"
+                 [class.other-month]="day.getMonth() !== currentDate().getMonth()"
+                 [class.today]="day.toDateString() === (now | date:'yyyy-MM-dd')">
+              <div class="day-number">{{ day.getDate() }}</div>
+              <div class="day-events">
+                @for (task of getTasksForDay(day).slice(0, 3); track task.id) {
+                  <div class="event"
+                       [style.background]="getPriorityColor(task.priority)"
+                       [matTooltip]="task.title"
+                       [routerLink]="['/tasks', task.id]">
+                    {{ task.title | slice:0:12 }}{{ task.title.length > 12 ? '…' : '' }}
+                  </div>
+                }
+                @if (getTasksForDay(day).length > 3) {
+                  <div class="more-events">+{{ getTasksForDay(day).length - 3 }}</div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <!-- Widok tygodniowy – uproszczony -->
+    <mat-card class="week-view">
+      <mat-card-content>
+        <p>Widok tygodniowy w budowie (można rozszerzyć o podobną logikę).</p>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
