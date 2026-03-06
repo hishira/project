@@ -67,6 +67,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/tasks/task.routes').then(m => m.TASKS_ROUTES)
       },
       {
+        path: 'projects',
+        loadChildren: () => import('./features/projects/project.routes').then(m => m.PROJECTS_ROUTES)
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
       },

@@ -1,0 +1,120 @@
+<div class="list-container">
+  <div class="header">
+    <h1>Projekty</h1>
+    <button mat-raised-button color="primary" (click)="onAdd()">
+      <mat-icon>add</mat-icon> Nowy projekt
+    </button>
+  </div>
+
+  <!-- Filtry -->
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <div class="filters-grid">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Nazwa projektu</mat-label>
+          <input matInput [(ngModel)]="filterName" (input)="applyFilters()" placeholder="Wpisz nazwę">
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="filterStatus" (selectionChange)="applyFilters()">
+            <mat-option value="">Wszystkie</mat-option>
+            @for (s of statuses; track s.value) {
+              <mat-option [value]="s.value">{{ s.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="filter-actions">
+        <button mat-button (click)="clearFilters()">Wyczyść filtry</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" matSort class="project-table">
+        <!-- Nazwa -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Nazwa projektu</th>
+          <td mat-cell *matCellDef="let p">
+            <a [routerLink]="[p.id]" class="project-name">{{ p.name }}</a>
+          </td>
+        </ng-container>
+
+        <!-- Klient -->
+        <ng-container matColumnDef="client">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="clientName">Klient</th>
+          <td mat-cell *matCellDef="let p">{{ p.clientName }}</td>
+        </ng-container>
+
+        <!-- Status -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</th>
+          <td mat-cell *matCellDef="let p">
+            <mat-chip [class]="getStatusClass(p.status)" class="status-chip">
+              {{ getStatusLabel(p.status) }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Daty -->
+        <ng-container matColumnDef="dates">
+          <th mat-header-cell *matHeaderCellDef>Okres</th>
+          <td mat-cell *matCellDef="let p">
+            {{ p.startDate | date:'dd MMM yyyy' }} – {{ p.endDate ? (p.endDate | date:'dd MMM yyyy') : 'b.d.' }}
+          </td>
+        </ng-container>
+
+        <!-- Budżet -->
+        <ng-container matColumnDef="budget">
+          <th mat-header-cell *matHeaderCellDef>Budżet</th>
+          <td mat-cell *matCellDef="let p">
+            <div class="budget-cell">
+              <span>{{ p.budget.spent | number }} / {{ p.budget.total | number }} {{ p.budget.currency }}</span>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="(p.budget.spent / p.budget.total * 100)"></div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Postęp -->
+        <ng-container matColumnDef="progress">
+          <th mat-header-cell *matHeaderCellDef>Postęp</th>
+          <td mat-cell *matCellDef="let p">
+            <div class="progress-cell">
+              <span>{{ calculateProgress(p) }}%</span>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="calculateProgress(p)"></div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Akcje -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let p">
+            <button mat-icon-button [routerLink]="[p.id]" matTooltip="Szczegóły">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button (click)="onEdit(p, $event)" matTooltip="Edytuj">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="[row.id]" class="clickable-row"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+            <div class="no-data">Brak projektów spełniających kryteria</div>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>
