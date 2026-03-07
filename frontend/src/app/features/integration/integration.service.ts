@@ -48,7 +48,7 @@ export class IntegrationService {
       updatedAt: new Date('2025-02-05'),
       provider: 'slack',
       config: {
-        webhookUrl: 'test',//'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX',
+        webhookUrl: 'webhookUrl-test-slack',
         channel: '#crm-alerts',
         notifyOn: ['new_ticket', 'task_assigned', 'meeting_reminder']
       }
