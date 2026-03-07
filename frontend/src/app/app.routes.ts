@@ -71,6 +71,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/projects/project.routes').then(m => m.PROJECTS_ROUTES)
       },
       {
+        path: 'integrations',
+        loadChildren: () => import('./features/integration/integration.routes').then(m => m.INTEGRATIONS_ROUTES)
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
       },
