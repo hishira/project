@@ -12,21 +12,17 @@
         <div class="header-row">
           <mat-card-title>{{ a.title }}</mat-card-title>
           <div class="header-actions">
-            <button mat-stroked-button (click)="onEdit()">
-              <mat-icon>edit</mat-icon> Edytuj
-            </button>
-            <button mat-stroked-button color="warn" (click)="onDelete()">
-              <mat-icon>delete</mat-icon> Usuń
-            </button>
+            <button mat-stroked-button (click)="onEdit()"><mat-icon>edit</mat-icon> Edytuj</button>
+            <button mat-stroked-button color="warn" (click)="onDelete()"><mat-icon>delete</mat-icon> Usuń</button>
           </div>
         </div>
         <mat-card-subtitle>
           <div class="meta">
             <span>Kategoria: {{ a.category }}</span>
             <span>Autor: {{ a.author }}</span>
-            <span>Dodano: {{ a.createdAt | date:'dd MMM yyyy' }}</span>
+            <span>Dodano: {{ a.createdAt | date: 'dd MMM yyyy' }}</span>
             @if (a.updatedAt !== a.createdAt) {
-              <span>aktualizacja: {{ a.updatedAt | date:'dd MMM yyyy' }}</span>
+              <span>aktualizacja: {{ a.updatedAt | date: 'dd MMM yyyy' }}</span>
             }
           </div>
           @if (a.tags && a.tags.length) {
@@ -47,16 +43,10 @@
 
       <mat-card-actions align="end">
         <div class="stats">
-          <span class="stat">
-            <mat-icon>visibility</mat-icon> {{ a.views }} wyświetleń
-          </span>
-          <span class="stat">
-            <mat-icon>thumb_up</mat-icon> {{ a.helpful }} osób uznało za pomocne
-          </span>
+          <span class="stat"> <mat-icon>visibility</mat-icon> {{ a.views }} wyświetleń </span>
+          <span class="stat"> <mat-icon>thumb_up</mat-icon> {{ a.helpful }} osób uznało za pomocne </span>
         </div>
-        <button mat-raised-button color="primary" (click)="onHelpful()">
-          <mat-icon>thumb_up</mat-icon> Pomocne
-        </button>
+        <button mat-raised-button color="primary" (click)="onHelpful()"><mat-icon>thumb_up</mat-icon> Pomocne</button>
       </mat-card-actions>
     </mat-card>
   } @else {

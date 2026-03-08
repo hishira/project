@@ -75,6 +75,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/integration/integration.routes').then(m => m.INTEGRATIONS_ROUTES)
       },
       {
+        path: 'invoices',
+        loadChildren: () => import('./features/invoice/invoice.routes').then(m => m.INVOICES_ROUTES)
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
       },
