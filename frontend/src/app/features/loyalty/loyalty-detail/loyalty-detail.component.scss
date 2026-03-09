@@ -1,0 +1,117 @@
+.detail-container {
+  padding: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 400;
+  }
+}
+
+.summary-card {
+  margin-bottom: 24px;
+  .summary-grid {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 24px;
+    align-items: center;
+    .level-display {
+      .level-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 32px;
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+    }
+    .points-box {
+      display: flex;
+      flex-direction: column;
+      .points-label {
+        font-size: 0.9rem;
+        color: #64748b;
+      }
+      .points-value {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #0f172a;
+      }
+    }
+  }
+  .next-level-progress {
+    margin-top: 16px;
+    .progress-bar {
+      height: 8px;
+      background-color: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 8px 0 4px;
+      .progress-fill {
+        height: 100%;
+        background-color: #1976d2;
+      }
+    }
+    .progress-text {
+      font-size: 0.85rem;
+      color: #334155;
+    }
+  }
+}
+
+.tab-content {
+  padding: 24px 0;
+}
+
+.inner-card {
+  .mat-mdc-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 16px 0;
+  }
+}
+
+.rewards-table, .transactions-table {
+  width: 100%;
+  .coupon-code {
+    font-family: 'Roboto Mono', monospace;
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .source-chip {
+    font-size: 0.7rem;
+    min-height: 24px;
+    background-color: #e2e8f0;
+    color: #334155;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 24px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.not-found {
+  text-align: center;
+  padding: 48px;
+  color: #64748b;
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+}

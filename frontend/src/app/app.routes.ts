@@ -79,12 +79,15 @@ export const routes: Routes = [
         loadChildren: () => import('./features/invoice/invoice.routes').then(m => m.INVOICES_ROUTES)
       },
       {
+        path: 'loyalty',
+        loadChildren: () => import('./features/loyalty/loyalty.routes').then(m => m.LOYALTY_ROUTES)
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
       },
     ],
   },
-
   {
     path: 'statistics',
     loadChildren: () =>
