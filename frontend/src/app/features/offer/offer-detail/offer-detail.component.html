@@ -1,0 +1,169 @@
+<div class="detail-container">
+  <div class="header">
+    <a mat-icon-button routerLink="/offers" class="back-btn"><mat-icon>arrow_back</mat-icon></a>
+    <h1>Oferta {{ offer()?.number }}</h1>
+    <div class="header-actions">
+      <button mat-stroked-button (click)="onGeneratePdf()"><mat-icon>picture_as_pdf</mat-icon> PDF</button>
+      <button mat-stroked-button [routerLink]="['edit']"><mat-icon>edit</mat-icon> Edytuj</button>
+      @if (offer()?.status === 'draft') {
+        <button mat-raised-button color="primary" (click)="onRequestApproval()">
+          <mat-icon>how_to_reg</mat-icon> Wyślij do akceptacji
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (offer(); as off) {
+    <div class="content">
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-card-title>Podsumowanie</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="summary-grid">
+            <div><span class="label">Klient:</span> {{ off.clientName }}</div>
+            <div><span class="label">Tytuł:</span> {{ off.title }}</div>
+            <div><span class="label">Data wystawienia:</span> {{ off.issueDate | date:'dd MMM yyyy' }}</div>
+            <div><span class="label">Ważna do:</span> {{ off.validUntil | date:'dd MMM yyyy' }}</div>
+            <div><span class="label">Status:</span> <mat-chip [class]="getStatusClass(off.status)">{{ getStatusLabel(off.status) }}</mat-chip></div>
+            <div><span class="label">Wartość brutto:</span> <strong>{{ off.totalGross | number:'1.2-2' }} {{ off.currency }}</strong></div>
+          </div>
+          @if (off.description) {
+            <div class="description"><span class="label">Opis:</span> {{ off.description }}</div>
+          }
+          @if (off.notes) {
+            <div class="notes"><span class="label">Uwagi:</span> {{ off.notes }}</div>
+          }
+          @if (off.tags?.length) {
+            <div class="tags">
+              <span class="label">Tagi:</span>
+              <mat-chip-set>
+                @for (tag of off.tags; track tag) {
+                  <mat-chip>{{ tag }}</mat-chip>
+                }
+              </mat-chip-set>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="items-card">
+        <mat-card-header>
+          <mat-card-title>Pozycje oferty</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="off.items" class="items-table">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Nazwa</th>
+              <td mat-cell *matCellDef="let item">{{ item.name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="quantity">
+              <th mat-header-cell *matHeaderCellDef>Ilość</th>
+              <td mat-cell *matCellDef="let item">{{ item.quantity }} {{ item.unit }}</td>
+            </ng-container>
+            <ng-container matColumnDef="netPrice">
+              <th mat-header-cell *matHeaderCellDef>Cena netto</th>
+              <td mat-cell *matCellDef="let item">{{ item.netPrice | number:'1.2-2' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="discount">
+              <th mat-header-cell *matHeaderCellDef>Rabat %</th>
+              <td mat-cell *matCellDef="let item">{{ item.discountPercent ?? 0 }}%</td>
+            </ng-container>
+            <ng-container matColumnDef="vatRate">
+              <th mat-header-cell *matHeaderCellDef>VAT %</th>
+              <td mat-cell *matCellDef="let item">{{ item.vatRate }}%</td>
+            </ng-container>
+            <ng-container matColumnDef="netAmount">
+              <th mat-header-cell *matHeaderCellDef>Netto</th>
+              <td mat-cell *matCellDef="let item">{{ item.netAmount | number:'1.2-2' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="vatAmount">
+              <th mat-header-cell *matHeaderCellDef>VAT</th>
+              <td mat-cell *matCellDef="let item">{{ item.vatAmount | number:'1.2-2' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="grossAmount">
+              <th mat-header-cell *matHeaderCellDef>Brutto</th>
+              <td mat-cell *matCellDef="let item">{{ item.grossAmount | number:'1.2-2' }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="extra-card">
+        <mat-tab-group>
+          <mat-tab label="Wersje">
+            @if (off.versions.length) {
+              <table mat-table [dataSource]="off.versions" class="versions-table">
+                <ng-container matColumnDef="version">
+                  <th mat-header-cell *matHeaderCellDef>Wersja</th>
+                  <td mat-cell *matCellDef="let v">v{{ v.version }}</td>
+                </ng-container>
+                <ng-container matColumnDef="createdAt">
+                  <th mat-header-cell *matHeaderCellDef>Data</th>
+                  <td mat-cell *matCellDef="let v">{{ v.createdAt | date:'dd MMM yyyy, HH:mm' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="createdBy">
+                  <th mat-header-cell *matHeaderCellDef>Utworzył</th>
+                  <td mat-cell *matCellDef="let v">{{ v.createdBy }}</td>
+                </ng-container>
+                <ng-container matColumnDef="changes">
+                  <th mat-header-cell *matHeaderCellDef>Zmiany</th>
+                  <td mat-cell *matCellDef="let v">{{ v.changes }}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="versionColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: versionColumns;"></tr>
+              </table>
+            } @else {
+              <p class="empty-state">Brak wersji</p>
+            }
+          </mat-tab>
+          <mat-tab label="Akceptacje">
+            @if (off.approvals.length) {
+              <table mat-table [dataSource]="off.approvals" class="approvals-table">
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let a">
+                    <mat-chip [class]="getApprovalStatusClass(a.status)">{{ a.status }}</mat-chip>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="requestedBy">
+                  <th mat-header-cell *matHeaderCellDef>Zgłaszający</th>
+                  <td mat-cell *matCellDef="let a">{{ a.requestedBy }}</td>
+                </ng-container>
+                <ng-container matColumnDef="requestedAt">
+                  <th mat-header-cell *matHeaderCellDef>Data zgłoszenia</th>
+                  <td mat-cell *matCellDef="let a">{{ a.requestedAt | date:'dd MMM yyyy, HH:mm' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="reviewedBy">
+                  <th mat-header-cell *matHeaderCellDef>Oceniający</th>
+                  <td mat-cell *matCellDef="let a">{{ a.reviewedBy || '-' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="reviewedAt">
+                  <th mat-header-cell *matHeaderCellDef>Data oceny</th>
+                  <td mat-cell *matCellDef="let a">{{ a.reviewedAt | date:'dd MMM yyyy, HH:mm' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="comments">
+                  <th mat-header-cell *matHeaderCellDef>Komentarz</th>
+                  <td mat-cell *matCellDef="let a">{{ a.comments || '-' }}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="approvalColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: approvalColumns;"></tr>
+              </table>
+            } @else {
+              <p class="empty-state">Brak akceptacji</p>
+            }
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card>
+    </div>
+  } @else {
+    <div class="not-found">
+      <mat-icon>error_outline</mat-icon>
+      <p>Nie znaleziono oferty</p>
+      <button mat-raised-button color="primary" routerLink="/offers">Powrót do listy</button>
+    </div>
+  }
+</div>

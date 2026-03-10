@@ -83,6 +83,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/loyalty/loyalty.routes').then(m => m.LOYALTY_ROUTES)
       },
       {
+        path: 'offers',
+        loadChildren: () => import('./features/offer/offer.routes').then(m => m.OFFERS_ROUTES)
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
       },

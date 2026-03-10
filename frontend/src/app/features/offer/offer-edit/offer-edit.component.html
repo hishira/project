@@ -1,0 +1,146 @@
+<div class="edit-container">
+  <div class="header">
+    <a mat-icon-button routerLink="/offers" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <h1>{{ isEdit ? 'Edytuj' : 'Nowa' }} ofertę</h1>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-card>
+      <mat-card-content>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Tytuł oferty</mat-label>
+            <input matInput formControlName="title" required>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Opis</mat-label>
+            <textarea matInput formControlName="description" rows="2"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row grid-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Klient</mat-label>
+            <mat-select formControlName="clientId" required>
+              @for (c of clients(); track c.id) {
+                <mat-option [value]="c.id">{{ c.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Waluta</mat-label>
+            <input matInput formControlName="currency" required>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row grid-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Data wystawienia</mat-label>
+            <input matInput [matDatepicker]="issuePicker" formControlName="issueDate" required>
+            <mat-datepicker-toggle matIconSuffix [for]="issuePicker"></mat-datepicker-toggle>
+            <mat-datepicker #issuePicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Ważna do</mat-label>
+            <input matInput [matDatepicker]="validPicker" formControlName="validUntil" required>
+            <mat-datepicker-toggle matIconSuffix [for]="validPicker"></mat-datepicker-toggle>
+            <mat-datepicker #validPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="items-card">
+      <mat-card-header>
+        <mat-card-title>Pozycje oferty</mat-card-title>
+        <button mat-stroked-button type="button" (click)="addItem()">
+          <mat-icon>add</mat-icon> Dodaj pozycję
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <div formArrayName="items">
+          @for (item of itemsArray.controls; track $index) {
+            <div [formGroupName]="$index" class="item-row">
+              <div class="item-header">
+                <span class="item-index">Pozycja {{ $index + 1 }}</span>
+                <button mat-icon-button type="button" color="warn" (click)="removeItem($index)" matTooltip="Usuń">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+              <div class="item-fields">
+                <mat-form-field appearance="outline" class="item-name">
+                  <mat-label>Nazwa</mat-label>
+                  <input matInput formControlName="name" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="item-desc">
+                  <mat-label>Opis</mat-label>
+                  <input matInput formControlName="description">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="item-qty">
+                  <mat-label>Ilość</mat-label>
+                  <input matInput type="number" formControlName="quantity" (input)="recalcItem($index)">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="item-unit">
+                  <mat-label>J.m.</mat-label>
+                  <input matInput formControlName="unit">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="item-price">
+                  <mat-label>Cena netto</mat-label>
+                  <input matInput type="number" formControlName="netPrice" (input)="recalcItem($index)">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="item-discount">
+                  <mat-label>Rabat %</mat-label>
+                  <input matInput type="number" formControlName="discountPercent" (input)="recalcItem($index)">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="item-vat">
+                  <mat-label>VAT %</mat-label>
+                  <input matInput type="number" formControlName="vatRate" (input)="recalcItem($index)">
+                </mat-form-field>
+                <div class="item-readonly">
+                  <span class="readonly-label">Netto:</span>
+                  <span class="readonly-value">{{ item.get('netAmount')?.value | number:'1.2-2' }}</span>
+                </div>
+                <div class="item-readonly">
+                  <span class="readonly-label">VAT:</span>
+                  <span class="readonly-value">{{ item.get('vatAmount')?.value | number:'1.2-2' }}</span>
+                </div>
+                <div class="item-readonly">
+                  <span class="readonly-label">Brutto:</span>
+                  <span class="readonly-value">{{ item.get('grossAmount')?.value | number:'1.2-2' }}</span>
+                </div>
+              </div>
+              <mat-divider></mat-divider>
+            </div>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="extra-card">
+      <mat-card-content>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Uwagi</mat-label>
+            <textarea matInput formControlName="notes" rows="2"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Tagi (oddzielone przecinkami)</mat-label>
+            <input matInput formControlName="tags" placeholder="np. pilne, promocja">
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="form-actions">
+      <button mat-stroked-button type="button" routerLink="/offers">Anuluj</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Zapisz</button>
+    </div>
+  </form>
+</div>
