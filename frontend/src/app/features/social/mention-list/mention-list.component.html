@@ -1,0 +1,126 @@
+<div class="list-container">
+  <div class="header">
+    <h1>Wzmianki w mediach społecznościowych</h1>
+    <div class="header-actions">
+      <button mat-stroked-button routerLink="publish">
+        <mat-icon>post_add</mat-icon> Zaplanuj post
+      </button>
+      <button mat-stroked-button routerLink="profiles">
+        <mat-icon>settings</mat-icon> Profile
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtry -->
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <div class="filters-grid">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Platforma</mat-label>
+          <mat-select [(ngModel)]="filterPlatform" (selectionChange)="applyFilters()">
+            <mat-option value="">Wszystkie</mat-option>
+            @for (p of platforms; track p.value) {
+              <mat-option [value]="p.value">{{ p.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Sentyment</mat-label>
+          <mat-select [(ngModel)]="filterSentiment" (selectionChange)="applyFilters()">
+            <mat-option value="">Wszystkie</mat-option>
+            @for (s of sentiments; track s.value) {
+              <mat-option [value]="s.value">{{ s.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Autor</mat-label>
+          <input matInput [(ngModel)]="filterAuthor" (input)="applyFilters()">
+        </mat-form-field>
+      </div>
+      <div class="filter-actions">
+        <button mat-button (click)="clearFilters()">Wyczyść filtry</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" matSort class="mention-table">
+        <ng-container matColumnDef="platform">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="platform">Platforma</th>
+          <td mat-cell *matCellDef="let m">
+            <mat-icon [matTooltip]="m.platform">{{ getPlatformIcon(m.platform) }}</mat-icon>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="author">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="authorName">Autor</th>
+          <td mat-cell *matCellDef="let m">
+            <div class="author-cell">
+              <img [src]="m.authorAvatar" alt="" class="avatar" />
+              {{ m.authorName }}
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="content">
+          <th mat-header-cell *matHeaderCellDef>Treść</th>
+          <td mat-cell *matCellDef="let m">
+            <div class="content-cell">
+              <span class="snippet">{{ m.content | slice:0:80 }}{{ m.content.length > 80 ? '...' : '' }}</span>
+              @if (m.isFlagged) {
+                <mat-icon class="flagged" matTooltip="Oflagowane">flag</mat-icon>
+              }
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="sentiment">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="sentiment">Sentyment</th>
+          <td mat-cell *matCellDef="let m">
+            <mat-icon [style.color]="getSentimentColor(m.sentiment)" [matTooltip]="m.sentiment">
+              {{ getSentimentIcon(m.sentiment) }}
+            </mat-icon>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="engagement">
+          <th mat-header-cell *matHeaderCellDef>Zaangażowanie</th>
+          <td mat-cell *matCellDef="let m">
+            <div class="engagement">
+              <span matTooltip="Polubienia"><mat-icon>favorite</mat-icon>{{ m.engagement.likes }}</span>
+              <span matTooltip="Udostępnienia"><mat-icon>share</mat-icon>{{ m.engagement.shares }}</span>
+              <span matTooltip="Komentarze"><mat-icon>comment</mat-icon>{{ m.engagement.comments }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="postedAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="postedAt">Data</th>
+          <td mat-cell *matCellDef="let m">{{ m.postedAt | date:'dd MMM HH:mm' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let m">
+            <button mat-icon-button [routerLink]="[m.id]" matTooltip="Szczegóły">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="[row.id]" class="clickable-row"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+            <div class="no-data">Brak wzmianek spełniających kryteria</div>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5,10,25,50]" showFirstLastButtons></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

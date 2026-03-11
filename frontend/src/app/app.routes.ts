@@ -87,6 +87,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/offer/offer.routes').then(m => m.OFFERS_ROUTES)
       },
       {
+        path: 'social',
+        loadChildren: () => import('./features/social/social.routes').then(m => m.SOCIAL_ROUTES)
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
       },

@@ -1,8 +1,8 @@
-import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -37,5 +37,5 @@ export class OfferApprovalDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<OfferApprovalDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { offer: Offer }
-  ) {}
+  ) { }
 }

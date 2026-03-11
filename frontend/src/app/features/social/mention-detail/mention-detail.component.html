@@ -1,0 +1,118 @@
+<div class="detail-container">
+  <div class="header">
+    <a mat-icon-button routerLink="/social/mentions" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <h1>Szczegóły wzmianki</h1>
+  </div>
+
+  @if (mention(); as m) {
+    <div class="content">
+      <mat-card class="main-card">
+        <mat-card-header>
+          <div class="header-row">
+            <div class="author">
+              <img [src]="m.authorAvatar" alt="" class="avatar" />
+              <div>
+                <div class="author-name">{{ m.authorName }}</div>
+                <div class="author-meta">
+                  <mat-icon>{{ getPlatformIcon(m.platform) }}</mat-icon>
+                  {{ m.platform }} · {{ m.type }}
+                </div>
+              </div>
+            </div>
+            <div class="sentiment">
+              <mat-icon [style.color]="getSentimentData(m.sentiment).color">
+                {{ getSentimentData(m.sentiment).icon }}
+              </mat-icon>
+              <span>{{ getSentimentData(m.sentiment).label }}</span>
+            </div>
+          </div>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="content-box">
+            <p>{{ m.content }}</p>
+            <div class="meta">
+              <span class="date">{{ m.postedAt | date:'dd MMM yyyy, HH:mm' }}</span>
+              <a [href]="m.url" target="_blank" mat-stroked-button>
+                <mat-icon>open_in_new</mat-icon> Zobacz oryginał
+              </a>
+            </div>
+          </div>
+
+          <div class="engagement">
+            <div class="stat"><mat-icon>favorite</mat-icon> {{ m.engagement.likes }}</div>
+            <div class="stat"><mat-icon>share</mat-icon> {{ m.engagement.shares }}</div>
+            <div class="stat"><mat-icon>comment</mat-icon> {{ m.engagement.comments }}</div>
+          </div>
+
+          @if (m.tags && m.tags.length) {
+            <div class="tags">
+              <mat-chip-set>
+                @for (tag of m.tags; track tag) {
+                  <mat-chip>{{ tag }}</mat-chip>
+                }
+              </mat-chip-set>
+            </div>
+          }
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-button (click)="onMarkRead()" [disabled]="m.isRead">
+            <mat-icon>mark_email_read</mat-icon> Oznacz jako przeczytane
+          </button>
+          <button mat-button (click)="onFlag()">
+            <mat-icon>{{ m.isFlagged ? 'outlined_flag' : 'flag' }}</mat-icon>
+            {{ m.isFlagged ? 'Usuń flagę' : 'Oflaguj' }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <!-- Panel zarządzania -->
+      <mat-card class="management-card">
+        <mat-card-header>
+          <mat-card-title>Zarządzanie</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="field">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Przypisz do (ID użytkownika)</mat-label>
+              <input matInput [(ngModel)]="assignedTo" placeholder="np. u1">
+            </mat-form-field>
+            <button mat-raised-button (click)="onAssign()">Przypisz</button>
+          </div>
+          <div class="field">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Powiąż z kontaktem (ID)</mat-label>
+              <input matInput [(ngModel)]="relatedContactId" placeholder="np. c1">
+            </mat-form-field>
+            <button mat-raised-button (click)="onLinkContact()">Powiąż</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Odpowiedź -->
+      <mat-card class="reply-card">
+        <mat-card-header>
+          <mat-card-title>Odpowiedz</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Twoja odpowiedź</mat-label>
+            <textarea matInput [(ngModel)]="comment" rows="3"></textarea>
+          </mat-form-field>
+          <div class="reply-actions">
+            <button mat-raised-button color="primary" (click)="onReply()">Wyślij odpowiedź</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  } @else {
+    <div class="not-found">
+      <mat-icon>error_outline</mat-icon>
+      <p>Nie znaleziono wzmianki</p>
+      <button mat-raised-button color="primary" routerLink="/social/mentions">Powrót do listy</button>
+    </div>
+  }
+</div>
