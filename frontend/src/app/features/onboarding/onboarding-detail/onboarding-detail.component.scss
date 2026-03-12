@@ -1,0 +1,188 @@
+.detail-container {
+  padding: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: #1e293b;
+    flex: 1;
+  }
+}
+
+.summary-card {
+  margin-bottom: 24px;
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+
+    .label {
+      color: #64748b;
+      margin-right: 8px;
+    }
+
+    .progress {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .progress-value {
+        font-weight: 600;
+        color: #0f172a;
+      }
+    }
+  }
+}
+
+.status-chip-large {
+  font-size: 0.9rem;
+  padding: 4px 12px;
+  min-height: 32px;
+  margin-left: 8px;
+}
+
+.detail-tabs {
+  .tab-content {
+    padding: 24px 0;
+  }
+}
+
+.inner-card {
+  .mat-mdc-card-header {
+    padding: 16px 16px 0;
+  }
+}
+
+.task-item, .material-item, .webinar-item {
+  height: auto !important;
+  padding: 12px 0;
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+
+  .task-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .task-title {
+      font-weight: 500;
+      color: #0f172a;
+    }
+    .task-desc {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+  }
+
+  .task-completed {
+    color: #2e7d32;
+    font-size: 0.85rem;
+  }
+  .task-pending {
+    color: #ed6c02;
+    font-size: 0.85rem;
+  }
+}
+
+.material-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+
+  .material-icon {
+    color: #1976d2;
+  }
+
+  .material-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .material-title {
+      font-weight: 500;
+    }
+    .material-duration {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+  }
+
+  .material-status {
+    .viewed {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #2e7d32;
+    }
+  }
+}
+
+.webinar-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .webinar-info {
+    display: flex;
+    flex-direction: column;
+
+    .webinar-title {
+      font-weight: 500;
+      color: #0f172a;
+    }
+    .webinar-meta, .webinar-host {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+  }
+
+  .webinar-status {
+    .registered, .attended {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #1976d2;
+    }
+    .attended {
+      color: #2e7d32;
+    }
+  }
+}
+
+.not-found {
+  text-align: center;
+  padding: 48px;
+  color: #64748b;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin-bottom: 24px;
+  }
+}

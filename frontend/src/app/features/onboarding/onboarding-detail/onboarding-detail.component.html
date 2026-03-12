@@ -1,0 +1,167 @@
+<div class="detail-container">
+  <div class="header">
+    <a mat-icon-button routerLink="/onboarding" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <h1>Onboarding: {{ onboarding()?.clientName }}</h1>
+    <div class="header-actions">
+      <button mat-stroked-button (click)="sendReminder()">
+        <mat-icon>notifications</mat-icon> Wyślij przypomnienie
+      </button>
+    </div>
+  </div>
+
+  @if (onboarding(); as onb) {
+    <div class="content">
+      <!-- Karta podsumowania -->
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <div class="summary-grid">
+            <div class="d-flex align-items-center">
+              <span class="label">Status:</span>
+              <mat-chip [class]="getStatusClass(onb.status)" class="status-chip-large">
+                {{ getStatusLabel(onb.status) }}
+              </mat-chip>
+            </div>
+            <div class="d-flex align-items-center">
+              <span class="label">Rozpoczęto:</span> {{ onb.startDate | date: 'dd MMM yyyy' }}
+            </div>
+            <div class="d-flex align-items-center">
+              <span class="label">Planowane zakończenie:</span> {{ onb.endDate | date: 'dd MMM yyyy' }}
+            </div>
+            <div class="d-flex align-items-center">
+              <span class="label">Postęp:</span>
+              <div class="progress w-100">
+                <span class="progress-value">{{ onb.progress }}%</span>
+                <mat-progress-bar mode="determinate" [value]="onb.progress"></mat-progress-bar>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Zakładki -->
+      <mat-tab-group class="detail-tabs">
+        <mat-tab label="Zadania">
+          <div class="tab-content">
+            <mat-card class="inner-card">
+              <mat-card-header>
+                <mat-card-title>Lista zadań onboardingowych</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-list>
+                  @for (task of onb.tasks; track task.id) {
+                    <mat-list-item class="task-item">
+                      <div class="task-row">
+                        <mat-checkbox [checked]="task.status === 'completed'" (change)="toggleTask(task)">
+                        </mat-checkbox>
+                        <div class="task-info">
+                          <span class="task-title">{{ task.title }}</span>
+                          @if (task.description) {
+                            <span class="task-desc">{{ task.description }}</span>
+                          }
+                        </div>
+                        @if (task.completedAt) {
+                          <span class="task-completed">✓ {{ task.completedAt | date: 'dd MMM' }}</span>
+                        } @else {
+                          <span class="task-pending">Oczekuje</span>
+                        }
+                      </div>
+                    </mat-list-item>
+                  }
+                </mat-list>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Materiały szkoleniowe">
+          <div class="tab-content">
+            <mat-card class="inner-card">
+              <mat-card-header>
+                <mat-card-title>Materiały do zapoznania</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-list>
+                  @for (mat of onb.materials; track mat.id) {
+                    <mat-list-item class="material-item">
+                      <div class="material-row">
+                        <mat-icon class="material-icon">{{ getMaterialIcon(mat.type) }}</mat-icon>
+                        <div class="material-info">
+                          <span class="material-title">{{ mat.title }}</span>
+                          @if (mat.duration) {
+                            <span class="material-duration">({{ mat.duration }} min)</span>
+                          }
+                        </div>
+                        <div class="material-status">
+                          @if (mat.viewedByClient) {
+                            <span class="viewed">
+                              <mat-icon>check_circle</mat-icon> Obejrzane {{ mat.viewedAt | date: 'dd MMM' }}
+                            </span>
+                          } @else {
+                            <button mat-stroked-button (click)="markMaterialViewed(mat)">
+                              <mat-icon>visibility</mat-icon> Oznacz jako obejrzane
+                            </button>
+                          }
+                        </div>
+                        <a mat-icon-button [href]="mat.url" target="_blank" matTooltip="Otwórz">
+                          <mat-icon>open_in_new</mat-icon>
+                        </a>
+                      </div>
+                    </mat-list-item>
+                  }
+                </mat-list>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Webinary">
+          <div class="tab-content">
+            <mat-card class="inner-card">
+              <mat-card-header>
+                <mat-card-title>Zaplanowane webinary</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-list>
+                  @for (web of onb.webinars; track web.id) {
+                    <mat-list-item class="webinar-item">
+                      <div class="webinar-row">
+                        <div class="webinar-info">
+                          <span class="webinar-title">{{ web.title }}</span>
+                          <span class="webinar-meta">
+                            {{ web.scheduledAt | date: 'dd MMM yyyy, HH:mm' }} ({{ web.duration }} min)
+                          </span>
+                          <span class="webinar-host">Prowadzący: {{ web.host }}</span>
+                        </div>
+                        <div class="webinar-status">
+                          @if (web.registered) {
+                            @if (web.attended) {
+                              <span class="attended"><mat-icon>check_circle</mat-icon> Uczestniczył</span>
+                            } @else {
+                              <span class="registered"><mat-icon>event</mat-icon> Zarejestrowany</span>
+                            }
+                          } @else {
+                            <button mat-stroked-button (click)="registerForWebinar(web)">
+                              <mat-icon>event_available</mat-icon> Zarejestruj
+                            </button>
+                          }
+                        </div>
+                      </div>
+                    </mat-list-item>
+                  }
+                </mat-list>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  } @else {
+    <div class="not-found">
+      <mat-icon>error_outline</mat-icon>
+      <p>Nie znaleziono onboardingu</p>
+      <button mat-raised-button color="primary" routerLink="/onboarding">Powrót do listy</button>
+    </div>
+  }
+</div>

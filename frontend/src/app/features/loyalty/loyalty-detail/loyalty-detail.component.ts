@@ -1,15 +1,15 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { CustomerLoyalty, Reward } from '../loyalty.model';
 import { LoyaltyService } from '../loyalty.service';
-import { CustomerLoyalty, PointsTransaction, Reward } from '../loyalty.model';
 
 @Component({
   selector: 'app-loyalty-detail',
