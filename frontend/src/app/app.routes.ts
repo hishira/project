@@ -95,6 +95,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/onboarding/onboarding.routes').then(m => m.ONBOARDING_ROUTES)
       },
       {
+        path: 'analytics',
+        loadChildren: () => import('./features/report/analytics.routes').then(m => m.ANALYTICS_ROUTES)
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
       },

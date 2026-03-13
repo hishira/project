@@ -1,0 +1,51 @@
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Dashboard menedżerski</h1>
+    <div class="header-actions">
+      <button mat-stroked-button (click)="customizeDashboard()">
+        <mat-icon>dashboard_customize</mat-icon> Dostosuj
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Więcej opcji">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Zapisz układ</button>
+        <button mat-menu-item>Przywróć domyślny</button>
+        <button mat-menu-item>Eksportuj dashboard (PDF)</button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <mat-grid-list [cols]="cols()" rowHeight="400px" gutterSize="16">
+    @for (widget of widgets; track widget.id) {
+      <mat-grid-tile [colspan]="getWidgetSize(widget.size)">
+        <div class="widget-wrapper">
+          <mat-card class="widget-card">
+            <mat-card-header>
+              <mat-card-title>{{ widget.title }}</mat-card-title>
+              <button mat-icon-button (click)="refreshWidget(widget.id)" matTooltip="Odśwież">
+                <mat-icon>refresh</mat-icon>
+              </button>
+            </mat-card-header>
+            <mat-card-content class="widget-content">
+              @switch (widget.type) {
+                @case ('kpi') {
+                  <app-kpi-card [config]="widget.config" />
+                }
+                @case ('chart') {
+                  <app-chart-widget [config]="widget.config" />
+                }
+                @case ('prediction') {
+                  <app-prediction-widget [config]="widget.config" />
+                }
+                @default {
+                  <div class="placeholder">Widget w budowie</div>
+                }
+              }
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-grid-tile>
+    }
+  </mat-grid-list>
+</div>
