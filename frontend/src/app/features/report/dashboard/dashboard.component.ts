@@ -1,16 +1,18 @@
-import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatGridListModule } from '@angular/material/grid-list';
+import { RouterLink } from '@angular/router';
 import { AnalyticsService } from '../analytics.service';
-import { KpiCardComponent } from '../kpi-card/kpi-card.component';
 import { ChartWidgetComponent } from '../chart-widget/chart-widget.component';
+import { KpiCardComponent } from '../kpi-card/kpi-card.component';
 import { PredictionWidgetComponent } from '../prediction-widget/prediction-widget.component';
+import { MainPageViewComponent } from './../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from './../../../core/components/page-header/page-header.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +20,7 @@ import { PredictionWidgetComponent } from '../prediction-widget/prediction-widge
   imports: [
     CommonModule, RouterLink,
     MatCardModule, MatIconModule, MatButtonModule, MatMenuModule, MatTooltipModule, MatGridListModule,
-    KpiCardComponent, ChartWidgetComponent, PredictionWidgetComponent
+    KpiCardComponent, ChartWidgetComponent, PredictionWidgetComponent, PageHeaderComponent, MainPageViewComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']

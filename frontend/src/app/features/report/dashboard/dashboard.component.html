@@ -1,21 +1,23 @@
-<div class="dashboard-container">
-  <div class="header">
-    <h1>Dashboard menedżerski</h1>
-    <div class="header-actions">
-      <button mat-stroked-button (click)="customizeDashboard()">
-        <mat-icon>dashboard_customize</mat-icon> Dostosuj
-      </button>
-      <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Więcej opcji">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>Zapisz układ</button>
-        <button mat-menu-item>Przywróć domyślny</button>
-        <button mat-menu-item>Eksportuj dashboard (PDF)</button>
-      </mat-menu>
+<app-page-header>
+  <div class="main-header">
+    <div class="font-bold font">
+      <h1>Dashboard menedżerski</h1>
     </div>
   </div>
+  <div class="main-header-buttons d-flex align-items-center">
+    <button mat-stroked-button (click)="customizeDashboard()"><mat-icon>dashboard_customize</mat-icon> Dostosuj</button>
+    <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Więcej opcji">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>Zapisz układ</button>
+      <button mat-menu-item>Przywróć domyślny</button>
+      <button mat-menu-item>Eksportuj dashboard (PDF)</button>
+    </mat-menu>
+  </div>
+</app-page-header>
 
+<app-main-page-view>
   <mat-grid-list [cols]="cols()" rowHeight="400px" gutterSize="16">
     @for (widget of widgets; track widget.id) {
       <mat-grid-tile [colspan]="getWidgetSize(widget.size)">
@@ -48,4 +50,4 @@
       </mat-grid-tile>
     }
   </mat-grid-list>
-</div>
+</app-main-page-view>
