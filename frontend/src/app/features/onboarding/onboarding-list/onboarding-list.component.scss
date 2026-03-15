@@ -29,7 +29,7 @@
   transition: box-shadow 0.2s;
 
   &:hover {
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   }
 
   .progress-section {
@@ -50,9 +50,20 @@
     margin-top: 8px;
   }
 
-  .status-in-progress { background-color: #dbeafe !important; color: #1e3a8a !important; }
-  .status-completed { background-color: #d1fae5 !important; color: #065f46 !important; }
-  .status-overdue { background-color: #fee2e2 !important; color: #b91c1c !important; }
+  .status-in-progress {
+    background-color: #dbeafe !important;
+    color: #1e3a8a !important;
+  }
+
+  .status-completed {
+    background-color: #d1fae5 !important;
+    color: #065f46 !important;
+  }
+
+  .status-overdue {
+    background-color: #fee2e2 !important;
+    color: #b91c1c !important;
+  }
 }
 
 .empty-state {

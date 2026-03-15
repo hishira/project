@@ -2,7 +2,7 @@
 
 // Angular Material Theme
 @use '@angular/material' as mat;
-@import '../node_modules/bootstrap/scss/bootstrap';
+@use '../node_modules/bootstrap/scss/bootstrap';
 
 // Include the common styles for Angular Material
 @include mat.core();

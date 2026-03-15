@@ -6,13 +6,14 @@ import { ReadonlyOnlyComponent } from '../../../core/components/read-only/read-o
 import { UserMock, UserMockCredentials } from '../../../core/mocks/user.mocks';
 import { ModalService } from '../../../core/services/modal.service';
 import { EditUserGeneralInformation } from '../edit-user-general-information/edit-user-general-information';
+import { AdminDirective } from './../../../core/directives/admin.directive';
 
 @Component({
   selector: 'app-user-general-information',
   templateUrl: './user-general-information.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatCardModule, ReadonlyOnlyComponent, MatButtonModule],
+  imports: [MatCardModule, ReadonlyOnlyComponent, MatButtonModule, AdminDirective],
   providers: [ModalService]
 })
 export class UserGeneralInformationComponent {

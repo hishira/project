@@ -11,7 +11,7 @@
               <div class="stat-item">
                 <mat-icon class="stat-icon activities">account_circle</mat-icon>
                 <div class="stat-details">
-                  <div class="stat-value">{{statistics?.totalUsers || 0}}</div>
+                  <div class="stat-value">{{statistics.totalUsers ?? 0}}</div>
                   <div class="stat-label" >Total users</div>
                 </div>
               </div>
@@ -23,7 +23,7 @@
               <div class="stat-item">
                 <mat-icon class="stat-icon duration">apps</mat-icon>
                 <div class="stat-details">
-                  <div class="stat-value">{{statistics?.totalApps || 0}}</div>
+                  <div class="stat-value">{{statistics.totalApps ?? 0}}</div>
                   <div class="stat-label">Total applications</div>
                 </div>
               </div>
@@ -35,7 +35,7 @@
               <div class="stat-item">
                 <mat-icon class="stat-icon calories">handshake</mat-icon>
                 <div class="stat-details">
-                  <div class="stat-value">{{statistics?.totalAgreements || 0}}</div>
+                  <div class="stat-value">{{statistics.totalAgreements ?? 0}}</div>
                   <div class="stat-label">Total Agreements</div>
                 </div>
               </div>
@@ -47,7 +47,7 @@
               <div class="stat-item">
                 <mat-icon class="stat-icon distance">bar_chart</mat-icon>
                 <div class="stat-details">
-                  <div class="stat-value">{{statistics?.charts || 0}}</div>
+                  <div class="stat-value">{{statistics.charts ?? 0}}</div>
                   <div class="stat-label">Charts</div>
                 </div>
               </div>

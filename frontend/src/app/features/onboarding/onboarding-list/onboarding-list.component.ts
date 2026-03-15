@@ -1,12 +1,14 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { OnboardingService } from '../onboarding.service';
 
 @Component({
@@ -15,7 +17,9 @@ import { OnboardingService } from '../onboarding.service';
   imports: [
     CommonModule, RouterLink,
     MatCardModule, MatIconModule, MatButtonModule,
-    MatChipsModule, MatProgressBarModule, MatTooltipModule
+    MatChipsModule, MatProgressBarModule, MatTooltipModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './onboarding-list.component.html',
   styleUrls: ['./onboarding-list.component.scss']

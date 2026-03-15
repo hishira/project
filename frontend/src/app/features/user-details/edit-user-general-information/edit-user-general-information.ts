@@ -16,7 +16,7 @@ export type EditUserGeneralInformationDataProps = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './edit-user-general-information.html',
   styleUrl: './edit-user-general-information.scss',
-  imports: [MatButtonModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, GenericForm],
+  imports: [MatButtonModule, MatDialogContent, MatDialogActions, MatDialogClose, GenericForm],
 })
 export class EditUserGeneralInformation extends CommonModal<EditUserGeneralInformationDataProps> {
   readonly genericEditFormGroup = createEditUserFormGroup(this.data)

@@ -128,7 +128,7 @@
                 <div class="config-item">
                   <span>Kanał:</span> {{ int.config.channel || 'domyślny' }}
                 </div>
-                @if (int.config.notifyOn?.length) {
+                @if (int?.config?.notifyOn?.length) {
                   <div class="config-item">
                     <span>Powiadomienia:</span> {{ int.config.notifyOn.join(', ') }}
                   </div>

@@ -1,17 +1,16 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatTableModule } from '@angular/material/table';
-import { AnalyticsService } from '../analytics.service';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { AnalyticsService } from '../analytics.service';
 
 @Component({
   selector: 'app-predictions',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatCardModule, MatTabsModule, MatTableModule, MatChipsModule, MatListModule],
+  imports: [CommonModule, MatCardModule, MatTabsModule, MatTableModule, MatChipsModule, MatListModule],
   template: `
     <div class="predictions-container">
       <h1>Analityka predykcyjna</h1>

@@ -40,7 +40,7 @@
           label="Województwo"
           [outlineControl]="outlineControl()"
           [selectableConfig]="selectableConfig"
-          [validators]="this.addressValidatorObject()?.zone ?? []"
+          [validators]="this.addressValidatorObject().zone ?? []"
           [values]="zones" />
       </div>
       <mat-form-field class="example-full-width" [appearance]="controlType()">

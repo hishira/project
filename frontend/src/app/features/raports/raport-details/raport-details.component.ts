@@ -5,9 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-// import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { ActivatedRoute } from '@angular/router';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { Report } from '../types';
@@ -20,7 +18,6 @@ import { SAMPLE_REPORT_DETAILS } from './samples';
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
@@ -47,6 +44,6 @@ export class ReportDetailComponent implements OnInit {
       this.report = SAMPLE_REPORT_DETAILS[0];
     }
 
-  
+
   }
 }

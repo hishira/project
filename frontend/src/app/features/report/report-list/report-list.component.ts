@@ -1,29 +1,43 @@
-import { Component, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { AnalyticsService } from '../analytics.service';
 import { ReportDefinition } from '../report.models';
-import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-report-list',
   standalone: true,
   imports: [
-    CommonModule, RouterLink,
-    MatTableModule, MatSortModule, MatPaginatorModule,
-    MatIconModule, MatButtonModule, MatChipsModule, MatTooltipModule,
-    MatFormFieldModule, MatInputModule, MatSelectModule, FormsModule, MatCardModule
+    CommonModule, 
+    RouterLink,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    FormsModule,
+    MatCardModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './report-list.component.html',
   styleUrls: ['./report-list.component.scss']

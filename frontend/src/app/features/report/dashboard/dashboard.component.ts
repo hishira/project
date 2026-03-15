@@ -18,7 +18,7 @@ import { PageHeaderComponent } from './../../../core/components/page-header/page
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    CommonModule, RouterLink,
+    CommonModule,
     MatCardModule, MatIconModule, MatButtonModule, MatMenuModule, MatTooltipModule, MatGridListModule,
     KpiCardComponent, ChartWidgetComponent, PredictionWidgetComponent, PageHeaderComponent, MainPageViewComponent
   ],
