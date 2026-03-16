@@ -32,7 +32,7 @@ export class DocumentDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private documentService = inject(DocumentService);
   document = signal<Document | undefined>(undefined);
-readonly now = Date.now();
+  readonly now = Date.now();
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -42,7 +42,7 @@ readonly now = Date.now();
   }
 
   isExpired(document: any): boolean {
-    return document.expiryDate < (this.now )
+    return document.expiryDate < (this.now)
   }
   getTypeIcon(type: string): string {
     const icons: Record<string, string> = {

@@ -1,22 +1,22 @@
-import { Component, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DocumentService } from '../document.service';
-import { Document, DocumentType } from '../document.models';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
+import { Document, DocumentType } from '../document.models';
+import { DocumentService } from '../document.service';
 
 @Component({
   selector: 'app-document-list',
