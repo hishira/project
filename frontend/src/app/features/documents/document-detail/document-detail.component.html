@@ -49,7 +49,7 @@
               <div class="metadata-item">
                 <mat-icon>schedule</mat-icon>
                 <span class="label">Data dodania:</span>
-                <span class="value">{{ doc.uploadedAt | date:'dd MMM yyyy, HH:mm' }}</span>
+                <span class="value">{{ doc.uploadedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
               </div>
               <div class="metadata-item">
                 <mat-icon>save</mat-icon>
@@ -67,7 +67,7 @@
                 <div class="metadata-item" [class.expiring]="isExpired(doc.expiryDate)">
                   <mat-icon>event</mat-icon>
                   <span class="label">Ważność:</span>
-                  <span class="value">{{ doc.expiryDate | date:'dd MMM yyyy' }}</span>
+                  <span class="value">{{ doc.expiryDate | date: 'dd MMM yyyy' }}</span>
                 </div>
               }
             </div>
@@ -99,7 +99,9 @@
           @if (doc.type === 'annex' && doc.annexTo) {
             <section class="section">
               <h3>Dokument nadrzędny</h3>
-              <p>Jest to aneks do dokumentu: <a [routerLink]="['/documents', doc.annexTo]">{{ doc.annexTo }}</a></p>
+              <p>
+                Jest to aneks do dokumentu: <a [routerLink]="['/documents', doc.annexTo]">{{ doc.annexTo }}</a>
+              </p>
             </section>
           }
         </mat-card-content>

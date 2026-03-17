@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     public activityService: ActivityService,
     private statisticsService: StatisticsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadDashboardData();
