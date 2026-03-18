@@ -102,7 +102,8 @@
   color: #1e293b;
 }
 
-.contacts-card, .documents-card {
+.contacts-card,
+.documents-card {
   .empty-state {
     color: #94a3b8;
     text-align: center;
@@ -189,10 +190,25 @@
   padding: 0 8px;
 }
 
-.status-active { background-color: #d1fae5 !important; color: #065f46 !important; }
-.status-inactive { background-color: #e2e8f0 !important; color: #334155 !important; }
-.status-lead { background-color: #fef3c7 !important; color: #92400e !important; }
-.status-former { background-color: #fee2e2 !important; color: #b91c1c !important; }
+.status-active {
+  background-color: #d1fae5 !important;
+  color: #065f46 !important;
+}
+
+.status-inactive {
+  background-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+.status-lead {
+  background-color: #fef3c7 !important;
+  color: #92400e !important;
+}
+
+.status-former {
+  background-color: #fee2e2 !important;
+  color: #b91c1c !important;
+}
 
 .documents-table {
   width: 100%;

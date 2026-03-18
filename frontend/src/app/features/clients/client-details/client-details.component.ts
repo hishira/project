@@ -39,10 +39,10 @@ export class ClientDetailsComponent implements OnInit {
     private clientService = inject(ClientService);
     private documentService = inject(DocumentService);
 
-    client = signal<Client | undefined>(undefined);
-    clientDocuments = signal<Document[]>([]);
+    readonly client = signal<Client | undefined>(undefined);
+    readonly clientDocuments = signal<Document[]>([]);
 
-    displayedColumns: string[] = ['name', 'type', 'uploaded', 'version', 'actions'];
+    readonly displayedColumns: string[] = ['name', 'type', 'uploaded', 'version', 'actions'];
 
     ngOnInit(): void {
         const id = this.route.snapshot.paramMap.get('id');

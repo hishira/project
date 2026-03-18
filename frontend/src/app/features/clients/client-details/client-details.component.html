@@ -83,8 +83,8 @@
             <section class="section">
               <h3>Adres</h3>
               <div class="address">
-                {{ c.address.street }}<br>
-                {{ c.address.postalCode }} {{ c.address.city }}<br>
+                {{ c.address.street }}<br />
+                {{ c.address.postalCode }} {{ c.address.city }}<br />
                 {{ c.address.country }}
               </div>
             </section>
@@ -129,14 +129,10 @@
                     </div>
                     <div class="contact-details">
                       @if (contact.phone) {
-                        <div class="contact-detail">
-                          <mat-icon>phone</mat-icon> {{ contact.phone }}
-                        </div>
+                        <div class="contact-detail"><mat-icon>phone</mat-icon> {{ contact.phone }}</div>
                       }
                       @if (contact.email) {
-                        <div class="contact-detail">
-                          <mat-icon>email</mat-icon> {{ contact.email }}
-                        </div>
+                        <div class="contact-detail"><mat-icon>email</mat-icon> {{ contact.email }}</div>
                       }
                     </div>
                   </div>
@@ -153,7 +149,7 @@
       <mat-card class="documents-card">
         <mat-card-header>
           <mat-card-title>Dokumenty ({{ clientDocuments().length }})</mat-card-title>
-          <button mat-button routerLink="/documents" [queryParams]="{clientId: c.id}">Zobacz wszystkie</button>
+          <button mat-button routerLink="/documents" [queryParams]="{ clientId: c.id }">Zobacz wszystkie</button>
         </mat-card-header>
         <mat-card-content>
           @if (clientDocuments().length > 0) {
@@ -174,7 +170,7 @@
 
               <ng-container matColumnDef="uploaded">
                 <th mat-header-cell *matHeaderCellDef>Data dodania</th>
-                <td mat-cell *matCellDef="let doc">{{ doc.uploadedAt | date:'dd MMM yyyy' }}</td>
+                <td mat-cell *matCellDef="let doc">{{ doc.uploadedAt | date: 'dd MMM yyyy' }}</td>
               </ng-container>
 
               <ng-container matColumnDef="version">
@@ -192,7 +188,7 @@
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>
           } @else {
             <p class="empty-state">Brak dokumentów</p>
