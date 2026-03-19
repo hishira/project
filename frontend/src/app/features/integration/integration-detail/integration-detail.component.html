@@ -1,12 +1,16 @@
-<div class="detail-container">
-  <div class="header">
-    <a mat-icon-button routerLink="/integrations" class="back-btn">
-      <mat-icon>arrow_back</mat-icon>
-    </a>
+<app-page-header>
+  <div class="main-header">
     <h1>Szczegóły integracji</h1>
   </div>
-
-  @if (integration(); as int) {
+  <div class="main-header-buttons d-flex align-items-center gap-3">
+    <button mat-stroked-button (click)="onTest()"><mat-icon>sync</mat-icon> Testuj</button>
+    <button mat-stroked-button color="primary" (click)="onEdit()"><mat-icon>edit</mat-icon> Edytuj</button>
+  </div>
+</app-page-header>
+<app-main-page-view>
+<div class="detail-container">
+  @let int = integration();
+  @if (int) {
     <div class="content">
       <mat-card class="main-card">
         <mat-card-header>
@@ -14,20 +18,14 @@
             <div class="title-section">
               <mat-card-title>{{ int.name }}</mat-card-title>
               <mat-card-subtitle>
-                <mat-icon class="status-icon" [style.color]="getStatusColor(int.status)">{{ getStatusIcon(int.status) }}</mat-icon>
+                <mat-icon class="status-icon" [style.color]="getStatusColor(int.status)">{{
+                  getStatusIcon(int.status)
+                }}</mat-icon>
                 Status: {{ int.status }}
                 @if (isCalendar(int) || isMessenger(int)) {
                   · {{ int.provider }}
                 }
               </mat-card-subtitle>
-            </div>
-            <div class="header-actions">
-              <button mat-stroked-button (click)="onTest()">
-                <mat-icon>sync</mat-icon> Testuj
-              </button>
-              <button mat-stroked-button color="primary" (click)="onEdit()">
-                <mat-icon>edit</mat-icon> Edytuj
-              </button>
             </div>
           </div>
         </mat-card-header>
@@ -134,12 +132,12 @@
                         </span>
                       </div>
                       <div class="key-meta">
-                        <span class="key-date">Utworzono: {{ key.createdAt | date:'dd MMM yyyy' }}</span>
+                        <span class="key-date">Utworzono: {{ key.createdAt | date: 'dd MMM yyyy' }}</span>
                         @if (key.lastUsed) {
-                          <span class="key-date">Ostatnio użyty: {{ key.lastUsed | date:'dd MMM yyyy' }}</span>
+                          <span class="key-date">Ostatnio użyty: {{ key.lastUsed | date: 'dd MMM yyyy' }}</span>
                         }
                         @if (key.expiresAt) {
-                          <span class="key-expiry">Wygasa: {{ key.expiresAt | date:'dd MMM yyyy' }}</span>
+                          <span class="key-expiry">Wygasa: {{ key.expiresAt | date: 'dd MMM yyyy' }}</span>
                         }
                       </div>
                       <div class="key-actions">
@@ -166,21 +164,19 @@
               <div class="info-item">
                 <mat-icon>schedule</mat-icon>
                 <span class="label">Utworzono:</span>
-                <span class="value">{{ int.createdAt | date:'dd MMM yyyy, HH:mm' }}</span>
+                <span class="value">{{ int.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
               </div>
               <div class="info-item">
                 <mat-icon>update</mat-icon>
                 <span class="label">Aktualizacja:</span>
-                <span class="value">{{ int.updatedAt | date:'dd MMM yyyy, HH:mm' }}</span>
+                <span class="value">{{ int.updatedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
               </div>
             </div>
           </section>
         </mat-card-content>
 
         <mat-card-actions align="end">
-          <mat-slide-toggle [checked]="int.enabled" (change)="onToggleEnabled($event)">
-            Włączona
-          </mat-slide-toggle>
+          <mat-slide-toggle [checked]="int.enabled" (change)="onToggleEnabled($event)"> Włączona </mat-slide-toggle>
         </mat-card-actions>
       </mat-card>
     </div>
@@ -192,3 +188,5 @@
     </div>
   }
 </div>
+</app-main-page-view>
+

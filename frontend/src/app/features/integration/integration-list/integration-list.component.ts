@@ -9,6 +9,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { ApiIntegration, CalendarIntegration, EmailIntegration, Integration, MessengerIntegration } from '../integration.model';
 import { IntegrationService } from '../integration.service';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 
 @Component({
     selector: 'app-integration-list',
@@ -21,7 +23,9 @@ import { IntegrationService } from '../integration.service';
         MatButtonModule,
         MatChipsModule,
         MatTooltipModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MainPageViewComponent,
+        PageHeaderComponent,
     ],
     templateUrl: './integration-list.component.html',
     styleUrls: ['./integration-list.component.scss']

@@ -1,16 +1,18 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { ApiIntegration, CalendarIntegration, EmailIntegration, Integration, MessengerIntegration } from '../integration.model';
 import { IntegrationService } from '../integration.service';
-import { Integration, EmailIntegration, CalendarIntegration, MessengerIntegration, ApiIntegration } from '../integration.model';
 
 @Component({
   selector: 'app-integration-detail',
@@ -25,7 +27,9 @@ import { Integration, EmailIntegration, CalendarIntegration, MessengerIntegratio
     MatDividerModule,
     MatListModule,
     MatTooltipModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './integration-detail.component.html',
   styleUrls: ['./integration-detail.component.scss']

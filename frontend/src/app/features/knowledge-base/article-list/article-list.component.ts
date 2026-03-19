@@ -9,6 +9,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { ArticleCategory, KnowledgeArticle } from '../knowledge-base.model';
 import { KnowledgeBaseService } from '../knowledge-base.service';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 
 @Component({
     selector: 'app-article-list',
@@ -21,7 +23,9 @@ import { KnowledgeBaseService } from '../knowledge-base.service';
         MatIconModule,
         MatButtonModule,
         MatChipsModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MainPageViewComponent,
+        PageHeaderComponent,
     ],
     templateUrl: './article-list.component.html',
     styleUrls: ['./article-list.component.scss']
