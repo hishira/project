@@ -15,6 +15,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { Document, DocumentType } from '../document.models';
 import { DocumentService } from '../document.service';
 
@@ -37,7 +39,9 @@ import { DocumentService } from '../document.service';
     MatDatepickerModule,
     MatNativeDateModule,
     FormsModule,
-    MatCardModule
+    MatCardModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './document-list.component.html',
   styleUrls: ['./document-list.component.scss']

@@ -8,185 +8,184 @@
   </div>
 </app-page-header>
 <app-main-page-view>
-<div class="detail-container">
-  @let int = integration();
-  @if (int) {
-    <div class="content">
-      <mat-card class="main-card">
-        <mat-card-header>
-          <div class="header-row">
-            <div class="title-section">
-              <mat-card-title>{{ int.name }}</mat-card-title>
-              <mat-card-subtitle>
-                <mat-icon class="status-icon" [style.color]="getStatusColor(int.status)">{{
-                  getStatusIcon(int.status)
-                }}</mat-icon>
-                Status: {{ int.status }}
-                @if (isCalendar(int) || isMessenger(int)) {
-                  · {{ int.provider }}
-                }
-              </mat-card-subtitle>
+  <div class="detail-container">
+    @let int = integration();
+    @if (int) {
+      <div class="content">
+        <mat-card class="main-card">
+          <mat-card-header>
+            <div class="header-row">
+              <div class="title-section">
+                <mat-card-title>{{ int.name }}</mat-card-title>
+                <mat-card-subtitle>
+                  <mat-icon class="status-icon" [style.color]="getStatusColor(int.status)">{{
+                    getStatusIcon(int.status)
+                  }}</mat-icon>
+                  Status: {{ int.status }}
+                  @if (isCalendar(int) || isMessenger(int)) {
+                    · {{ int.provider }}
+                  }
+                </mat-card-subtitle>
+              </div>
             </div>
-          </div>
-        </mat-card-header>
+          </mat-card-header>
 
-        <mat-card-content>
-          <!-- Email -->
-          @if (isEmail(int)) {
-            <section class="section">
-              <h3>Konfiguracja poczty</h3>
-              <div class="config-grid">
-                <div class="config-row">
-                  <span class="label">Serwer IMAP:</span>
-                  <span class="value">{{ int.config.imapHost }}:{{ int.config.imapPort }}</span>
+          <mat-card-content>
+            <!-- Email -->
+            @if (isEmail(int)) {
+              <section class="section">
+                <h3>Konfiguracja poczty</h3>
+                <div class="config-grid">
+                  <div class="config-row">
+                    <span class="label">Serwer IMAP:</span>
+                    <span class="value">{{ int.config.imapHost }}:{{ int.config.imapPort }}</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="label">Serwer SMTP:</span>
+                    <span class="value">{{ int.config.smtpHost }}:{{ int.config.smtpPort }}</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="label">Użytkownik:</span>
+                    <span class="value">{{ int.config.username }}</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="label">SSL:</span>
+                    <span class="value">{{ int.config.useSSL ? 'Tak' : 'Nie' }}</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="label">Folder:</span>
+                    <span class="value">{{ int.config.folder }}</span>
+                  </div>
                 </div>
-                <div class="config-row">
-                  <span class="label">Serwer SMTP:</span>
-                  <span class="value">{{ int.config.smtpHost }}:{{ int.config.smtpPort }}</span>
-                </div>
-                <div class="config-row">
-                  <span class="label">Użytkownik:</span>
-                  <span class="value">{{ int.config.username }}</span>
-                </div>
-                <div class="config-row">
-                  <span class="label">SSL:</span>
-                  <span class="value">{{ int.config.useSSL ? 'Tak' : 'Nie' }}</span>
-                </div>
-                <div class="config-row">
-                  <span class="label">Folder:</span>
-                  <span class="value">{{ int.config.folder }}</span>
-                </div>
-              </div>
-            </section>
-          }
+              </section>
+            }
 
-          <!-- Calendar -->
-          @if (isCalendar(int)) {
-            <section class="section">
-              <h3>Konfiguracja kalendarza ({{ int.provider }})</h3>
-              <div class="config-grid">
-                <div class="config-row">
-                  <span class="label">Client ID:</span>
-                  <span class="value">{{ int.config.clientId }}</span>
+            <!-- Calendar -->
+            @if (isCalendar(int)) {
+              <section class="section">
+                <h3>Konfiguracja kalendarza ({{ int.provider }})</h3>
+                <div class="config-grid">
+                  <div class="config-row">
+                    <span class="label">Client ID:</span>
+                    <span class="value">{{ int.config.clientId }}</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="label">Redirect URI:</span>
+                    <span class="value">{{ int.config.redirectUri }}</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="label">Kalendarz:</span>
+                    <span class="value">{{ int.config.calendarId || 'domyślny' }}</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="label">Synchronizacja:</span>
+                    <span class="value">co {{ int.config.syncInterval }} minut</span>
+                  </div>
                 </div>
-                <div class="config-row">
-                  <span class="label">Redirect URI:</span>
-                  <span class="value">{{ int.config.redirectUri }}</span>
-                </div>
-                <div class="config-row">
-                  <span class="label">Kalendarz:</span>
-                  <span class="value">{{ int.config.calendarId || 'domyślny' }}</span>
-                </div>
-                <div class="config-row">
-                  <span class="label">Synchronizacja:</span>
-                  <span class="value">co {{ int.config.syncInterval }} minut</span>
-                </div>
-              </div>
-            </section>
-          }
+              </section>
+            }
 
-          <!-- Messenger -->
-          @if (isMessenger(int)) {
-            <section class="section">
-              <h3>Konfiguracja komunikatora ({{ int.provider }})</h3>
-              <div class="config-grid">
-                <div class="config-row">
-                  <span class="label">Webhook URL:</span>
-                  <span class="value">{{ int.config.webhookUrl || '(nie ustawiono)' }}</span>
+            <!-- Messenger -->
+            @if (isMessenger(int)) {
+              <section class="section">
+                <h3>Konfiguracja komunikatora ({{ int.provider }})</h3>
+                <div class="config-grid">
+                  <div class="config-row">
+                    <span class="label">Webhook URL:</span>
+                    <span class="value">{{ int.config.webhookUrl || '(nie ustawiono)' }}</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="label">Kanał:</span>
+                    <span class="value">{{ int.config.channel || 'domyślny' }}</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="label">Powiadomienia o:</span>
+                    <span class="value">{{ int.config.notifyOn.join(', ') || 'brak' }}</span>
+                  </div>
                 </div>
-                <div class="config-row">
-                  <span class="label">Kanał:</span>
-                  <span class="value">{{ int.config.channel || 'domyślny' }}</span>
-                </div>
-                <div class="config-row">
-                  <span class="label">Powiadomienia o:</span>
-                  <span class="value">{{ int.config.notifyOn.join(', ') || 'brak' }}</span>
-                </div>
-              </div>
-            </section>
-          }
+              </section>
+            }
 
-          <!-- API -->
-          @if (isApi(int)) {
-            <section class="section">
-              <h3>Klucze API</h3>
-              <div class="api-keys-header">
-                <span>Limit zapytań: {{ int.config.rateLimit || 'brak' }} na godzinę</span>
-                <button mat-stroked-button (click)="onGenerateKey()">
-                  <mat-icon>add</mat-icon> Generuj nowy klucz
-                </button>
-              </div>
+            <!-- API -->
+            @if (isApi(int)) {
+              <section class="section">
+                <h3>Klucze API</h3>
+                <div class="api-keys-header">
+                  <span>Limit zapytań: {{ int.config.rateLimit || 'brak' }} na godzinę</span>
+                  <button mat-stroked-button (click)="onGenerateKey()">
+                    <mat-icon>add</mat-icon> Generuj nowy klucz
+                  </button>
+                </div>
 
-              <mat-list class="api-keys-list">
-                @for (key of int.config.apiKeys; track key.id) {
-                  <mat-list-item class="api-key-item">
-                    <div class="key-row">
-                      <div class="key-info">
-                        <span class="key-name">{{ key.name }}</span>
-                        <span class="key-value">
-                          @if (showSecret()[key.id]) {
-                            {{ key.key }}
-                          } @else {
-                            ••••••••••••••••••••••••
+                <mat-list class="api-keys-list">
+                  @for (key of int.config.apiKeys; track key.id) {
+                    <mat-list-item class="api-key-item">
+                      <div class="key-row">
+                        <div class="key-info">
+                          <span class="key-name">{{ key.name }}</span>
+                          <span class="key-value">
+                            @if (showSecret()[key.id]) {
+                              {{ key.key }}
+                            } @else {
+                              ••••••••••••••••••••••••
+                            }
+                          </span>
+                        </div>
+                        <div class="key-meta">
+                          <span class="key-date">Utworzono: {{ key.createdAt | date: 'dd MMM yyyy' }}</span>
+                          @if (key.lastUsed) {
+                            <span class="key-date">Ostatnio użyty: {{ key.lastUsed | date: 'dd MMM yyyy' }}</span>
                           }
-                        </span>
+                          @if (key.expiresAt) {
+                            <span class="key-expiry">Wygasa: {{ key.expiresAt | date: 'dd MMM yyyy' }}</span>
+                          }
+                        </div>
+                        <div class="key-actions">
+                          <button mat-icon-button (click)="toggleSecret(key.id)" matTooltip="Pokaż/ukryj">
+                            <mat-icon>{{ showSecret()[key.id] ? 'visibility_off' : 'visibility' }}</mat-icon>
+                          </button>
+                          <button mat-icon-button color="warn" (click)="onRevokeKey(key.id)" matTooltip="Unieważnij">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </div>
                       </div>
-                      <div class="key-meta">
-                        <span class="key-date">Utworzono: {{ key.createdAt | date: 'dd MMM yyyy' }}</span>
-                        @if (key.lastUsed) {
-                          <span class="key-date">Ostatnio użyty: {{ key.lastUsed | date: 'dd MMM yyyy' }}</span>
-                        }
-                        @if (key.expiresAt) {
-                          <span class="key-expiry">Wygasa: {{ key.expiresAt | date: 'dd MMM yyyy' }}</span>
-                        }
-                      </div>
-                      <div class="key-actions">
-                        <button mat-icon-button (click)="toggleSecret(key.id)" matTooltip="Pokaż/ukryj">
-                          <mat-icon>{{ showSecret()[key.id] ? 'visibility_off' : 'visibility' }}</mat-icon>
-                        </button>
-                        <button mat-icon-button color="warn" (click)="onRevokeKey(key.id)" matTooltip="Unieważnij">
-                          <mat-icon>delete</mat-icon>
-                        </button>
-                      </div>
-                    </div>
-                  </mat-list-item>
-                }
-              </mat-list>
+                    </mat-list-item>
+                  }
+                </mat-list>
+              </section>
+            }
+
+            <mat-divider></mat-divider>
+
+            <!-- Informacje ogólne -->
+            <section class="section">
+              <h3>Informacje</h3>
+              <div class="info-grid">
+                <div class="info-item">
+                  <mat-icon>schedule</mat-icon>
+                  <span class="label">Utworzono:</span>
+                  <span class="value">{{ int.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+                </div>
+                <div class="info-item">
+                  <mat-icon>update</mat-icon>
+                  <span class="label">Aktualizacja:</span>
+                  <span class="value">{{ int.updatedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+                </div>
+              </div>
             </section>
-          }
+          </mat-card-content>
 
-          <mat-divider></mat-divider>
-
-          <!-- Informacje ogólne -->
-          <section class="section">
-            <h3>Informacje</h3>
-            <div class="info-grid">
-              <div class="info-item">
-                <mat-icon>schedule</mat-icon>
-                <span class="label">Utworzono:</span>
-                <span class="value">{{ int.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
-              </div>
-              <div class="info-item">
-                <mat-icon>update</mat-icon>
-                <span class="label">Aktualizacja:</span>
-                <span class="value">{{ int.updatedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
-              </div>
-            </div>
-          </section>
-        </mat-card-content>
-
-        <mat-card-actions align="end">
-          <mat-slide-toggle [checked]="int.enabled" (change)="onToggleEnabled($event)"> Włączona </mat-slide-toggle>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  } @else {
-    <div class="not-found">
-      <mat-icon>error_outline</mat-icon>
-      <p>Nie znaleziono integracji o podanym ID</p>
-      <button mat-raised-button color="primary" routerLink="/integrations">Powrót do listy</button>
-    </div>
-  }
-</div>
+          <mat-card-actions align="end">
+            <mat-slide-toggle [checked]="int.enabled" (change)="onToggleEnabled($event)"> Włączona </mat-slide-toggle>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    } @else {
+      <div class="not-found">
+        <mat-icon>error_outline</mat-icon>
+        <p>Nie znaleziono integracji o podanym ID</p>
+        <button mat-raised-button color="primary" routerLink="/integrations">Powrót do listy</button>
+      </div>
+    }
+  </div>
 </app-main-page-view>
-

@@ -1,9 +1,15 @@
-<div class="list-container">
-  <div class="header">
+<app-page-header>
+  <div class="header main-header">
     <h1>Dokumenty</h1>
+  </div>
+  <div class="main-header-buttons">
     <button mat-raised-button color="primary" routerLink="new"><mat-icon>add</mat-icon> Prześlij dokument</button>
   </div>
+</app-page-header>
 
+<app-main-page-view>
+<div class="list-container">
+  
   <!-- Panel filtrów -->
   <mat-card class="filters-card">
     <mat-card-content>
@@ -118,3 +124,5 @@
     </mat-card-content>
   </mat-card>
 </div>
+</app-main-page-view>
+
