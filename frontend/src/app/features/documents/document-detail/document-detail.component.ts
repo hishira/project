@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { Document } from '../document.models';
 import { DocumentService } from '../document.service';
 
@@ -23,7 +25,9 @@ import { DocumentService } from '../document.service';
     MatChipsModule,
     MatDividerModule,
     MatListModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './document-detail.component.html',
   styleUrls: ['./document-detail.component.scss']

@@ -1,117 +1,115 @@
-<div class="detail-container">
-  <div class="header">
-    <a mat-icon-button routerLink="/documents" class="back-btn">
-      <mat-icon>arrow_back</mat-icon>
-    </a>
+<app-page-header>
+  <div class="main-header header">
     <h1>Szczegóły dokumentu</h1>
   </div>
-
-  @if (document(); as doc) {
-    <div class="content">
-      <mat-card class="main-card">
-        <mat-card-header>
-          <div class="header-row">
-            <mat-icon class="type-icon-large">{{ getTypeIcon(doc.type) }}</mat-icon>
-            <div class="title-section">
-              <mat-card-title>{{ doc.name }}</mat-card-title>
-              <mat-card-subtitle>
-                {{ getTypeLabel(doc.type) }} · wersja {{ doc.version || '1.0' }}
-                @if (doc.approved) {
-                  <mat-chip class="approved-chip">zatwierdzony</mat-chip>
-                } @else {
-                  <mat-chip class="not-approved-chip">oczekuje</mat-chip>
-                }
-              </mat-card-subtitle>
+  <div class="main-header-buttons">
+    <button mat-raised-button color="primary" (click)="downloadFile()"><mat-icon>download</mat-icon> Pobierz</button>
+  </div>
+</app-page-header>
+<app-main-page-view>
+  <div class="detail-container">
+    @if (document(); as doc) {
+      <div class="content">
+        <mat-card class="main-card">
+          <mat-card-header>
+            <div class="header-row">
+              <mat-icon class="type-icon-large">{{ getTypeIcon(doc.type) }}</mat-icon>
+              <div class="title-section">
+                <mat-card-title>{{ doc.name }}</mat-card-title>
+                <mat-card-subtitle>
+                  {{ getTypeLabel(doc.type) }} · wersja {{ doc.version || '1.0' }}
+                  @if (doc.approved) {
+                    <mat-chip class="approved-chip">zatwierdzony</mat-chip>
+                  } @else {
+                    <mat-chip class="not-approved-chip">oczekuje</mat-chip>
+                  }
+                </mat-card-subtitle>
+              </div>
             </div>
-            <div class="header-actions">
-              <button mat-raised-button color="primary" (click)="downloadFile()">
-                <mat-icon>download</mat-icon> Pobierz
-              </button>
-            </div>
-          </div>
-        </mat-card-header>
+          </mat-card-header>
 
-        <mat-card-content>
-          <!-- Sekcja metadanych -->
-          <section class="section">
-            <h3>Informacje podstawowe</h3>
-            <div class="metadata-grid">
-              <div class="metadata-item">
-                <mat-icon>business</mat-icon>
-                <span class="label">Klient:</span>
-                <span class="value">{{ doc.clientName }}</span>
-              </div>
-              <div class="metadata-item">
-                <mat-icon>person</mat-icon>
-                <span class="label">Przesłał:</span>
-                <span class="value">{{ doc.uploadedBy }}</span>
-              </div>
-              <div class="metadata-item">
-                <mat-icon>schedule</mat-icon>
-                <span class="label">Data dodania:</span>
-                <span class="value">{{ doc.uploadedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
-              </div>
-              <div class="metadata-item">
-                <mat-icon>save</mat-icon>
-                <span class="label">Rozmiar:</span>
-                <span class="value">{{ formatFileSize(doc.fileSize) }}</span>
-              </div>
-              @if (doc.contractNumber) {
+          <mat-card-content>
+            <!-- Sekcja metadanych -->
+            <section class="section">
+              <h3>Informacje podstawowe</h3>
+              <div class="metadata-grid">
                 <div class="metadata-item">
-                  <mat-icon>tag</mat-icon>
-                  <span class="label">Nr umowy:</span>
-                  <span class="value">{{ doc.contractNumber }}</span>
+                  <mat-icon>business</mat-icon>
+                  <span class="label">Klient:</span>
+                  <span class="value">{{ doc.clientName }}</span>
                 </div>
-              }
-              @if (doc.expiryDate) {
-                <div class="metadata-item" [class.expiring]="isExpired(doc.expiryDate)">
-                  <mat-icon>event</mat-icon>
-                  <span class="label">Ważność:</span>
-                  <span class="value">{{ doc.expiryDate | date: 'dd MMM yyyy' }}</span>
+                <div class="metadata-item">
+                  <mat-icon>person</mat-icon>
+                  <span class="label">Przesłał:</span>
+                  <span class="value">{{ doc.uploadedBy }}</span>
                 </div>
-              }
-            </div>
-          </section>
-
-          <mat-divider></mat-divider>
-
-          <!-- Opis -->
-          @if (doc.description) {
-            <section class="section">
-              <h3>Opis</h3>
-              <p class="description">{{ doc.description }}</p>
-            </section>
-          }
-
-          <!-- Tagi -->
-          @if (doc.tags && doc.tags.length) {
-            <section class="section">
-              <h3>Tagi</h3>
-              <mat-chip-set>
-                @for (tag of doc.tags; track tag) {
-                  <mat-chip>{{ tag }}</mat-chip>
+                <div class="metadata-item">
+                  <mat-icon>schedule</mat-icon>
+                  <span class="label">Data dodania:</span>
+                  <span class="value">{{ doc.uploadedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+                </div>
+                <div class="metadata-item">
+                  <mat-icon>save</mat-icon>
+                  <span class="label">Rozmiar:</span>
+                  <span class="value">{{ formatFileSize(doc.fileSize) }}</span>
+                </div>
+                @if (doc.contractNumber) {
+                  <div class="metadata-item">
+                    <mat-icon>tag</mat-icon>
+                    <span class="label">Nr umowy:</span>
+                    <span class="value">{{ doc.contractNumber }}</span>
+                  </div>
                 }
-              </mat-chip-set>
+                @if (doc.expiryDate) {
+                  <div class="metadata-item" [class.expiring]="isExpired(doc.expiryDate)">
+                    <mat-icon>event</mat-icon>
+                    <span class="label">Ważność:</span>
+                    <span class="value">{{ doc.expiryDate | date: 'dd MMM yyyy' }}</span>
+                  </div>
+                }
+              </div>
             </section>
-          }
 
-          <!-- Powiązane dokumenty (jeśli aneks) -->
-          @if (doc.type === 'annex' && doc.annexTo) {
-            <section class="section">
-              <h3>Dokument nadrzędny</h3>
-              <p>
-                Jest to aneks do dokumentu: <a [routerLink]="['/documents', doc.annexTo]">{{ doc.annexTo }}</a>
-              </p>
-            </section>
-          }
-        </mat-card-content>
-      </mat-card>
-    </div>
-  } @else {
-    <div class="not-found">
-      <mat-icon>error_outline</mat-icon>
-      <p>Nie znaleziono dokumentu o podanym ID</p>
-      <button mat-raised-button color="primary" routerLink="/documents">Powrót do listy</button>
-    </div>
-  }
-</div>
+            <mat-divider></mat-divider>
+
+            <!-- Opis -->
+            @if (doc.description) {
+              <section class="section">
+                <h3>Opis</h3>
+                <p class="description">{{ doc.description }}</p>
+              </section>
+            }
+
+            <!-- Tagi -->
+            @if (doc.tags && doc.tags.length) {
+              <section class="section">
+                <h3>Tagi</h3>
+                <mat-chip-set>
+                  @for (tag of doc.tags; track tag) {
+                    <mat-chip>{{ tag }}</mat-chip>
+                  }
+                </mat-chip-set>
+              </section>
+            }
+
+            <!-- Powiązane dokumenty (jeśli aneks) -->
+            @if (doc.type === 'annex' && doc.annexTo) {
+              <section class="section">
+                <h3>Dokument nadrzędny</h3>
+                <p>
+                  Jest to aneks do dokumentu: <a [routerLink]="['/documents', doc.annexTo]">{{ doc.annexTo }}</a>
+                </p>
+              </section>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+    } @else {
+      <div class="not-found">
+        <mat-icon>error_outline</mat-icon>
+        <p>Nie znaleziono dokumentu o podanym ID</p>
+        <button mat-raised-button color="primary" routerLink="/documents">Powrót do listy</button>
+      </div>
+    }
+  </div>
+</app-main-page-view>
