@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { Invoice } from '../invoice.model';
 import { InvoiceService } from '../invoice.service';
 import { PaymentDialogComponent } from '../payment-dialog.component';
@@ -17,9 +19,18 @@ import { PaymentDialogComponent } from '../payment-dialog.component';
     selector: 'app-invoice-detail',
     standalone: true,
     imports: [
-        CommonModule, RouterLink,
-        MatCardModule, MatIconModule, MatButtonModule, MatChipsModule,
-        MatDividerModule, MatTableModule, MatTabsModule, MatDialogModule
+        CommonModule,
+        RouterLink,
+        MatCardModule,
+        MatIconModule,
+        MatButtonModule,
+        MatChipsModule,
+        MatDividerModule,
+        MatTableModule,
+        MatTabsModule,
+        MatDialogModule,
+        MainPageViewComponent,
+        PageHeaderComponent,
     ],
     templateUrl: './invoice-detail.component.html',
     styleUrls: ['./invoice-detail.component.scss']

@@ -1,59 +1,56 @@
-<div class="detail-container">
-  <div class="header">
-    <a mat-icon-button routerLink="/knowledge-base" class="back-btn">
-      <mat-icon>arrow_back</mat-icon>
-    </a>
-    <h1>Artykuł bazy wiedzy</h1>
-  </div>
-
-  @if (article(); as a) {
-    <mat-card class="article-card">
-      <mat-card-header>
-        <div class="header-row">
-          <mat-card-title>{{ a.title }}</mat-card-title>
-          <div class="header-actions">
-            <button mat-stroked-button (click)="onEdit()"><mat-icon>edit</mat-icon> Edytuj</button>
-            <button mat-stroked-button color="warn" (click)="onDelete()"><mat-icon>delete</mat-icon> Usuń</button>
-          </div>
-        </div>
-        <mat-card-subtitle>
-          <div class="meta">
-            <span>Kategoria: {{ a.category }}</span>
-            <span>Autor: {{ a.author }}</span>
-            <span>Dodano: {{ a.createdAt | date: 'dd MMM yyyy' }}</span>
-            @if (a.updatedAt !== a.createdAt) {
-              <span>aktualizacja: {{ a.updatedAt | date: 'dd MMM yyyy' }}</span>
-            }
-          </div>
-          @if (a.tags && a.tags.length) {
-            <div class="tags">
-              <mat-chip-set>
-                @for (tag of a.tags; track tag) {
-                  <mat-chip>{{ tag }}</mat-chip>
-                }
-              </mat-chip-set>
-            </div>
-          }
-        </mat-card-subtitle>
-      </mat-card-header>
-
-      <mat-card-content>
-        <div class="content" [innerHTML]="a.content | linebreaks"></div>
-      </mat-card-content>
-
-      <mat-card-actions align="end">
-        <div class="stats">
-          <span class="stat"> <mat-icon>visibility</mat-icon> {{ a.views }} wyświetleń </span>
-          <span class="stat"> <mat-icon>thumb_up</mat-icon> {{ a.helpful }} osób uznało za pomocne </span>
-        </div>
-        <button mat-raised-button color="primary" (click)="onHelpful()"><mat-icon>thumb_up</mat-icon> Pomocne</button>
-      </mat-card-actions>
-    </mat-card>
-  } @else {
-    <div class="not-found">
-      <mat-icon>error_outline</mat-icon>
-      <p>Nie znaleziono artykułu</p>
-      <button mat-raised-button color="primary" routerLink="/knowledge-base">Powrót do listy</button>
+@if (article(); as a) {
+  <app-page-header>
+    <div class="header main-header">
+      <h1>{{ a.title }}</h1>
     </div>
-  }
-</div>
+    <div class="main-header-buttons d-flex gap-3">
+      <button mat-stroked-button (click)="onEdit()"><mat-icon>edit</mat-icon> Edytuj</button>
+      <button mat-stroked-button color="warn" (click)="onDelete()"><mat-icon>delete</mat-icon> Usuń</button>
+    </div>
+  </app-page-header>
+  <app-main-page-view>
+    <div class="detail-container">
+      <mat-card class="article-card">
+        <mat-card-header>
+          <mat-card-subtitle>
+            <div class="meta">
+              <span>Kategoria: {{ a.category }}</span>
+              <span>Autor: {{ a.author }}</span>
+              <span>Dodano: {{ a.createdAt | date: 'dd MMM yyyy' }}</span>
+              @if (a.updatedAt !== a.createdAt) {
+                <span>aktualizacja: {{ a.updatedAt | date: 'dd MMM yyyy' }}</span>
+              }
+            </div>
+            @if (a.tags && a.tags.length) {
+              <div class="tags">
+                <mat-chip-set>
+                  @for (tag of a.tags; track tag) {
+                    <mat-chip>{{ tag }}</mat-chip>
+                  }
+                </mat-chip-set>
+              </div>
+            }
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="content" [innerHTML]="a.content | linebreaks"></div>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+          <div class="stats">
+            <span class="stat"> <mat-icon>visibility</mat-icon> {{ a.views }} wyświetleń </span>
+            <span class="stat"> <mat-icon>thumb_up</mat-icon> {{ a.helpful }} osób uznało za pomocne </span>
+          </div>
+          <button mat-raised-button color="primary" (click)="onHelpful()"><mat-icon>thumb_up</mat-icon> Pomocne</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </app-main-page-view>
+} @else {
+  <div class="not-found">
+    <mat-icon>error_outline</mat-icon>
+    <p>Nie znaleziono artykułu</p>
+    <button mat-raised-button color="primary" routerLink="/knowledge-base">Powrót do listy</button>
+  </div>
+}

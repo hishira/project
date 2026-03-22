@@ -6,6 +6,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { KnowledgeArticle } from '../knowledge-base.model';
 import { KnowledgeBaseService } from '../knowledge-base.service';
 import { LinebreaksPipe } from './line-breaks.pipe';
@@ -21,7 +23,9 @@ import { LinebreaksPipe } from './line-breaks.pipe';
     MatButtonModule,
     MatChipsModule,
     MatDividerModule,
-    LinebreaksPipe
+    LinebreaksPipe,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './article-detail.component.html',
   styleUrls: ['./article-detail.component.scss']
