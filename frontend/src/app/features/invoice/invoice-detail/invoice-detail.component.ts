@@ -14,6 +14,7 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
 import { Invoice } from '../invoice.model';
 import { InvoiceService } from '../invoice.service';
 import { PaymentDialogComponent } from '../payment-dialog.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
     selector: 'app-invoice-detail',
@@ -31,6 +32,7 @@ import { PaymentDialogComponent } from '../payment-dialog.component';
         MatDialogModule,
         MainPageViewComponent,
         PageHeaderComponent,
+        MatMenuModule
     ],
     templateUrl: './invoice-detail.component.html',
     styleUrls: ['./invoice-detail.component.scss']

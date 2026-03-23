@@ -1,22 +1,37 @@
-<app-page-header>
-  <div class="main-header">
-    <h1>Faktura {{ invoice()?.number }}</h1>
-  </div>
-  <div class="main-header-buttons d-flex gap-3">
-    <button mat-stroked-button (click)="onGenerateDuplicate()"><mat-icon>file_copy</mat-icon> Duplikat</button>
-    <button mat-stroked-button (click)="onGenerateCreditNote()"><mat-icon>edit_note</mat-icon> Nota korygująca</button>
-    <button mat-raised-button color="primary" (click)="onRegisterPayment()">
-      <mat-icon>payment</mat-icon> Rejestruj wpłatę
-    </button>
-  </div>
-  <div class="header">
-    <a mat-icon-button routerLink="/invoices" class="back-btn"><mat-icon>arrow_back</mat-icon></a>
-    <div class="header-actions"></div>
-  </div>
-</app-page-header>
-<app-main-page-view>
-  <div class="detail-container">
-    @if (invoice(); as inv) {
+@let inv = invoice();
+@if (inv) {
+  <app-page-header>
+    <div class="main-header">
+      <h1>Faktura {{ invoice()?.number }}</h1>
+    </div>
+    <div class="main-header-buttons d-flex gap-3">
+      <button mat-stroked-button (click)="onGenerateDuplicate()"><mat-icon>file_copy</mat-icon> Duplikat</button>
+      <button mat-stroked-button (click)="onGenerateCreditNote()">
+        <mat-icon>edit_note</mat-icon> Nota korygująca
+      </button>
+      <button mat-raised-button color="primary" (click)="onRegisterPayment()">
+        <mat-icon>payment</mat-icon> Rejestruj wpłatę
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="Więcej opcji">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #moreMenu="matMenu" panelClass="custom-menu">
+        <button (click)="onSendReminder()" [disabled]="inv.status === 'paid'" mat-menu-item>
+          <mat-icon>notifications</mat-icon> Wyślij przypomnienie
+        </button>
+        <button (click)="onGenerateCreditNote()" mat-menu-item>
+          <mat-icon>post_add</mat-icon> Wystaw notę korygującą
+        </button>
+      </mat-menu>
+    </div>
+    <div class="header">
+      <a mat-icon-button routerLink="/invoices" class="back-btn"><mat-icon>arrow_back</mat-icon></a>
+      <div class="header-actions"></div>
+    </div>
+  </app-page-header>
+  <app-main-page-view>
+    <div class="detail-container">
       <div class="content">
         <mat-card class="summary-card">
           <mat-card-header>
@@ -107,7 +122,7 @@
         </mat-card>
 
         <mat-card class="payments-card">
-          <mat-card-header>
+          <mat-card-header class="d-flex gap-3">
             <mat-card-title>Historia płatności</mat-card-title>
             <button mat-stroked-button (click)="onRegisterPayment()"><mat-icon>add</mat-icon> Dodaj wpłatę</button>
           </mat-card-header>
@@ -147,22 +162,13 @@
         </mat-card>
 
         <mat-divider></mat-divider>
-
-        <div class="action-buttons">
-          <button mat-stroked-button (click)="onSendReminder()" [disabled]="inv.status === 'paid'">
-            <mat-icon>notifications</mat-icon> Wyślij przypomnienie
-          </button>
-          <button mat-stroked-button (click)="onGenerateCreditNote()">
-            <mat-icon>post_add</mat-icon> Wystaw notę korygującą
-          </button>
-        </div>
       </div>
-    } @else {
-      <div class="not-found">
-        <mat-icon>error_outline</mat-icon>
-        <p>Nie znaleziono faktury</p>
-        <button mat-raised-button color="primary" routerLink="/invoices">Powrót do listy</button>
-      </div>
-    }
+    </div>
+  </app-main-page-view>
+} @else {
+  <div class="not-found">
+    <mat-icon>error_outline</mat-icon>
+    <p>Nie znaleziono faktury</p>
+    <button mat-raised-button color="primary" routerLink="/invoices">Powrót do listy</button>
   </div>
-</app-main-page-view>
+}

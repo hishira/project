@@ -99,7 +99,7 @@ export class PaymentDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<PaymentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { invoice: Invoice }
-  ) {}
+  ) { }
 
   isValid(): boolean {
     return this.payment.date != null && this.payment.amount > 0 && this.payment.method != null;
