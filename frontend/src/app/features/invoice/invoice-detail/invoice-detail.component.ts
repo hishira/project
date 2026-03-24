@@ -15,6 +15,8 @@ import { Invoice } from '../invoice.model';
 import { InvoiceService } from '../invoice.service';
 import { PaymentDialogComponent } from '../payment-dialog.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { ActionItem } from '../../../core/components/more-action-button/action.model';
+import { ActionButtonsComponent } from '../../../core/components/more-action-button/more-action-button.component';
 
 @Component({
     selector: 'app-invoice-detail',
@@ -32,7 +34,8 @@ import { MatMenuModule } from '@angular/material/menu';
         MatDialogModule,
         MainPageViewComponent,
         PageHeaderComponent,
-        MatMenuModule
+        MatMenuModule,
+        ActionButtonsComponent
     ],
     templateUrl: './invoice-detail.component.html',
     styleUrls: ['./invoice-detail.component.scss']
@@ -42,6 +45,18 @@ export class InvoiceDetailComponent implements OnInit {
     private invoiceService = inject(InvoiceService);
     private dialog = inject(MatDialog);
 
+    moreButtons: ActionItem[] = [
+        {
+            label: 'Wyślij przypomnienie',
+            icon: 'notifications',
+            disabled: true,
+            handler: () => this.onSendReminder(),
+        }, {
+            label: 'Wystaw notę korygującą',
+            icon: 'post_add',
+            handler: () => this.onGenerateCreditNote(),
+        }
+    ]
     invoice = signal<Invoice | undefined>(undefined);
     displayedColumns: string[] = ['name', 'quantity', 'netPrice', 'vatRate', 'netAmount', 'vatAmount', 'grossAmount'];
     paymentColumns: string[] = ['date', 'amount', 'method', 'reference', 'notes'];

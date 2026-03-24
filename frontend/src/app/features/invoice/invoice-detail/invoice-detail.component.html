@@ -4,7 +4,7 @@
     <div class="main-header">
       <h1>Faktura {{ invoice()?.number }}</h1>
     </div>
-    <div class="main-header-buttons d-flex gap-3">
+    <div class="main-header-buttons d-flex gap-3 align-items-center">
       <button mat-stroked-button (click)="onGenerateDuplicate()"><mat-icon>file_copy</mat-icon> Duplikat</button>
       <button mat-stroked-button (click)="onGenerateCreditNote()">
         <mat-icon>edit_note</mat-icon> Nota korygująca
@@ -12,18 +12,19 @@
       <button mat-raised-button color="primary" (click)="onRegisterPayment()">
         <mat-icon>payment</mat-icon> Rejestruj wpłatę
       </button>
-      <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="Więcej opcji">
-        <mat-icon>more_vert</mat-icon>
-      </button>
+      <app-action-buttons [actions]="moreButtons" />
 
-      <mat-menu #moreMenu="matMenu" panelClass="custom-menu">
+      <!-- <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="Więcej opcji">
+        <mat-icon>more_vert</mat-icon>
+      </button> -->
+      <!-- <mat-menu #moreMenu="matMenu" panelClass="custom-menu">
         <button (click)="onSendReminder()" [disabled]="inv.status === 'paid'" mat-menu-item>
           <mat-icon>notifications</mat-icon> Wyślij przypomnienie
         </button>
         <button (click)="onGenerateCreditNote()" mat-menu-item>
           <mat-icon>post_add</mat-icon> Wystaw notę korygującą
         </button>
-      </mat-menu>
+      </mat-menu> -->
     </div>
     <div class="header">
       <a mat-icon-button routerLink="/invoices" class="back-btn"><mat-icon>arrow_back</mat-icon></a>
