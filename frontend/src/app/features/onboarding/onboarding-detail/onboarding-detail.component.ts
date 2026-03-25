@@ -13,16 +13,27 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OnboardingService } from '../onboarding.service';
 import { ClientOnboarding, TrainingMaterial, OnboardingTask, Webinar } from '../onboarding.model';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 
 @Component({
   selector: 'app-onboarding-detail',
   standalone: true,
   imports: [
-    CommonModule, RouterLink,
-    MatCardModule, MatIconModule, MatButtonModule,
-    MatChipsModule, MatDividerModule, MatTabsModule,
-    MatCheckboxModule, MatListModule, MatProgressBarModule,
-    MatTooltipModule
+    CommonModule,
+    RouterLink,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatDividerModule,
+    MatTabsModule,
+    MatCheckboxModule,
+    MatListModule,
+    MatProgressBarModule,
+    MatTooltipModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './onboarding-detail.component.html',
   styleUrls: ['./onboarding-detail.component.scss']

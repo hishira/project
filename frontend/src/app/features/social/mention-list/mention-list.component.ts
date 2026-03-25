@@ -15,15 +15,29 @@ import { FormsModule } from '@angular/forms';
 import { SocialService } from '../social.service';
 import { Mention, Sentiment, SocialPlatform } from '../social.model';
 import { MatCardModule } from '@angular/material/card';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 
 @Component({
   selector: 'app-mention-list',
   standalone: true,
   imports: [
-    CommonModule, RouterLink,
-    MatTableModule, MatSortModule, MatPaginatorModule,
-    MatIconModule, MatButtonModule, MatChipsModule, MatTooltipModule,
-    MatFormFieldModule, MatInputModule, MatSelectModule, FormsModule, MatCardModule
+    CommonModule,
+    RouterLink,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    FormsModule,
+    MatCardModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './mention-list.component.html',
   styleUrls: ['./mention-list.component.scss']

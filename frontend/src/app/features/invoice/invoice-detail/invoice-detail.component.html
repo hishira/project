@@ -14,17 +14,6 @@
       </button>
       <app-action-buttons [actions]="moreButtons" />
 
-      <!-- <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="Więcej opcji">
-        <mat-icon>more_vert</mat-icon>
-      </button> -->
-      <!-- <mat-menu #moreMenu="matMenu" panelClass="custom-menu">
-        <button (click)="onSendReminder()" [disabled]="inv.status === 'paid'" mat-menu-item>
-          <mat-icon>notifications</mat-icon> Wyślij przypomnienie
-        </button>
-        <button (click)="onGenerateCreditNote()" mat-menu-item>
-          <mat-icon>post_add</mat-icon> Wystaw notę korygującą
-        </button>
-      </mat-menu> -->
     </div>
     <div class="header">
       <a mat-icon-button routerLink="/invoices" class="back-btn"><mat-icon>arrow_back</mat-icon></a>
@@ -123,7 +112,7 @@
         </mat-card>
 
         <mat-card class="payments-card">
-          <mat-card-header class="d-flex gap-3">
+          <mat-card-header class="d-flex gap-3 justify-content-between align-items-center">
             <mat-card-title>Historia płatności</mat-card-title>
             <button mat-stroked-button (click)="onRegisterPayment()"><mat-icon>add</mat-icon> Dodaj wpłatę</button>
           </mat-card-header>
@@ -162,7 +151,6 @@
           </mat-card-content>
         </mat-card>
 
-        <mat-divider></mat-divider>
       </div>
     </div>
   </app-main-page-view>
