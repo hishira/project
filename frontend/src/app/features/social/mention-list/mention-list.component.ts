@@ -1,22 +1,31 @@
-import { Component, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SocialService } from '../social.service';
-import { Mention, Sentiment, SocialPlatform } from '../social.model';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { PlatformIconComponent } from '../../../shared/components/platform-icon/platform-icon.component';
+import { SentimentIconComponent } from '../../../shared/components/sentiment-icon/sentiment-icon.component';
+import { Sentiment, SocialPlatform } from '../social.model';
+import { SocialService } from '../social.service';
+import { DISPLAYED_COLUMNS, PLATFORMS, SENTIMENTS } from './mention-list.constants';
+
+interface MentionFilters {
+  platform: SocialPlatform | '';
+  sentiment: Sentiment | '';
+  author: string;
+}
 
 @Component({
   selector: 'app-mention-list',
@@ -38,94 +47,43 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
     MatCardModule,
     MainPageViewComponent,
     PageHeaderComponent,
+    PlatformIconComponent,
+    SentimentIconComponent,
   ],
   templateUrl: './mention-list.component.html',
   styleUrls: ['./mention-list.component.scss']
 })
 export class MentionListComponent {
   private socialService = inject(SocialService);
-  mentions = this.socialService.mentions;
 
-  dataSource = new MatTableDataSource<Mention>(this.mentions());
-  displayedColumns: string[] = ['platform', 'author', 'content', 'sentiment', 'engagement', 'postedAt', 'actions'];
+  readonly filters = signal<MentionFilters>({
+    platform: '',
+    sentiment: '',
+    author: ''
+  });
 
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  filterPlatform: SocialPlatform | '' = '';
-  filterSentiment: Sentiment | '' = '';
-  filterAuthor = '';
-
-  platforms: { value: SocialPlatform; label: string }[] = [
-    { value: 'facebook', label: 'Facebook' },
-    { value: 'twitter', label: 'Twitter' },
-    { value: 'instagram', label: 'Instagram' },
-    { value: 'linkedin', label: 'LinkedIn' },
-    { value: 'youtube', label: 'YouTube' },
-    { value: 'other', label: 'Inne' }
-  ];
-
-  sentiments: { value: Sentiment; label: string }[] = [
-    { value: 'positive', label: 'Pozytywny' },
-    { value: 'neutral', label: 'Neutralny' },
-    { value: 'negative', label: 'Negatywny' }
-  ];
-
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.filterPredicate = (data: Mention, filter: string) => {
-      const filterObj = JSON.parse(filter);
-      if (filterObj.platform && data.platform !== filterObj.platform) return false;
-      if (filterObj.sentiment && data.sentiment !== filterObj.sentiment) return false;
-      if (filterObj.author && !data.authorName.toLowerCase().includes(filterObj.author.toLowerCase())) return false;
+  readonly filteredMentions = computed(() => {
+    const { platform, sentiment, author } = this.filters();
+    return this.socialService.mentions().filter(mention => {
+      if (platform && mention.platform !== platform) return false;
+      if (sentiment && mention.sentiment !== sentiment) return false;
+      if (author && !mention.authorName.toLowerCase().includes(author.toLowerCase())) return false;
       return true;
-    };
-  }
+    });
+  });
 
-  applyFilters() {
-    const filterObj = {
-      platform: this.filterPlatform,
-      sentiment: this.filterSentiment,
-      author: this.filterAuthor
-    };
-    this.dataSource.filter = JSON.stringify(filterObj);
+  readonly displayedColumns = DISPLAYED_COLUMNS;
+  readonly platforms = PLATFORMS;
+  readonly sentiments = SENTIMENTS;
+
+  readonly sort = viewChild(MatSort);
+  readonly paginator = viewChild(MatPaginator);
+
+  updateFilter<K extends keyof MentionFilters>(key: K, value: MentionFilters[K]) {
+    this.filters.update(f => ({ ...f, [key]: value }));
   }
 
   clearFilters() {
-    this.filterPlatform = '';
-    this.filterSentiment = '';
-    this.filterAuthor = '';
-    this.applyFilters();
-  }
-
-  getPlatformIcon(platform: SocialPlatform): string {
-    const icons: Record<SocialPlatform, string> = {
-      facebook: 'facebook',
-      twitter: 'twitter',
-      instagram: 'instagram',
-      linkedin: 'linkedin',
-      youtube: 'youtube',
-      other: 'share'
-    };
-    return icons[platform] || 'public';
-  }
-
-  getSentimentIcon(sentiment: Sentiment): string {
-    const icons: Record<Sentiment, string> = {
-      positive: 'sentiment_satisfied',
-      neutral: 'sentiment_neutral',
-      negative: 'sentiment_dissatisfied'
-    };
-    return icons[sentiment];
-  }
-
-  getSentimentColor(sentiment: Sentiment): string {
-    const colors: Record<Sentiment, string> = {
-      positive: '#2e7d32',
-      neutral: '#757575',
-      negative: '#d32f2f'
-    };
-    return colors[sentiment];
+    this.filters.set({ platform: '', sentiment: '', author: '' });
   }
 }
