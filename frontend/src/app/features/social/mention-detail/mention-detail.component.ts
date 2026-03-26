@@ -1,105 +1,127 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, inject, signal, computed } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
-import { SocialService } from '../social.service';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { Mention, Sentiment } from '../social.model';
+import { SocialService } from '../social.service';
+import { SENTIMENT_INFO, PLATFORM_ICONS } from './mention-detail.constants';
+
+interface MentionForm {
+  assignedTo: string;
+  relatedContactId: string;
+  comment: string;
+}
 
 @Component({
   selector: 'app-mention-detail',
   standalone: true,
   imports: [
-    CommonModule, RouterLink,
-    MatCardModule, MatIconModule, MatButtonModule, MatChipsModule,
-    MatDividerModule, MatFormFieldModule, MatInputModule, MatSelectModule,
-    FormsModule
+    CommonModule,
+    RouterLink,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    FormsModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './mention-detail.component.html',
   styleUrls: ['./mention-detail.component.scss']
 })
-export class MentionDetailComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private socialService = inject(SocialService);
-  mention = signal<Mention | undefined>(undefined);
+export class MentionDetailComponent {
+  private readonly route = inject(ActivatedRoute);
+  private readonly socialService = inject(SocialService);
 
-  // Do edycji
-  assignedTo = '';
-  relatedContactId = '';
-  comment = '';
+  private readonly mentionId = this.route.snapshot.paramMap.get('id') ?? '';
+  
+  readonly mention = signal<Mention | undefined>(
+    this.mentionId ? this.socialService.getMentionById(this.mentionId) : undefined
+  );
 
-  sentiments: { value: Sentiment; label: string; icon: string; color: string }[] = [
-    { value: 'positive', label: 'Pozytywny', icon: 'sentiment_satisfied', color: '#2e7d32' },
-    { value: 'neutral', label: 'Neutralny', icon: 'sentiment_neutral', color: '#757575' },
-    { value: 'negative', label: 'Negatywny', icon: 'sentiment_dissatisfied', color: '#d32f2f' }
-  ];
+  readonly form = signal<MentionForm>({
+    assignedTo: this.mention()?.assignedTo ?? '',
+    relatedContactId: this.mention()?.relatedContactId ?? '',
+    comment: ''
+  });
 
-  ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      const found = this.socialService.getMentionById(id);
-      this.mention.set(found);
-      if (found) {
-        this.assignedTo = found.assignedTo || '';
-        this.relatedContactId = found.relatedContactId || '';
-      }
-    }
+  readonly sentimentInfo = computed(() => {
+    const m = this.mention();
+    return m ? SENTIMENT_INFO[m.sentiment] : null;
+  });
+
+  readonly platformIcon = computed(() => {
+    const m = this.mention();
+    return m ? (PLATFORM_ICONS[m.platform] ?? 'public') : '';
+  });
+
+  readonly isRead = computed(() => this.mention()?.isRead ?? false);
+  readonly isFlagged = computed(() => this.mention()?.isFlagged ?? false);
+  readonly hasTags = computed(() => {
+    const m = this.mention();
+    return !!m?.tags && m.tags.length > 0;
+  });
+
+  updateForm<K extends keyof MentionForm>(key: K, value: MentionForm[K]) {
+    this.form.update(f => ({ ...f, [key]: value }));
   }
 
-  getPlatformIcon(platform: string): string {
-    const icons: Record<string, string> = {
-      facebook: 'facebook',
-      twitter: 'twitter',
-      instagram: 'instagram',
-      linkedin: 'linkedin',
-      youtube: 'youtube',
-      other: 'share'
-    };
-    return icons[platform] || 'public';
-  }
-
-  getSentimentData(sentiment: Sentiment) {
-    return this.sentiments.find(s => s.value === sentiment) || this.sentiments[1];
-  }
-
-  onMarkRead() {
+  markAsRead(): void {
     const m = this.mention();
     if (m && !m.isRead) {
       this.socialService.markAsRead(m.id);
-      this.mention.update(m => m ? { ...m, isRead: true } : m);
+      this.mention.update(current => current ? { ...current, isRead: true } : current);
     }
   }
 
-  onFlag() {
+  toggleFlag(): void {
     const m = this.mention();
     if (m) {
       this.socialService.flagMention(m.id);
-      this.mention.update(m => m ? { ...m, isFlagged: !m.isFlagged } : m);
+      this.mention.update(current => current ? { ...current, isFlagged: !current.isFlagged } : current);
     }
   }
 
-  onAssign() {
+  assignToUser(): void {
     const m = this.mention();
-    if (m && this.assignedTo) {
-      this.socialService.assignToUser(m.id, this.assignedTo);
+    const { assignedTo } = this.form();
+    if (m && assignedTo) {
+      this.socialService.assignToUser(m.id, assignedTo);
     }
   }
 
-  onLinkContact() {
+  linkToContact(): void {
     const m = this.mention();
-    if (m && this.relatedContactId) {
-      this.socialService.linkToContact(m.id, this.relatedContactId);
+    const { relatedContactId } = this.form();
+    if (m && relatedContactId) {
+      this.socialService.linkToContact(m.id, relatedContactId);
     }
   }
 
-  onReply() {
-    console.log('Odpowiedz na wzmiankę:', this.comment);
+  submitReply(): void {
+    const { comment } = this.form();
+    if (!comment.trim()) {
+      return;
+    }
+    
+    console.log('Reply submitted:', comment);
+    this.form.update(f => ({ ...f, comment: '' }));
   }
+
+  protected readonly SENTIMENT_INFO = SENTIMENT_INFO;
+  protected readonly PLATFORM_ICONS = PLATFORM_ICONS;
 }

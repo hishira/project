@@ -1,0 +1,44 @@
+<mat-card class="profile-card">
+  <mat-card-header>
+    @if (getPlatformInfo(); as info) {
+      <mat-icon class="platform-icon" [style.color]="info.color">
+        {{ info.icon }}
+      </mat-icon>
+    }
+    <mat-card-title>{{ profile().profileName }}</mat-card-title>
+    <mat-card-subtitle>{{ profile().platform }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p class="profile-url">
+      <a [href]="profile().profileUrl" target="_blank" rel="noopener noreferrer">
+        {{ profile().profileUrl }}
+      </a>
+    </p>
+
+    @if (profile().lastSync) {
+      <p class="sync-info">
+        <mat-icon>schedule</mat-icon>
+        Ostatnia synchronizacja: {{ profile().lastSync | date:'dd MMM yyyy, HH:mm' }}
+      </p>
+    }
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <mat-slide-toggle
+      [checked]="profile().connected"
+      (change)="onToggleConnection()"
+    >
+      {{ profile().connected ? 'Połączony' : 'Rozłączony' }}
+    </mat-slide-toggle>
+
+    <button
+      mat-icon-button
+      (click)="onSync()"
+      matTooltip="Synchronizuj"
+      [disabled]="!profile().connected"
+    >
+      <mat-icon [class.syncing]="false">sync</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

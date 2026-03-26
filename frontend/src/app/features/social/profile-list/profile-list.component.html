@@ -1,0 +1,30 @@
+<div class="profiles-container">
+  <div class="header">
+    <a mat-icon-button routerLink="/social/mentions" class="back-btn" matTooltip="Powrót">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <h1>Profile społecznościowe</h1>
+    <button mat-raised-button color="primary" (click)="onAddProfile()">
+      <mat-icon>add</mat-icon>
+      Dodaj profil
+    </button>
+  </div>
+
+  <div class="profiles-grid">
+    @for (profile of profiles(); track profile.id) {
+      <app-profile-card
+        [profile]="profile"
+        (toggleConnection)="onToggleConnection($event)"
+        (syncProfile)="onSyncProfile($event)"
+      />
+    } @empty {
+      <div class="no-profiles">
+        <mat-icon>inbox</mat-icon>
+        <p>Brak profili społecznościowych</p>
+        <button mat-raised-button color="primary" (click)="onAddProfile()">
+          Dodaj pierwszy profil
+        </button>
+      </div>
+    }
+  </div>
+</div>

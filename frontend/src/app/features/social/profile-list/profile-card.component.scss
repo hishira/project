@@ -1,0 +1,77 @@
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  mat-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+
+    .platform-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+
+    mat-card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    mat-card-subtitle {
+      font-size: 0.8rem;
+      text-transform: capitalize;
+      color: #64748b;
+    }
+  }
+
+  mat-card-content {
+    flex: 1;
+
+    .profile-url {
+      margin: 0 0 12px 0;
+
+      a {
+        color: #1976d2;
+        text-decoration: none;
+        word-break: break-all;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .sync-info {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      color: #64748b;
+
+      mat-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px 16px;
+
+    mat-slide-toggle {
+      font-size: 0.875rem;
+    }
+  }
+}
