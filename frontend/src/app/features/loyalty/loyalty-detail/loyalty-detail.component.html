@@ -3,153 +3,77 @@
     <h1>Program lojalnościowy – {{ customer()?.customerName }}</h1>
   </div>
 </app-page-header>
+
 <app-main-page-view>
-<div class="detail-container">
-  @if (customer(); as c) {
-    <div class="content">
-      <!-- Podsumowanie -->
-      <mat-card class="summary-card">
-        <mat-card-header>
-          <mat-card-title>Podsumowanie</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="summary-grid">
-            <div class="level-display">
-              <div class="level-badge" [style.background]="getLevelColor(c.level)" [style.color]="'white'">
-                <mat-icon>{{ getLevelIcon(c.level) }}</mat-icon> {{ c.level | titlecase }}
-              </div>
+  <div class="detail-container">
+    @if (customer(); as c) {
+      <div class="content">
+        <!-- Podsumowanie -->
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Podsumowanie</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="summary-grid">
+              <app-level-summary-badge [level]="c.level" />
+              <app-points-summary label="Dostępne punkty" [value]="c.points" />
+              <app-points-summary label="Zdobyte łącznie" [value]="c.lifetimePoints" />
             </div>
-            <div class="points-box">
-              <span class="points-label">Dostępne punkty</span>
-              <span class="points-value">{{ c.points }}</span>
+            @if (c.nextLevelThreshold) {
+              <app-detail-progress
+                [points]="c.points"
+                [nextLevelThreshold]="c.nextLevelThreshold"
+                [pointsToNextLevel]="c.pointsToNextLevel"
+                [isMaxLevel]="c.level === 'platinum'" />
+            }
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-stroked-button (click)="onAddPoints()">
+              <mat-icon>add</mat-icon>
+              Dodaj punkty
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <!-- Zakładki: Nagrody, Historia transakcji -->
+        <mat-tab-group class="detail-tabs">
+          <mat-tab label="Dostępne nagrody">
+            <div class="tab-content">
+              <mat-card class="inner-card">
+                <mat-card-header>
+                  <mat-card-title>Nagrody do wykorzystania</mat-card-title>
+                  <button mat-stroked-button (click)="onGenerateReward()">
+                    <mat-icon>add</mat-icon>
+                    Generuj nową
+                  </button>
+                </mat-card-header>
+                <mat-card-content>
+                  <app-rewards-table [rewards]="c.rewards" (redeem)="onRedeem($event)" />
+                </mat-card-content>
+              </mat-card>
             </div>
-            <div class="points-box">
-              <span class="points-label">Zdobyte łącznie</span>
-              <span class="points-value">{{ c.lifetimePoints }}</span>
+          </mat-tab>
+
+          <mat-tab label="Historia transakcji">
+            <div class="tab-content">
+              <mat-card class="inner-card">
+                <mat-card-header>
+                  <mat-card-title>Ruch punktów</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <app-transactions-table [transactions]="c.transactions" />
+                </mat-card-content>
+              </mat-card>
             </div>
-          </div>
-          @if (c.nextLevelThreshold) {
-            <div class="next-level-progress">
-              <span>Postęp do {{ c.level === 'platinum' ? 'maksymalnego poziomu' : 'następnego poziomu' }}:</span>
-              <div class="progress-bar">
-                <div class="progress-fill" [style.width.%]="(c.points / c.nextLevelThreshold) * 100"></div>
-              </div>
-              <span class="progress-text"
-                >{{ c.points }} / {{ c.nextLevelThreshold }} pkt ({{ c.pointsToNextLevel }} pkt do celu)</span
-              >
-            </div>
-          }
-        </mat-card-content>
-        <mat-card-actions align="end">
-          <button mat-stroked-button (click)="onAddPoints()"><mat-icon>add</mat-icon> Dodaj punkty</button>
-        </mat-card-actions>
-      </mat-card>
-
-      <!-- Zakładki: Nagrody, Historia transakcji -->
-      <mat-tab-group class="detail-tabs">
-        <mat-tab label="Dostępne nagrody">
-          <div class="tab-content">
-            <mat-card class="inner-card">
-              <mat-card-header>
-                <mat-card-title>Nagrody do wykorzystania</mat-card-title>
-                <button mat-stroked-button (click)="onGenerateReward()"><mat-icon>add</mat-icon> Generuj nową</button>
-              </mat-card-header>
-              <mat-card-content>
-                @if (c.rewards.length) {
-                  <table mat-table [dataSource]="c.rewards" class="rewards-table">
-                    <ng-container matColumnDef="name">
-                      <th mat-header-cell *matHeaderCellDef>Nazwa</th>
-                      <td mat-cell *matCellDef="let r">{{ r.name }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="pointsCost">
-                      <th mat-header-cell *matHeaderCellDef>Koszt punktów</th>
-                      <td mat-cell *matCellDef="let r">{{ r.pointsCost }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="discount">
-                      <th mat-header-cell *matHeaderCellDef>Rabat</th>
-                      <td mat-cell *matCellDef="let r">
-                        {{ r.discount }}{{ r.discountType === 'percentage' ? '%' : ' PLN' }}
-                      </td>
-                    </ng-container>
-                    <ng-container matColumnDef="code">
-                      <th mat-header-cell *matHeaderCellDef>Kod</th>
-                      <td mat-cell *matCellDef="let r">
-                        <span class="coupon-code">{{ r.code }}</span>
-                      </td>
-                    </ng-container>
-                    <ng-container matColumnDef="expiresAt">
-                      <th mat-header-cell *matHeaderCellDef>Ważny do</th>
-                      <td mat-cell *matCellDef="let r">{{ r.expiresAt | date: 'dd MMM yyyy' }}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="actions">
-                      <th mat-header-cell *matHeaderCellDef></th>
-                      <td mat-cell *matCellDef="let r">
-                        <button mat-icon-button (click)="onRedeem(r)" matTooltip="Wykorzystaj">
-                          <mat-icon>shopping_cart</mat-icon>
-                        </button>
-                      </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="rewardColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: rewardColumns"></tr>
-                  </table>
-                } @else {
-                  <div class="empty-state">Brak dostępnych nagród.</div>
-                }
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </mat-tab>
-
-        <mat-tab label="Historia transakcji">
-          <div class="tab-content">
-            <mat-card class="inner-card">
-              <mat-card-header>
-                <mat-card-title>Ruch punktów</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <table mat-table [dataSource]="c.transactions" class="transactions-table">
-                  <ng-container matColumnDef="date">
-                    <th mat-header-cell *matHeaderCellDef>Data</th>
-                    <td mat-cell *matCellDef="let t">{{ t.date | date: 'dd MMM yyyy' }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="description">
-                    <th mat-header-cell *matHeaderCellDef>Opis</th>
-                    <td mat-cell *matCellDef="let t">{{ t.description }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="pointsChange">
-                    <th mat-header-cell *matHeaderCellDef>Zmiana</th>
-                    <td mat-cell *matCellDef="let t" [style.color]="t.pointsChange > 0 ? '#2e7d32' : '#d32f2f'">
-                      {{ t.pointsChange > 0 ? '+' : '' }}{{ t.pointsChange }}
-                    </td>
-                  </ng-container>
-                  <ng-container matColumnDef="balanceAfter">
-                    <th mat-header-cell *matHeaderCellDef>Saldo</th>
-                    <td mat-cell *matCellDef="let t">{{ t.balanceAfter }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="source">
-                    <th mat-header-cell *matHeaderCellDef>Źródło</th>
-                    <td mat-cell *matCellDef="let t">
-                      <mat-chip class="source-chip">{{ t.source }}</mat-chip>
-                    </td>
-                  </ng-container>
-
-                  <tr mat-header-row *matHeaderRowDef="transactionColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: transactionColumns"></tr>
-                </table>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
-    </div>
-  } @else {
-    <div class="not-found">
-      <mat-icon>error_outline</mat-icon>
-      <p>Nie znaleziono klienta w programie lojalnościowym</p>
-      <button mat-raised-button color="primary" routerLink="/loyalty">Powrót do listy</button>
-    </div>
-  }
-</div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    } @else {
+      <div class="not-found">
+        <mat-icon>error_outline</mat-icon>
+        <p>Nie znaleziono klienta w programie lojalnościowym</p>
+        <button mat-raised-button color="primary" routerLink="/loyalty">Powrót do listy</button>
+      </div>
+    }
+  </div>
 </app-main-page-view>
-

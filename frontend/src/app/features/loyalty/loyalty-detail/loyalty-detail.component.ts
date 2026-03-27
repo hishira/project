@@ -1,40 +1,50 @@
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { CustomerLoyalty, Reward } from '../loyalty.model';
 import { LoyaltyService } from '../loyalty.service';
+import { LevelSummaryBadgeComponent } from './level-summary-badge/level-summary-badge.component';
+import { PointsSummaryComponent } from './points-summary/points-summary.component';
+import { DetailProgressComponent } from './detail-progress/detail-progress.component';
+import { RewardsTableComponent } from './rewards-table/rewards-table.component';
+import { TransactionsTableComponent } from './transactions-table/transactions-table.component';
 
 @Component({
   selector: 'app-loyalty-detail',
   standalone: true,
   imports: [
-    CommonModule, RouterLink,
-    MatCardModule, MatIconModule, MatButtonModule, MatChipsModule,
-    MatDividerModule, MatTableModule, MatTabsModule,
+    CommonModule,
+    RouterLink,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatTabsModule,
     MainPageViewComponent,
     PageHeaderComponent,
+    LevelSummaryBadgeComponent,
+    PointsSummaryComponent,
+    DetailProgressComponent,
+    RewardsTableComponent,
+    TransactionsTableComponent,
   ],
   templateUrl: './loyalty-detail.component.html',
-  styleUrls: ['./loyalty-detail.component.scss']
+  styleUrls: ['./loyalty-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoyaltyDetailComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private loyaltyService = inject(LoyaltyService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly loyaltyService = inject(LoyaltyService);
 
-  customer = signal<CustomerLoyalty | undefined>(undefined);
-  levels = this.loyaltyService.levels;
-
-  transactionColumns: string[] = ['date', 'description', 'pointsChange', 'balanceAfter', 'source'];
-  rewardColumns: string[] = ['name', 'pointsCost', 'discount', 'code', 'expiresAt', 'actions'];
+  readonly customer = signal<CustomerLoyalty | undefined>(undefined);
+  readonly levels = this.loyaltyService.levels;
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -42,17 +52,6 @@ export class LoyaltyDetailComponent implements OnInit {
       const found = this.loyaltyService.getCustomerLoyalty(id);
       this.customer.set(found);
     }
-  }
-
-  getLevelColor(level: string): string {
-    const colors: Record<string, string> = {
-      bronze: '#cd7f32', silver: '#c0c0c0', gold: '#ffd700', platinum: '#e5e4e2'
-    };
-    return colors[level] || '#757575';
-  }
-
-  getLevelIcon(level: string): string {
-    return level === 'platinum' ? 'workspace_premium' : 'emoji_events';
   }
 
   onRedeem(reward: Reward) {

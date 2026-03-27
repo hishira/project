@@ -1,0 +1,12 @@
+<div class="next-level-progress">
+  <span>Postęp do {{ progressLabel }}:</span>
+  <div class="progress-bar">
+    <div class="progress-fill" [style.width.%]="progressPercent"></div>
+  </div>
+  <span class="progress-text">
+    {{ points() }} / {{ nextLevelThreshold() }} pkt
+    @if (pointsToNextLevel()) {
+      ({{ pointsToNextLevel() }} pkt do celu)
+    }
+  </span>
+</div>

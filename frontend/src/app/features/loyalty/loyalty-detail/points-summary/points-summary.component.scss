@@ -1,0 +1,15 @@
+.points-box {
+  display: flex;
+  flex-direction: column;
+
+  .points-label {
+    font-size: 0.9rem;
+    color: #64748b;
+  }
+
+  .points-value {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #0f172a;
+  }
+}

@@ -1,0 +1,4 @@
+<div class="level-badge" [style.background]="getLevelColor(level())" [style.color]="'white'">
+  <mat-icon>{{ getLevelIcon(level()) }}</mat-icon>
+  {{ level() | titlecase }}
+</div>
