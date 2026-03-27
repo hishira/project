@@ -1,101 +1,89 @@
-<div class="loyalty-container">
-  <div class="header">
+<app-page-header>
+  <div class="header main-header">
     <h1>Program lojalnościowy</h1>
+  </div>
+  <div class="main-header-buttons">
     <button mat-raised-button color="primary" (click)="onAdd()">
-      <mat-icon>add</mat-icon> Dodaj klienta
+      <mat-icon>add</mat-icon>
+      Dodaj klienta
     </button>
   </div>
+</app-page-header>
 
-  <!-- Poziomy członkostwa – karty informacyjne -->
-  <div class="levels-grid">
-    @for (level of levels; track level.name) {
-      <mat-card class="level-card" [style.border-top-color]="getLevelColor(level.name)">
-        <mat-card-header>
-          <mat-icon [style.color]="getLevelColor(level.name)">{{ getLevelIcon(level.name) }}</mat-icon>
-          <mat-card-title>{{ level.name | titlecase }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="level-threshold">od {{ level.threshold }} pkt</div>
-          <div class="level-discount">Rabat: {{ level.discount }}%</div>
-          <ul class="benefits">
-            @for (b of level.benefits; track b) {
-              <li>{{ b }}</li>
-            }
-          </ul>
-        </mat-card-content>
-      </mat-card>
-    }
+<app-main-page-view>
+  <div class="loyalty-container">
+    <!-- Poziomy członkostwa – karty informacyjne -->
+    <div class="levels-grid">
+      @for (level of levels; track level.name) {
+        <app-level-card [level]="$any(level)" />
+      }
+    </div>
+
+    <!-- Lista klientów -->
+    <mat-card class="customers-card">
+      <mat-card-header>
+        <mat-card-title>Klienci w programie</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table mat-table [dataSource]="customers()" class="customers-table">
+          <ng-container matColumnDef="customer">
+            <th mat-header-cell *matHeaderCellDef>Klient</th>
+            <td mat-cell *matCellDef="let c">
+              <app-customer-cell [customer]="c" />
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="level">
+            <th mat-header-cell *matHeaderCellDef>Poziom</th>
+            <td mat-cell *matCellDef="let c">
+              <app-level-badge [level]="c.level" />
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="points">
+            <th mat-header-cell *matHeaderCellDef>Punkty</th>
+            <td mat-cell *matCellDef="let c">
+              <strong>{{ c.points }}</strong>
+              <span class="lifetime-points">/ {{ c.lifetimePoints }} (życiowe)</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nextLevel">
+            <th mat-header-cell *matHeaderCellDef>Postęp</th>
+            <td mat-cell *matCellDef="let c">
+              <app-progress-bar
+                [points]="c.points"
+                [nextLevelThreshold]="c.nextLevelThreshold"
+                [level]="c.level" />
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="rewards">
+            <th mat-header-cell *matHeaderCellDef>Nagrody</th>
+            <td mat-cell *matCellDef="let c">{{ c.rewards.length }} dostępnych</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let c">
+              <button
+                mat-icon-button
+                [routerLink]="[c.customerId]"
+                matTooltip="Szczegóły"
+                (click)="$event.stopPropagation()">
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            [routerLink]="[row.customerId]"
+            class="clickable-row"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
   </div>
-
-  <!-- Lista klientów -->
-  <mat-card class="customers-card">
-    <mat-card-header>
-      <mat-card-title>Klienci w programie</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <table mat-table [dataSource]="customers()" class="customers-table">
-        <ng-container matColumnDef="customer">
-          <th mat-header-cell *matHeaderCellDef>Klient</th>
-          <td mat-cell *matCellDef="let c">
-            <div class="customer-cell">
-              <span class="customer-name">{{ c.customerName }}</span>
-              <span class="customer-email">{{ c.customerEmail }}</span>
-            </div>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="level">
-          <th mat-header-cell *matHeaderCellDef>Poziom</th>
-          <td mat-cell *matCellDef="let c">
-            <div class="level-badge" [style.background]="getLevelColor(c.level)" [style.color]="'white'">
-              <mat-icon>{{ getLevelIcon(c.level) }}</mat-icon> {{ c.level | titlecase }}
-            </div>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="points">
-          <th mat-header-cell *matHeaderCellDef>Punkty</th>
-          <td mat-cell *matCellDef="let c">
-            <strong>{{ c.points }}</strong> / {{ c.lifetimePoints }} (życiowe)
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="nextLevel">
-          <th mat-header-cell *matHeaderCellDef>Postęp</th>
-          <td mat-cell *matCellDef="let c">
-            @if (c.nextLevelThreshold) {
-              <div class="progress-container">
-                <div class="progress-bar">
-                  <div class="progress-fill" [style.width.%]="getProgressWidth(c.points, c.nextLevelThreshold)"></div>
-                </div>
-                <span class="progress-text">{{ c.points }} / {{ c.nextLevelThreshold }} pkt</span>
-                <span class="progress-to-next">({{ c.pointsToNextLevel }} do {{ c.level === 'platinum' ? 'max' : 'następnego' }})</span>
-              </div>
-            } @else {
-              <span>Maksymalny poziom</span>
-            }
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="rewards">
-          <th mat-header-cell *matHeaderCellDef>Nagrody</th>
-          <td mat-cell *matCellDef="let c">
-            {{ c.rewards.length }} dostępnych
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let c">
-            <button mat-icon-button [routerLink]="[c.customerId]" matTooltip="Szczegóły">
-              <mat-icon>visibility</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="[row.customerId]" class="clickable-row"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
-</div>
+</app-main-page-view>

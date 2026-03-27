@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { CustomerLoyalty, Reward, PointsTransaction } from './loyalty.model';
+import { CustomerLoyalty, Reward, PointsTransaction, Level, MembershipLevel } from './loyalty.model';
 
 @Injectable({ providedIn: 'root' })
 export class LoyaltyService {
@@ -58,11 +58,11 @@ export class LoyaltyService {
   readonly customers = signal<CustomerLoyalty[]>(this.customersData);
 
   // Poziomy (stałe dla programu)
-  readonly levels = [
-    { name: 'bronze', threshold: 0, discount: 0, benefits: ['Podstawowe wsparcie'] },
-    { name: 'silver', threshold: 1000, discount: 3, benefits: ['3% rabatu', 'Priorytetowa obsługa'] },
-    { name: 'gold', threshold: 2500, discount: 5, benefits: ['5% rabatu', 'Dedykowany opiekun'] },
-    { name: 'platinum', threshold: 5000, discount: 10, benefits: ['10% rabatu', 'Darmowa dostawa', 'Ekskluzywne wydarzenia'] }
+  readonly levels: Level[] = [
+    { name: 'bronze' as MembershipLevel, threshold: 0, discount: 0, benefits: ['Podstawowe wsparcie'] },
+    { name: 'silver' as MembershipLevel, threshold: 1000, discount: 3, benefits: ['3% rabatu', 'Priorytetowa obsługa'] },
+    { name: 'gold' as MembershipLevel, threshold: 2500, discount: 5, benefits: ['5% rabatu', 'Dedykowany opiekun'] },
+    { name: 'platinum' as MembershipLevel, threshold: 5000, discount: 10, benefits: ['10% rabatu', 'Darmowa dostawa', 'Ekskluzywne wydarzenia'] }
   ];
 
   getCustomerLoyalty(customerId: string): CustomerLoyalty | undefined {

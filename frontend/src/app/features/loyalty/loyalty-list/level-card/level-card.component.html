@@ -1,0 +1,18 @@
+@let lvl = level();
+<mat-card class="level-card" [style.border-top-color]="getLevelColor(lvl.name)">
+  <mat-card-header>
+    <mat-icon [style.color]="getLevelColor(lvl.name)">{{ getLevelIcon(lvl.name) }}</mat-icon>
+    <mat-card-title>{{ lvl.name | titlecase }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="level-threshold">od {{ lvl.threshold }} pkt</div>
+    <div class="level-discount">Rabat: {{ lvl.discount }}%</div>
+    @if (lvl.benefits.length) {
+      <ul class="benefits">
+        @for (b of lvl.benefits; track b) {
+          <li>{{ b }}</li>
+        }
+      </ul>
+    }
+  </mat-card-content>
+</mat-card>

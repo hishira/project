@@ -1,5 +1,13 @@
 export type MembershipLevel = 'bronze' | 'silver' | 'gold' | 'platinum';
 
+export interface LevelColorConfig {
+  [key: string]: string;
+}
+
+export interface LevelIconConfig {
+  [key: string]: string;
+}
+
 export interface LoyaltyProgram {
   id: string;
   name: string;

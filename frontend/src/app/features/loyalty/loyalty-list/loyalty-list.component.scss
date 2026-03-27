@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+
   h1 {
     margin: 0;
     font-size: 2rem;
@@ -24,91 +24,31 @@
   margin-bottom: 32px;
 }
 
-.level-card {
-  border-top: 4px solid transparent;
-
-  .mat-mdc-card-header {
-    align-items: center;
-    gap: 8px;
-    mat-icon {
-      font-size: 32px;
-      width: 32px;
-      height: 32px;
-    }
-  }
-  .level-threshold {
-    font-size: 0.9rem;
-    color: #64748b;
-  }
-  .level-discount {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 8px 0;
-  }
-  .benefits {
-    margin: 0;
-    padding-left: 16px;
-    font-size: 0.85rem;
-    color: #334155;
-  }
+.main-header-buttons {
+  display: flex;
+  gap: 8px;
 }
 
 .customers-card {
   .customers-table {
     width: 100%;
+
     .mat-mdc-row {
       cursor: pointer;
       transition: background 0.2s;
+
       &:hover {
         background-color: #f8fafc;
       }
     }
-    .customer-cell {
-      display: flex;
-      flex-direction: column;
-      .customer-name {
-        font-weight: 500;
-      }
-      .customer-email {
-        font-size: 0.8rem;
-        color: #64748b;
-      }
+
+    .clickable-row {
+      cursor: pointer;
     }
-    .level-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 8px;
-      border-radius: 16px;
-      font-size: 0.8rem;
-      mat-icon {
-        font-size: 16px;
-        width: 16px;
-        height: 16px;
-      }
-    }
-    .progress-container {
-      min-width: 150px;
-      .progress-bar {
-        height: 6px;
-        background-color: #e2e8f0;
-        border-radius: 3px;
-        overflow: hidden;
-        margin-bottom: 4px;
-        .progress-fill {
-          height: 100%;
-          background-color: #1976d2;
-        }
-      }
-      .progress-text {
-        font-size: 0.8rem;
-        font-weight: 500;
-      }
-      .progress-to-next {
-        font-size: 0.7rem;
-        color: #64748b;
-        margin-left: 4px;
-      }
+
+    .lifetime-points {
+      color: #64748b;
+      font-size: 0.9rem;
     }
   }
 }

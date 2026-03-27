@@ -1,8 +1,7 @@
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -10,50 +9,46 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { LoyaltyService } from '../loyalty.service';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { LevelCardComponent } from './level-card/level-card.component';
+import { CustomerCellComponent } from './customer-cell/customer-cell.component';
+import { LevelBadgeComponent } from './level-badge/level-badge.component';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 
 @Component({
   selector: 'app-loyalty-list',
   standalone: true,
   imports: [
-    CommonModule, RouterLink,
-    MatCardModule, MatIconModule, MatButtonModule, MatChipsModule, MatTooltipModule,
-    MatTableModule, MatPaginatorModule, MatSortModule
+    CommonModule,
+    RouterLink,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
+    LevelCardComponent,
+    CustomerCellComponent,
+    LevelBadgeComponent,
+    ProgressBarComponent,
   ],
   templateUrl: './loyalty-list.component.html',
-  styleUrls: ['./loyalty-list.component.scss']
+  styleUrls: ['./loyalty-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoyaltyListComponent {
-  private loyaltyService = inject(LoyaltyService);
-  customers = this.loyaltyService.customers;
-  levels = this.loyaltyService.levels;
+  private readonly loyaltyService = inject(LoyaltyService);
 
-  displayedColumns: string[] = ['customer', 'level', 'points', 'nextLevel', 'rewards', 'actions'];
+  readonly customers = this.loyaltyService.customers;
+  readonly levels = this.loyaltyService.levels;
 
-  getLevelColor(level: string): string {
-    const colors: Record<string, string> = {
-      bronze: '#cd7f32',
-      silver: '#c0c0c0',
-      gold: '#ffd700',
-      platinum: '#e5e4e2'
-    };
-    return colors[level] || '#757575';
-  }
+  readonly displayedColumns: string[] = ['customer', 'level', 'points', 'nextLevel', 'rewards', 'actions'];
 
-  getLevelIcon(level: string): string {
-    const icons: Record<string, string> = {
-      bronze: 'emoji_events',
-      silver: 'emoji_events',
-      gold: 'emoji_events',
-      platinum: 'workspace_premium'
-    };
-    return icons[level] || 'stars';
-  }
-
-  getProgressWidth(points: number, nextThreshold: number | undefined): number {
-    if (!nextThreshold) return 100;
-    return Math.min(100, (points / nextThreshold) * 100);
-  }
   onAdd(): void {
-
+    // TODO: Implement add customer logic
   }
 }

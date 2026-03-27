@@ -1,0 +1,13 @@
+.customer-cell {
+  display: flex;
+  flex-direction: column;
+
+  .customer-name {
+    font-weight: 500;
+  }
+
+  .customer-email {
+    font-size: 0.8rem;
+    color: #64748b;
+  }
+}

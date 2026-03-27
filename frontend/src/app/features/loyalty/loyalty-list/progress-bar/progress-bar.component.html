@@ -1,0 +1,11 @@
+@if (!isMaxLevel) {
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="getProgressWidth(points(), nextLevelThreshold())"></div>
+    </div>
+    <span class="progress-text">{{ progressText }}</span>
+    <span class="progress-to-next">{{ progressToNextText }}</span>
+  </div>
+} @else {
+  <span>Maksymalny poziom</span>
+}

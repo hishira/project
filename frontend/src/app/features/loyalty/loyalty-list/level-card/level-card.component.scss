@@ -1,0 +1,32 @@
+.level-card {
+  border-top: 4px solid transparent;
+
+  .mat-mdc-card-header {
+    align-items: center;
+    gap: 8px;
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .level-threshold {
+    font-size: 0.9rem;
+    color: #64748b;
+  }
+
+  .level-discount {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 8px 0;
+  }
+
+  .benefits {
+    margin: 0;
+    padding-left: 16px;
+    font-size: 0.85rem;
+    color: #334155;
+  }
+}
