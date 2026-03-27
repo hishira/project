@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { CustomerLoyalty, Reward } from '../loyalty.model';
 import { LoyaltyService } from '../loyalty.service';
 
@@ -17,7 +19,9 @@ import { LoyaltyService } from '../loyalty.service';
   imports: [
     CommonModule, RouterLink,
     MatCardModule, MatIconModule, MatButtonModule, MatChipsModule,
-    MatDividerModule, MatTableModule, MatTabsModule
+    MatDividerModule, MatTableModule, MatTabsModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './loyalty-detail.component.html',
   styleUrls: ['./loyalty-detail.component.scss']

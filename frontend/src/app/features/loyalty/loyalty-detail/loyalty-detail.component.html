@@ -1,9 +1,10 @@
-<div class="detail-container">
-  <div class="header">
-    <a mat-icon-button routerLink="/loyalty" class="back-btn"><mat-icon>arrow_back</mat-icon></a>
+<app-page-header>
+  <div class="header main-header">
     <h1>Program lojalnościowy – {{ customer()?.customerName }}</h1>
   </div>
-
+</app-page-header>
+<app-main-page-view>
+<div class="detail-container">
   @if (customer(); as c) {
     <div class="content">
       <!-- Podsumowanie -->
@@ -33,7 +34,9 @@
               <div class="progress-bar">
                 <div class="progress-fill" [style.width.%]="(c.points / c.nextLevelThreshold) * 100"></div>
               </div>
-              <span class="progress-text">{{ c.points }} / {{ c.nextLevelThreshold }} pkt ({{ c.pointsToNextLevel }} pkt do celu)</span>
+              <span class="progress-text"
+                >{{ c.points }} / {{ c.nextLevelThreshold }} pkt ({{ c.pointsToNextLevel }} pkt do celu)</span
+              >
             </div>
           }
         </mat-card-content>
@@ -76,7 +79,7 @@
                     </ng-container>
                     <ng-container matColumnDef="expiresAt">
                       <th mat-header-cell *matHeaderCellDef>Ważny do</th>
-                      <td mat-cell *matCellDef="let r">{{ r.expiresAt | date:'dd MMM yyyy' }}</td>
+                      <td mat-cell *matCellDef="let r">{{ r.expiresAt | date: 'dd MMM yyyy' }}</td>
                     </ng-container>
                     <ng-container matColumnDef="actions">
                       <th mat-header-cell *matHeaderCellDef></th>
@@ -88,7 +91,7 @@
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="rewardColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: rewardColumns;"></tr>
+                    <tr mat-row *matRowDef="let row; columns: rewardColumns"></tr>
                   </table>
                 } @else {
                   <div class="empty-state">Brak dostępnych nagród.</div>
@@ -108,7 +111,7 @@
                 <table mat-table [dataSource]="c.transactions" class="transactions-table">
                   <ng-container matColumnDef="date">
                     <th mat-header-cell *matHeaderCellDef>Data</th>
-                    <td mat-cell *matCellDef="let t">{{ t.date | date:'dd MMM yyyy' }}</td>
+                    <td mat-cell *matCellDef="let t">{{ t.date | date: 'dd MMM yyyy' }}</td>
                   </ng-container>
                   <ng-container matColumnDef="description">
                     <th mat-header-cell *matHeaderCellDef>Opis</th>
@@ -132,7 +135,7 @@
                   </ng-container>
 
                   <tr mat-header-row *matHeaderRowDef="transactionColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: transactionColumns;"></tr>
+                  <tr mat-row *matRowDef="let row; columns: transactionColumns"></tr>
                 </table>
               </mat-card-content>
             </mat-card>
@@ -148,3 +151,5 @@
     </div>
   }
 </div>
+</app-main-page-view>
+

@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 24px;
+
   h1 {
     margin: 0;
     font-size: 1.8rem;
@@ -18,11 +18,13 @@
 
 .summary-card {
   margin-bottom: 24px;
+
   .summary-grid {
     display: grid;
     grid-template-columns: auto 1fr 1fr;
     gap: 24px;
     align-items: center;
+
     .level-display {
       .level-badge {
         display: inline-flex;
@@ -34,13 +36,16 @@
         font-weight: 500;
       }
     }
+
     .points-box {
       display: flex;
       flex-direction: column;
+
       .points-label {
         font-size: 0.9rem;
         color: #64748b;
       }
+
       .points-value {
         font-size: 2rem;
         font-weight: 600;
@@ -48,19 +53,23 @@
       }
     }
   }
+
   .next-level-progress {
     margin-top: 16px;
+
     .progress-bar {
       height: 8px;
       background-color: #e2e8f0;
       border-radius: 4px;
       overflow: hidden;
       margin: 8px 0 4px;
+
       .progress-fill {
         height: 100%;
         background-color: #1976d2;
       }
     }
+
     .progress-text {
       font-size: 0.85rem;
       color: #334155;
@@ -81,14 +90,17 @@
   }
 }
 
-.rewards-table, .transactions-table {
+.rewards-table,
+.transactions-table {
   width: 100%;
+
   .coupon-code {
     font-family: 'Roboto Mono', monospace;
     background: #f1f5f9;
     padding: 2px 6px;
     border-radius: 4px;
   }
+
   .source-chip {
     font-size: 0.7rem;
     min-height: 24px;
@@ -108,6 +120,7 @@
   text-align: center;
   padding: 48px;
   color: #64748b;
+
   mat-icon {
     font-size: 48px;
     width: 48px;
