@@ -1,5 +1,8 @@
 .level-card {
   border-top: 4px solid transparent;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
   .mat-mdc-card-header {
     align-items: center;
@@ -23,10 +26,45 @@
     margin: 8px 0;
   }
 
+  .benefits-container {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
   .benefits {
     margin: 0;
     padding-left: 16px;
     font-size: 0.85rem;
     color: #334155;
+    overflow-y: auto;
+    max-height: 120px;
+    padding-right: 4px;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+
+      &:hover {
+        background: #94a3b8;
+      }
+    }
+  }
+
+  .mat-mdc-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 }

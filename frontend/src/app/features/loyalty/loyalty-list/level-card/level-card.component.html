@@ -8,11 +8,13 @@
     <div class="level-threshold">od {{ lvl.threshold }} pkt</div>
     <div class="level-discount">Rabat: {{ lvl.discount }}%</div>
     @if (lvl.benefits.length) {
-      <ul class="benefits">
-        @for (b of lvl.benefits; track b) {
-          <li>{{ b }}</li>
-        }
-      </ul>
+      <div class="benefits-container">
+        <ul class="benefits">
+          @for (b of lvl.benefits; track b) {
+            <li>{{ b }}</li>
+          }
+        </ul>
+      </div>
     }
   </mat-card-content>
 </mat-card>
