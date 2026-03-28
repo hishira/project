@@ -1,0 +1,52 @@
+<mat-card class="inner-card">
+  <mat-card-header>
+    <mat-card-title>Pozycje budżetowe</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (items().length) {
+      <table mat-table [dataSource]="items()" class="budget-table">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Kategoria</th>
+          <td mat-cell *matCellDef="let item">{{ item.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="planned">
+          <th mat-header-cell *matHeaderCellDef>Planowane</th>
+          <td mat-cell *matCellDef="let item">{{ item.planned | number }} {{ currency() }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actual">
+          <th mat-header-cell *matHeaderCellDef>Rzeczywiste</th>
+          <td mat-cell *matCellDef="let item">{{ item.actual | number }} {{ currency() }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="variance">
+          <th mat-header-cell *matHeaderCellDef>Odchylenie</th>
+          <td mat-cell *matCellDef="let item">
+            <span
+              [class.negative]="isNegativeVariance(getBudgetVariance(item))"
+              [class.positive]="isPositiveVariance(getBudgetVariance(item))">
+              {{ getBudgetVariance(item) | number }} {{ currency() }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    } @else {
+      <p class="empty-state">Brak szczegółowych pozycji budżetowych.</p>
+    }
+
+    <div class="budget-summary">
+      <div class="summary-line">
+        <span>Razem planowane:</span>
+        <strong>{{ total() | number }} {{ currency() }}</strong>
+      </div>
+      <div class="summary-line">
+        <span>Razem wydane:</span>
+        <strong>{{ spent() | number }} {{ currency() }}</strong>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

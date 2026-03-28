@@ -1,0 +1,67 @@
+<table mat-table [dataSource]="dataSource()" matSort class="project-table">
+  <!-- Nazwa -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Nazwa projektu</th>
+    <td mat-cell *matCellDef="let p">
+      <app-project-name-cell [projectId]="p.id" [projectName]="p.name" />
+    </td>
+  </ng-container>
+
+  <!-- Klient -->
+  <ng-container matColumnDef="client">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="clientName">Klient</th>
+    <td mat-cell *matCellDef="let p">{{ p.clientName }}</td>
+  </ng-container>
+
+  <!-- Status -->
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</th>
+    <td mat-cell *matCellDef="let p">
+      <app-project-status-chip [status]="p.status" />
+    </td>
+  </ng-container>
+
+  <!-- Daty -->
+  <ng-container matColumnDef="dates">
+    <th mat-header-cell *matHeaderCellDef>Okres</th>
+    <td mat-cell *matCellDef="let p">
+      {{ p.startDate | date: 'dd MMM yyyy' }} – {{ p.endDate ? (p.endDate | date: 'dd MMM yyyy') : 'b.d.' }}
+    </td>
+  </ng-container>
+
+  <!-- Budżet -->
+  <ng-container matColumnDef="budget">
+    <th mat-header-cell *matHeaderCellDef>Budżet</th>
+    <td mat-cell *matCellDef="let p">
+      <app-budget-cell [spent]="p.budget.spent" [total]="p.budget.total" [currency]="p.budget.currency" />
+    </td>
+  </ng-container>
+
+  <!-- Postęp -->
+  <ng-container matColumnDef="progress">
+    <th mat-header-cell *matHeaderCellDef>Postęp</th>
+    <td mat-cell *matCellDef="let p">
+      <app-progress-cell [progress]="calculateProgress(p)" />
+    </td>
+  </ng-container>
+
+  <!-- Akcje -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let p">
+      <app-project-actions
+        [projectId]="p.id"
+        (viewDetails)="viewDetails.emit(p)"
+        (edit)="edit.emit(p)" />
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns()" [routerLink]="[row.id]" class="clickable-row"></tr>
+
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" [attr.colspan]="displayedColumns().length">
+      <div class="no-data">Brak projektów spełniających kryteria</div>
+    </td>
+  </tr>
+</table>

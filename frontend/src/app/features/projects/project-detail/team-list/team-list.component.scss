@@ -1,0 +1,49 @@
+.inner-card {
+  margin-bottom: 16px;
+
+  .mat-mdc-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 16px 0;
+  }
+}
+
+.team-item {
+  .team-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .member-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .member-name {
+        font-weight: 500;
+        color: #0f172a;
+      }
+
+      .member-role {
+        font-size: 0.875rem;
+        color: #64748b;
+      }
+    }
+
+    .member-allocation {
+      font-size: 0.875rem;
+      color: #334155;
+      font-weight: 500;
+    }
+  }
+}

@@ -1,57 +1,52 @@
+import { ChangeDetectionStrategy, Component, inject, signal, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, inject, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
 import { Project, ProjectStatus } from '../project.model';
 import { ProjectService } from '../project.service';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { ProjectFiltersComponent } from './project-filters/project-filters.component';
+import { ProjectTableComponent } from './project-table/project-table.component';
 
 @Component({
   selector: 'app-project-list',
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
     MatIconModule,
     MatButtonModule,
-    MatChipsModule,
-    MatTooltipModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    FormsModule,
-    MatCardModule
+    MatCardModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
+    ProjectFiltersComponent,
+    ProjectTableComponent,
   ],
   templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.scss']
+  styleUrls: ['./project-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectListComponent {
+export class ProjectListComponent implements AfterViewInit {
   private readonly projectService = inject(ProjectService);
-  projects = this.projectService.projects;
+  private readonly projects = this.projectService.projects;
 
-  dataSource = new MatTableDataSource<Project>(this.projects());
-  displayedColumns: string[] = ['name', 'client', 'status', 'dates', 'budget', 'progress', 'actions'];
+  readonly dataSource = signal<MatTableDataSource<Project>>(new MatTableDataSource<Project>([]));
+  readonly displayedColumns: string[] = ['name', 'client', 'status', 'dates', 'budget', 'progress', 'actions'];
+
+  readonly filterName = signal<string>('');
+  readonly filterStatus = signal<ProjectStatus | ''>('');
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  filterName = '';
-  filterStatus: ProjectStatus | '' = '';
-
-  statuses: { value: ProjectStatus; label: string }[] = [
+  readonly statuses: { value: ProjectStatus; label: string }[] = [
     { value: 'planned', label: 'Planowany' },
     { value: 'active', label: 'Aktywny' },
     { value: 'on_hold', label: 'Wstrzymany' },
@@ -60,9 +55,11 @@ export class ProjectListComponent {
   ];
 
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.filterPredicate = (data: Project, filter: string) => {
+    this.updateDataSource();
+    const dataSource = this.dataSource();
+    dataSource.sort = this.sort;
+    dataSource.paginator = this.paginator;
+    dataSource.filterPredicate = (data: Project, filter: string) => {
       const filterObj = JSON.parse(filter);
       if (filterObj.name && !data.name.toLowerCase().includes(filterObj.name.toLowerCase())) return false;
       if (filterObj.status && data.status !== filterObj.status) return false;
@@ -70,59 +67,31 @@ export class ProjectListComponent {
     };
   }
 
+  private updateDataSource() {
+    const dataSource = new MatTableDataSource<Project>(this.projects());
+    this.dataSource.set(dataSource);
+  }
+
   applyFilters() {
+    const dataSource = this.dataSource();
     const filterObj = {
-      name: this.filterName,
-      status: this.filterStatus
+      name: this.filterName(),
+      status: this.filterStatus()
     };
-    this.dataSource.filter = JSON.stringify(filterObj);
+    dataSource.filter = JSON.stringify(filterObj);
   }
 
   clearFilters() {
-    this.filterName = '';
-    this.filterStatus = '';
+    this.filterName.set('');
+    this.filterStatus.set('');
     this.applyFilters();
-  }
-
-  getStatusClass(status: ProjectStatus): string {
-    const map: Record<ProjectStatus, string> = {
-      planned: 'status-planned',
-      active: 'status-active',
-      on_hold: 'status-on-hold',
-      completed: 'status-completed',
-      cancelled: 'status-cancelled'
-    };
-    return map[status];
-  }
-
-  getStatusLabel(status: ProjectStatus): string {
-    const map: Record<ProjectStatus, string> = {
-      planned: 'Planowany',
-      active: 'Aktywny',
-      on_hold: 'Wstrzymany',
-      completed: 'Zakończony',
-      cancelled: 'Anulowany'
-    };
-    return map[status];
-  }
-
-  calculateProgress(project: Project): number {
-    if (!project.tasks || project.tasks.length === 0) return 0;
-    const done = project.tasks.filter(t => t.status === 'done').length;
-    return Math.round((done / project.tasks.length) * 100);
   }
 
   onAdd() {
     console.log('Dodaj nowy projekt');
   }
 
-  onEdit(project: Project, event: MouseEvent) {
-    event.stopPropagation();
+  onEdit(project: Project) {
     console.log('Edytuj projekt:', project.id);
-  }
-
-  onDelete(project: Project, event: MouseEvent) {
-    event.stopPropagation();
-    console.log('Usuń projekt:', project.id);
   }
 }

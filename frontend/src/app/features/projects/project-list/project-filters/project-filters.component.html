@@ -1,0 +1,31 @@
+<mat-card class="filters-card">
+  <mat-card-content>
+    <div class="filters-grid">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Nazwa projektu</mat-label>
+        <input
+          matInput
+          [ngModel]="filterName()"
+          (ngModelChange)="filterNameChange.emit($event)"
+          placeholder="Wpisz nazwę" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Status</mat-label>
+        <mat-select
+          [ngModel]="filterStatus()"
+          (ngModelChange)="filterStatusChange.emit($event)">
+          <mat-option value="">Wszystkie</mat-option>
+          @for (s of statuses(); track s.value) {
+            <mat-option [value]="s.value">{{ s.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="filter-actions">
+      <button mat-button (click)="clearFilters.emit()">
+        <mat-icon>clear</mat-icon>
+        Wyczyść filtry
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

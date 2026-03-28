@@ -1,0 +1,29 @@
+<mat-card class="summary-card">
+  <mat-card-header>
+    <div class="header-row">
+      <mat-card-title>{{ name() }}</mat-card-title>
+      <app-project-status-chip [status]="status()" size="large" />
+    </div>
+    <mat-card-subtitle>
+      Klient: <strong>{{ clientName() }}</strong> · Okres: {{ startDate() | date: 'dd MMM yyyy' }} –
+      {{ endDate() ? (endDate() | date: 'dd MMM yyyy') : 'nieokreślony' }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="summary-stats">
+      <div class="stat">
+        <span class="stat-label">Budżet</span>
+        <span class="stat-value">{{ budgetSpent() | number }} / {{ budgetTotal() | number }} {{ budgetCurrency() }}</span>
+        <mat-progress-bar mode="determinate" [value]="budgetPercent"></mat-progress-bar>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Postęp zadań</span>
+        <span class="stat-value">{{ progress() }}%</span>
+        <mat-progress-bar mode="determinate" [value]="progress()"></mat-progress-bar>
+      </div>
+    </div>
+    @if (description()) {
+      <p class="description">{{ description() }}</p>
+    }
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,33 @@
+.inner-card {
+  .mat-mdc-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 16px 0;
+  }
+}
+
+.tasks-table {
+  width: 100%;
+}
+
+.task-status {
+  font-size: 0.75rem;
+  min-height: 24px;
+  padding: 0 8px;
+}
+
+.task-status-todo {
+  background-color: #f1f5f9 !important;
+  color: #475569 !important;
+}
+
+.task-status-in_progress {
+  background-color: #dbeafe !important;
+  color: #1e40af !important;
+}
+
+.task-status-done {
+  background-color: #d1fae5 !important;
+  color: #065f46 !important;
+}

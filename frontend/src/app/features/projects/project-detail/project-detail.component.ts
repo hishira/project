@@ -1,17 +1,18 @@
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Project } from '../project.model';
 import { ProjectService } from '../project.service';
+import { ProjectSummaryComponent } from './project-summary/project-summary.component';
+import { TeamListComponent } from './team-list/team-list.component';
+import { TasksTableComponent } from './tasks-table/tasks-table.component';
+import { MilestonesListComponent } from './milestones-list/milestones-list.component';
+import { BudgetTableComponent } from './budget-table/budget-table.component';
 
 @Component({
   selector: 'app-project-detail',
@@ -22,25 +23,23 @@ import { ProjectService } from '../project.service';
     MatCardModule,
     MatIconModule,
     MatButtonModule,
-    MatChipsModule,
     MatDividerModule,
     MatTabsModule,
-    MatTableModule,
-    MatListModule,
-    MatProgressBarModule
+    ProjectSummaryComponent,
+    TeamListComponent,
+    TasksTableComponent,
+    MilestonesListComponent,
+    BudgetTableComponent,
   ],
   templateUrl: './project-detail.component.html',
-  styleUrls: ['./project-detail.component.scss']
+  styleUrls: ['./project-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectDetailComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private projectService = inject(ProjectService);
-  project = signal<Project | undefined>(undefined);
+  private readonly route = inject(ActivatedRoute);
+  private readonly projectService = inject(ProjectService);
 
-  // Kolumny dla tabeli zadań
-  taskColumns: string[] = ['title', 'assignee', 'status', 'hours', 'dueDate', 'actions'];
-  // Kolumny dla budżetu
-  budgetColumns: string[] = ['name', 'planned', 'actual', 'variance'];
+  readonly project = signal<Project | undefined>(undefined);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -50,39 +49,12 @@ export class ProjectDetailComponent implements OnInit {
     }
   }
 
-  getStatusClass(status: string): string {
-    const map: Record<string, string> = {
-      planned: 'status-planned',
-      active: 'status-active',
-      on_hold: 'status-on-hold',
-      completed: 'status-completed',
-      cancelled: 'status-cancelled'
-    };
-    return map[status] || '';
-  }
-
-  getStatusLabel(status: string): string {
-    const map: Record<string, string> = {
-      planned: 'Planowany',
-      active: 'Aktywny',
-      on_hold: 'Wstrzymany',
-      completed: 'Zakończony',
-      cancelled: 'Anulowany'
-    };
-    return map[status] || status;
-  }
-
   calculateProgress(project: Project): number {
     if (!project.tasks || project.tasks.length === 0) return 0;
     const done = project.tasks.filter(t => t.status === 'done').length;
     return Math.round((done / project.tasks.length) * 100);
   }
 
-  getBudgetVariance(item: any): number {
-    return item.actual - item.planned;
-  }
-
-  // Symulacje akcji
   onAddTask() {
     console.log('Dodaj nowe zadanie do projektu:', this.project()?.id);
   }

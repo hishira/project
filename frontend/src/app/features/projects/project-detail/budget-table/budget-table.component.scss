@@ -1,0 +1,47 @@
+.inner-card {
+  .mat-mdc-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 16px 0;
+  }
+}
+
+.budget-table {
+  width: 100%;
+
+  .positive {
+    color: #10b981;
+    font-weight: 500;
+  }
+
+  .negative {
+    color: #ef4444;
+    font-weight: 500;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 24px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.budget-summary {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+
+  .summary-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 0.95rem;
+
+    strong {
+      font-weight: 600;
+      color: #0f172a;
+    }
+  }
+}
