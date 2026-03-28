@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/angular';
 import { TeamListComponent } from './team-list.component';
 import { ProjectTeamMember } from '../../project.model';
-import { describe, it, expect, vi } from 'vitest';
+import { vi } from 'vitest';
 
 describe('TeamListComponent', () => {
   const mockTeam: ProjectTeamMember[] = [
@@ -25,53 +25,57 @@ describe('TeamListComponent', () => {
     const addMemberSpy = vi.fn();
     
     await render(TeamListComponent, {
-      componentProperties: {
+      inputs: {
         team: team || mockTeam,
-        addMember: {
-          emit: addMemberSpy,
-        } as any,
+        addMember: { emit: addMemberSpy } as any,
       },
     });
 
     return { addMemberSpy };
   };
 
-  it('should display header "Zespół projektowy"', async () => {
+  test('should display header "Zespół projektowy"', async () => {
     await setup();
     expect(screen.getByText('Zespół projektowy')).toBeInTheDocument();
   });
 
-  it('should display "Dodaj członka" button', async () => {
+  test('should display "Dodaj członka" button', async () => {
     await setup();
     expect(screen.getByText('Dodaj członka')).toBeInTheDocument();
   });
 
-  it('should emit addMember event when "Dodaj członka" is clicked', async () => {
-    const { addMemberSpy } = await setup();
+  test('should emit addMember event when "Dodaj członka" is clicked', async () => {
+    const addMemberSpy = vi.fn();
+    await render(TeamListComponent, {
+      inputs: {
+        team: mockTeam,
+        addMember: { emit: addMemberSpy } as any,
+      },
+    });
     const button = screen.getByText('Dodaj członka');
     fireEvent.click(button);
     expect(addMemberSpy).toHaveBeenCalled();
   });
 
-  it('should display team members', async () => {
+  test('should display team members', async () => {
     await setup();
     expect(screen.getByText('Jan Kowalski')).toBeInTheDocument();
     expect(screen.getByText('Anna Nowak')).toBeInTheDocument();
   });
 
-  it('should display member roles', async () => {
+  test('should display member roles', async () => {
     await setup();
     expect(screen.getByText('Project Manager')).toBeInTheDocument();
     expect(screen.getByText('Developer')).toBeInTheDocument();
   });
 
-  it('should display member allocation percentages', async () => {
+  test('should display member allocation percentages', async () => {
     await setup();
     expect(screen.getByText('50%')).toBeInTheDocument();
     expect(screen.getByText('100%')).toBeInTheDocument();
   });
 
-  it('should display member avatars', async () => {
+  test('should display member avatars', async () => {
     await setup();
     const images = screen.getAllByRole('img');
     expect(images).toHaveLength(2);
@@ -79,7 +83,7 @@ describe('TeamListComponent', () => {
     expect(images[1]).toHaveAttribute('src', 'avatar2.jpg');
   });
 
-  it('should handle empty team', async () => {
+  test('should handle empty team', async () => {
     await setup([]);
     expect(screen.queryByText('Jan Kowalski')).not.toBeInTheDocument();
   });

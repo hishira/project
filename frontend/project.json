@@ -77,7 +77,7 @@
       "executor": "@angular/build:extract-i18n"
     },
     "test": {
-     "executor": "@nx/jest:jest",  
+     "executor": "@nx/vitest:test",  
       "options": {
         "jestConfig": "{projectRoot}/jest.config.ts",  
         "passWithNoTests": true

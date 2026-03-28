@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/angular';
 import { BudgetTableComponent } from './budget-table.component';
 import { BudgetItem } from '../../project.model';
-import { describe, it, expect, vi } from 'vitest';
+import { vi } from 'vitest';
 
 describe('BudgetTableComponent', () => {
   const mockItems: BudgetItem[] = [
@@ -38,18 +38,18 @@ describe('BudgetTableComponent', () => {
     };
     
     await render(BudgetTableComponent, {
-      componentProperties: properties,
+      inputs: properties,
     });
 
     return properties;
   };
 
-  it('should display header "Pozycje budżetowe"', async () => {
+  test('should display header "Pozycje budżetowe"', async () => {
     await setup();
     expect(screen.getByText('Pozycje budżetowe')).toBeInTheDocument();
   });
 
-  it('should display table headers', async () => {
+  test('should display table headers', async () => {
     await setup();
     expect(screen.getByText('Kategoria')).toBeInTheDocument();
     expect(screen.getByText('Planowane')).toBeInTheDocument();
@@ -57,40 +57,40 @@ describe('BudgetTableComponent', () => {
     expect(screen.getByText('Odchylenie')).toBeInTheDocument();
   });
 
-  it('should display budget items', async () => {
+  test('should display budget items', async () => {
     await setup();
     expect(screen.getByText('Licencje oprogramowania')).toBeInTheDocument();
     expect(screen.getByText('Usługi zewnętrzne')).toBeInTheDocument();
     expect(screen.getByText('Sprzęt')).toBeInTheDocument();
   });
 
-  it('should display planned amounts', async () => {
+  test('should display planned amounts', async () => {
     await setup();
     expect(screen.getByText('5 000 PLN')).toBeInTheDocument();
     expect(screen.getByText('10 000 PLN')).toBeInTheDocument();
     expect(screen.getByText('3 000 PLN')).toBeInTheDocument();
   });
 
-  it('should display actual amounts', async () => {
+  test('should display actual amounts', async () => {
     await setup();
     expect(screen.getByText('4 500 PLN')).toBeInTheDocument();
     expect(screen.getByText('12 000 PLN')).toBeInTheDocument();
     expect(screen.getByText('3 000 PLN')).toBeInTheDocument();
   });
 
-  it('should display variance (positive - under budget)', async () => {
+  test('should display variance (positive - under budget)', async () => {
     await setup();
     const varianceElement = screen.getByText('-500 PLN');
     expect(varianceElement).toHaveClass('positive');
   });
 
-  it('should display variance (negative - over budget)', async () => {
+  test('should display variance (negative - over budget)', async () => {
     await setup();
     const varianceElement = screen.getByText('2 000 PLN');
     expect(varianceElement).toHaveClass('negative');
   });
 
-  it('should display total summary', async () => {
+  test('should display total summary', async () => {
     await setup();
     expect(screen.getByText('Razem planowane:')).toBeInTheDocument();
     expect(screen.getByText('Razem wydane:')).toBeInTheDocument();
@@ -98,12 +98,12 @@ describe('BudgetTableComponent', () => {
     expect(screen.getByText('19 500 PLN')).toBeInTheDocument();
   });
 
-  it('should display empty state when no items', async () => {
+  test('should display empty state when no items', async () => {
     await setup([]);
     expect(screen.getByText('Brak szczegółowych pozycji budżetowych.')).toBeInTheDocument();
   });
 
-  it('should handle zero variance', async () => {
+  test('should handle zero variance', async () => {
     const itemsWithZeroVariance: BudgetItem[] = [
       {
         id: '4',
@@ -118,7 +118,7 @@ describe('BudgetTableComponent', () => {
     expect(zeroVariance).not.toHaveClass('negative');
   });
 
-  it('should use provided currency', async () => {
+  test('should use provided currency', async () => {
     await setup(mockItems, { currency: 'EUR' });
     expect(screen.getByText('EUR')).toBeInTheDocument();
   });

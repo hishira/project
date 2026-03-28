@@ -102,7 +102,7 @@ describe('ProjectDetailComponent', () => {
     expect(screen.getByText('Przegląd')).toBeInTheDocument();
     expect(screen.getByText('Zadania')).toBeInTheDocument();
     expect(screen.getByText('Harmonogram')).toBeInTheDocument();
-    expect(screen.getByText('Budżet')).toBeInTheDocument();
+    expect(screen.getAllByText('Budżet')).toHaveLength(2); // One in stat, one in tab
     expect(screen.getByText('Raporty')).toBeInTheDocument();
   });
 });
