@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
@@ -10,6 +10,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { MarketingService } from '../marketing.service';
 import { Campaign } from '../marketing.models';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 
 @Component({
   selector: 'app-campaign-list',
@@ -23,16 +25,19 @@ import { Campaign } from '../marketing.models';
     MatIconModule,
     MatButtonModule,
     MatChipsModule,
-    MatCardModule
+    MatCardModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './campaign-list.component.html',
-  styleUrls: ['./campaign-list.component.scss']
+  styleUrls: ['./campaign-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CampaignListComponent {
-  private marketingService = inject(MarketingService);
-  campaigns = this.marketingService.campaigns;
+  private readonly marketingService = inject(MarketingService);
+  readonly campaigns = this.marketingService.campaigns;
 
-  displayedColumns: string[] = ['name', 'type', 'status', 'stats', 'schedule', 'actions'];
+  readonly displayedColumns: string[] = ['name', 'type', 'status', 'stats', 'schedule', 'actions'];
 
   getTypeIcon(type: string): string {
     const map: Record<string, string> = {

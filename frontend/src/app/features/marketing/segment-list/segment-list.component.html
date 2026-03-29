@@ -1,68 +1,74 @@
-<div class="list-container">
-  <div class="header">
+<app-page-header>
+  <div class="main-header">
     <h1>Segmenty klientów</h1>
+  </div>
+  <div class="main-header-buttons">
     <button mat-raised-button color="primary" routerLink="new">
       <mat-icon>add</mat-icon> Nowy segment
     </button>
   </div>
+</app-page-header>
 
-  <mat-card>
-    <mat-card-content>
-      <table mat-table [dataSource]="segments()" class="segment-table">
-        <!-- Nazwa -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>Nazwa segmentu</th>
-          <td mat-cell *matCellDef="let segment">
-            <div class="cell-with-icon">
-              <mat-icon>segment</mat-icon>
-              <span>{{ segment.name }}</span>
-            </div>
-          </td>
-        </ng-container>
+<app-main-page-view>
+  <div class="list-container">
+    <mat-card>
+      <mat-card-content>
+        <table mat-table [dataSource]="segments()" class="segment-table">
+          <!-- Nazwa -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Nazwa segmentu</th>
+            <td mat-cell *matCellDef="let segment">
+              <div class="cell-with-icon">
+                <mat-icon>segment</mat-icon>
+                <span>{{ segment.name }}</span>
+              </div>
+            </td>
+          </ng-container>
 
-        <!-- Opis -->
-        <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef>Opis</th>
-          <td mat-cell *matCellDef="let segment">
-            <span class="description">{{ segment.description }}</span>
-          </td>
-        </ng-container>
+          <!-- Opis -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Opis</th>
+            <td mat-cell *matCellDef="let segment">
+              <span class="description">{{ segment.description }}</span>
+            </td>
+          </ng-container>
 
-        <!-- Liczba kontaktów -->
-        <ng-container matColumnDef="contactsCount">
-          <th mat-header-cell *matHeaderCellDef>Liczba kontaktów</th>
-          <td mat-cell *matCellDef="let segment">
-            <span class="contacts-count">{{ segment.contactsCount | number }}</span>
-          </td>
-        </ng-container>
+          <!-- Liczba kontaktów -->
+          <ng-container matColumnDef="contactsCount">
+            <th mat-header-cell *matHeaderCellDef>Liczba kontaktów</th>
+            <td mat-cell *matCellDef="let segment">
+              <span class="contacts-count">{{ segment.contactsCount | number }}</span>
+            </td>
+          </ng-container>
 
-        <!-- Data aktualizacji -->
-        <ng-container matColumnDef="updatedAt">
-          <th mat-header-cell *matHeaderCellDef>Ostatnia aktualizacja</th>
-          <td mat-cell *matCellDef="let segment">
-            {{ formatDate(segment.updatedAt) }}
-          </td>
-        </ng-container>
+          <!-- Data aktualizacji -->
+          <ng-container matColumnDef="updatedAt">
+            <th mat-header-cell *matHeaderCellDef>Ostatnia aktualizacja</th>
+            <td mat-cell *matCellDef="let segment">
+              {{ formatDate(segment.updatedAt) }}
+            </td>
+          </ng-container>
 
-        <!-- Akcje -->
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let segment">
-            <button mat-icon-button [routerLink]="[segment.id]" matTooltip="Szczegóły">
-              <mat-icon>visibility</mat-icon>
-            </button>
-            <button mat-icon-button [routerLink]="[segment.id, 'edit']" matTooltip="Edytuj">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button matTooltip="Usuń">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
+          <!-- Akcje -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let segment">
+              <button mat-icon-button [routerLink]="[segment.id]" matTooltip="Szczegóły">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button [routerLink]="[segment.id, 'edit']" matTooltip="Edytuj">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Usuń">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="[row.id]" class="clickable-row"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
-</div>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="[row.id]" class="clickable-row"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</app-main-page-view>

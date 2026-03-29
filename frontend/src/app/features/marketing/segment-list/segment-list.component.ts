@@ -1,5 +1,5 @@
 // segment-list.component.ts
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
@@ -10,6 +10,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MarketingService } from '../marketing.service';
 import { Segment } from '../marketing.models';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 
 @Component({
   selector: 'app-segment-list',
@@ -22,22 +24,25 @@ import { Segment } from '../marketing.models';
     MatIconModule,
     MatButtonModule,
     MatCardModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './segment-list.component.html',
-  styleUrls: ['./segment-list.component.scss']
+  styleUrls: ['./segment-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SegmentListComponent {
-  private marketingService = inject(MarketingService);
-  segments = this.marketingService.segments;
+  private readonly marketingService = inject(MarketingService);
+  readonly segments = this.marketingService.segments;
 
-  displayedColumns: string[] = ['name', 'description', 'contactsCount', 'updatedAt', 'actions'];
+  readonly displayedColumns: string[] = ['name', 'description', 'contactsCount', 'updatedAt', 'actions'];
 
   formatDate(date: Date): string {
-    return new Intl.DateTimeFormat('pl-PL', { 
-      day: '2-digit', 
-      month: 'short', 
-      year: 'numeric' 
+    return new Intl.DateTimeFormat('pl-PL', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
     }).format(date);
   }
 }

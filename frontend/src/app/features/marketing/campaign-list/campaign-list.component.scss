@@ -4,20 +4,6 @@
   margin: 0 auto;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-
-  h1 {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 400;
-    color: #1e293b;
-  }
-}
-
 .campaign-table {
   width: 100%;
 
@@ -87,3 +73,10 @@
   font-size: 0.75rem;
   min-height: 24px;
 }
+
+.status-draft { background-color: #f1f5f9 !important; color: #475569 !important; }
+.status-scheduled { background-color: #dbeafe !important; color: #1e40af !important; }
+.status-active { background-color: #d1fae5 !important; color: #065f46 !important; }
+.status-paused { background-color: #fef3c7 !important; color: #92400e !important; }
+.status-completed { background-color: #e2e8f0 !important; color: #334155 !important; }
+.status-archived { background-color: #f1f5f9 !important; color: #64748b !important; }

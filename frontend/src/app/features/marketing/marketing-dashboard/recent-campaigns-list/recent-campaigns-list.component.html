@@ -1,0 +1,15 @@
+<mat-card class="recent-card">
+  <mat-card-header>
+    <mat-card-title>Ostatnio utworzone</mat-card-title>
+    <button mat-button routerLink="/marketing/campaigns">Zobacz wszystkie</button>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      @for (campaign of campaigns(); track campaign.id) {
+        <mat-list-item class="campaign-item" [routerLink]="['/marketing/campaigns', campaign.id]">
+          <app-campaign-list-item [campaign]="campaign" />
+        </mat-list-item>
+      }
+    </mat-list>
+  </mat-card-content>
+</mat-card>

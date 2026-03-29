@@ -1,13 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 import { MarketingService } from '../marketing.service';
-import { MatList } from '@angular/material/list';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { StatCardComponent } from './stat-card/stat-card.component';
+import { RecentCampaignsListComponent } from './recent-campaigns-list/recent-campaigns-list.component';
+import { TopPerformingListComponent } from './top-performing-list/top-performing-list.component';
 
 @Component({
   selector: 'app-marketing-dashboard',
@@ -15,40 +16,19 @@ import { MatList } from '@angular/material/list';
   imports: [
     CommonModule,
     RouterLink,
-    MatCardModule,
-    MatIconModule,
     MatButtonModule,
-    MatChipsModule,
-    MatDividerModule,
-    MatList,
+    MatIconModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
+    StatCardComponent,
+    RecentCampaignsListComponent,
+    TopPerformingListComponent,
   ],
   templateUrl: './marketing-dashboard.component.html',
-  styleUrls: ['./marketing-dashboard.component.scss']
+  styleUrls: ['./marketing-dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MarketingDashboardComponent {
-  private marketingService = inject(MarketingService);
-  summary = this.marketingService.getMarketingSummary();
-  campaigns = this.marketingService.campaigns;
-
-  getStatusClass(status: string): string {
-    const map: Record<string, string> = {
-      draft: 'status-draft',
-      scheduled: 'status-scheduled',
-      active: 'status-active',
-      paused: 'status-paused',
-      completed: 'status-completed',
-      archived: 'status-archived'
-    };
-    return map[status] || '';
-  }
-
-  getTypeIcon(type: string): string {
-    const map: Record<string, string> = {
-      email: 'email',
-      sms: 'sms',
-      social: 'share',
-      push: 'notifications'
-    };
-    return map[type] || 'campaign';
-  }
+  private readonly marketingService = inject(MarketingService);
+  readonly summary = this.marketingService.getMarketingSummary();
 }

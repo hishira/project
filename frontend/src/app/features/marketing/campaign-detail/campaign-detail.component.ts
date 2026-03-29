@@ -1,5 +1,5 @@
 // campaign-detail.component.ts
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -12,7 +12,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MarketingService } from '../marketing.service';
 import { Campaign } from '../marketing.models';
 import { MatSpinner } from '@angular/material/progress-spinner';
-import { MatProgressBar, MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 
 @Component({
   selector: 'app-campaign-detail',
@@ -28,15 +30,18 @@ import { MatProgressBar, MatProgressBarModule } from '@angular/material/progress
     MatListModule,
     MatTooltipModule,
     MatSpinner,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './campaign-detail.component.html',
-  styleUrls: ['./campaign-detail.component.scss']
+  styleUrls: ['./campaign-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CampaignDetailComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private marketingService = inject(MarketingService);
-  campaign = signal<Campaign | undefined>(undefined);
+  private readonly route = inject(ActivatedRoute);
+  private readonly marketingService = inject(MarketingService);
+  readonly campaign = signal<Campaign | undefined>(undefined);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -67,9 +72,9 @@ export class CampaignDetailComponent implements OnInit {
   }
 
   formatDate(date?: Date): string {
-    return date ? new Intl.DateTimeFormat('pl-PL', { 
-      day: '2-digit', 
-      month: 'short', 
+    return date ? new Intl.DateTimeFormat('pl-PL', {
+      day: '2-digit',
+      month: 'short',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'

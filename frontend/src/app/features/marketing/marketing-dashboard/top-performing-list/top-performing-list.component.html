@@ -1,0 +1,14 @@
+<mat-card class="top-card">
+  <mat-card-header>
+    <mat-card-title>Najwyższa otwieralność</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      @for (campaign of campaigns(); track campaign.id; let idx = $index) {
+        <mat-list-item class="campaign-item" [routerLink]="['/marketing/campaigns', campaign.id]">
+          <app-campaign-list-item [campaign]="campaign" [showRank]="true" [rank]="idx + 1" [showStats]="true" />
+        </mat-list-item>
+      }
+    </mat-list>
+  </mat-card-content>
+</mat-card>

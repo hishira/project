@@ -1,0 +1,22 @@
+<div class="campaign-row">
+  @if (showRank()) {
+    <div class="rank">{{ rank() }}</div>
+  } @else {
+    <mat-icon [class]="'type-icon'" [style.color]="getCampaignTypeColor(campaign().type)">
+      {{ getCampaignTypeIcon(campaign().type) }}
+    </mat-icon>
+  }
+  <div class="campaign-info">
+    <span class="campaign-name">{{ campaign().name }}</span>
+    @if (showStats()) {
+      <span class="campaign-stats">
+        {{ (campaign().stats.opened / campaign().stats.recipients * 100) | number:'1.0-1' }}% otwarć
+      </span>
+    } @else {
+      <span class="campaign-date">{{ campaign().createdAt | date:'dd MMM yyyy' }}</span>
+    }
+  </div>
+  <mat-chip [class]="getCampaignStatusClass(campaign().status)" class="status-chip">
+    {{ campaign().status }}
+  </mat-chip>
+</div>

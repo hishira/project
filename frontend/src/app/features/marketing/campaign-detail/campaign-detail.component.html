@@ -1,173 +1,182 @@
-<div class="detail-container" *ngIf="campaign() as campaign">
-  <div class="header">
-    <a mat-icon-button routerLink="/marketing/campaigns" class="back-btn">
-      <mat-icon>arrow_back</mat-icon>
-    </a>
-    <h1>{{ campaign.name }}</h1>
-    <div class="spacer"></div>
-    <button mat-stroked-button color="primary" [routerLink]="['/marketing/campaigns', campaign.id, 'edit']">
-      <mat-icon>edit</mat-icon> Edytuj
-    </button>
-  </div>
+@if (campaign(); as campaign) {
+  <app-page-header>
+    <div class="main-header d-flex gap-2">Kampania {{ campaign.name }}</div>
+    <div class="main-header-buttons">
+      <button mat-stroked-button color="primary" [routerLink]="['/marketing/campaigns', campaign.id, 'edit']">
+        <mat-icon>edit</mat-icon> Edytuj
+      </button>
+    </div>
+  </app-page-header>
 
-  <div class="content-grid">
-    <!-- Lewa kolumna: informacje podstawowe -->
-    <mat-card class="info-card">
-      <mat-card-header>
-        <mat-card-title>Informacje podstawowe</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="info-row">
-          <mat-icon>campaign</mat-icon>
-          <span class="label">Nazwa:</span>
-          <span class="value">{{ campaign.name }}</span>
-        </div>
-        <div class="info-row">
-          <mat-icon>type_specimen</mat-icon>
-          <span class="label">Typ:</span>
-          <span class="value">
-            <mat-chip class="type-chip">
-              <mat-icon>{{ getTypeIcon(campaign.type) }}</mat-icon>
-              {{ campaign.type }}
-            </mat-chip>
-          </span>
-        </div>
-        <div class="info-row">
-          <mat-icon>flag</mat-icon>
-          <span class="label">Status:</span>
-          <span class="value">
-            <mat-chip [class]="getStatusClass(campaign.status)" class="status-chip">
-              {{ campaign.status }}
-            </mat-chip>
-          </span>
-        </div>
-        <div class="info-row">
-          <mat-icon>calendar_today</mat-icon>
-          <span class="label">Utworzono:</span>
-          <span class="value">{{ formatDate(campaign.createdAt) }}</span>
-        </div>
-        <div class="info-row">
-          <mat-icon>update</mat-icon>
-          <span class="label">Aktualizacja:</span>
-          <span class="value">{{ formatDate(campaign.updatedAt) }}</span>
-        </div>
-        @if (campaign.scheduledAt) {
-          <div class="info-row">
-            <mat-icon>schedule</mat-icon>
-            <span class="label">Zaplanowano:</span>
-            <span class="value">{{ formatDate(campaign.scheduledAt) }}</span>
-          </div>
-        }
-        @if (campaign.sentAt) {
-          <div class="info-row">
-            <mat-icon>send</mat-icon>
-            <span class="label">Wysłano:</span>
-            <span class="value">{{ formatDate(campaign.sentAt) }}</span>
-          </div>
-        }
-        <div class="info-row">
-          <mat-icon>person</mat-icon>
-          <span class="label">Utworzył:</span>
-          <span class="value">{{ campaign.createdBy }}</span>
-        </div>
-        @if (campaign.segmentId) {
-          <div class="info-row">
-            <mat-icon>segment</mat-icon>
-            <span class="label">Segment:</span>
-            <span class="value">{{ campaign.segmentId }}</span> <!-- w praktyce pobieramy nazwę segmentu -->
-          </div>
-        }
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Prawa kolumna: statystyki -->
-    <mat-card class="stats-card">
-      <mat-card-header>
-        <mat-card-title>Statystyki kampanii</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="stats-grid">
-          <div class="stat-item">
-            <span class="stat-value">{{ campaign.stats.recipients | number }}</span>
-            <span class="stat-label">Odbiorcy</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value">{{ campaign.stats.opened | number }}</span>
-            <span class="stat-label">Otwarć</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value">{{ campaign.stats.clicked | number }}</span>
-            <span class="stat-label">Kliknięcia</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value">{{ campaign.stats.bounced | number }}</span>
-            <span class="stat-label">Bounce</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value">{{ campaign.stats.unsubscribed | number }}</span>
-            <span class="stat-label">Rezygnacje</span>
-          </div>
-        </div>
-
-        <mat-divider></mat-divider>
-
-        <div class="rates">
-          <div class="rate-row">
-            <span class="label">Open rate:</span>
-            <span class="value">{{ calculateOpenRate(campaign) }}%</span>
-            <mat-progress-bar
-              mode="determinate"
-              [value]="calculateOpenRate(campaign)"
-              color="primary">
-            </mat-progress-bar>
-          </div>
-          <div class="rate-row">
-            <span class="label">Click rate (z otwarć):</span>
-            <span class="value">{{ calculateClickRate(campaign) }}%</span>
-            <mat-progress-bar
-              mode="determinate"
-              [value]="calculateClickRate(campaign)"
-              color="accent">
-            </mat-progress-bar>
-          </div>
-          <div class="rate-row">
-            <span class="label">Bounce rate:</span>
-            <span class="value">{{ calculateBounceRate(campaign) }}%</span>
-            <mat-progress-bar
-              mode="determinate"
-              [value]="calculateBounceRate(campaign)"
-              color="warn">
-            </mat-progress-bar>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Treść kampanii (jeśli istnieje) -->
-    @if (campaign.subject || campaign.content) {
-      <mat-card class="content-card">
-        <mat-card-header>
-          <mat-card-title>Treść kampanii</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          @if (campaign.subject) {
-            <div class="subject">
-              <strong>Temat:</strong> {{ campaign.subject }}
+  <app-main-page-view>
+    <div class="campaign-details">
+      <div class="content-grid">
+        <!-- Lewa kolumna: informacje podstawowe -->
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Informacje podstawowe</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="info-row">
+              <mat-icon>campaign</mat-icon>
+              <span class="label">Nazwa:</span>
+              <span class="value">{{ campaign.name }}</span>
             </div>
-          }
-          @if (campaign.content) {
-            <div class="content-preview">
-              <strong>Treść:</strong>
-              <div class="content-box">{{ campaign.content }}</div>
+            <div class="info-row">
+              <mat-icon>type_specimen</mat-icon>
+              <span class="label">Typ:</span>
+              <span class="value">
+                <mat-chip class="type-chip">
+                  <mat-icon>{{ getTypeIcon(campaign.type) }}</mat-icon>
+                  {{ campaign.type }}
+                </mat-chip>
+              </span>
             </div>
-          }
-        </mat-card-content>
-      </mat-card>
-    }
-  </div>
-</div>
+            <div class="info-row">
+              <mat-icon>flag</mat-icon>
+              <span class="label">Status:</span>
+              <span class="value">
+                <mat-chip [class]="getStatusClass(campaign.status)" class="status-chip">
+                  {{ campaign.status }}
+                </mat-chip>
+              </span>
+            </div>
+            <div class="info-row">
+              <mat-icon>calendar_today</mat-icon>
+              <span class="label">Utworzono:</span>
+              <span class="value">{{ formatDate(campaign.createdAt) }}</span>
+            </div>
+            <div class="info-row">
+              <mat-icon>update</mat-icon>
+              <span class="label">Aktualizacja:</span>
+              <span class="value">{{ formatDate(campaign.updatedAt) }}</span>
+            </div>
+            @if (campaign.scheduledAt) {
+              <div class="info-row">
+                <mat-icon>schedule</mat-icon>
+                <span class="label">Zaplanowano:</span>
+                <span class="value">{{ formatDate(campaign.scheduledAt) }}</span>
+              </div>
+            }
+            @if (campaign.sentAt) {
+              <div class="info-row">
+                <mat-icon>send</mat-icon>
+                <span class="label">Wysłano:</span>
+                <span class="value">{{ formatDate(campaign.sentAt) }}</span>
+              </div>
+            }
+            <div class="info-row">
+              <mat-icon>person</mat-icon>
+              <span class="label">Utworzył:</span>
+              <span class="value">{{ campaign.createdBy }}</span>
+            </div>
+            @if (campaign.segmentId) {
+              <div class="info-row">
+                <mat-icon>segment</mat-icon>
+                <span class="label">Segment:</span>
+                <span class="value">{{ campaign.segmentId }}</span>
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
 
-<div *ngIf="!campaign()" class="loading">
-  <mat-spinner diameter="40"></mat-spinner>
-  <p>Ładowanie kampanii...</p>
-</div>
+        <!-- Prawa kolumna: statystyki -->
+        <mat-card class="stats-card">
+          <mat-card-header>
+            <mat-card-title>Statystyki kampanii</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-value">{{ campaign.stats.recipients | number }}</span>
+                <span class="stat-label">Odbiorcy</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">{{ campaign.stats.opened | number }}</span>
+                <span class="stat-label">Otwarć</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">{{ campaign.stats.clicked | number }}</span>
+                <span class="stat-label">Kliknięcia</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">{{ campaign.stats.bounced | number }}</span>
+                <span class="stat-label">Bounce</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">{{ campaign.stats.unsubscribed | number }}</span>
+                <span class="stat-label">Rezygnacje</span>
+              </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="rates">
+              <div class="rate-row">
+                <span class="label">Open rate:</span>
+                <span class="value">{{ calculateOpenRate(campaign) }}%</span>
+                <mat-progress-bar
+                  mode="determinate"
+                  [value]="calculateOpenRate(campaign)"
+                  color="primary">
+                </mat-progress-bar>
+              </div>
+              <div class="rate-row">
+                <span class="label">Click rate (z otwarć):</span>
+                <span class="value">{{ calculateClickRate(campaign) }}%</span>
+                <mat-progress-bar
+                  mode="determinate"
+                  [value]="calculateClickRate(campaign)"
+                  color="accent">
+                </mat-progress-bar>
+              </div>
+              <div class="rate-row">
+                <span class="label">Bounce rate:</span>
+                <span class="value">{{ calculateBounceRate(campaign) }}%</span>
+                <mat-progress-bar
+                  mode="determinate"
+                  [value]="calculateBounceRate(campaign)"
+                  color="warn">
+                </mat-progress-bar>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Treść kampanii (jeśli istnieje) -->
+        @if (campaign.subject || campaign.content) {
+          <mat-card class="content-card">
+            <mat-card-header>
+              <mat-card-title>Treść kampanii</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              @if (campaign.subject) {
+                <div class="subject">
+                  <strong>Temat:</strong> {{ campaign.subject }}
+                </div>
+              }
+              @if (campaign.content) {
+                <div class="content-preview">
+                  <strong>Treść:</strong>
+                  <div class="content-box">{{ campaign.content }}</div>
+                </div>
+              }
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </div>
+  </app-main-page-view>
+} @else {
+  <app-page-header>
+    <div class="main-header d-flex gap-2">Kampania nie znaleziona</div>
+    <div class="main-header-buttons"></div>
+  </app-page-header>
+
+  <app-main-page-view>
+    <div class="not-found">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Ładowanie kampanii...</p>
+    </div>
+  </app-main-page-view>
+}
