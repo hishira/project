@@ -58,8 +58,8 @@ describe('MilestonesListComponent', () => {
 
   test('should display milestone due dates', async () => {
     await setup();
-    expect(screen.getByText('01 cze 2024')).toBeInTheDocument();
-    expect(screen.getByText('01 wrz 2024')).toBeInTheDocument();
+    expect(screen.getByText('01 Jun 2024')).toBeInTheDocument();
+    expect(screen.getByText('01 Sep 2024')).toBeInTheDocument();
   });
 
   test('should display correct icons for completed/incomplete milestones', async () => {
@@ -70,7 +70,7 @@ describe('MilestonesListComponent', () => {
 
   test('should display completion date for completed milestones', async () => {
     await setup();
-    expect(screen.getByText(/ukończono 28 sie/)).toBeInTheDocument();
+    expect(screen.getByText(/ukończono 28 Aug/)).toBeInTheDocument();
   });
 
   test('should not display completion date for incomplete milestones', async () => {

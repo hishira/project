@@ -49,6 +49,8 @@ describe('TeamListComponent', () => {
     await render(TeamListComponent, {
       inputs: {
         team: mockTeam,
+      },
+      componentProperties: {
         addMember: { emit: addMemberSpy } as any,
       },
     });

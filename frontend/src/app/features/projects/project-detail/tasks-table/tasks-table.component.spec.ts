@@ -70,6 +70,8 @@ describe('TasksTableComponent', () => {
     await render(TasksTableComponent, {
       inputs: {
         tasks: mockTasks,
+      },
+      componentProperties: {
         addTask: { emit: addTaskSpy } as any,
       },
     });
@@ -134,6 +136,8 @@ describe('TasksTableComponent', () => {
     await render(TasksTableComponent, {
       inputs: {
         tasks: mockTasks,
+      },
+      componentProperties: {
         addTask: { emit: vi.fn() } as any,
         editTask: { emit: editTaskSpy } as any,
       },

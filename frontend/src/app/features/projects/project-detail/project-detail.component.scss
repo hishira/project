@@ -1,29 +1,7 @@
-.detail-container {
+.project-details {
   padding: 24px;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
-
-  h1 {
-    margin: 0;
-    font-size: 1.8rem;
-    font-weight: 400;
-    color: #1e293b;
-  }
-
-  .back-btn {
-    color: #64748b;
-
-    &:hover {
-      color: #0f172a;
-    }
-  }
 }
 
 .detail-tabs {

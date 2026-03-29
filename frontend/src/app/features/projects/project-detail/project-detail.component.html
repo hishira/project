@@ -1,13 +1,15 @@
-<div class="detail-container">
-  <div class="header">
-    <a mat-icon-button routerLink="/projects" class="back-btn">
-      <mat-icon>arrow_back</mat-icon>
-    </a>
-    <h1>Szczegóły projektu</h1>
-  </div>
+@if (project(); as p) {
+  <app-page-header>
+    <div class="main-header d-flex gap-2">Projekt {{ p.name }}</div>
+    <div class="main-header-buttons">
+      <button mat-icon-button routerLink="/projects" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </app-page-header>
 
-  @if (project(); as p) {
-    <div class="content">
+  <app-main-page-view>
+    <div class="project-details">
       <!-- Górna karta z podsumowaniem -->
       <app-project-summary
         [name]="p.name"
@@ -82,11 +84,18 @@
         </mat-tab>
       </mat-tab-group>
     </div>
-  } @else {
+  </app-main-page-view>
+} @else {
+  <app-page-header>
+    <div class="main-header d-flex gap-2">Projekt nie znaleziony</div>
+    <div class="main-header-buttons"></div>
+  </app-page-header>
+
+  <app-main-page-view>
     <div class="not-found">
       <mat-icon>error_outline</mat-icon>
       <p>Nie znaleziono projektu o podanym ID</p>
       <button mat-raised-button color="primary" routerLink="/projects">Powrót do listy</button>
     </div>
-  }
-</div>
+  </app-main-page-view>
+}

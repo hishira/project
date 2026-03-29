@@ -13,6 +13,8 @@ import { TeamListComponent } from './team-list/team-list.component';
 import { TasksTableComponent } from './tasks-table/tasks-table.component';
 import { MilestonesListComponent } from './milestones-list/milestones-list.component';
 import { BudgetTableComponent } from './budget-table/budget-table.component';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 
 @Component({
   selector: 'app-project-detail',
@@ -30,6 +32,8 @@ import { BudgetTableComponent } from './budget-table/budget-table.component';
     TasksTableComponent,
     MilestonesListComponent,
     BudgetTableComponent,
+    MainPageViewComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './project-detail.component.html',
   styleUrls: ['./project-detail.component.scss'],
