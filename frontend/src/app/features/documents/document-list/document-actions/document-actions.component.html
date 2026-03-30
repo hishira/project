@@ -1,0 +1,6 @@
+<button mat-icon-button [routerLink]="[id()]" matTooltip="Szczegóły">
+  <mat-icon>visibility</mat-icon>
+</button>
+<button mat-icon-button [matTooltip]="approved() ? 'Zatwierdzony' : 'Niezatwierdzony'">
+  <mat-icon [style.color]="approved() ? '#2e7d32' : '#bdbdbd'">check_circle</mat-icon>
+</button>

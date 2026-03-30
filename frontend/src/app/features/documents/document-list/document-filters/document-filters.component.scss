@@ -1,0 +1,15 @@
+.filters-card {
+  margin-bottom: 24px;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: flex-end;
+}

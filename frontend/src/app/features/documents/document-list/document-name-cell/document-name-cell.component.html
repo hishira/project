@@ -1,0 +1,4 @@
+<a [routerLink]="[id()]" class="doc-name">{{ name() }}</a>
+@if (version()) {
+  <span class="version-badge">v{{ version() }}</span>
+}

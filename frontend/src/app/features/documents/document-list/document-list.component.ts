@@ -1,5 +1,5 @@
+import { ChangeDetectionStrategy, Component, inject, signal, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -19,6 +19,10 @@ import { MainPageViewComponent } from '../../../core/components/main-page-view/m
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { Document, DocumentType } from '../document.models';
 import { DocumentService } from '../document.service';
+import { DocumentFiltersComponent } from './document-filters/document-filters.component';
+import { DocumentTypeIconComponent } from './document-type-icon/document-type-icon.component';
+import { DocumentNameCellComponent } from './document-name-cell/document-name-cell.component';
+import { DocumentActionsComponent } from './document-actions/document-actions.component';
 
 @Component({
   selector: 'app-document-list',
@@ -42,100 +46,88 @@ import { DocumentService } from '../document.service';
     MatCardModule,
     MainPageViewComponent,
     PageHeaderComponent,
+    DocumentFiltersComponent,
+    DocumentTypeIconComponent,
+    DocumentNameCellComponent,
+    DocumentActionsComponent,
   ],
   templateUrl: './document-list.component.html',
-  styleUrls: ['./document-list.component.scss']
+  styleUrls: ['./document-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DocumentListComponent {
-  private documentService = inject(DocumentService);
-  documents = this.documentService.documents;
+export class DocumentListComponent implements AfterViewInit {
+  private readonly documentService = inject(DocumentService);
+  readonly documents = this.documentService.documents;
 
-  // Źródło danych dla tabeli
-  dataSource = new MatTableDataSource<Document>(this.documents());
-
-  // Kolumny
-  displayedColumns: string[] = ['type', 'name', 'client', 'uploaded', 'size', 'version', 'actions'];
+  readonly dataSource = signal<MatTableDataSource<Document>>(new MatTableDataSource<Document>([]));
+  readonly displayedColumns: string[] = ['type', 'name', 'client', 'uploaded', 'size', 'version', 'actions'];
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  // Filtry
-  filterType: DocumentType | '' = '';
-  filterClient = '';
-  filterDateFrom: Date | null = null;
-  filterDateTo: Date | null = null;
-
-  // Lista typów do selecta
-  documentTypes: { value: DocumentType; label: string }[] = [
-    { value: 'contract', label: 'Umowa' },
-    { value: 'annex', label: 'Aneks' },
-    { value: 'specification', label: 'Specyfikacja' },
-    { value: 'protocol', label: 'Protokół' },
-    { value: 'other', label: 'Inny' }
-  ];
+  readonly filterType = signal<DocumentType | ''>('');
+  readonly filterClient = signal<string>('');
+  readonly filterDateFrom = signal<Date | null>(null);
+  readonly filterDateTo = signal<Date | null>(null);
 
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    // Własny filtr
-    this.dataSource.filterPredicate = (data: Document, filter: string) => {
-      const filterObj = JSON.parse(filter);
-      // Filtrowanie po typie
-      if (filterObj.type && data.type !== filterObj.type) return false;
-      // Po kliencie (nazwa)
-      if (filterObj.client && !data.clientName.toLowerCase().includes(filterObj.client.toLowerCase())) return false;
-      // Po dacie (zakres)
-      if (filterObj.dateFrom && new Date(data.uploadedAt) < new Date(filterObj.dateFrom)) return false;
-      if (filterObj.dateTo && new Date(data.uploadedAt) > new Date(filterObj.dateTo)) return false;
-      return true;
-    };
+    this.updateDataSource();
+    const dataSource = this.dataSource();
+    dataSource.sort = this.sort;
+    dataSource.paginator = this.paginator;
+    dataSource.filterPredicate = this.filterPredicate;
   }
 
+  private updateDataSource() {
+    const dataSource = new MatTableDataSource<Document>(this.documents());
+    this.dataSource.set(dataSource);
+  }
+
+  private filterPredicate = (data: Document, filter: string): boolean => {
+    const filterObj = JSON.parse(filter);
+    if (filterObj.type && data.type !== filterObj.type) return false;
+    if (filterObj.client && !data.clientName.toLowerCase().includes(filterObj.client.toLowerCase())) return false;
+    if (filterObj.dateFrom && new Date(data.uploadedAt) < new Date(filterObj.dateFrom)) return false;
+    if (filterObj.dateTo && new Date(data.uploadedAt) > new Date(filterObj.dateTo)) return false;
+    return true;
+  };
+
   applyFilters() {
+    const dataSource = this.dataSource();
     const filterObj = {
-      type: this.filterType,
-      client: this.filterClient,
-      dateFrom: this.filterDateFrom,
-      dateTo: this.filterDateTo
+      type: this.filterType(),
+      client: this.filterClient(),
+      dateFrom: this.filterDateFrom(),
+      dateTo: this.filterDateTo(),
     };
-    this.dataSource.filter = JSON.stringify(filterObj);
+    dataSource.filter = JSON.stringify(filterObj);
   }
 
   clearFilters() {
-    this.filterType = '';
-    this.filterClient = '';
-    this.filterDateFrom = null;
-    this.filterDateTo = null;
+    this.filterType.set('');
+    this.filterClient.set('');
+    this.filterDateFrom.set(null);
+    this.filterDateTo.set(null);
     this.applyFilters();
   }
 
-  getTypeIcon(type: DocumentType): string {
-    const icons: Record<DocumentType, string> = {
-      contract: 'description',
-      annex: 'note_add',
-      specification: 'science',
-      protocol: 'assignment',
-      other: 'insert_drive_file'
-    };
-    return icons[type] || 'description';
+  onFilterTypeChange(type: DocumentType | '') {
+    this.filterType.set(type);
+    this.applyFilters();
   }
 
-  getTypeLabel(type: DocumentType): string {
-    const labels: Record<DocumentType, string> = {
-      contract: 'Umowa',
-      annex: 'Aneks',
-      specification: 'Specyfikacja',
-      protocol: 'Protokół',
-      other: 'Inny'
-    };
-    return labels[type];
+  onFilterClientChange(client: string) {
+    this.filterClient.set(client);
+    this.applyFilters();
   }
 
-  formatFileSize(bytes: number): string {
-    if (bytes === 0) return '0 B';
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+  onFilterDateFromChange(date: Date | null) {
+    this.filterDateFrom.set(date);
+    this.applyFilters();
+  }
+
+  onFilterDateToChange(date: Date | null) {
+    this.filterDateTo.set(date);
+    this.applyFilters();
   }
 }

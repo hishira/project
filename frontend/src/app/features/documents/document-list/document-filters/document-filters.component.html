@@ -1,0 +1,37 @@
+<mat-card class="filters-card">
+  <mat-card-content>
+    <div class="filters-grid">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Typ dokumentu</mat-label>
+        <mat-select [value]="filterType()" (selectionChange)="filterTypeChange.emit($event.value)">
+          <mat-option value="">Wszystkie</mat-option>
+          @for (type of documentTypes; track type.value) {
+            <mat-option [value]="type.value">{{ type.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Klient</mat-label>
+        <input matInput [ngModel]="filterClient()" (ngModelChange)="filterClientChange.emit($event)" placeholder="Nazwa klienta" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Data od</mat-label>
+        <input matInput [matDatepicker]="fromPicker" [ngModel]="filterDateFrom()" (ngModelChange)="filterDateFromChange.emit($event)" />
+        <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Data do</mat-label>
+        <input matInput [matDatepicker]="toPicker" [ngModel]="filterDateTo()" (ngModelChange)="filterDateToChange.emit($event)" />
+        <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
+        <mat-datepicker #toPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="filter-actions">
+      <button mat-button (click)="clearFilters.emit()">Wyczyść filtry</button>
+    </div>
+  </mat-card-content>
+</mat-card>
