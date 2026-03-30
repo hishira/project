@@ -1,0 +1,16 @@
+<mat-card-header>
+  <div class="header-row">
+    <mat-icon class="type-icon-large">{{ getIcon(type()) }}</mat-icon>
+    <div class="title-section">
+      <mat-card-title>{{ name() }}</mat-card-title>
+      <mat-card-subtitle>
+        {{ getLabel(type()) }} · wersja {{ version() || '1.0' }}
+        @if (approved()) {
+          <mat-chip class="approved-chip">zatwierdzony</mat-chip>
+        } @else {
+          <mat-chip class="not-approved-chip">oczekuje</mat-chip>
+        }
+      </mat-card-subtitle>
+    </div>
+  </div>
+</mat-card-header>

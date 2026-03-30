@@ -1,5 +1,5 @@
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -12,6 +12,11 @@ import { MainPageViewComponent } from '../../../core/components/main-page-view/m
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { Document } from '../document.models';
 import { DocumentService } from '../document.service';
+import { DocumentHeaderComponent } from './document-header/document-header.component';
+import { DocumentMetadataItemComponent } from './document-metadata-item/document-metadata-item.component';
+import { DocumentDescriptionComponent } from './document-description/document-description.component';
+import { DocumentTagsComponent } from './document-tags/document-tags.component';
+import { isDocumentExpired, formatFileSize } from '../document.utils';
 
 @Component({
   selector: 'app-document-detail',
@@ -28,15 +33,21 @@ import { DocumentService } from '../document.service';
     MatTooltipModule,
     MainPageViewComponent,
     PageHeaderComponent,
+    DocumentHeaderComponent,
+    DocumentMetadataItemComponent,
+    DocumentDescriptionComponent,
+    DocumentTagsComponent,
   ],
   templateUrl: './document-detail.component.html',
-  styleUrls: ['./document-detail.component.scss']
+  styleUrls: ['./document-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentDetailComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private documentService = inject(DocumentService);
-  document = signal<Document | undefined>(undefined);
-  readonly now = Date.now();
+  private readonly route = inject(ActivatedRoute);
+  private readonly documentService = inject(DocumentService);
+
+  readonly document = signal<Document | undefined>(undefined);
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -45,44 +56,13 @@ export class DocumentDetailComponent implements OnInit {
     }
   }
 
-  isExpired(document: any): boolean {
-    return document.expiryDate < (this.now)
-  }
-  getTypeIcon(type: string): string {
-    const icons: Record<string, string> = {
-      contract: 'description',
-      annex: 'note_add',
-      specification: 'science',
-      protocol: 'assignment',
-      other: 'insert_drive_file'
-    };
-    return icons[type] || 'description';
-  }
-
-  getTypeLabel(type: string): string {
-    const labels: Record<string, string> = {
-      contract: 'Umowa',
-      annex: 'Aneks',
-      specification: 'Specyfikacja',
-      protocol: 'Protokół',
-      other: 'Inny'
-    };
-    return labels[type];
-  }
-
-  formatFileSize(bytes: number): string {
-    if (bytes === 0) return '0 B';
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
-  }
-
   downloadFile() {
     const doc = this.document();
     if (doc?.fileUrl) {
-      // W praktyce można otworzyć w nowej karcie lub zasymulować pobieranie
       window.open(doc.fileUrl, '_blank');
     }
   }
+
+  protected readonly isDocumentExpired = isDocumentExpired;
+  protected readonly formatFileSize = formatFileSize;
 }

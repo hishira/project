@@ -1,0 +1,38 @@
+.header-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  flex-wrap: wrap;
+
+  .type-icon-large {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #1976d2;
+  }
+
+  .title-section {
+    flex: 1;
+  }
+
+  .header-actions {
+    margin-left: auto;
+  }
+}
+
+.approved-chip {
+  background-color: #d1fae5 !important;
+  color: #065f46 !important;
+  margin-left: 12px;
+  font-size: 0.7rem;
+  min-height: 24px;
+}
+
+.not-approved-chip {
+  background-color: #fee2e2 !important;
+  color: #b91c1c !important;
+  margin-left: 12px;
+  font-size: 0.7rem;
+  min-height: 24px;
+}

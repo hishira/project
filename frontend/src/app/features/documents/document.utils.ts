@@ -35,14 +35,14 @@ export const DOCUMENT_TYPE_OPTIONS: { value: DocumentType; label: string }[] = [
 /**
  * Returns the icon for a given document type
  */
-export function getDocumentTypeIcon(type: DocumentType): string {
+export function getDocumentTypeIcon(type: DocumentType | string): string {
   return DOCUMENT_TYPE_ICONS[type] || 'description';
 }
 
 /**
  * Returns the label for a given document type
  */
-export function getDocumentTypeLabel(type: DocumentType): string {
+export function getDocumentTypeLabel(type: DocumentType | string): string {
   return DOCUMENT_TYPE_LABELS[type] || type;
 }
 
@@ -55,4 +55,11 @@ export function formatFileSize(bytes: number): string {
   const sizes = ['B', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
+/**
+ * Checks if a document is expired based on expiry date
+ */
+export function isDocumentExpired(expiryDate: Date | string | number): boolean {
+  return new Date(expiryDate).getTime() < Date.now();
 }
