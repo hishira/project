@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal, ViewChild, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, viewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -62,8 +62,8 @@ export class DocumentListComponent implements AfterViewInit {
   readonly dataSource = signal<MatTableDataSource<Document>>(new MatTableDataSource<Document>([]));
   readonly displayedColumns: string[] = ['type', 'name', 'client', 'uploaded', 'size', 'version', 'actions'];
 
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  readonly sort = viewChild(MatSort);
+  readonly paginator = viewChild(MatPaginator);
 
   readonly filterType = signal<DocumentType | ''>('');
   readonly filterClient = signal<string>('');
@@ -73,9 +73,13 @@ export class DocumentListComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.updateDataSource();
     const dataSource = this.dataSource();
-    dataSource.sort = this.sort;
-    dataSource.paginator = this.paginator;
-    dataSource.filterPredicate = this.filterPredicate;
+    const sort = this.sort();
+    const paginator = this.paginator();
+    if (sort && paginator) {
+      dataSource.sort = sort;
+      dataSource.paginator = paginator;
+      dataSource.filterPredicate = this.filterPredicate;
+    }
   }
 
   private updateDataSource() {
