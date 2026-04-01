@@ -4,35 +4,6 @@
   margin: 0 auto;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  
-  h1 {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 400;
-    color: #1e293b;
-  }
-}
-
-.filters-card {
-  margin-bottom: 24px;
-}
-
-.filters-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 8px;
-}
-
-.filter-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .invoice-table {
   width: 100%;
 
@@ -55,18 +26,6 @@
       color: #1976d2;
     }
   }
-
-  .status-chip {
-    font-size: 0.75rem;
-    min-height: 24px;
-    padding: 0 8px;
-  }
-
-  .status-draft { background-color: #e2e8f0 !important; color: #334155 !important; }
-  .status-sent { background-color: #dbeafe !important; color: #1e3a8a !important; }
-  .status-paid { background-color: #d1fae5 !important; color: #065f46 !important; }
-  .status-overdue { background-color: #fee2e2 !important; color: #b91c1c !important; }
-  .status-cancelled { background-color: #f1f5f9 !important; color: #64748b !important; }
 
   .overdue {
     color: #b91c1c;

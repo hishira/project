@@ -1,0 +1,28 @@
+<mat-card class="filters-card">
+  <mat-card-content>
+    <div class="filters-grid">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Numer faktury</mat-label>
+        <input matInput [ngModel]="filterNumber()" (ngModelChange)="filterNumberChange.emit($event)" placeholder="np. FV/2025/..." />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Klient</mat-label>
+        <input matInput [ngModel]="filterClient()" (ngModelChange)="filterClientChange.emit($event)" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Status</mat-label>
+        <mat-select [value]="filterStatus()" (selectionChange)="filterStatusChange.emit($event.value)">
+          <mat-option value="">Wszystkie</mat-option>
+          @for (s of statusOptions; track s.value) {
+            <mat-option [value]="s.value">{{ s.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="filter-actions">
+      <button mat-button (click)="clearFilters.emit()">Wyczyść filtry</button>
+    </div>
+  </mat-card-content>
+</mat-card>
