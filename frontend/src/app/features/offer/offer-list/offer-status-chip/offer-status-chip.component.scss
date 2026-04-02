@@ -1,0 +1,11 @@
+.status-chip {
+  font-size: 0.75rem;
+  min-height: 24px;
+  padding: 0 8px;
+}
+
+.status-draft { background-color: #e2e8f0 !important; color: #334155 !important; }
+.status-sent { background-color: #dbeafe !important; color: #1e3a8a !important; }
+.status-accepted { background-color: #d1fae5 !important; color: #065f46 !important; }
+.status-rejected { background-color: #fee2e2 !important; color: #b91c1c !important; }
+.status-expired { background-color: #f1f5f9 !important; color: #64748b !important; }

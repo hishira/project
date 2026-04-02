@@ -1,0 +1,9 @@
+<button mat-icon-button [routerLink]="[offer().id]" matTooltip="Szczegóły" (click)="onView()">
+  <mat-icon>visibility</mat-icon>
+</button>
+<button mat-icon-button (click)="onEdit($event)" matTooltip="Edytuj">
+  <mat-icon>edit</mat-icon>
+</button>
+<button mat-icon-button (click)="onDelete($event)" matTooltip="Usuń">
+  <mat-icon>delete</mat-icon>
+</button>

@@ -1,4 +1,5 @@
 export type OfferStatus = 'draft' | 'sent' | 'accepted' | 'rejected' | 'expired';
+
 export type ApprovalStatus = 'pending' | 'approved' | 'rejected';
 
 export interface OfferItem {

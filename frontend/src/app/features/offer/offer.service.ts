@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Offer, OfferItem, Approval } from './offer.model';
+import { Offer } from './offer.model';
 
 @Injectable({ providedIn: 'root' })
 export class OfferService {
