@@ -1,5 +1,5 @@
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -17,6 +17,9 @@ import { PaymentDialogComponent } from '../payment-dialog.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActionItem } from '../../../core/components/more-action-button/action.model';
 import { ActionButtonsComponent } from '../../../core/components/more-action-button/more-action-button.component';
+import { InvoiceSummaryComponent } from './invoice-summary/invoice-summary.component';
+import { InvoiceItemsTableComponent } from './invoice-items-table/invoice-items-table.component';
+import { PaymentsTableComponent } from './payments-table/payments-table.component';
 
 @Component({
     selector: 'app-invoice-detail',
@@ -35,15 +38,21 @@ import { ActionButtonsComponent } from '../../../core/components/more-action-but
         MainPageViewComponent,
         PageHeaderComponent,
         MatMenuModule,
-        ActionButtonsComponent
+        ActionButtonsComponent,
+        InvoiceSummaryComponent,
+        InvoiceItemsTableComponent,
+        PaymentsTableComponent,
     ],
     templateUrl: './invoice-detail.component.html',
-    styleUrls: ['./invoice-detail.component.scss']
+    styleUrls: ['./invoice-detail.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvoiceDetailComponent implements OnInit {
-    private route = inject(ActivatedRoute);
-    private invoiceService = inject(InvoiceService);
-    private dialog = inject(MatDialog);
+    private readonly route = inject(ActivatedRoute);
+    private readonly invoiceService = inject(InvoiceService);
+    private readonly dialog = inject(MatDialog);
+
+    readonly invoice = signal<Invoice | undefined>(undefined);
 
     moreButtons: ActionItem[] = [
         {
@@ -57,9 +66,6 @@ export class InvoiceDetailComponent implements OnInit {
             handler: () => this.onGenerateCreditNote(),
         }
     ]
-    invoice = signal<Invoice | undefined>(undefined);
-    displayedColumns: string[] = ['name', 'quantity', 'netPrice', 'vatRate', 'netAmount', 'vatAmount', 'grossAmount'];
-    paymentColumns: string[] = ['date', 'amount', 'method', 'reference', 'notes'];
 
     ngOnInit() {
         const id = this.route.snapshot.paramMap.get('id');
@@ -67,28 +73,6 @@ export class InvoiceDetailComponent implements OnInit {
             const found = this.invoiceService.getInvoiceById(id);
             this.invoice.set(found);
         }
-    }
-
-    getStatusClass(status: string): string {
-        const map: Record<string, string> = {
-            draft: 'status-draft',
-            sent: 'status-sent',
-            paid: 'status-paid',
-            overdue: 'status-overdue',
-            cancelled: 'status-cancelled'
-        };
-        return map[status] || '';
-    }
-
-    getStatusLabel(status: string): string {
-        const map: Record<string, string> = {
-            draft: 'Szkic',
-            sent: 'Wysłana',
-            paid: 'Opłacona',
-            overdue: 'Zaległa',
-            cancelled: 'Anulowana'
-        };
-        return map[status] || status;
     }
 
     onRegisterPayment() {

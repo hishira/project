@@ -30,73 +30,11 @@
   gap: 24px;
 }
 
-.summary-card {
-  .summary-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  .label {
-    color: #64748b;
-    margin-right: 8px;
-  }
-
-  .notes {
-    background: #f8fafc;
-    padding: 12px;
-    border-radius: 8px;
-    margin-top: 8px;
-  }
-}
-
-.items-card {
-  .items-table {
-    width: 100%;
-
-    .summary-row {
-      background-color: #f8fafc;
-
-      .total-label {
-        text-align: right;
-        font-weight: 500;
-        padding-right: 16px;
-      }
-
-      .total-value {
-        font-weight: 600;
-        color: #0f172a;
-      }
-    }
-  }
-}
-
-.payments-card {
-  .payments-table {
-    width: 100%;
-  }
-
-  .method-chip {
-    background-color: #e0e7ff !important;
-    color: #3730a3 !important;
-    font-size: 0.75rem;
-    min-height: 24px;
-  }
-}
-
 .action-buttons {
   display: flex;
   justify-content: flex-end;
   gap: 16px;
   margin-top: 16px;
-}
-
-.no-data {
-  text-align: center;
-  padding: 24px;
-  color: #94a3b8;
-  font-style: italic;
 }
 
 .not-found {

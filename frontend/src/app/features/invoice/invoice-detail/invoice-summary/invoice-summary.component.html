@@ -1,0 +1,24 @@
+<mat-card class="summary-card">
+  <mat-card-header>
+    <mat-card-title>Podsumowanie</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="summary-grid">
+      <div><span class="label">Klient:</span> {{ invoice().clientName }}</div>
+      <div><span class="label">Data wystawienia:</span> {{ invoice().issueDate | date: 'dd MMM yyyy' }}</div>
+      <div><span class="label">Data sprzedaży:</span> {{ invoice().saleDate | date: 'dd MMM yyyy' }}</div>
+      <div><span class="label">Termin płatności:</span> {{ invoice().dueDate | date: 'dd MMM yyyy' }}</div>
+      <div>
+        <span class="label">Status:</span>
+        <mat-chip [class]="getStatusClass(invoice().status)">{{ getStatusLabel(invoice().status) }}</mat-chip>
+      </div>
+      <div>
+        <span class="label">Kwota brutto:</span>
+        <strong>{{ invoice().totalGross | number: '1.2-2' }} {{ invoice().currency }}</strong>
+      </div>
+    </div>
+    @if (invoice().notes) {
+      <div class="notes"><span class="label">Uwagi:</span> {{ invoice().notes }}</div>
+    }
+  </mat-card-content>
+</mat-card>

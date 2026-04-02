@@ -1,0 +1,20 @@
+.items-card {
+  .items-table {
+    width: 100%;
+
+    .summary-row {
+      background-color: #f8fafc;
+
+      .total-label {
+        text-align: right;
+        font-weight: 500;
+        padding-right: 16px;
+      }
+
+      .total-value {
+        font-weight: 600;
+        color: #0f172a;
+      }
+    }
+  }
+}

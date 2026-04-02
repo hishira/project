@@ -1,0 +1,42 @@
+<mat-card class="payments-card">
+  <mat-card-header>
+    <mat-card-title>Historia płatności</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (payments().length > 0) {
+      <table mat-table [dataSource]="payments()" class="payments-table">
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Data</th>
+          <td mat-cell *matCellDef="let p">{{ p.date | date: 'dd MMM yyyy' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Kwota</th>
+          <td mat-cell *matCellDef="let p">{{ p.amount | number: '1.2-2' }} {{ currency() }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="method">
+          <th mat-header-cell *matHeaderCellDef>Metoda</th>
+          <td mat-cell *matCellDef="let p">
+            <mat-chip class="method-chip">{{ getPaymentMethodLabel(p.method) }}</mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="reference">
+          <th mat-header-cell *matHeaderCellDef>Nr referencyjny</th>
+          <td mat-cell *matCellDef="let p">{{ p.reference || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="notes">
+          <th mat-header-cell *matHeaderCellDef>Uwagi</th>
+          <td mat-cell *matCellDef="let p">{{ p.notes || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="paymentColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: paymentColumns"></tr>
+      </table>
+    } @else {
+      <p class="no-data">Brak zarejestrowanych płatności.</p>
+    }
+  </mat-card-content>
+</mat-card>

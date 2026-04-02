@@ -40,6 +40,13 @@ export const INVOICE_STATUS_OPTIONS: { value: InvoiceStatus; label: string }[] =
   { value: 'cancelled', label: 'Anulowana' }
 ];
 
+export const PAYMENT_METHOD_LABELS: InvoiceStatusLabelConfig = {
+  cash: 'Gotówka',
+  bank_transfer: 'Przelew',
+  card: 'Karta',
+  other: 'Inna',
+};
+
 /**
  * Returns the background color for a given invoice status
  */
@@ -66,4 +73,11 @@ export function getInvoiceStatusClass(status: InvoiceStatus | string): string {
  */
 export function getInvoiceStatusLabel(status: InvoiceStatus | string): string {
   return INVOICE_STATUS_LABELS[status] || status;
+}
+
+/**
+ * Returns the label for a given payment method
+ */
+export function getPaymentMethodLabel(method: string): string {
+  return PAYMENT_METHOD_LABELS[method] || method;
 }
