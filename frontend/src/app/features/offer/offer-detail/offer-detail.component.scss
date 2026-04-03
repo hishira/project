@@ -31,55 +31,11 @@
   gap: 24px;
 }
 
-.summary-card {
-  .summary-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 16px;
-    margin-bottom: 16px;
-
-    .label {
-      color: #64748b;
-      margin-right: 8px;
-    }
-  }
-  .description, .notes {
-    margin-top: 8px;
-    .label {
-      color: #64748b;
-      font-weight: 500;
-      margin-right: 8px;
-    }
-  }
-  .tags {
-    margin-top: 12px;
-  }
-}
-
-.items-table {
-  width: 100%;
-  margin-top: 8px;
-}
-
 .extra-card {
   .mat-mdc-tab-body {
     padding: 16px;
   }
-  .empty-state {
-    color: #94a3b8;
-    text-align: center;
-    padding: 24px;
-    font-style: italic;
-  }
 }
-
-.versions-table, .approvals-table {
-  width: 100%;
-}
-
-.status-pending { background-color: #fef3c7 !important; color: #92400e !important; }
-.status-approved { background-color: #d1fae5 !important; color: #065f46 !important; }
-.status-rejected { background-color: #fee2e2 !important; color: #b91c1c !important; }
 
 .not-found {
   text-align: center;

@@ -65,57 +65,11 @@
       <mat-card-content>
         <div formArrayName="items">
           @for (item of itemsArray.controls; track $index) {
-            <div [formGroupName]="$index" class="item-row">
-              <div class="item-header">
-                <span class="item-index">Pozycja {{ $index + 1 }}</span>
-                <button mat-icon-button type="button" color="warn" (click)="removeItem($index)" matTooltip="Usuń">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
-              <div class="item-fields">
-                <mat-form-field appearance="outline" class="item-name">
-                  <mat-label>Nazwa</mat-label>
-                  <input matInput formControlName="name" required>
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="item-desc">
-                  <mat-label>Opis</mat-label>
-                  <input matInput formControlName="description">
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="item-qty">
-                  <mat-label>Ilość</mat-label>
-                  <input matInput type="number" formControlName="quantity" (input)="recalcItem($index)">
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="item-unit">
-                  <mat-label>J.m.</mat-label>
-                  <input matInput formControlName="unit">
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="item-price">
-                  <mat-label>Cena netto</mat-label>
-                  <input matInput type="number" formControlName="netPrice" (input)="recalcItem($index)">
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="item-discount">
-                  <mat-label>Rabat %</mat-label>
-                  <input matInput type="number" formControlName="discountPercent" (input)="recalcItem($index)">
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="item-vat">
-                  <mat-label>VAT %</mat-label>
-                  <input matInput type="number" formControlName="vatRate" (input)="recalcItem($index)">
-                </mat-form-field>
-                <div class="item-readonly">
-                  <span class="readonly-label">Netto:</span>
-                  <span class="readonly-value">{{ item.get('netAmount')?.value | number:'1.2-2' }}</span>
-                </div>
-                <div class="item-readonly">
-                  <span class="readonly-label">VAT:</span>
-                  <span class="readonly-value">{{ item.get('vatAmount')?.value | number:'1.2-2' }}</span>
-                </div>
-                <div class="item-readonly">
-                  <span class="readonly-label">Brutto:</span>
-                  <span class="readonly-value">{{ item.get('grossAmount')?.value | number:'1.2-2' }}</span>
-                </div>
-              </div>
-              <mat-divider></mat-divider>
-            </div>
+            <app-offer-item-row 
+              [itemGroup]="item" 
+              [itemIndex]="$index"
+              (remove)="removeItem($index)"
+              (recalc)="recalcItem($index)" />
           }
         </div>
       </mat-card-content>

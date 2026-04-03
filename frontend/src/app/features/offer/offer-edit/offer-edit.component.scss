@@ -43,52 +43,6 @@
   }
 }
 
-.item-row {
-  margin: 24px 0;
-
-  .item-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-
-    .item-index {
-      font-weight: 500;
-      color: #334155;
-    }
-  }
-
-  .item-fields {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 12px;
-    align-items: center;
-  }
-
-  .item-name {
-    grid-column: span 2;
-  }
-  .item-desc {
-    grid-column: span 2;
-  }
-  .item-readonly {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.85rem;
-    background: #f8fafc;
-    padding: 8px;
-    border-radius: 4px;
-
-    .readonly-label {
-      color: #64748b;
-    }
-    .readonly-value {
-      font-weight: 600;
-      color: #0f172a;
-    }
-  }
-}
-
 .form-actions {
   display: flex;
   justify-content: flex-end;

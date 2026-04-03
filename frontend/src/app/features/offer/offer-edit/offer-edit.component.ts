@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +15,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OfferService } from '../offer.service';
 import { Offer, OfferItem } from '../offer.model';
+import { OfferItemRowComponent } from './offer-item-row/offer-item-row.component';
 
 @Component({
   selector: 'app-offer-edit',
@@ -23,10 +25,12 @@ import { Offer, OfferItem } from '../offer.model';
     MatCardModule, MatIconModule, MatButtonModule,
     MatFormFieldModule, MatInputModule, MatSelectModule,
     MatDatepickerModule, MatNativeDateModule,
-    MatDividerModule, MatTooltipModule
+    MatDividerModule, MatTooltipModule,
+    OfferItemRowComponent
   ],
   templateUrl: './offer-edit.component.html',
-  styleUrls: ['./offer-edit.component.scss']
+  styleUrls: ['./offer-edit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OfferEditComponent implements OnInit {
   private route = inject(ActivatedRoute);
@@ -116,12 +120,6 @@ export class OfferEditComponent implements OnInit {
     this.calculateTotals();
   }
 
-  // Symulacja ID
-  private generateId(): string {
-    return Math.random().toString(36).substring(2, 9);
-  }
-
-  // Przeliczanie dla pojedynczej pozycji
   recalcItem(index: number) {
     const item = this.itemsArray.at(index) as FormGroup;
     const quantity = item.get('quantity')?.value || 0;
@@ -144,7 +142,6 @@ export class OfferEditComponent implements OnInit {
     this.calculateTotals();
   }
 
-  // Przelicz sumy całej oferty
   calculateTotals() {
     let totalNet = 0, totalVat = 0, totalGross = 0;
     this.itemsArray.controls.forEach(ctrl => {
@@ -192,5 +189,10 @@ export class OfferEditComponent implements OnInit {
     }
 
     this.router.navigate(['/offers']);
+  }
+
+  // Symulacja ID
+  private generateId(): string {
+    return Math.random().toString(36).substring(2, 9);
   }
 }
