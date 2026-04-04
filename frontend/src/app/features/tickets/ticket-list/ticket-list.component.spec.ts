@@ -79,6 +79,7 @@ describe('TicketListComponent', () => {
         id: '1',
         ticketNumber: 'TICKET-123',
         title: 'Testowy ticket',
+        description: 'Opis testowego ticketa',
         type: 'crm',
         priority: 'high',
         status: 'in_progress',

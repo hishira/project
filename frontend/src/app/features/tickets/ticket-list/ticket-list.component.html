@@ -7,7 +7,6 @@
 </app-page-header>
 <app-main-page-view>
   <div class="ticket-list-container">
-    <!-- Nagłówek z ewentualnymi akcjami zbiorczymi -->
     <div class="list-header">
       <button color="primary" mat-button type="button" (click)="ticketService.toggleAll(true)">
         <mat-icon>check_box</mat-icon> Zaznacz wszystkie
@@ -16,6 +15,7 @@
         <mat-icon>check_box_outline_blank</mat-icon> Odznacz wszystkie
       </button>
     </div>
+
     @if (isLoading()) {
       <div class="loading-spinner d-flex align-items-center justify-content-center flex-column gap-4">
         <mat-spinner diameter="40" />
@@ -23,7 +23,6 @@
       </div>
     }
 
-    <!-- Stan błędu -->
     @if (error(); as err) {
       <div class="error-message">
         <mat-icon>error</mat-icon>
@@ -31,162 +30,19 @@
         <button color="primary" mat-button (click)="ticketsResource.reload()">Spróbuj ponownie</button>
       </div>
     }
+
     @if (!isLoading() && !error() && tickets(); as ticketList) {
       <div class="tickets">
         @for (ticket of ticketList; track ticket.id) {
-          <mat-expansion-panel
-            class="ticket-card"
-            hideToggle
-            [expanded]="ticket.isExpanded"
-            (closed)="ticket.isExpanded = false"
-            (opened)="ticket.isExpanded = true">
-            <mat-expansion-panel-header class="ticket-header">
-              <div class="header-content">
-                <!-- Checkbox do zaznaczania -->
-                <mat-checkbox
-                  class="ticket-checkbox"
-                  [checked]="ticket.selected"
-                  (change)="toggleSelection(ticket)"
-                  (click)="$event.stopPropagation()" />
-
-                <!-- Ikona typu ticketu -->
-                <mat-icon
-                  class="type-icon"
-                  [class.crm]="ticket.type === 'crm'"
-                  [class.pm]="ticket.type === 'pm'"
-                  [matTooltip]="ticket.type === 'crm' ? 'CRM' : 'Projekt'">
-                  {{ getTypeIcon(ticket.type) }}
-                </mat-icon>
-
-                <!-- Główna informacja: numer i tytuł -->
-                <div class="ticket-main">
-                  <span class="ticket-number">{{ ticket.ticketNumber }}</span>
-                  <span class="ticket-title">{{ ticket.title }}</span>
-                  @if (ticket.type === 'crm' && ticket.customerName) {
-                    <span class="customer-badge">{{ ticket.customerName }}</span>
-                  }
-                  @if (ticket.type === 'pm' && ticket.issueType) {
-                    <span class="issue-type-badge">{{ ticket.issueType }}</span>
-                  }
-                </div>
-
-                <!-- Priorytet jako chip z ikoną -->
-                <mat-chip-set class="priority-chip">
-                  <mat-chip
-                    [matTooltip]="'Priorytet: ' + ticket.priority"
-                    [style.background]="getPriorityColor(ticket.priority)"
-                    [style.color]="'white'">
-                    <mat-icon>{{ getPriorityIcon(ticket.priority) }}</mat-icon>
-                    {{ ticket.priority }}
-                  </mat-chip>
-                </mat-chip-set>
-
-                <!-- Status jako chip z klasą CSS -->
-                <mat-chip-set class="status-chip">
-                  <mat-chip [class]="getStatusChipClass(ticket.status)">
-                    {{ ticket.status.replace('_', ' ') }}
-                  </mat-chip>
-                </mat-chip-set>
-
-                <!-- Przypisane do / autor z awatarem -->
-                <div class="assignee-info">
-                  @if (ticket.assignedTo) {
-                    <div class="avatar-group" matTooltip="Przypisane do: {{ ticket.assignedTo.fullName }}">
-                      <img alt="avatar" class="avatar" [src]="ticket.assignedTo.avatarUrl" />
-                    </div>
-                  } @else {
-                    <span class="unassigned">Nieprzypisane</span>
-                  }
-                </div>
-
-                <!-- Liczniki komentarzy i załączników -->
-                <div class="counters">
-                  @if (ticket.commentCount > 0) {
-                    <span class="counter" matTooltip="Komentarze">
-                      <mat-icon>comment</mat-icon> {{ ticket.commentCount }}
-                    </span>
-                  }
-                  @if (ticket.attachmentCount > 0) {
-                    <span class="counter" matTooltip="Załączniki">
-                      <mat-icon>attach_file</mat-icon> {{ ticket.attachmentCount }}
-                    </span>
-                  }
-                </div>
-
-                <!-- Menu akcji -->
-                <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
-                  <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                  <button mat-menu-item (click)="onEdit(ticket); $event.stopPropagation()">
-                    <mat-icon>edit</mat-icon> Edytuj
-                  </button>
-                   <button mat-menu-item (click)="onDetails(ticket); $event.stopPropagation()">
-                    <mat-icon>details</mat-icon> Details
-                  </button>
-                  <button mat-menu-item [matMenuTriggerFor]="statusMenu" (click)="$event.stopPropagation()">
-                    <mat-icon>swap_horiz</mat-icon> Zmień status
-                  </button>
-                  <button mat-menu-item (click)="onAssign(ticket); $event.stopPropagation()">
-                    <mat-icon>assignment_ind</mat-icon> Przypisz do mnie
-                  </button>
-                </mat-menu>
-                <mat-menu #statusMenu="matMenu">
-                  <button mat-menu-item (click)="onChangeStatus(ticket, 'new')">Nowy</button>
-                  <button mat-menu-item (click)="onChangeStatus(ticket, 'in_progress')">W trakcie</button>
-                  <button mat-menu-item (click)="onChangeStatus(ticket, 'waiting_for_customer')">
-                    Oczekuje na klienta
-                  </button>
-                  <button mat-menu-item (click)="onChangeStatus(ticket, 'resolved')">Rozwiązany</button>
-                  <button mat-menu-item (click)="onChangeStatus(ticket, 'closed')">Zamknięty</button>
-                  <mat-divider />
-                  <button mat-menu-item (click)="onChangeStatus(ticket, 'todo')">Do zrobienia</button>
-                  <button mat-menu-item (click)="onChangeStatus(ticket, 'doing')">W realizacji</button>
-                  <button mat-menu-item (click)="onChangeStatus(ticket, 'done')">Zakończone</button>
-                </mat-menu>
-              </div>
-            </mat-expansion-panel-header>
-
-            <!-- Rozwinięta zawartość - szczegóły ticketu -->
-            <div class="expanded-content">
-              <p class="description">{{ getDescription(ticket) }}</p>
-              <div class="meta-details">
-                <div class="meta-item">
-                  <mat-icon>person</mat-icon>
-                  <span>Utworzył: {{ ticket.createdBy.fullName }}</span>
-                </div>
-                <div class="meta-item">
-                  <mat-icon>schedule</mat-icon>
-                  <span>Utworzono: {{ ticket.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
-                </div>
-                <div class="meta-item">
-                  <mat-icon>update</mat-icon>
-                  <span>Aktualizacja: {{ ticket.updatedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
-                </div>
-                @if (ticket.type === 'crm') {
-                  <div class="meta-item">
-                    <mat-icon>business</mat-icon>
-                    <span>Klient: {{ ticket.customerName }}</span>
-                  </div>
-                }
-                @if (ticket.type === 'pm' && ticket.issueType) {
-                  <div class="meta-item">
-                    <mat-icon>bug_report</mat-icon>
-                    <span>Typ: {{ ticket.issueType }}</span>
-                  </div>
-                }
-              </div>
-              @if (ticket.tags.length > 0) {
-                <div class="tags">
-                  <mat-chip-set>
-                    @for (tag of ticket.tags; track tag) {
-                      <mat-chip>{{ tag }}</mat-chip>
-                    }
-                  </mat-chip-set>
-                </div>
-              }
-            </div>
-          </mat-expansion-panel>
+          <app-ticket-item
+            [ticket]="ticket"
+            (expand)="onExpandTicket(ticket)"
+            (collapse)="onCollapseTicket(ticket)"
+            (toggleSelection)="onToggleSelection(ticket)"
+            (edit)="onEditTicket(ticket)"
+            (details)="onDetailsTicket(ticket)"
+            (assign)="onAssignTicket(ticket)"
+            (changeStatus)="onChangeStatus(ticket, $event)" />
         }
       </div>
     }

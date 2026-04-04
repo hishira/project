@@ -99,6 +99,7 @@ export interface TicketListItem {
   id: string;
   ticketNumber: string;
   title: string;
+  description?: string;
   type: TicketType;
   status: TicketStatus;
   priority: TicketPriority;

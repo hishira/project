@@ -9,7 +9,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { OfferService } from '../offer.service';
 import { Offer } from '../offer.model';
-import { OfferApprovalDialogComponent } from '../offer-approval-dialog/offer-approval-dialog.component';
+import { OfferApprovalDialogComponent, OFFER_APPROVAL_DIALOG_CONFIG } from '../offer-approval-dialog/offer-approval-dialog.component';
 import { OfferSummaryComponent } from './offer-summary/offer-summary.component';
 import { OfferItemsTableComponent } from './offer-items-table/offer-items-table.component';
 import { OfferVersionsTabComponent } from './offer-versions-tab/offer-versions-tab.component';
@@ -50,7 +50,7 @@ export class OfferDetailComponent implements OnInit {
     const current = this.offer();
     if (!current) return;
     const dialogRef = this.dialog.open(OfferApprovalDialogComponent, {
-      width: '500px',
+      ...OFFER_APPROVAL_DIALOG_CONFIG,
       data: { offer: current }
     });
     dialogRef.afterClosed().subscribe(result => {
