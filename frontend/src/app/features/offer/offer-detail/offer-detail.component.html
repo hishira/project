@@ -1,40 +1,43 @@
-<div class="detail-container">
-  <div class="header">
-    <a mat-icon-button routerLink="/offers" class="back-btn"><mat-icon>arrow_back</mat-icon></a>
-    <h1>Oferta {{ offer()?.number }}</h1>
-    <div class="header-actions">
+@if (offer(); as off) {
+  <app-page-header>
+    <div class="main-header">
+      <h1>Oferta {{ off.number }}</h1>
+    </div>
+    <div class="main-header-buttons d-flex gap-3 align-items-center">
       <button mat-stroked-button (click)="onGeneratePdf()"><mat-icon>picture_as_pdf</mat-icon> PDF</button>
-      <button mat-stroked-button [routerLink]="['edit']"><mat-icon>edit</mat-icon> Edytuj</button>
-      @if (offer()?.status === 'draft') {
+      <button mat-stroked-button [routerLink]="[off.id, 'edit']"><mat-icon>edit</mat-icon> Edytuj</button>
+      @if (off.status === 'draft') {
         <button mat-raised-button color="primary" (click)="onRequestApproval()">
           <mat-icon>how_to_reg</mat-icon> Wyślij do akceptacji
         </button>
       }
     </div>
+  </app-page-header>
+
+  <app-main-page-view>
+    <div class="detail-container">
+      <div class="content">
+        <app-offer-summary [offer]="off" />
+
+        <app-offer-items-table [items]="off.items" />
+
+        <mat-card class="extra-card">
+          <mat-tab-group>
+            <mat-tab label="Wersje">
+              <app-offer-versions-tab [versions]="off.versions" />
+            </mat-tab>
+            <mat-tab label="Akceptacje">
+              <app-offer-approvals-tab [approvals]="off.approvals" />
+            </mat-tab>
+          </mat-tab-group>
+        </mat-card>
+      </div>
+    </div>
+  </app-main-page-view>
+} @else {
+  <div class="not-found">
+    <mat-icon>error_outline</mat-icon>
+    <p>Nie znaleziono oferty</p>
+    <button mat-raised-button color="primary" routerLink="/offers">Powrót do listy</button>
   </div>
-
-  @if (offer(); as off) {
-    <div class="content">
-      <app-offer-summary [offer]="off" />
-
-      <app-offer-items-table [items]="off.items" />
-
-      <mat-card class="extra-card">
-        <mat-tab-group>
-          <mat-tab label="Wersje">
-            <app-offer-versions-tab [versions]="off.versions" />
-          </mat-tab>
-          <mat-tab label="Akceptacje">
-            <app-offer-approvals-tab [approvals]="off.approvals" />
-          </mat-tab>
-        </mat-tab-group>
-      </mat-card>
-    </div>
-  } @else {
-    <div class="not-found">
-      <mat-icon>error_outline</mat-icon>
-      <p>Nie znaleziono oferty</p>
-      <button mat-raised-button color="primary" routerLink="/offers">Powrót do listy</button>
-    </div>
-  }
-</div>
+}

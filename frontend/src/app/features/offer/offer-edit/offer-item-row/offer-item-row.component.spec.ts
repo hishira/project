@@ -31,7 +31,7 @@ describe('OfferItemRowComponent', () => {
     const recalcSpy = vi.fn();
 
     await render(OfferItemRowComponent, {
-      inputs: {
+      componentProperties: {
         itemGroup: group,
         itemIndex: itemIndex,
         remove: { emit: removeSpy } as any,

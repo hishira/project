@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,7 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   template: `
     <div [formGroup]="itemGroup" class="item-row">
       <div class="item-header">
-        <span class="item-index">Pozycja {{ itemIndex() + 1 }}</span>
+        <span class="item-index">Pozycja {{ itemIndex + 1 }}</span>
         <button mat-icon-button type="button" color="warn" (click)="onRemove()" matTooltip="Usuń">
           <mat-icon>delete</mat-icon>
         </button>
@@ -118,17 +118,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   `]
 })
 export class OfferItemRowComponent {
-  itemGroup = input.required<FormGroup>();
-  itemIndex = input.required<number>();
-  
-  remove = output<number>();
-  recalc = output<number>();
+  @Input({ required: true }) itemGroup!: FormGroup;
+  @Input({ required: true }) itemIndex!: number;
+
+  @Output() remove = new EventEmitter<number>();
+  @Output() recalc = new EventEmitter<number>();
 
   onRemove() {
-    this.remove.emit(this.itemIndex());
+    this.remove.emit(this.itemIndex);
   }
 
   onRecalc() {
-    this.recalc.emit(this.itemIndex());
+    this.recalc.emit(this.itemIndex);
   }
 }

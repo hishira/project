@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -13,15 +14,18 @@ import { OfferSummaryComponent } from './offer-summary/offer-summary.component';
 import { OfferItemsTableComponent } from './offer-items-table/offer-items-table.component';
 import { OfferVersionsTabComponent } from './offer-versions-tab/offer-versions-tab.component';
 import { OfferApprovalsTabComponent } from './offer-approvals-tab/offer-approvals-tab.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 
 @Component({
   selector: 'app-offer-detail',
   standalone: true,
   imports: [
     CommonModule, RouterLink,
-    MatIconModule, MatButtonModule, MatTabsModule, MatDialogModule,
+    MatCardModule, MatIconModule, MatButtonModule, MatTabsModule, MatDialogModule,
     OfferSummaryComponent, OfferItemsTableComponent,
-    OfferVersionsTabComponent, OfferApprovalsTabComponent
+    OfferVersionsTabComponent, OfferApprovalsTabComponent,
+    PageHeaderComponent, MainPageViewComponent
   ],
   templateUrl: './offer-detail.component.html',
   styleUrls: ['./offer-detail.component.scss'],
