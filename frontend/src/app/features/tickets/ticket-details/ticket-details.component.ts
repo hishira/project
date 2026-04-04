@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Signal, WritableSignal, computed, inject } from '@angular/core';
-import { CrmTicket, PmIssue, TicketDetails, TicketListItem, TicketPriority, TicketStatus } from '../types';
+import { ChangeDetectionStrategy, Component, Signal, computed, inject } from '@angular/core';
+import { TicketDetails } from '../types';
 import { imports } from './ticket-details.dependency';
 import { TicketDetailService } from './ticket-details.service';
+import { getPriorityIcon, getPriorityColor, getStatusLabel, getStatusClass } from '../ticket-status.utils';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -14,38 +15,20 @@ import { TicketDetailService } from './ticket-details.service';
 })
 export class TicketDetailComponent {
   private ticketService = inject(TicketDetailService);
-  private reouserceRes = this.ticketService.getResource();
+  private resourceRef = this.ticketService.getResource();
 
-  readonly ticketDetails: WritableSignal<any> = this.reouserceRes.value;
-  readonly isLoading: Signal<boolean> = this.reouserceRes.isLoading;
-  readonly error: Signal<boolean> = computed(() => this.reouserceRes.status() === 'error');
-  readonly reaload = (): boolean => this.reouserceRes.reload();
+  readonly ticketDetails: Signal<TicketDetails | undefined> = this.resourceRef.value;
+  readonly isLoading: Signal<boolean> = this.resourceRef.isLoading;
+  readonly error: Signal<boolean> = computed(() => this.resourceRef.status() === 'error');
+  readonly reload = (): void => {
+    this.resourceRef.reload();
+  };
 
-
-  // Metody pomocnicze dla szablonu
-  getPriorityIcon(priority: TicketPriority): string {
-    const icons: Record<TicketPriority, string> = {
-      low: 'arrow_downward',
-      medium: 'remove',
-      high: 'arrow_upward',
-      critical: 'priority_high'
-    };
-    return icons[priority] || 'help';
-  }
-
-  getPriorityColor(priority: TicketPriority): string {
-    const colors: Record<TicketPriority, string> = {
-      low: '#2e7d32',
-      medium: '#ed6c02',
-      high: '#d32f2f',
-      critical: '#b71c1c'
-    };
-    return colors[priority];
-  }
-
-  getStatusChipClass(status: TicketStatus): string {
-    return `status-${status?.replace?.(/_/g, '-')}`;
-  }
+  // Utility functions exposed for template
+  readonly getPriorityIcon = getPriorityIcon;
+  readonly getPriorityColor = getPriorityColor;
+  readonly getStatusLabel = getStatusLabel;
+  readonly getStatusClass = getStatusClass;
 
   formatFileSize(bytes: number): string {
     if (bytes === 0) return '0 B';
@@ -61,13 +44,5 @@ export class TicketDetailComponent {
     if (mimeType.includes('pdf')) return 'picture_as_pdf';
     if (mimeType.includes('spreadsheet') || mimeType.includes('excel')) return 'table_chart';
     return 'attach_file';
-  }
-
-  isCrmTicket(details: TicketDetails): details is CrmTicket & { relatedTickets?: TicketListItem[]; timeTracking?: any; isLoading: boolean; error?: string } {
-    return details.type === 'crm';
-  }
-
-  isPmIssue(details: TicketDetails): details is PmIssue & { relatedTickets?: TicketListItem[]; timeTracking?: any; isLoading: boolean; error?: string } {
-    return details.type === 'pm';
   }
 }

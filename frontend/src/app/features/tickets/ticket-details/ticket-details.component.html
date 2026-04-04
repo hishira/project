@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="main-header-buttons">
-    <button mat-icon-button type="button" [disabled]="isLoading()"  (click)="reaload()">
+    <button mat-icon-button type="button" [disabled]="isLoading()" (click)="reload()">
       <mat-icon>refresh</mat-icon>
     </button>
   </div>
@@ -13,7 +13,6 @@
 
 <app-main-page-view>
   <div class="detail-container">
-    <!-- Stan ładowania -->
     @if (isLoading()) {
       <div class="loading-spinner">
         <mat-spinner diameter="50" />
@@ -21,25 +20,22 @@
       </div>
     }
 
-    <!-- Błąd -->
     @if (error()) {
       <div class="error-message">
         <mat-icon>error</mat-icon>
-        <span>{{ error() }}</span>
-        <button color="primary" mat-button (click)="reaload()">Spróbuj ponownie</button>
+        <span>Nie udało się załadować danych</span>
+        <button color="primary" mat-button (click)="reload()">Spróbuj ponownie</button>
       </div>
     }
 
-    <!-- Główna zawartość -->
-    @if (!isLoading() && !error() && ticketDetails()) {
+    @if (!isLoading() && !error() && ticketDetails(); as details) {
       <div class="content">
-        <!-- Karta główna -->
         <mat-card class="main-card">
           <mat-card-header>
             <div class="header-row">
               <mat-card-title>
-                {{ ticketDetails().title }}
-                <span class="ticket-number">#{{ ticketDetails().ticketNumber }}</span>
+                {{ details.title }}
+                <span class="ticket-number">#{{ details.ticketNumber }}</span>
               </mat-card-title>
               <div class="header-actions d-flex gap-2">
                 <button color="primary" mat-stroked-button>Edytuj</button>
@@ -50,19 +46,19 @@
               <div class="subtitle-row">
                 <mat-chip-set>
                   <mat-chip
-                    [matTooltip]="'Priorytet: ' + ticketDetails().priority"
-                    [style.background]="getPriorityColor(ticketDetails().priority)"
+                    [matTooltip]="'Priorytet: ' + details.priority"
+                    [style.background]="getPriorityColor(details.priority)"
                     [style.color]="'white'">
                     <div class="d-flex align-items-center gap-1">
-                    <mat-icon>{{ getPriorityIcon(ticketDetails().priority) }}</mat-icon>
-                    <span>{{ ticketDetails().priority }}</span>
+                      <mat-icon>{{ getPriorityIcon(details.priority) }}</mat-icon>
+                      <span>{{ details.priority }}</span>
                     </div>
                   </mat-chip>
-                  <mat-chip [class]="getStatusChipClass(ticketDetails().status)">
-                    {{ ticketDetails().status?.replace?.('_', ' ') }}
+                  <mat-chip [class]="getStatusClass(details.status)">
+                    {{ getStatusLabel(details.status) }}
                   </mat-chip>
-                  <mat-chip [class]="ticketDetails().type === 'crm' ? 'type-crm' : 'type-pm'">
-                    {{ ticketDetails().type === 'crm' ? 'CRM' : 'Projekt' }}
+                  <mat-chip [class]="details.type === 'crm' ? 'type-crm' : 'type-pm'">
+                    {{ details.type === 'crm' ? 'CRM' : 'Projekt' }}
                   </mat-chip>
                 </mat-chip-set>
               </div>
@@ -70,29 +66,27 @@
           </mat-card-header>
 
           <mat-card-content>
-            <!-- Opis -->
             <section class="section">
               <h3>Opis</h3>
-              <p class="description">{{ ticketDetails().description }}</p>
+              <p class="description">{{ details.description }}</p>
             </section>
 
             <mat-divider />
-            
-            <app-ticket-metadata [ticketDetails]="ticketDetails()" />
-    
-            <!-- Time tracking (jeśli dostępne) -->
-            @if (ticketDetails().timeTracking) {
+
+            <app-ticket-metadata [ticketDetails]="details" />
+
+            @if (details.timeTracking) {
               <mat-divider />
               <section class="section time-tracking">
                 <h3>Time tracking</h3>
                 <div class="time-row">
                   <span class="label">Czas spędzony:</span>
-                  <span class="value">{{ ticketDetails().timeTracking?.totalTimeSpent }} min</span>
+                  <span class="value">{{ details.timeTracking.totalTimeSpent }} min</span>
                 </div>
-                @if (ticketDetails().timeTracking?.timeRemaining) {
+                @if (details.timeTracking.timeRemaining) {
                   <div class="time-row">
                     <span class="label">Pozostało:</span>
-                    <span class="value">{{ ticketDetails().timeTracking?.timeRemaining }} min</span>
+                    <span class="value">{{ details.timeTracking.timeRemaining }} min</span>
                   </div>
                 }
               </section>
@@ -100,19 +94,18 @@
           </mat-card-content>
         </mat-card>
 
-        <app-ticket-comments [ticketDetails]="ticketDetails()" />
-      
-        <app-ticket-attachments [ticketDetails]="ticketDetails()" />
+        <app-ticket-comments [ticketDetails]="details" />
 
-        <!-- Powiązane tickety -->
-        @if (ticketDetails().relatedTickets?.length) {
+        <app-ticket-attachments [ticketDetails]="details" />
+
+        @if (details.relatedTickets?.length) {
           <mat-card class="related-card">
             <mat-card-header>
-              <mat-card-title>Powiązane zgłoszenia ({{ ticketDetails().relatedTickets?.length }})</mat-card-title>
+              <mat-card-title>Powiązane zgłoszenia ({{ details.relatedTickets!.length }})</mat-card-title>
             </mat-card-header>
             <mat-card-content>
               <mat-list>
-                @for (related of ticketDetails().relatedTickets; track related.id) {
+                @for (related of details.relatedTickets!; track related.id) {
                   <mat-list-item class="related-item">
                     <mat-icon [class]="related.type === 'crm' ? 'crm' : 'pm'">
                       {{ related.type === 'crm' ? 'support_agent' : 'bug_report' }}
@@ -127,8 +120,8 @@
                           [style.color]="'white'">
                           {{ related.priority }}
                         </mat-chip>
-                        <mat-chip class="small-chip" [class]="getStatusChipClass(related.status)">
-                          {{ related.status.replace('_', ' ') }}
+                        <mat-chip class="small-chip" [class]="getStatusClass(related.status)">
+                          {{ getStatusLabel(related.status) }}
                         </mat-chip>
                       </mat-chip-set>
                     </div>

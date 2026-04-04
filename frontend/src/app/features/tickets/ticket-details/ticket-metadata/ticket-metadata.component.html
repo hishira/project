@@ -1,107 +1,106 @@
 <section class="section metadata-grid">
-  <div class="metadata-item align-items-center">
-    <mat-icon>person</mat-icon>
-    <span class="label">Utworzył:</span>
-    <span class="value">{{ ticketDetails().createdBy.fullName }}</span>
-    <span class="role-badge">{{ ticketDetails().createdBy.role }}</span>
-  </div>
-  <div class="metadata-item">
-    <mat-icon>schedule</mat-icon>
-    <span class="label">Utworzono:</span>
-    <span class="value">{{ ticketDetails().createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
-  </div>
-  <div class="metadata-item">
-    <mat-icon>update</mat-icon>
-    <span class="label">Aktualizacja:</span>
-    <span class="value">{{ ticketDetails().updatedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
-  </div>
-  @if (ticketDetails().assignedTo) {
+  @if (ticketDetails(); as details) {
+    <div class="metadata-item align-items-center">
+      <mat-icon>person</mat-icon>
+      <span class="label">Utworzył:</span>
+      <span class="value">{{ details.createdBy.fullName }}</span>
+      <span class="role-badge">{{ details.createdBy.role }}</span>
+    </div>
     <div class="metadata-item">
-      <mat-icon>assignment_ind</mat-icon>
-      <span class="label">Przypisany:</span>
-      <span class="value">{{ ticketDetails().assignedTo.fullName }}</span>
+      <mat-icon>schedule</mat-icon>
+      <span class="label">Utworzono:</span>
+      <span class="value">{{ details.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
     </div>
-  }
-  <!-- Pola specyficzne dla CRM -->
-  @if (isCrmTicket(ticketDetails())) {
     <div class="metadata-item">
-      <mat-icon>business</mat-icon>
-      <span class="label">Klient:</span>
-      <span class="value">{{ ticketDetails().customer.fullName }}</span>
+      <mat-icon>update</mat-icon>
+      <span class="label">Aktualizacja:</span>
+      <span class="value">{{ details.updatedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
     </div>
-    @if (ticketDetails().account) {
+    @if (details.assignedTo) {
       <div class="metadata-item">
-        <mat-icon>apartment</mat-icon>
-        <span class="label">Firma:</span>
-        <span class="value">{{ ticketDetails().account }}</span>
+        <mat-icon>assignment_ind</mat-icon>
+        <span class="label">Przypisany:</span>
+        <span class="value">{{ details.assignedTo.fullName }}</span>
       </div>
     }
-    <div class="metadata-item">
-      <mat-icon>chat</mat-icon>
-      <span class="label">Kanał:</span>
-      <span class="value">{{ ticketDetails().channel }}</span>
-    </div>
-    @if (ticketDetails().slaDeadline) {
-      <div class="metadata-item" [class.sla-warning]="ticketDetails().slaDeadline">
-        <mat-icon>timer</mat-icon>
-        <span class="label">SLA:</span>
-        <span class="value">{{ ticketDetails().slaDeadline | date: 'dd MMM yyyy' }}</span>
-      </div>
-    }
-    @if (ticketDetails().product) {
+    @if (isCrmTicket(details)) {
       <div class="metadata-item">
-        <mat-icon>inventory_2</mat-icon>
-        <span class="label">Produkt:</span>
-        <span class="value">{{ ticketDetails().product }}</span>
+        <mat-icon>business</mat-icon>
+        <span class="label">Klient:</span>
+        <span class="value">{{ details.customer.fullName }}</span>
       </div>
-    }
-  }
-  <!-- Pola specyficzne dla PM -->
-  @if (isPmIssue(ticketDetails())) {
-    <div class="metadata-item">
-      <mat-icon>bug_report</mat-icon>
-      <span class="label">Typ:</span>
-      <span class="value">{{ ticketDetails().issueType }}</span>
-    </div>
-    @if (ticketDetails().storyPoints) {
+      @if (details.account) {
+        <div class="metadata-item">
+          <mat-icon>apartment</mat-icon>
+          <span class="label">Firma:</span>
+          <span class="value">{{ details.account }}</span>
+        </div>
+      }
       <div class="metadata-item">
-        <mat-icon>fitness_center</mat-icon>
-        <span class="label">Story points:</span>
-        <span class="value">{{ ticketDetails().storyPoints }}</span>
+        <mat-icon>chat</mat-icon>
+        <span class="label">Kanał:</span>
+        <span class="value">{{ details.channel }}</span>
       </div>
+      @if (details.slaDeadline) {
+        <div class="metadata-item" [class.sla-warning]="details.slaDeadline">
+          <mat-icon>timer</mat-icon>
+          <span class="label">SLA:</span>
+          <span class="value">{{ details.slaDeadline | date: 'dd MMM yyyy' }}</span>
+        </div>
+      }
+      @if (details.product) {
+        <div class="metadata-item">
+          <mat-icon>inventory_2</mat-icon>
+          <span class="label">Produkt:</span>
+          <span class="value">{{ details.product }}</span>
+        </div>
+      }
     }
-    @if (ticketDetails().sprint) {
+    @if (isPmIssue(details)) {
       <div class="metadata-item">
-        <mat-icon>sprint</mat-icon>
-        <span class="label">Sprint:</span>
-        <span class="value">{{ ticketDetails().sprint }}</span>
+        <mat-icon>bug_report</mat-icon>
+        <span class="label">Typ:</span>
+        <span class="value">{{ details.issueType }}</span>
+      </div>
+      @if (details.storyPoints) {
+        <div class="metadata-item">
+          <mat-icon>fitness_center</mat-icon>
+          <span class="label">Story points:</span>
+          <span class="value">{{ details.storyPoints }}</span>
+        </div>
+      }
+      @if (details.sprint) {
+        <div class="metadata-item">
+          <mat-icon>sprint</mat-icon>
+          <span class="label">Sprint:</span>
+          <span class="value">{{ details.sprint }}</span>
+        </div>
+      }
+      @if (details.affectedVersions?.length) {
+        <div class="metadata-item">
+          <mat-icon>warning</mat-icon>
+          <span class="label">Wersje dotknięte:</span>
+          <span class="value">{{ details.affectedVersions!.join(', ') }}</span>
+        </div>
+      }
+      @if (details.fixedVersions?.length) {
+        <div class="metadata-item">
+          <mat-icon>check_circle</mat-icon>
+          <span class="label">Naprawione w:</span>
+          <span class="value">{{ details.fixedVersions!.join(', ') }}</span>
+        </div>
+      }
+    }
+    @if (details.tags.length) {
+      <div class="metadata-item tags-item">
+        <mat-icon>local_offer</mat-icon>
+        <span class="label">Tagi:</span>
+        <mat-chip-set>
+          @for (tag of details.tags; track tag) {
+            <mat-chip>{{ tag }}</mat-chip>
+          }
+        </mat-chip-set>
       </div>
     }
-    @if (ticketDetails().affectedVersions?.length) {
-      <div class="metadata-item">
-        <mat-icon>warning</mat-icon>
-        <span class="label">Wersje dotknięte:</span>
-        <span class="value">{{ ticketDetails().affectedVersions?.join?.(', ') }}</span>
-      </div>
-    }
-    @if (ticketDetails().fixedVersions?.length) {
-      <div class="metadata-item">
-        <mat-icon>check_circle</mat-icon>
-        <span class="label">Naprawione w:</span>
-        <span class="value">{{ ticketDetails().fixedVersions?.join?.(', ') }}</span>
-      </div>
-    }
-  }
-  <!-- Tagi -->
-  @if (ticketDetails().tags.length) {
-    <div class="metadata-item tags-item">
-      <mat-icon>local_offer</mat-icon>
-      <span class="label">Tagi:</span>
-      <mat-chip-set>
-        @for (tag of ticketDetails().tags; track tag) {
-          <mat-chip>{{ tag }}</mat-chip>
-        }
-      </mat-chip-set>
-    </div>
   }
 </section>

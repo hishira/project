@@ -5,6 +5,7 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { TicketDetails } from "../../types";
 
 @Component({
     selector: 'app-ticket-attachments',
@@ -22,7 +23,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     ],
 })
 export class TicketAttachmentsComponent {
-    readonly ticketDetails = input.required<any>()
+    readonly ticketDetails = input.required<TicketDetails>();
+
     formatFileSize(bytes: number): string {
         if (bytes === 0) return '0 B';
         const k = 1024;

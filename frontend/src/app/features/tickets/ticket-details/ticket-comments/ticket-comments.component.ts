@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from "@angular/co
 import { MatCardModule } from "@angular/material/card";
 import { MatChip } from "@angular/material/chips";
 import { MatList, MatListItem } from "@angular/material/list";
+import { TicketDetails } from "../../types";
 
 @Component({
     selector: 'app-ticket-comments',
@@ -13,6 +14,6 @@ import { MatList, MatListItem } from "@angular/material/list";
     imports: [MatCardModule, MatList, MatChip, DatePipe, MatListItem,]
 })
 export class TicketComments {
-    readonly ticketDetails = input.required<any>();
+    readonly ticketDetails = input.required<TicketDetails>();
     readonly comments = computed(() => this.ticketDetails().comments);
 }
