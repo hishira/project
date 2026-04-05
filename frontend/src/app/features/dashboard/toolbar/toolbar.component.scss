@@ -21,6 +21,17 @@
     height: 100%;
   }
 
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .toolbar-right {
+    display: flex;
+    align-items: center;
+  }
+
   .app-title {
     display: flex;
     align-items: center;
@@ -41,6 +52,11 @@
   .title-icon {
     font-size: 24px;
     flex-shrink: 0;
+  }
+
+  .hamburger-menu-button {
+    color: white;
+    background-color: transparent;
   }
 
   .user-menu {

@@ -1,10 +1,10 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { map, Observable } from 'rxjs';
 import { AdminDirective } from '../../../core/directives/admin.directive';
@@ -25,13 +25,15 @@ import { User } from '../../../shared/models/auth.model';
     MatIcon,
     MatDivider,
     AsyncPipe,
-    AdminDirective
+    AdminDirective,
+    RouterLink
   ],
 })
 export class ToolbarComponent {
   private readonly authService: AuthService = inject(AuthService);
   private readonly snackBar: SnackBar = inject(SnackBar);
-  drawer = output();
+  
+  readonly menuToggle = output<void>();
   readonly currentUser: Observable<User | null> = this.authService.currentUser$;
   readonly currentUserNameView: Observable<string> = this.currentUser.pipe(
     map(
@@ -43,6 +45,10 @@ export class ToolbarComponent {
     map((currentUser) => currentUser?.firstName || currentUser?.credentials?.login),
   );
 
+  onMenuToggle(): void {
+    this.menuToggle.emit();
+  }
+
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {
@@ -50,7 +56,6 @@ export class ToolbarComponent {
       },
       error: (error) => {
         console.error('Logout error:', error);
-        // Even if logout fails on server, we're redirected by the auth service
       },
     });
   }

@@ -1,4 +1,48 @@
 <div class="app-container">
-  <app-toolbar/>
-  <router-outlet />
+  <mat-drawer-container class="drawer-container" autosize>
+    <mat-drawer class="side-nav" mode="over" position="start" [opened]="drawerOpened" (closed)="drawerOpened = false">
+      <div class="side-nav-header">
+        <mat-icon>admin_panel_settings</mat-icon>
+        <h3>Menu</h3>
+      </div>
+      <mat-divider />
+      <nav mat-nav-list class="side-nav-list">
+        <a mat-list-item routerLink="/dashboard">
+          <mat-icon matListItemIcon>dashboard</mat-icon>
+          <span matListItemTitle>Dashboard</span>
+        </a>
+        <a mat-list-item routerLink="/activities">
+          <mat-icon matListItemIcon>list</mat-icon>
+          <span matListItemTitle>Activities</span>
+        </a>
+        <a mat-list-item routerLink="/statistics">
+          <mat-icon matListItemIcon>bar_chart</mat-icon>
+          <span matListItemTitle>Statistics</span>
+        </a>
+        <mat-divider />
+        <a mat-list-item routerLink="/settings">
+          <mat-icon matListItemIcon>settings</mat-icon>
+          <span matListItemTitle>Settings</span>
+        </a>
+        <a mat-list-item routerLink="/help">
+          <mat-icon matListItemIcon>help_outline</mat-icon>
+          <span matListItemTitle>Help & Support</span>
+        </a>
+        <a mat-list-item routerLink="/profile">
+          <mat-icon matListItemIcon>person_outline</mat-icon>
+          <span matListItemTitle>My Profile</span>
+        </a>
+        <mat-divider />
+        <a mat-list-item routerLink="/logout">
+          <mat-icon matListItemIcon>logout</mat-icon>
+          <span matListItemTitle>Logout</span>
+        </a>
+      </nav>
+    </mat-drawer>
+
+    <div class="main-content">
+      <app-toolbar (menuToggle)="toggleDrawer()" />
+      <router-outlet />
+    </div>
+  </mat-drawer-container>
 </div>

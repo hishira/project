@@ -4,6 +4,73 @@
     position: relative;
     background-color: whitesmoke;
   }
+
+  .drawer-container {
+    height: 100vh;
+    width: 100%;
+  }
+
+  .side-nav {
+    width: 280px;
+    background: linear-gradient(180deg,
+        rgba(240, 245, 250, 1) 0%,
+        rgba(230, 238, 245, 1) 100%);
+  }
+
+  .side-nav-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: linear-gradient(210deg,
+        rgba(230, 240, 247, 1) 0%,
+        rgba(197, 212, 200, 1) 1%,
+        rgba(92, 102, 102, 1) 100%,
+        rgba(182, 194, 187, 1) 30%,
+        rgba(209, 199, 199, 1) 100%);
+
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+      color: white;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 500;
+      color: white;
+    }
+  }
+
+  .side-nav-list {
+    padding-top: 8px;
+
+    .mat-mdc-nav-list-item {
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+    }
+
+    .mat-mdc-list-item-icon {
+      color: #5c6666;
+    }
+
+    .mat-mdc-list-item-title {
+      font-weight: 500;
+      color: #1e293b;
+    }
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
   .content {
     position: relative;
     height: 100%;

@@ -4,38 +4,45 @@
 @if (currentUserView) {
   <mat-toolbar class="dashboard-toolbar" color="primary">
     <div class="toolbar-content">
-      <div class="app-title">
-        <mat-icon class="title-icon">admin_panel_settings</mat-icon>
-        <span class="app-title-text">Admin panel</span>
+      <div class="toolbar-left">
+        <button class="hamburger-menu-button" mat-icon-button type="button" (click)="onMenuToggle()" aria-label="Menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <div class="app-title">
+          <mat-icon class="title-icon">admin_panel_settings</mat-icon>
+          <span class="app-title-text">Admin panel</span>
+        </div>
       </div>
 
-      <div class="user-menu">
-        <span class="welcome-text">Welcome, {{ viewName }}! </span>
-        <span class="welcome-text-short">Hi {{ currentViewName }}!</span>
-        <button class="user-menu-button" mat-icon-button type="button" [matMenuTriggerFor]="userMenu">
-          <mat-icon>account_circle</mat-icon>
-        </button>
-        <mat-menu #userMenu="matMenu">
-          <button mat-menu-item routerLink="/dashboard" type="button">
-            <mat-icon>dashboard</mat-icon>
-            <span>Dashboard</span>
+      <div class="toolbar-right">
+        <div class="user-menu">
+          <span class="welcome-text">Welcome, {{ viewName }}! </span>
+          <span class="welcome-text-short">Hi {{ currentViewName }}!</span>
+          <button class="user-menu-button" mat-icon-button type="button" [matMenuTriggerFor]="userMenu">
+            <mat-icon>account_circle</mat-icon>
           </button>
-          <ng-container *isAdmin>
-            <button mat-menu-item routerLink="/activities" type="button">
-              <mat-icon>list</mat-icon>
-              <span>Activities</span>
+          <mat-menu #userMenu="matMenu">
+            <button mat-menu-item routerLink="/dashboard" type="button">
+              <mat-icon>dashboard</mat-icon>
+              <span>Dashboard</span>
             </button>
-          </ng-container>
-          <button mat-menu-item routerLink="/statistics" type="button">
-            <mat-icon>bar_chart</mat-icon>
-            <span>Statistics</span>
-          </button>
-          <mat-divider />
-          <button mat-menu-item type="button" (click)="logout()">
-            <mat-icon>logout</mat-icon>
-            <span>Logout</span>
-          </button>
-        </mat-menu>
+            <ng-container *isAdmin>
+              <button mat-menu-item routerLink="/activities" type="button">
+                <mat-icon>list</mat-icon>
+                <span>Activities</span>
+              </button>
+            </ng-container>
+            <button mat-menu-item routerLink="/statistics" type="button">
+              <mat-icon>bar_chart</mat-icon>
+              <span>Statistics</span>
+            </button>
+            <mat-divider />
+            <button mat-menu-item type="button" (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span>Logout</span>
+            </button>
+          </mat-menu>
+        </div>
       </div>
     </div>
   </mat-toolbar>
