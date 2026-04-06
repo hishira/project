@@ -25,7 +25,7 @@ export class SideNavComponent {
 
   closed = output<void>();
 
-  private close(): void {
+  close(): void {
     this.closed.emit();
   }
 
