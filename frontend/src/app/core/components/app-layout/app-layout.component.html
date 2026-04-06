@@ -5,120 +5,194 @@
         <mat-icon>admin_panel_settings</mat-icon>
         <h3>Menu</h3>
       </div>
-      <mat-divider />
-      <nav mat-nav-list class="side-nav-list">
+      
+      <nav class="side-nav-list">
         <!-- Dashboard -->
-        <a mat-list-item routerLink="/dashboard" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>dashboard</mat-icon>
-          <span matListItemTitle>Dashboard</span>
+        <a class="nav-item" routerLink="/dashboard" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">dashboard</mat-icon>
+          </div>
+          <span class="nav-item-text">Dashboard</span>
         </a>
 
         <!-- Użytkownicy -->
-        <a mat-list-item routerLink="/users" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>people</mat-icon>
-          <span matListItemTitle>Users</span>
+        <a class="nav-item" routerLink="/users" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">people</mat-icon>
+          </div>
+          <span class="nav-item-text">Users</span>
         </a>
 
         <!-- Tickety -->
-        <a mat-list-item routerLink="/tickets" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>confirmation_number</mat-icon>
-          <span matListItemTitle>Tickets</span>
+        <a class="nav-item" routerLink="/tickets" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">confirmation_number</mat-icon>
+          </div>
+          <span class="nav-item-text">Tickets</span>
         </a>
 
         <!-- Umowy -->
-        <a mat-list-item routerLink="/agreements" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>description</mat-icon>
-          <span matListItemTitle>Agreements</span>
+        <a class="nav-item" routerLink="/agreements" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">description</mat-icon>
+          </div>
+          <span class="nav-item-text">Agreements</span>
         </a>
 
         <!-- Raporty -->
-        <a mat-list-item routerLink="/raports" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>assessment</mat-icon>
-          <span matListItemTitle>Raports</span>
+        <a class="nav-item" routerLink="/raports" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">assessment</mat-icon>
+          </div>
+          <span class="nav-item-text">Raports</span>
         </a>
 
         <!-- Marketing -->
-        <a mat-list-item routerLink="/marketing" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>campaign</mat-icon>
-          <span matListItemTitle>Marketing</span>
+        <a class="nav-item" routerLink="/marketing" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">campaign</mat-icon>
+          </div>
+          <span class="nav-item-text">Marketing</span>
         </a>
 
         <!-- Dokumenty -->
-        <a mat-list-item routerLink="/documents" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>folder</mat-icon>
-          <span matListItemTitle>Documents</span>
+        <a class="nav-item" routerLink="/documents" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">folder</mat-icon>
+          </div>
+          <span class="nav-item-text">Documents</span>
         </a>
 
         <!-- Klienci -->
-        <a mat-list-item routerLink="/clients" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>business</mat-icon>
-          <span matListItemTitle>Clients</span>
+        <a class="nav-item" routerLink="/clients" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">business</mat-icon>
+          </div>
+          <span class="nav-item-text">Clients</span>
         </a>
 
         <!-- Baza wiedzy -->
-        <a mat-list-item routerLink="/knowledge-base" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>menu_book</mat-icon>
-          <span matListItemTitle>Knowledge Base</span>
+        <a class="nav-item" routerLink="/knowledge-base" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">menu_book</mat-icon>
+          </div>
+          <span class="nav-item-text">Knowledge Base</span>
         </a>
 
         <!-- Zadania -->
-        <a mat-list-item routerLink="/tasks" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>task</mat-icon>
-          <span matListItemTitle>Tasks</span>
+        <a class="nav-item" routerLink="/tasks" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">task</mat-icon>
+          </div>
+          <span class="nav-item-text">Tasks</span>
         </a>
 
         <!-- Projekty -->
-        <a mat-list-item routerLink="/projects" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>project</mat-icon>
-          <span matListItemTitle>Projects</span>
+        <a class="nav-item" routerLink="/projects" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">project</mat-icon>
+          </div>
+          <span class="nav-item-text">Projects</span>
         </a>
 
         <!-- Integracje -->
-        <a mat-list-item routerLink="/integrations" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>integration_instructions</mat-icon>
-          <span matListItemTitle>Integrations</span>
+        <a class="nav-item" routerLink="/integrations" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">integration_instructions</mat-icon>
+          </div>
+          <span class="nav-item-text">Integrations</span>
         </a>
 
         <!-- Faktury -->
-        <a mat-list-item routerLink="/invoices" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>receipt_long</mat-icon>
-          <span matListItemTitle>Invoices</span>
+        <a class="nav-item" routerLink="/invoices" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">receipt_long</mat-icon>
+          </div>
+          <span class="nav-item-text">Invoices</span>
         </a>
 
         <!-- Lojalnościowy -->
-        <a mat-list-item routerLink="/loyalty" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>card_giftcard</mat-icon>
-          <span matListItemTitle>Loyalty</span>
+        <a class="nav-item" routerLink="/loyalty" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">card_giftcard</mat-icon>
+          </div>
+          <span class="nav-item-text">Loyalty</span>
         </a>
 
         <!-- Oferty -->
-        <a mat-list-item routerLink="/offers" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>local_offer</mat-icon>
-          <span matListItemTitle>Offers</span>
+        <a class="nav-item" routerLink="/offers" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">local_offer</mat-icon>
+          </div>
+          <span class="nav-item-text">Offers</span>
         </a>
 
         <!-- Media społecznościowe -->
-        <a mat-list-item routerLink="/social" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>share</mat-icon>
-          <span matListItemTitle>Social</span>
+        <a class="nav-item" routerLink="/social" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">share</mat-icon>
+          </div>
+          <span class="nav-item-text">Social</span>
         </a>
 
         <!-- Onboarding -->
-        <a mat-list-item routerLink="/onboarding" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>school</mat-icon>
-          <span matListItemTitle>Onboarding</span>
+        <a class="nav-item" routerLink="/onboarding" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">school</mat-icon>
+          </div>
+          <span class="nav-item-text">Onboarding</span>
         </a>
 
         <!-- Analityka -->
-        <a mat-list-item routerLink="/analytics" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>analytics</mat-icon>
-          <span matListItemTitle>Analytics</span>
+        <a class="nav-item" routerLink="/analytics" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">analytics</mat-icon>
+          </div>
+          <span class="nav-item-text">Analytics</span>
         </a>
 
         <!-- Statystyki -->
-        <a mat-list-item routerLink="/statistics" (click)="drawerOpened = false">
-          <mat-icon matListItemIcon>bar_chart</mat-icon>
-          <span matListItemTitle>Statistics</span>
+        <a class="nav-item" routerLink="/statistics" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">bar_chart</mat-icon>
+          </div>
+          <span class="nav-item-text">Statistics</span>
+        </a>
+
+        <div class="nav-divider"></div>
+
+        <!-- Ustawienia -->
+        <a class="nav-item" routerLink="/settings" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">settings</mat-icon>
+          </div>
+          <span class="nav-item-text">Settings</span>
+        </a>
+
+        <!-- Pomoc -->
+        <a class="nav-item" routerLink="/help" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">help_outline</mat-icon>
+          </div>
+          <span class="nav-item-text">Help & Support</span>
+        </a>
+
+        <!-- Profil -->
+        <a class="nav-item" routerLink="/profile" (click)="drawerOpened = false">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">person_outline</mat-icon>
+          </div>
+          <span class="nav-item-text">My Profile</span>
+        </a>
+
+        <div class="nav-divider nav-divider-accent"></div>
+
+        <!-- Wyloguj -->
+        <a class="nav-item nav-item-logout" (click)="logout()">
+          <div class="nav-item-icon-wrapper">
+            <mat-icon class="nav-item-icon">logout</mat-icon>
+          </div>
+          <span class="nav-item-text">Logout</span>
         </a>
       </nav>
     </mat-drawer>
