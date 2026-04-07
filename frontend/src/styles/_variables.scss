@@ -1,0 +1,218 @@
+// ============================================
+// Global Design Tokens - Variables
+// Angular Project Design System 2026
+// ============================================
+
+// --------------------------------------------
+// 1. COLOR PALETTE
+// --------------------------------------------
+
+// Text Colors
+$text-primary: #1e293b;
+$text-secondary: #334155;
+$text-tertiary: #475569;
+$text-muted: #64748b;
+$text-disabled: #94a3b8;
+$text-light: #cbd5e1;
+$text-on-dark: rgba(0, 0, 0, 0.87);
+
+// Background Colors
+$bg-white: #ffffff;
+$bg-page: #f8fafc;
+$bg-light: #f1f5f9;
+$bg-lighter: #fafafa;
+$bg-section: #f5f5f5;
+$bg-card: #ffffff;
+
+// Border & Divider Colors
+$border-light: #e2e8f0;
+$border-medium: #cbd5e1;
+$border-dark: #94a3b8;
+
+// Accent Colors
+$color-blue: #1976d2;
+$color-blue-light: #dbeafe;
+$color-blue-dark: #1e3a8a;
+$color-purple: #667eea;
+$color-purple-dark: #764ba2;
+$color-indigo: #6366f1;
+$color-violet: #8b5cf6;
+
+// Status Colors - Backgrounds
+$status-draft-bg: #e2e8f0;
+$status-info-bg: #dbeafe;
+$status-success-bg: #d1fae5;
+$status-warning-bg: #fff3e0;
+$status-danger-bg: #fee2e2;
+$status-cancelled-bg: #f1f5f9;
+
+// Status Colors - Text
+$status-draft-text: #334155;
+$status-info-text: #1e3a8a;
+$status-success-text: #065f46;
+$status-warning-text: #b45309;
+$status-danger-text: #b91c1c;
+$status-cancelled-text: #64748b;
+
+// Marketing Type Colors
+$marketing-email-bg: #dbeafe;
+$marketing-email-text: #2563eb;
+$marketing-sms-bg: #ede7f6;
+$marketing-sms-text: #7c3aed;
+$marketing-social-bg: #fce4ec;
+$marketing-social-text: #db2777;
+$marketing-push-bg: #ffedd5;
+$marketing-push-text: #ea580c;
+
+// Priority Colors
+$priority-low: #2e7d32;
+$priority-medium: #ed6c02;
+$priority-high: #d32f2f;
+$priority-critical: #b71c1c;
+
+// --------------------------------------------
+// 2. GRADIENTS
+// --------------------------------------------
+
+$gradient-sidebar: linear-gradient(210deg,
+    rgba(230, 240, 247, 1) 0%,
+    rgba(197, 212, 200, 1) 1%,
+    rgba(92, 102, 102, 1) 100%,
+    rgba(182, 194, 187, 1) 30%,
+    rgba(209, 199, 199, 1) 100%);
+
+$gradient-sidebar-section: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+$gradient-nav-hover: linear-gradient(90deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.04) 100%);
+$gradient-danger: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
+$gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$gradient-pink: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+$gradient-cyan: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+$gradient-green: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+
+// --------------------------------------------
+// 3. SPACING SCALE (8px base)
+// --------------------------------------------
+
+$spacing-0: 0;
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+$spacing-xl: 20px;
+$spacing-2xl: 24px;
+$spacing-3xl: 32px;
+$spacing-4xl: 48px;
+$spacing-5xl: 64px;
+
+// --------------------------------------------
+// 4. TYPOGRAPHY
+// --------------------------------------------
+
+// Font Sizes (rem based)
+$text-xs: 0.7rem;
+$text-sm: 0.75rem;
+$text-base: 0.8rem;
+$text-md: 0.85rem;
+$text-lg: 0.875rem;
+$text-xl: 0.9rem;
+$text-2xl: 1rem;
+$text-3xl: 1.125rem;
+$text-4xl: 1.5rem;
+$text-5xl: 1.75rem;
+$text-6xl: 1.8rem;
+$text-7xl: 2rem;
+
+// Icon Sizes
+$icon-xs: 16px;
+$icon-sm: 18px;
+$icon-md: 20px;
+$icon-lg: 22px;
+$icon-xl: 24px;
+$icon-2xl: 28px;
+$icon-3xl: 32px;
+$icon-hero: 48px;
+$icon-hero-lg: 72px;
+
+// Font Weights
+$font-light: 400;
+$font-normal: 500;
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+
+// --------------------------------------------
+// 5. BORDER RADIUS
+// --------------------------------------------
+
+$radius-xs: 3px;
+$radius-sm: 4px;
+$radius-sm-alt: 6px;
+$radius-md: 8px;
+$radius-md-alt: 10px;
+$radius-lg: 12px;
+$radius-xl: 16px;
+$radius-pill-sm: 20px;
+$radius-pill: 32px;
+$radius-pill-lg: 100px;
+$radius-round: 50%;
+
+// --------------------------------------------
+// 6. SHADOWS
+// --------------------------------------------
+
+$shadow-xs: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.1);
+$shadow-xl: 0 4px 16px rgba(0, 0, 0, 0.15);
+$shadow-2xl: 0 8px 16px rgba(0, 0, 0, 0.1);
+$shadow-3xl: 0 8px 32px rgba(0, 0, 0, 0.1);
+$shadow-sidebar: 4px 0 24px rgba(0, 0, 0, 0.06);
+$shadow-dialog: 0 12px 20px -8px rgba(0, 0, 0, 0.2);
+
+// Card Shadows
+$shadow-card: $shadow-md;
+$shadow-card-hover: $shadow-lg;
+
+// --------------------------------------------
+// 7. BREAKPOINTS
+// --------------------------------------------
+
+$bp-xs: 360px;
+$bp-sm: 480px;
+$bp-md: 600px;
+$bp-md-alt: 599px;
+$bp-lg: 700px;
+$bp-xl: 768px;
+$bp-2xl: 800px;
+$bp-3xl: 900px;
+$bp-4xl: 1200px;
+
+// --------------------------------------------
+// 8. TRANSITIONS
+// --------------------------------------------
+
+$transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-base: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// --------------------------------------------
+// 9. Z-INDEX SCALE
+// --------------------------------------------
+
+$z-dropdown: 1000;
+$z-sticky: 1000;
+$z-overlay: 1100;
+$z-modal: 1200;
+$z-popover: 1300;
+$z-tooltip: 1400;
+
+// --------------------------------------------
+// 10. CONTAINER WIDTHS
+// --------------------------------------------
+
+$container-sm: 600px;
+$container-md: 900px;
+$container-lg: 1200px;
+$container-xl: 1400px;
+$container-2xl: 1600px;

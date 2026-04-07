@@ -1,37 +1,36 @@
+@use 'variables' as *;
+
 .side-nav-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 24px 24px 20px;
-  background: linear-gradient(210deg,
-      rgba(230, 240, 247, 1) 0%,
-      rgba(197, 212, 200, 1) 1%,
-      rgba(92, 102, 102, 1) 100%,
-      rgba(182, 194, 187, 1) 30%,
-      rgba(209, 199, 199, 1) 100%);
-  margin-bottom: 8px;
+  gap: $spacing-lg;
+  padding: 0 $spacing-2xl;
+  height: 64px;
+  min-height: 64px;
+  background: $gradient-sidebar;
+  margin-bottom: $spacing-sm;
 
   mat-icon {
-    font-size: 32px;
-    width: 32px;
-    height: 32px;
+    font-size: $icon-2xl;
+    width: $icon-2xl;
+    height: $icon-2xl;
     color: white;
   }
 
   h3 {
     margin: 0;
-    font-size: 22px;
-    font-weight: 600;
+    font-size: $text-2xl;
+    font-weight: $font-semibold;
     color: white;
     letter-spacing: -0.02em;
   }
 }
 
 .side-nav-list {
-  padding: 12px 16px;
+  padding: $spacing-sm $spacing-lg;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: $spacing-xs;
   overflow-y: auto;
   max-height: calc(100vh - 100px);
   scrollbar-width: thin;
@@ -43,17 +42,17 @@
 
   &::-webkit-scrollbar-track {
     background: transparent;
-    margin: 4px;
+    margin: $spacing-xs;
   }
 
   &::-webkit-scrollbar-thumb {
     background: linear-gradient(180deg, 
       rgba(92, 102, 102, 0.4) 0%, 
       rgba(182, 194, 187, 0.6) 100%);
-    border-radius: 100px;
+    border-radius: $radius-pill-lg;
     border: 2px solid transparent;
     background-clip: padding-box;
-    transition: all 0.3s ease;
+    transition: all $transition-base;
 
     &:hover {
       background: linear-gradient(180deg, 
@@ -78,26 +77,26 @@
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 16px;
-  border-radius: 12px;
+  gap: $spacing-lg;
+  padding: 14px $spacing-lg;
+  border-radius: $radius-lg;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all $transition-fast;
   position: relative;
 
   &:hover {
-    background: linear-gradient(90deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.04) 100%);
+    background: $gradient-nav-hover;
     transform: translateX(4px);
 
     .nav-item-icon {
-      color: #6366f1;
+      color: $color-indigo;
       transform: scale(1.1);
     }
 
     .nav-item-text {
-      color: #6366f1;
-      font-weight: 600;
+      color: $color-indigo;
+      font-weight: $font-semibold;
     }
   }
 
@@ -112,9 +111,9 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: $radius-md-alt;
+  background: $gradient-sidebar-section;
+  transition: all $transition-fast;
   flex-shrink: 0;
 
   .nav-item:hover & {
@@ -123,30 +122,30 @@
 }
 
 .nav-item-icon {
-  font-size: 22px;
-  width: 22px;
-  height: 22px;
-  color: #64748b;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: $icon-lg;
+  width: $icon-lg;
+  height: $icon-lg;
+  color: $text-muted;
+  transition: all $transition-fast;
 }
 
 .nav-item-text {
-  font-size: 15px;
-  font-weight: 500;
-  color: #334155;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: $text-2xl;
+  font-weight: $font-normal;
+  color: $text-secondary;
+  transition: all $transition-fast;
   letter-spacing: -0.01em;
 }
 
 .nav-divider {
   height: 1px;
-  background: #e2e8f0;
-  margin: 12px 16px;
+  background: $border-light;
+  margin: $spacing-sm $spacing-lg;
 }
 
 .nav-item-logout {
   .nav-item-icon-wrapper {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
+    background: $gradient-danger;
   }
 
   .nav-item-icon {
