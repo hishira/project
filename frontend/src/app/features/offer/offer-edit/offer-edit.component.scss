@@ -1,20 +1,22 @@
+@use 'variables' as *;
+
 .edit-container {
-  padding: 24px;
-  max-width: 1200px;
+  padding: $spacing-2xl;
+  max-width: $container-lg;
   margin: 0 auto;
 }
 
 .header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-2xl;
 
   h1 {
     margin: 0;
-    font-size: 1.8rem;
-    font-weight: 400;
-    color: #1e293b;
+    font-size: $text-6xl;
+    font-weight: $font-light;
+    color: $text-primary;
   }
 }
 
@@ -23,29 +25,29 @@
 }
 
 .form-row {
-  margin-bottom: 16px;
+  margin-bottom: $spacing-lg;
 }
 
 .grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: $spacing-lg;
 }
 
 .items-card {
-  margin: 24px 0;
+  margin: $spacing-2xl 0;
 
   .mat-mdc-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 16px 0;
+    padding: $spacing-lg $spacing-lg 0;
   }
 }
 
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 16px;
-  margin-top: 24px;
+  gap: $spacing-lg;
+  margin-top: $spacing-2xl;
 }

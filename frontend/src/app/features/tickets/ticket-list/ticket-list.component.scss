@@ -1,52 +1,54 @@
+@use 'variables' as *;
+
 .ticket-list-container {
-  padding: 24px;
-  max-width: 1400px;
+  padding: $spacing-2xl;
+  max-width: $container-xl;
   margin: 0 auto;
 }
 
 .list-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: $spacing-md;
+  margin-bottom: $spacing-2xl;
 
   h1 {
     margin: 0;
-    font-size: 2rem;
-    font-weight: 400;
-    color: #1e293b;
+    font-size: $text-7xl;
+    font-weight: $font-light;
+    color: $text-primary;
     flex: 1;
   }
 
   button {
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: $text-xs;
   }
 }
 
 .tickets {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: $spacing-md;
 }
 
 .loading-spinner {
-  padding: 48px 0;
+  padding: $spacing-4xl 0;
 }
 
 .error-message {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background: #fee2e2;
-  border-radius: 8px;
-  color: #b91c1c;
-  margin-top: 16px;
+  gap: $spacing-md;
+  padding: $spacing-lg;
+  background: $status-danger-bg;
+  border-radius: $radius-md;
+  color: $status-danger-text;
+  margin-top: $spacing-lg;
 
   mat-icon {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
+    font-size: $icon-xl;
+    width: $icon-xl;
+    height: $icon-xl;
   }
 }
