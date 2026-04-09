@@ -1,20 +1,18 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatListModule } from '@angular/material/list';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { OnboardingService } from '../onboarding.service';
-import { ClientOnboarding, TrainingMaterial, OnboardingTask, Webinar } from '../onboarding.model';
+import { ClientOnboarding } from '../onboarding.model';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { OnboardingSummaryComponent } from './onboarding-summary/onboarding-summary.component';
+import { OnboardingTasksTabComponent } from './onboarding-tasks-tab/onboarding-tasks-tab.component';
+import { OnboardingMaterialsTabComponent } from './onboarding-materials-tab/onboarding-materials-tab.component';
+import { OnboardingWebinarsTabComponent } from './onboarding-webinars-tab/onboarding-webinars-tab.component';
 
 @Component({
   selector: 'app-onboarding-detail',
@@ -22,21 +20,19 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
   imports: [
     CommonModule,
     RouterLink,
-    MatCardModule,
     MatIconModule,
     MatButtonModule,
-    MatChipsModule,
-    MatDividerModule,
     MatTabsModule,
-    MatCheckboxModule,
-    MatListModule,
-    MatProgressBarModule,
-    MatTooltipModule,
     MainPageViewComponent,
     PageHeaderComponent,
+    OnboardingSummaryComponent,
+    OnboardingTasksTabComponent,
+    OnboardingMaterialsTabComponent,
+    OnboardingWebinarsTabComponent
   ],
   templateUrl: './onboarding-detail.component.html',
-  styleUrls: ['./onboarding-detail.component.scss']
+  styleUrls: ['./onboarding-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OnboardingDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
@@ -51,48 +47,31 @@ export class OnboardingDetailComponent implements OnInit {
     }
   }
 
-  getStatusClass(status: string): string {
-    const map: Record<string, string> = {
-      in_progress: 'status-in-progress',
-      completed: 'status-completed',
-      overdue: 'status-overdue'
-    };
-    return map[status] || '';
+  toggleTask(task: any) {
+    const current = this.onboarding();
+    if (current) {
+      this.onboardingService.markTaskAsCompleted(current.id, task.id);
+    }
   }
 
-  getStatusLabel(status: string): string {
-    const map: Record<string, string> = {
-      in_progress: 'W trakcie',
-      completed: 'Zakończony',
-      overdue: 'Opóźniony'
-    };
-    return map[status] || status;
+  markMaterialViewed(material: any) {
+    const current = this.onboarding();
+    if (current) {
+      this.onboardingService.markMaterialAsViewed(current.id, material.id);
+    }
   }
 
-  getMaterialIcon(type: string): string {
-    const map: Record<string, string> = {
-      article: 'article',
-      video: 'play_circle',
-      presentation: 'slideshow',
-      link: 'link'
-    };
-    return map[type] || 'description';
-  }
-
-  // Symulowane akcje
-  toggleTask(task: OnboardingTask) {
-    this.onboardingService.markTaskAsCompleted(this.onboarding()!.id, task.id);
-  }
-
-  markMaterialViewed(material: TrainingMaterial) {
-    this.onboardingService.markMaterialAsViewed(this.onboarding()!.id, material.id);
-  }
-
-  registerForWebinar(webinar: Webinar) {
-    this.onboardingService.registerForWebinar(this.onboarding()!.id, webinar.id);
+  registerForWebinar(webinar: any) {
+    const current = this.onboarding();
+    if (current) {
+      this.onboardingService.registerForWebinar(current.id, webinar.id);
+    }
   }
 
   sendReminder() {
-    this.onboardingService.sendReminder(this.onboarding()!.id);
+    const current = this.onboarding();
+    if (current) {
+      this.onboardingService.sendReminder(current.id);
+    }
   }
 }
