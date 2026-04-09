@@ -1,6 +1,6 @@
 import { computed } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { Agreement } from './mock';
+import { Agreement } from '../types';
 
 export type AgreementDetailsStore = {
     agreement: Agreement | null

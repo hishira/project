@@ -1,4 +1,4 @@
-import { AgreementRiskStatus, AgreementStatus, AgreementStatusColor } from "../types";
+import { AgreementRiskStatus, AgreementStatus, AgreementStatusColor, AgreementStatusType } from "../types";
 
 export const agreementStatusColorMap = (status: AgreementStatus): AgreementStatusColor => {
     switch (status) {
@@ -21,5 +21,5 @@ export const agreementRiskColorMap = (riskLevel: AgreementRiskStatus): Agreement
     }
 }
 
-export const agreementStatusLowerCase = <T extends string>(status: T): Lowercase<T> =>
-    (status ? status.toLowerCase() : '') as Lowercase<T>;
+export const agreementStatusLowerCase = (status: AgreementStatusType): string =>
+    status ? status.toLowerCase() : '';

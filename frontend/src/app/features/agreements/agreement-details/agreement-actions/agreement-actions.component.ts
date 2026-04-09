@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { AgreementDetailStore } from '../agreement-details.store';
-import { Agreement } from '../mock';
+import { Agreement } from '../../types';
 
 export type AgreementStatus = 'ACTIVE' | 'EXPIRED' | 'DRAFT';
 

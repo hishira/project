@@ -7,81 +7,16 @@
   <app-main-page-view>
     <div class="agreement-details">
       <!-- Nagłówek umowy -->
-      <mat-card class="mb-4">
-        <mat-card-header>
-          <mat-card-title>{{ agreement().title }}</mat-card-title>
-          <mat-card-subtitle>{{ agreement().description }}</mat-card-subtitle>
-          <div class="status-badge ms-auto" [class]="getStatusClass(agreement().status)">
-            {{ agreement().status }}
-          </div>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="row mt-3">
-            <div class="col-md-6">
-              <p><strong>ID Umowy:</strong> {{ agreement().contractId }}</p>
-              <p>
-                <strong>Wersja:</strong> {{ agreement().version.version }} ({{ agreement().version.versionNumber }})
-              </p>
-            </div>
-            <div class="col-md-6">
-              <p><strong>Wartość całkowita:</strong> {{ agreement().totalValue }} {{ agreement().currency }}</p>
-              <p>
-                <strong>Okres obowiązywania:</strong> {{ agreement().effectiveDate | date: 'dd.MM.yyyy' }} -
-                {{ agreement().expirationDate | date: 'dd.MM.yyyy' }}
-              </p>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
+      <app-agreement-summary [agreement]="agreement()" />
 
       <div class="row">
         <!-- Lewa kolumna -->
         <div class="col-md-6">
           <!-- Informacje o produkcie -->
-          <mat-card class="mb-4">
-            <mat-card-header>
-              <mat-card-title>Informacje o produkcie</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p><strong>Nazwa:</strong> {{ agreement().product.name }}</p>
-              <p><strong>Kategoria:</strong> {{ agreement().product.category }}</p>
-              <p><strong>Cena:</strong> {{ agreement().product.price }} {{ agreement().currency }}</p>
-              <mat-divider class="my-3" />
-              <h5>Specyfikacje:</h5>
-              <p>
-                <strong>Aplikacje:</strong>
-                @for (app of agreement().product.specifications.applications; track $index; let last = $last) {
-                  {{ app }}{{ last ? '' : ', ' }}
-                }
-              </p>
-              <p><strong>Licencje użytkowników:</strong> {{ agreement().product.specifications.userLicenses }}</p>
-            </mat-card-content>
-          </mat-card>
+          <app-agreement-product-info [agreement]="agreement()" />
 
           <!-- Strony umowy -->
-          <mat-card class="mb-4">
-            <mat-card-header>
-              <mat-card-title>Strony umowy</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="row">
-                <div class="col-6">
-                  <h6>Strona A:</h6>
-                  <p>
-                    <strong>{{ agreement().primaryParties.partyA.name }}</strong>
-                  </p>
-                  <p>{{ agreement().primaryParties.partyA.email }}</p>
-                </div>
-                <div class="col-6">
-                  <h6>Strona B:</h6>
-                  <p>
-                    <strong>{{ agreement().primaryParties.partyB.name }}</strong>
-                  </p>
-                  <p>{{ agreement().primaryParties.partyB.email }}</p>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+          <app-agreement-parties [agreement]="agreement()" />
         </div>
 
         <!-- Prawa kolumna -->
@@ -90,59 +25,10 @@
           <app-payment-schedule />
 
           <!-- Podpisy i ocena ryzyka -->
-          <mat-card class="mb-4">
-            <mat-card-header>
-              <mat-card-title>Dodatkowe informacje</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="row">
-                <div class="col-6">
-                  <h6>Podpisy:</h6>
-                  @if (agreement().signatures && agreement().signatures.length > 0) {
-                    @for (signature of agreement().signatures; track signature.userId) {
-                      <div class="mb-2">
-                        <p class="mb-0">
-                          <small>Użytkownik: {{ signature.userId }}</small>
-                        </p>
-                        <p class="mb-0">
-                          <small>Data: {{ signature.signedAt | date: 'dd.MM.yyyy' }}</small>
-                        </p>
-                      </div>
-                    }
-                  } @else {
-                    <p class="text-muted"><small>Brak podpisów</small></p>
-                  }
-                </div>
-                <div class="col-6">
-                  <h6>Ocena ryzyka:</h6>
-                  <div class="risk-assessment" [class]="getRiskClass(agreement().riskAssessment.level)">
-                    <p class="mb-1">
-                      <strong>Poziom: {{ agreement().riskAssessment.level }}</strong>
-                    </p>
-                    <p class="mb-0">Wynik: {{ agreement().riskAssessment.score }}</p>
-                  </div>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+          <app-agreement-signatures-risk [agreement]="agreement()" />
 
           <!-- Tagi -->
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>Tagi</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              @if (agreement().tags && agreement().tags.length > 0) {
-                <mat-chip-listbox>
-                  @for (tag of agreement().tags; track $index) {
-                    <mat-chip>{{ tag }}</mat-chip>
-                  }
-                </mat-chip-listbox>
-              } @else {
-                <p class="text-muted">Brak tagów</p>
-              }
-            </mat-card-content>
-          </mat-card>
+          <app-agreement-tags [agreement]="agreement()" />
         </div>
       </div>
 
