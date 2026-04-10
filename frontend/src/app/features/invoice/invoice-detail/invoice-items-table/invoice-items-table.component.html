@@ -3,39 +3,39 @@
     <mat-card-title>Pozycje faktury</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <table mat-table [dataSource]="items()" class="items-table">
+    <table mat-table [dataSource]="items()" class="items-table" aria-label="Pozycje faktury">
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Nazwa</th>
+        <th mat-header-cell *matHeaderCellDef scope="col">Nazwa</th>
         <td mat-cell *matCellDef="let item">{{ item.name }}</td>
       </ng-container>
 
       <ng-container matColumnDef="quantity">
-        <th mat-header-cell *matHeaderCellDef>Ilość</th>
+        <th mat-header-cell *matHeaderCellDef scope="col">Ilość</th>
         <td mat-cell *matCellDef="let item">{{ item.quantity }} {{ item.unit }}</td>
       </ng-container>
 
       <ng-container matColumnDef="netPrice">
-        <th mat-header-cell *matHeaderCellDef>Cena netto</th>
+        <th mat-header-cell *matHeaderCellDef scope="col">Cena netto</th>
         <td mat-cell *matCellDef="let item">{{ item.netPrice | number: '1.2-2' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="vatRate">
-        <th mat-header-cell *matHeaderCellDef>VAT</th>
+        <th mat-header-cell *matHeaderCellDef scope="col">VAT</th>
         <td mat-cell *matCellDef="let item">{{ item.vatRate }}%</td>
       </ng-container>
 
       <ng-container matColumnDef="netAmount">
-        <th mat-header-cell *matHeaderCellDef>Netto</th>
+        <th mat-header-cell *matHeaderCellDef scope="col">Netto</th>
         <td mat-cell *matCellDef="let item">{{ item.netAmount | number: '1.2-2' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="vatAmount">
-        <th mat-header-cell *matHeaderCellDef>VAT</th>
+        <th mat-header-cell *matHeaderCellDef scope="col">VAT</th>
         <td mat-cell *matCellDef="let item">{{ item.vatAmount | number: '1.2-2' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="grossAmount">
-        <th mat-header-cell *matHeaderCellDef>Brutto</th>
+        <th mat-header-cell *matHeaderCellDef scope="col">Brutto</th>
         <td mat-cell *matCellDef="let item">{{ item.grossAmount | number: '1.2-2' }}</td>
       </ng-container>
 

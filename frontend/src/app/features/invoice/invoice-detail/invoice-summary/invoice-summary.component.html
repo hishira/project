@@ -10,7 +10,9 @@
       <div><span class="label">Termin płatności:</span> {{ invoice().dueDate | date: 'dd MMM yyyy' }}</div>
       <div>
         <span class="label">Status:</span>
-        <mat-chip [class]="getStatusClass(invoice().status)">{{ getStatusLabel(invoice().status) }}</mat-chip>
+        <mat-chip [class]="getStatusClass(invoice().status)" role="status" aria-label="Status faktury: {{ getStatusLabel(invoice().status) }}">
+          {{ getStatusLabel(invoice().status) }}
+        </mat-chip>
       </div>
       <div>
         <span class="label">Kwota brutto:</span>

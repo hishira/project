@@ -4,12 +4,14 @@
       <h1>Faktura {{ inv.number }}</h1>
     </div>
     <div class="main-header-buttons d-flex gap-3 align-items-center">
-      <button mat-stroked-button (click)="onGenerateDuplicate()"><mat-icon>file_copy</mat-icon> Duplikat</button>
-      <button mat-stroked-button (click)="onGenerateCreditNote()">
-        <mat-icon>edit_note</mat-icon> Nota korygująca
+      <button mat-stroked-button (click)="onGenerateDuplicate()" aria-label="Wygeneruj duplikat faktury {{ inv.number }}">
+        <mat-icon aria-hidden="true">file_copy</mat-icon> Duplikat
       </button>
-      <button mat-raised-button color="primary" (click)="onRegisterPayment()">
-        <mat-icon>payment</mat-icon> Rejestruj wpłatę
+      <button mat-stroked-button (click)="onGenerateCreditNote()" aria-label="Wystaw notę korygującą do faktury {{ inv.number }}">
+        <mat-icon aria-hidden="true">edit_note</mat-icon> Nota korygująca
+      </button>
+      <button mat-raised-button color="primary" (click)="onRegisterPayment()" aria-label="Zarejestruj nową płatność dla faktury {{ inv.number }}">
+        <mat-icon aria-hidden="true">payment</mat-icon> Rejestruj wpłatę
       </button>
       <app-action-buttons [actions]="moreButtons" />
     </div>
@@ -32,9 +34,9 @@
     </div>
   </app-main-page-view>
 } @else {
-  <div class="not-found">
-    <mat-icon>error_outline</mat-icon>
+  <div class="not-found" role="alert">
+    <mat-icon aria-hidden="true">error_outline</mat-icon>
     <p>Nie znaleziono faktury</p>
-    <button mat-raised-button color="primary" routerLink="/invoices">Powrót do listy</button>
+    <button mat-raised-button color="primary" routerLink="/invoices">Powrót do listy faktur</button>
   </div>
 }
