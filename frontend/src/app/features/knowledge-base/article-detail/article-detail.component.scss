@@ -18,21 +18,12 @@
 }
 
 .article-card {
-  .header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-
   .meta {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
     font-size: 0.85rem;
-    color: #64748b;
+    color: #475569; /* Improved contrast */
     margin: 8px 0;
   }
 
@@ -50,7 +41,7 @@
   .stats {
     display: flex;
     gap: 24px;
-    color: #64748b;
+    color: #475569; /* Improved contrast */
 
     .stat {
       display: flex;
@@ -71,7 +62,7 @@
 .not-found {
   text-align: center;
   padding: 48px;
-  color: #64748b;
+  color: #475569; /* Improved contrast */
 
   mat-icon {
     font-size: 48px;

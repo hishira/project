@@ -4,8 +4,8 @@
       <h1>{{ a.title }}</h1>
     </div>
     <div class="main-header-buttons d-flex gap-3">
-      <button mat-stroked-button (click)="onEdit()"><mat-icon>edit</mat-icon> Edytuj</button>
-      <button mat-stroked-button color="warn" (click)="onDelete()"><mat-icon>delete</mat-icon> Usuń</button>
+      <button mat-stroked-button><mat-icon aria-hidden="true">edit</mat-icon> Edytuj</button>
+      <button mat-stroked-button color="warn"><mat-icon aria-hidden="true">delete</mat-icon> Usuń</button>
     </div>
   </app-page-header>
   <app-main-page-view>
@@ -34,15 +34,15 @@
         </mat-card-header>
 
         <mat-card-content>
-          <div class="content" [innerHTML]="a.content | linebreaks"></div>
+          <div class="content">{{ a.content }}</div>
         </mat-card-content>
 
         <mat-card-actions align="end">
           <div class="stats">
-            <span class="stat"> <mat-icon>visibility</mat-icon> {{ a.views }} wyświetleń </span>
-            <span class="stat"> <mat-icon>thumb_up</mat-icon> {{ a.helpful }} osób uznało za pomocne </span>
+            <span class="stat"> <mat-icon aria-hidden="true">visibility</mat-icon> {{ a.views }} wyświetleń </span>
+            <span class="stat"> <mat-icon aria-hidden="true">thumb_up</mat-icon> {{ a.helpful }} osób uznało za pomocne </span>
           </div>
-          <button mat-raised-button color="primary" (click)="onHelpful()"><mat-icon>thumb_up</mat-icon> Pomocne</button>
+          <button mat-raised-button color="primary"><mat-icon aria-hidden="true">thumb_up</mat-icon> Pomocne</button>
         </mat-card-actions>
       </mat-card>
     </div>

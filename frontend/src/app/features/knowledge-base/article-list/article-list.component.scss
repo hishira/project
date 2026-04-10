@@ -33,9 +33,11 @@
   display: flex;
   flex-direction: column;
 
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  @media (prefers-reduced-motion: no-preference) {
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
   }
 
   .mat-mdc-card-header {
@@ -49,7 +51,7 @@
 
   .meta {
     font-size: 0.8rem;
-    color: #64748b;
+    color: #475569; /* Improved contrast */
     margin-right: 12px;
   }
 
@@ -73,7 +75,7 @@
     .stats {
       display: flex;
       gap: 16px;
-      color: #64748b;
+      color: #475569; /* Improved contrast */
 
       .stat {
         display: flex;

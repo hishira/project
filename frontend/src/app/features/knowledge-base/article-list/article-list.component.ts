@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -24,6 +24,7 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
         MatButtonModule,
         MatChipsModule,
         MatTooltipModule,
+        DatePipe,
         MainPageViewComponent,
         PageHeaderComponent,
     ],
@@ -34,38 +35,29 @@ export class ArticleListComponent {
     private readonly kbService = inject(KnowledgeBaseService);
     readonly articles = this.kbService.articles;
 
-    // Kategorie do zakładek
-    categories: { value: ArticleCategory; label: string }[] = [
+    readonly categories: { value: ArticleCategory; label: string }[] = [
         { value: 'faq', label: 'FAQ' },
         { value: 'instruction', label: 'Instrukcje' },
         { value: 'guide', label: 'Poradniki' }
     ];
 
-    activeCategory: ArticleCategory = 'faq';
+    readonly activeCategory = signal<ArticleCategory>('faq');
 
-    get filteredArticles(): KnowledgeArticle[] {
-        return this.articles().filter(a => a.category === this.activeCategory);
-    }
+    readonly filteredArticles = computed(() => {
+        const category = this.activeCategory();
+        return this.articles().filter(a => a.category === category);
+    });
 
-    get selectedTabIndex(): number {
-        const index = this.categories.findIndex(c => c.value === this.activeCategory);
-        return index >= 0 ? index : 0; // domyślnie pierwsza zakładka
-    }
+    readonly selectedTabIndex = computed(() => {
+        const category = this.activeCategory();
+        const index = this.categories.findIndex(c => c.value === category);
+        return index >= 0 ? index : 0;
+    });
 
-    // Symulacja dodawania
-    onAdd() {
-        console.log('Dodaj nowy artykuł w kategorii:', this.activeCategory);
-    }
-
-    // Symulacja edycji
-    onEdit(article: KnowledgeArticle, event: MouseEvent) {
-        event.stopPropagation();
-        console.log('Edytuj artykuł:', article.id);
-    }
-
-    // Symulacja usunięcia
-    onDelete(article: KnowledgeArticle, event: MouseEvent) {
-        event.stopPropagation();
-        console.log('Usuń artykuł:', article.id);
+    onCategoryChange(event: any) {
+        const index = event.index;
+        if (index >= 0 && index < this.categories.length) {
+            this.activeCategory.set(this.categories[index].value);
+        }
     }
 }

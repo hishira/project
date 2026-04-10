@@ -23,7 +23,7 @@ This skill guides the AI to act as an expert Angular developer, specializing in 
 ---
 
 ## Prerequisites
-- Angular project using at least Angular 17+ (signals introduced in v16, stable in v17)
+- Angular project using at least Angular 21+ (signals introduced in v16, stable in v17, new html syntax)
 - TypeScript 5.0+
 - Understanding of Angular fundamentals: components, services, dependency injection, change detection
 
