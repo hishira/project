@@ -1,206 +1,33 @@
-<div class="detail-container">
-  <div class="header">
-    <a mat-icon-button routerLink="/clients" class="back-btn">
-      <mat-icon>arrow_back</mat-icon>
-    </a>
-    <h1>Profil klienta</h1>
+@if (client(); as c) {
+  <app-page-header>
+    <div class="main-header">
+      <h1>Profil klienta: {{ c.name }}</h1>
+    </div>
+    <div class="main-header-buttons">
+      <button mat-stroked-button color="primary" aria-label="Edytuj klienta {{ c.name }}">
+        <mat-icon aria-hidden="true">edit</mat-icon> Edytuj
+      </button>
+    </div>
+  </app-page-header>
+
+  <app-main-page-view>
+    <div class="detail-container">
+      <div class="content">
+        <!-- Dane klienta -->
+        <app-client-info [client]="c" />
+
+        <!-- Osoby kontaktowe -->
+        <app-client-contacts [contacts]="c.contacts" />
+
+        <!-- Powiązane dokumenty -->
+        <app-client-documents [documents]="clientDocuments()" [clientId]="c.id" />
+      </div>
+    </div>
+  </app-main-page-view>
+} @else {
+  <div class="not-found" role="alert">
+    <mat-icon aria-hidden="true">error_outline</mat-icon>
+    <p>Nie znaleziono klienta o podanym ID</p>
+    <button mat-raised-button color="primary" routerLink="/clients">Powrót do listy klientów</button>
   </div>
-
-  @if (client(); as c) {
-    <div class="content">
-      <mat-card class="main-card">
-        <mat-card-header>
-          <div class="header-row">
-            <div class="title-section">
-              <mat-card-title>{{ c.name }}</mat-card-title>
-              <mat-card-subtitle>
-                @if (c.shortName) {
-                  <span class="short-name">{{ c.shortName }}</span>
-                }
-                <mat-chip [class]="getStatusClass(c.status)" class="status-chip">
-                  {{ getStatusLabel(c.status) }}
-                </mat-chip>
-              </mat-card-subtitle>
-            </div>
-            <div class="header-actions">
-              <button mat-stroked-button color="primary">Edytuj</button>
-            </div>
-          </div>
-        </mat-card-header>
-
-        <mat-card-content>
-          <!-- Dane podstawowe -->
-          <section class="section">
-            <h3>Dane podstawowe</h3>
-            <div class="metadata-grid">
-              @if (c.taxId) {
-                <div class="metadata-item">
-                  <mat-icon>badge</mat-icon>
-                  <span class="label">NIP:</span>
-                  <span class="value">{{ c.taxId }}</span>
-                </div>
-              }
-              @if (c.regon) {
-                <div class="metadata-item">
-                  <mat-icon>numbers</mat-icon>
-                  <span class="label">REGON:</span>
-                  <span class="value">{{ c.regon }}</span>
-                </div>
-              }
-              @if (c.industry) {
-                <div class="metadata-item">
-                  <mat-icon>business_center</mat-icon>
-                  <span class="label">Branża:</span>
-                  <span class="value">{{ c.industry }}</span>
-                </div>
-              }
-              @if (c.website) {
-                <div class="metadata-item">
-                  <mat-icon>language</mat-icon>
-                  <span class="label">WWW:</span>
-                  <a [href]="c.website" target="_blank" class="value">{{ c.website }}</a>
-                </div>
-              }
-              @if (c.phone) {
-                <div class="metadata-item">
-                  <mat-icon>phone</mat-icon>
-                  <span class="label">Telefon:</span>
-                  <span class="value">{{ c.phone }}</span>
-                </div>
-              }
-              @if (c.email) {
-                <div class="metadata-item">
-                  <mat-icon>email</mat-icon>
-                  <span class="label">E-mail:</span>
-                  <a [href]="'mailto:' + c.email" class="value">{{ c.email }}</a>
-                </div>
-              }
-            </div>
-          </section>
-
-          <!-- Adres -->
-          @if (c.address) {
-            <section class="section">
-              <h3>Adres</h3>
-              <div class="address">
-                {{ c.address.street }}<br />
-                {{ c.address.postalCode }} {{ c.address.city }}<br />
-                {{ c.address.country }}
-              </div>
-            </section>
-          }
-
-          <!-- Tagi -->
-          @if (c.tags && c.tags.length) {
-            <section class="section">
-              <h3>Tagi</h3>
-              <mat-chip-set>
-                @for (tag of c.tags; track tag) {
-                  <mat-chip>{{ tag }}</mat-chip>
-                }
-              </mat-chip-set>
-            </section>
-          }
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Osoby kontaktowe -->
-      <mat-card class="contacts-card">
-        <mat-card-header>
-          <mat-card-title>Osoby kontaktowe</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          @if (c.contacts && c.contacts.length) {
-            <mat-list>
-              @for (contact of c.contacts; track contact.id) {
-                <mat-list-item class="contact-item">
-                  <div class="contact-row">
-                    <div class="contact-avatar">
-                      <mat-icon>person</mat-icon>
-                    </div>
-                    <div class="contact-info">
-                      <span class="contact-name">{{ contact.fullName }}</span>
-                      @if (contact.position) {
-                        <span class="contact-position">{{ contact.position }}</span>
-                      }
-                      @if (contact.isPrimary) {
-                        <mat-chip class="primary-chip">główny</mat-chip>
-                      }
-                    </div>
-                    <div class="contact-details">
-                      @if (contact.phone) {
-                        <div class="contact-detail"><mat-icon>phone</mat-icon> {{ contact.phone }}</div>
-                      }
-                      @if (contact.email) {
-                        <div class="contact-detail"><mat-icon>email</mat-icon> {{ contact.email }}</div>
-                      }
-                    </div>
-                  </div>
-                </mat-list-item>
-              }
-            </mat-list>
-          } @else {
-            <p class="empty-state">Brak osób kontaktowych</p>
-          }
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Powiązane dokumenty -->
-      <mat-card class="documents-card">
-        <mat-card-header>
-          <mat-card-title>Dokumenty ({{ clientDocuments().length }})</mat-card-title>
-          <button mat-button routerLink="/documents" [queryParams]="{ clientId: c.id }">Zobacz wszystkie</button>
-        </mat-card-header>
-        <mat-card-content>
-          @if (clientDocuments().length > 0) {
-            <table mat-table [dataSource]="clientDocuments()" class="documents-table">
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Nazwa</th>
-                <td mat-cell *matCellDef="let doc">
-                  <a [routerLink]="['/documents', doc.id]">{{ doc.name }}</a>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef>Typ</th>
-                <td mat-cell *matCellDef="let doc">
-                  <mat-icon [matTooltip]="doc.type">{{ getTypeIcon(doc.type) }}</mat-icon>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="uploaded">
-                <th mat-header-cell *matHeaderCellDef>Data dodania</th>
-                <td mat-cell *matCellDef="let doc">{{ doc.uploadedAt | date: 'dd MMM yyyy' }}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="version">
-                <th mat-header-cell *matHeaderCellDef>Wersja</th>
-                <td mat-cell *matCellDef="let doc">{{ doc.version || '-' }}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let doc">
-                  <button mat-icon-button [routerLink]="['/documents', doc.id]" matTooltip="Szczegóły">
-                    <mat-icon>visibility</mat-icon>
-                  </button>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-            </table>
-          } @else {
-            <p class="empty-state">Brak dokumentów</p>
-          }
-        </mat-card-content>
-      </mat-card>
-    </div>
-  } @else {
-    <div class="not-found">
-      <mat-icon>error_outline</mat-icon>
-      <p>Nie znaleziono klienta o podanym ID</p>
-      <button mat-raised-button color="primary" routerLink="/clients">Powrót do listy</button>
-    </div>
-  }
-</div>
+}
