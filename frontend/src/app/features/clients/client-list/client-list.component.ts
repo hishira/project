@@ -1,5 +1,5 @@
-import { Component, inject, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AfterViewInit, Component, inject, signal, ViewChild } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSortModule, MatSort } from '@angular/material/sort';
@@ -12,9 +12,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { ClientService } from '../client.service';
 import { Client, ClientStatus } from '../client.model';
-import { MatCardModule } from '@angular/material/card';
+import { getClientStatusLabel, getClientStatusClass } from '../client-status.utils';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 
 @Component({
   selector: 'app-client-list',
@@ -34,72 +38,63 @@ import { MatCardModule } from '@angular/material/card';
     MatSelectModule,
     FormsModule,
     MatCardModule,
+    DatePipe,
+    PageHeaderComponent,
+    MainPageViewComponent,
   ],
   templateUrl: './client-list.component.html',
-  styleUrls: ['./client-list.component.scss']
+  styleUrls: ['./client-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ClientListComponent {
+export class ClientListComponent implements AfterViewInit {
   private clientService = inject(ClientService);
-  clients = this.clientService.clients;
+  readonly clients = this.clientService.clients;
 
-  dataSource = new MatTableDataSource<Client>(this.clients());
-  displayedColumns: string[] = ['name', 'taxId', 'mainContact', 'status', 'documents', 'lastContact', 'actions'];
+  readonly dataSource = new MatTableDataSource<Client>(this.clients());
+  readonly displayedColumns: string[] = ['name', 'taxId', 'mainContact', 'status', 'documents', 'lastContact', 'actions'];
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  filterName = '';
-  filterStatus: ClientStatus | '' = '';
+  readonly filterName = signal<string>('');
+  readonly filterStatus = signal<ClientStatus | ''>('');
 
-  statuses: { value: ClientStatus; label: string }[] = [
+  readonly statuses: { value: ClientStatus; label: string }[] = [
     { value: 'active', label: 'Aktywny' },
     { value: 'inactive', label: 'Nieaktywny' },
     { value: 'lead', label: 'Potencjalny' },
     { value: 'former', label: 'Były' }
   ];
 
-  ngAfterViewInit() {
+  readonly getStatusLabel = getClientStatusLabel;
+  readonly getStatusChipClass = getClientStatusClass;
+
+  ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.dataSource.filterPredicate = (data: Client, filter: string) => {
-      const filterObj = JSON.parse(filter);
-      if (filterObj.name && !data.name.toLowerCase().includes(filterObj.name.toLowerCase())) return false;
-      if (filterObj.status && data.status !== filterObj.status) return false;
-      return true;
-    };
+    this.dataSource.filterPredicate = this.createFilterPredicate();
   }
 
-  applyFilters() {
+  applyFilters(): void {
     const filterObj = {
-      name: this.filterName,
-      status: this.filterStatus
+      name: this.filterName(),
+      status: this.filterStatus()
     };
     this.dataSource.filter = JSON.stringify(filterObj);
   }
 
-  clearFilters() {
-    this.filterName = '';
-    this.filterStatus = '';
+  clearFilters(): void {
+    this.filterName.set('');
+    this.filterStatus.set('');
     this.applyFilters();
   }
 
-  getStatusChipClass(status: ClientStatus): string {
-    const map: Record<ClientStatus, string> = {
-      active: 'status-active',
-      inactive: 'status-inactive',
-      lead: 'status-lead',
-      former: 'status-former'
+  private createFilterPredicate(): (data: Client, filter: string) => boolean {
+    return (data: Client, filter: string): boolean => {
+      const filterObj = JSON.parse(filter) as { name?: string; status?: ClientStatus | '' };
+      const matchesName = !filterObj.name || data.name.toLowerCase().includes(filterObj.name.toLowerCase());
+      const matchesStatus = !filterObj.status || data.status === filterObj.status;
+      return matchesName && matchesStatus;
     };
-    return map[status];
-  }
-
-  getStatusLabel(status: ClientStatus): string {
-    const map: Record<ClientStatus, string> = {
-      active: 'Aktywny',
-      inactive: 'Nieaktywny',
-      lead: 'Potencjalny',
-      former: 'Były'
-    };
-    return map[status];
   }
 }

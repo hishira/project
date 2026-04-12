@@ -1,32 +1,20 @@
+@use '../../../../styles/variables' as *;
+
 .list-container {
-  padding: 24px;
-  max-width: 1400px;
+  padding: $spacing-2xl;
+  max-width: $container-xl;
   margin: 0 auto;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-
-  h1 {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 400;
-    color: #1e293b;
-  }
-}
-
 .filters-card {
-  margin-bottom: 24px;
+  margin-bottom: $spacing-2xl;
 }
 
 .filters-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 16px;
-  margin-bottom: 8px;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-sm;
 }
 
 .filter-actions {
@@ -39,34 +27,36 @@
 
   .mat-mdc-row {
     cursor: pointer;
-    transition: background 0.2s;
 
-    &:hover {
-      background-color: #f8fafc;
+    @media (prefers-reduced-motion: no-preference) {
+      transition: background 0.2s;
+      &:hover {
+        background-color: #f8fafc;
+      }
     }
   }
 
   .client-name-cell {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: $spacing-sm;
     flex-wrap: wrap;
 
     .client-name {
-      font-weight: 500;
-      color: #0f172a;
+      font-weight: $font-medium;
+      color: $text-primary;
     }
 
     .client-short {
-      font-size: 0.8rem;
-      color: #64748b;
+      font-size: $text-xs;
+      color: $text-muted;
     }
   }
 
   .status-chip {
-    font-size: 0.75rem;
+    font-size: $text-xs;
     min-height: 24px;
-    padding: 0 8px;
+    padding: 0 $spacing-sm;
   }
 
   .status-active { background-color: #d1fae5 !important; color: #065f46 !important; }
@@ -75,13 +65,13 @@
   .status-former { background-color: #fee2e2 !important; color: #b91c1c !important; }
 
   .doc-count {
-    font-weight: 500;
-    background: #e2e8f0;
-    padding: 2px 8px;
-    border-radius: 12px;
+    font-weight: $font-medium;
+    background: $border-light;
+    padding: 2px $spacing-sm;
+    border-radius: $radius-pill-sm;
   }
 
   .no-data, .no-contact {
-    color: #94a3b8;
+    color: $text-disabled;
   }
 }
