@@ -1,5 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -11,8 +12,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
-import { ApiIntegration, CalendarIntegration, EmailIntegration, Integration, MessengerIntegration } from '../integration.model';
+import { Integration } from '../integration.model';
 import { IntegrationService } from '../integration.service';
+import { getIntegrationStatusColor, getIntegrationStatusIcon, getIntegrationStatusLabel } from '../integration-status.utils';
+import { EmailConfigComponent } from './email-config/email-config.component';
+import { CalendarConfigComponent } from './calendar-config/calendar-config.component';
+import { MessengerConfigComponent } from './messenger-config/messenger-config.component';
+import { ApiConfigComponent } from './api-config/api-config.component';
 
 @Component({
   selector: 'app-integration-detail',
@@ -28,96 +34,61 @@ import { IntegrationService } from '../integration.service';
     MatListModule,
     MatTooltipModule,
     MatSlideToggleModule,
+    DatePipe,
     MainPageViewComponent,
     PageHeaderComponent,
+    EmailConfigComponent,
+    CalendarConfigComponent,
+    MessengerConfigComponent,
+    ApiConfigComponent,
   ],
   templateUrl: './integration-detail.component.html',
-  styleUrls: ['./integration-detail.component.scss']
+  styleUrls: ['./integration-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IntegrationDetailComponent implements OnInit {
+export class IntegrationDetailComponent {
   private route = inject(ActivatedRoute);
   private integrationService = inject(IntegrationService);
-  integration = signal<Integration | undefined>(undefined);
-  showSecret = signal<Record<string, boolean>>({});
+  readonly integration = signal<Integration | undefined>(undefined);
 
-  ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      const found = this.integrationService.getIntegrationById(id);
-      this.integration.set(found);
-    }
+  readonly getStatusColor = getIntegrationStatusColor;
+  readonly getStatusIcon = getIntegrationStatusIcon;
+  readonly getStatusLabel = getIntegrationStatusLabel;
+
+  constructor() {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        const found = this.integrationService.getIntegrationById(id);
+        this.integration.set(found);
+      }
+    });
   }
 
-  getStatusColor(status: string): string {
-    const colors: Record<string, string> = {
-      connected: '#2e7d32',
-      disconnected: '#757575',
-      error: '#d32f2f'
-    };
-    return colors[status] || '#757575';
-  }
-
-  getStatusIcon(status: string): string {
-    const icons: Record<string, string> = {
-      connected: 'check_circle',
-      disconnected: 'pause_circle',
-      error: 'error'
-    };
-    return icons[status] || 'help';
-  }
-
-  toggleSecret(keyId: string) {
-    this.showSecret.update(map => ({ ...map, [keyId]: !map[keyId] }));
-  }
-
-  // Type guards
-  isEmail(int: Integration): int is EmailIntegration {
-    return int.type === 'email';
-  }
-
-  isCalendar(int: Integration): int is CalendarIntegration {
-    return int.type === 'calendar';
-  }
-
-  isMessenger(int: Integration): int is MessengerIntegration {
-    return int.type === 'messenger';
-  }
-
-  isApi(int: Integration): int is ApiIntegration {
-    return int.type === 'api';
-  }
-
-  onTest() {
+  onTest(): void {
     const int = this.integration();
     if (int) {
       this.integrationService.testConnection(int.id);
     }
   }
 
-  onEdit() {
+  onToggleEnabled(enabled: boolean): void {
     const int = this.integration();
     if (int) {
-      console.log('Edytuj integrację:', int.id);
+      console.log('Zmiana stanu integracji:', int.id, enabled);
     }
   }
 
-  onToggleEnabled(event: any) {
+  onGenerateApiKey(): void {
     const int = this.integration();
     if (int) {
-      console.log('Zmiana stanu integracji:', int.id, event.checked);
-    }
-  }
-
-  onGenerateKey() {
-    const int = this.integration();
-    if (int && this.isApi(int)) {
       this.integrationService.generateApiKey(int.id, 'Nowy klucz');
     }
   }
 
-  onRevokeKey(keyId: string) {
+  onRevokeApiKey(keyId: string): void {
     const int = this.integration();
-    if (int && this.isApi(int)) {
+    if (int) {
       this.integrationService.revokeApiKey(int.id, keyId);
     }
   }

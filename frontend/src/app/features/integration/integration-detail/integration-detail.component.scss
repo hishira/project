@@ -1,21 +1,9 @@
+@use '../../../../styles/variables' as *;
+
 .detail-container {
-  padding: 24px;
-  max-width: 800px;
+  padding: $spacing-2xl;
+  max-width: $container-md;
   margin: 0 auto;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
-
-  h1 {
-    margin: 0;
-    font-size: 1.8rem;
-    font-weight: 400;
-    color: #1e293b;
-  }
 }
 
 .main-card {
@@ -25,7 +13,7 @@
     align-items: flex-start;
     width: 100%;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: $spacing-lg;
   }
 
   .status-icon {
@@ -49,117 +37,29 @@
     }
   }
 
-  .config-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 12px;
-  }
-
-  .config-row {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    font-size: 0.9rem;
-
-    .label {
-      color: #64748b;
-      min-width: 120px;
-    }
-
-    .value {
-      color: #0f172a;
-      font-weight: 500;
-      word-break: break-word;
-    }
-  }
-
-  .api-keys-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .api-keys-list {
-    .api-key-item {
-      height: auto !important;
-      padding: 12px 0;
-      border-bottom: 1px solid #e2e8f0;
-
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-
-    .key-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      width: 100%;
-      flex-wrap: wrap;
-
-      .key-info {
-        flex: 2;
-        min-width: 200px;
-
-        .key-name {
-          display: block;
-          font-weight: 500;
-          color: #0f172a;
-        }
-
-        .key-value {
-          font-family: 'Roboto Mono', monospace;
-          font-size: 0.85rem;
-          color: #475569;
-        }
-      }
-
-      .key-meta {
-        flex: 1;
-        min-width: 150px;
-        display: flex;
-        flex-direction: column;
-        font-size: 0.75rem;
-        color: #64748b;
-
-        .key-expiry {
-          color: #b45309;
-        }
-      }
-
-      .key-actions {
-        display: flex;
-        gap: 4px;
-      }
-    }
-  }
-
   .info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 16px;
+    gap: $spacing-lg;
 
     .info-item {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: $spacing-sm;
 
       mat-icon {
-        color: #64748b;
+        color: $text-muted;
         font-size: 20px;
         width: 20px;
         height: 20px;
       }
 
       .label {
-        color: #64748b;
+        color: $text-muted;
       }
 
       .value {
-        color: #0f172a;
+        color: $text-primary;
         font-weight: 500;
       }
     }
@@ -168,17 +68,17 @@
 
 .not-found {
   text-align: center;
-  padding: 48px;
-  color: #64748b;
+  padding: $spacing-4xl;
+  color: $text-muted;
 
   mat-icon {
-    font-size: 48px;
-    width: 48px;
-    height: 48px;
-    margin-bottom: 16px;
+    font-size: $icon-hero;
+    width: $icon-hero;
+    height: $icon-hero;
+    margin-bottom: $spacing-lg;
   }
 
   p {
-    margin-bottom: 24px;
+    margin-bottom: $spacing-2xl;
   }
 }
