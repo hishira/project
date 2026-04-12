@@ -1,15 +1,17 @@
-import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TaskService } from '../task.service';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { Task, TaskStatus } from '../task.model';
+import { TaskService } from '../task.service';
 
 @Component({
   selector: 'app-task-list',
@@ -23,7 +25,9 @@ import { Task, TaskStatus } from '../task.model';
     MatChipsModule,
     MatTooltipModule,
     MatTabsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    PageHeaderComponent,
+    MainPageViewComponent
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss']
@@ -31,7 +35,8 @@ import { Task, TaskStatus } from '../task.model';
 export class TaskListComponent {
   private taskService = inject(TaskService);
   tasks = this.taskService.tasks;
-now = new Date();
+  now = new Date();
+
   // Filtry widoku
   activeFilter: 'my' | 'team' | 'done' = 'my';
   currentUserId = 'u1'; // symulacja zalogowanego użytkownika
