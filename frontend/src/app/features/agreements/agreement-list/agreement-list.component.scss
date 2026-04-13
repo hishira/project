@@ -1,0 +1,131 @@
+@use '../../../../styles/variables' as *;
+
+.agreements-container {
+  padding: $spacing-2xl;
+  max-width: $container-xl;
+  margin: 0 auto;
+}
+
+.filters-card {
+  margin-bottom: $spacing-2xl;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: $spacing-lg;
+  margin-bottom: $spacing-sm;
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.agreements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: $spacing-lg;
+}
+
+.agreement-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  @media (prefers-reduced-motion: no-preference) {
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-lg;
+    }
+  }
+
+  .agreement-title {
+    font-size: $text-lg;
+    font-weight: $font-medium;
+    color: $text-primary;
+  }
+
+  .agreement-subtitle {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    margin-top: $spacing-xs;
+
+    .contract-id {
+      font-family: 'Roboto Mono', monospace;
+      font-size: $text-xs;
+      color: $text-muted;
+    }
+  }
+
+  .status-chip {
+    font-size: $text-xs;
+    min-height: 24px;
+    padding: 0 $spacing-sm;
+  }
+
+  .status-active { background-color: #d1fae5 !important; color: #065f46 !important; }
+  .status-pending { background-color: #fef3c7 !important; color: #92400e !important; }
+  .status-draft { background-color: #e2e8f0 !important; color: #334155 !important; }
+  .status-expired { background-color: #fee2e2 !important; color: #b91c1c !important; }
+  .status-terminated { background-color: #f1f5f9 !important; color: #64748b !important; }
+
+  .agreement-info {
+    margin: $spacing-md 0;
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      font-size: $text-sm;
+      color: $text-secondary;
+      margin-bottom: $spacing-xs;
+
+      mat-icon {
+        color: $text-muted;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+
+      .value {
+        font-weight: $font-medium;
+        color: $text-primary;
+      }
+    }
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-xs;
+    margin-top: $spacing-md;
+
+    .tag-chip {
+      font-size: $text-xs;
+      min-height: 24px;
+      padding: 0 $spacing-sm;
+      background-color: $bg-light;
+      color: $text-secondary;
+    }
+  }
+
+  .mat-mdc-card-actions {
+    border-top: 1px solid $border-light;
+    padding: $spacing-sm $spacing-lg;
+  }
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: $spacing-4xl;
+  color: $text-disabled;
+
+  mat-icon {
+    font-size: $icon-hero;
+    width: $icon-hero;
+    height: $icon-hero;
+    margin-bottom: $spacing-lg;
+  }
+}
