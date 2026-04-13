@@ -1,114 +1,117 @@
-<div class="detail-container">
-  <div class="header">
-    <a mat-icon-button routerLink="/tasks" class="back-btn">
-      <mat-icon>arrow_back</mat-icon>
-    </a>
-    <h1>Szczegóły zadania</h1>
-  </div>
-
-  @if (task(); as t) {
-    <mat-card class="task-card">
-      <mat-card-header>
-        <div class="header-row">
-          <mat-card-title>{{ t.title }}</mat-card-title>
-          <div class="header-actions">
-            <button mat-stroked-button (click)="onEdit()">
-              <mat-icon>edit</mat-icon> Edytuj
-            </button>
-            <button mat-stroked-button color="warn" (click)="onDelete()">
-              <mat-icon>delete</mat-icon> Usuń
-            </button>
-          </div>
-        </div>
-        <mat-card-subtitle>
-          <div class="meta">
-            <span>Typ: {{ t.type }}</span>
-            <span>Status: {{ getStatusLabel(t.status) }}</span>
-            <mat-chip [style.background]="getPriorityColor(t.priority)" [style.color]="'white'">
-              <mat-icon>{{ getPriorityIcon(t.priority) }}</mat-icon> {{ t.priority }}
-            </mat-chip>
-          </div>
-        </mat-card-subtitle>
-      </mat-card-header>
-
-      <mat-card-content>
-        @if (t.description) {
-          <section class="section">
-            <h3>Opis</h3>
-            <p class="description">{{ t.description }}</p>
-          </section>
-          <mat-divider></mat-divider>
-        }
-
-        <section class="section">
-          <h3>Informacje</h3>
-          <div class="info-grid">
-            <div class="info-item">
-              <mat-icon>person</mat-icon>
-              <span class="label">Utworzył:</span>
-              <span class="value">{{ t.createdBy.fullName }}</span>
-            </div>
-            <div class="info-item">
-              <mat-icon>schedule</mat-icon>
-              <span class="label">Utworzono:</span>
-              <span class="value">{{ t.createdAt | date:'dd MMM yyyy, HH:mm' }}</span>
-            </div>
-            @if (t.assignedTo) {
-              <div class="info-item">
-                <mat-icon>assignment_ind</mat-icon>
-                <span class="label">Przypisany:</span>
-                <span class="value">{{ t.assignedTo.fullName }}</span>
-              </div>
-            }
-            @if (t.dueDate) {
-              <div class="info-item">
-                <mat-icon>event</mat-icon>
-                <span class="label">Termin:</span>
-                <span class="value">{{ t.dueDate | date:'dd MMM yyyy, HH:mm' }}</span>
-              </div>
-            }
-            @if (t.completedAt) {
-              <div class="info-item">
-                <mat-icon>check_circle</mat-icon>
-                <span class="label">Zakończono:</span>
-                <span class="value">{{ t.completedAt | date:'dd MMM yyyy, HH:mm' }}</span>
-              </div>
-            }
-            @if (t.reminder) {
-              <div class="info-item">
-                <mat-icon>notifications</mat-icon>
-                <span class="label">Przypomnienie:</span>
-                <span class="value">{{ t.reminder | date:'dd MMM yyyy, HH:mm' }}</span>
-              </div>
-            }
-            @if (t.location) {
-              <div class="info-item">
-                <mat-icon>location_on</mat-icon>
-                <span class="label">Miejsce:</span>
-                <span class="value">{{ t.location }}</span>
-              </div>
-            }
-          </div>
-        </section>
-
-        @if (t.relatedTo) {
-          <mat-divider></mat-divider>
-          <section class="section">
-            <h3>Powiązane</h3>
-            <div class="related-item">
-              <mat-icon>{{ t.relatedTo.type === 'client' ? 'business' : (t.relatedTo.type === 'ticket' ? 'support_agent' : 'request_quote') }}</mat-icon>
-              <span>{{ t.relatedTo.name }}</span>
-              <button mat-stroked-button [routerLink]="['/' + t.relatedTo.type + 's', t.relatedTo.id]">Zobacz</button>
-            </div>
-          </section>
-        }
-      </mat-card-content>
-    </mat-card>
-  } @else {
-    <div class="not-found">
-      <mat-icon>error_outline</mat-icon>
-      <p>Nie znaleziono zadania</p>
-      <button mat-raised-button color="primary" routerLink="/tasks">Powrót do listy</button>
+@if (task(); as t) {
+  <app-page-header>
+    <div class="main-header">
+      <h1>{{ t.title }}</h1>
     </div>
-  }
-</div>
+    <div class="main-header-buttons d-flex gap-3">
+      <button mat-stroked-button aria-label="Edytuj zadanie {{ t.title }}">
+        <mat-icon aria-hidden="true">edit</mat-icon> Edytuj
+      </button>
+      <button mat-stroked-button color="warn" aria-label="Usuń zadanie {{ t.title }}">
+        <mat-icon aria-hidden="true">delete</mat-icon> Usuń
+      </button>
+    </div>
+  </app-page-header>
+
+  <app-main-page-view>
+    <div class="detail-container">
+      <mat-card class="task-card">
+        <mat-card-header>
+          <div class="header-row">
+            <mat-card-subtitle>
+              <div class="meta">
+                <span>Typ: {{ t.type }}</span>
+                <span>Status: {{ getStatusLabel(t.status) }}</span>
+                <mat-chip [style.background]="getPriorityColor(t.priority)" [style.color]="'white'" role="status"
+                          [attr.aria-label]="'Priorytet: ' + t.priority" class="priority-chip">
+                  <mat-icon aria-hidden="true">{{ getPriorityIcon(t.priority) }}</mat-icon>
+                  <span>{{ t.priority }}</span>
+                </mat-chip>
+              </div>
+            </mat-card-subtitle>
+          </div>
+        </mat-card-header>
+
+        <mat-card-content>
+          @if (t.description) {
+            <section class="section" aria-labelledby="description-heading">
+              <h3 id="description-heading">Opis</h3>
+              <p class="description">{{ t.description }}</p>
+            </section>
+            <mat-divider></mat-divider>
+          }
+
+          <section class="section" aria-labelledby="info-heading">
+            <h3 id="info-heading">Informacje</h3>
+            <div class="info-grid">
+              <div class="info-item">
+                <mat-icon aria-hidden="true">person</mat-icon>
+                <span class="label">Utworzył:</span>
+                <span class="value">{{ t.createdBy.fullName }}</span>
+              </div>
+              <div class="info-item">
+                <mat-icon aria-hidden="true">schedule</mat-icon>
+                <span class="label">Utworzono:</span>
+                <span class="value">{{ t.createdAt | date:'dd MMM yyyy, HH:mm' }}</span>
+              </div>
+              @if (t.assignedTo) {
+                <div class="info-item">
+                  <mat-icon aria-hidden="true">assignment_ind</mat-icon>
+                  <span class="label">Przypisany:</span>
+                  <span class="value">{{ t.assignedTo.fullName }}</span>
+                </div>
+              }
+              @if (t.dueDate) {
+                <div class="info-item">
+                  <mat-icon aria-hidden="true">event</mat-icon>
+                  <span class="label">Termin:</span>
+                  <span class="value">{{ t.dueDate | date:'dd MMM yyyy, HH:mm' }}</span>
+                </div>
+              }
+              @if (t.completedAt) {
+                <div class="info-item">
+                  <mat-icon aria-hidden="true">check_circle</mat-icon>
+                  <span class="label">Zakończono:</span>
+                  <span class="value">{{ t.completedAt | date:'dd MMM yyyy, HH:mm' }}</span>
+                </div>
+              }
+              @if (t.reminder) {
+                <div class="info-item">
+                  <mat-icon aria-hidden="true">notifications</mat-icon>
+                  <span class="label">Przypomnienie:</span>
+                  <span class="value">{{ t.reminder | date:'dd MMM yyyy, HH:mm' }}</span>
+                </div>
+              }
+              @if (t.location) {
+                <div class="info-item">
+                  <mat-icon aria-hidden="true">location_on</mat-icon>
+                  <span class="label">Miejsce:</span>
+                  <span class="value">{{ t.location }}</span>
+                </div>
+              }
+            </div>
+          </section>
+
+          @if (t.relatedTo) {
+            <mat-divider></mat-divider>
+            <section class="section" aria-labelledby="related-heading">
+              <h3 id="related-heading">Powiązane</h3>
+              <div class="related-item">
+                <mat-icon aria-hidden="true">{{ t.relatedTo.type === 'client' ? 'business' : (t.relatedTo.type === 'ticket' ? 'support_agent' : 'request_quote') }}</mat-icon>
+                <span>{{ t.relatedTo.name }}</span>
+                <button mat-stroked-button [routerLink]="['/' + t.relatedTo.type + 's', t.relatedTo.id]"
+                        aria-label="Zobacz szczegóły {{ t.relatedTo.type }}: {{ t.relatedTo.name }}">Zobacz</button>
+              </div>
+            </section>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </app-main-page-view>
+} @else {
+  <div class="not-found" role="alert">
+    <mat-icon aria-hidden="true">error_outline</mat-icon>
+    <p>Nie znaleziono zadania</p>
+    <button mat-raised-button color="primary" routerLink="/tasks">Powrót do listy zadań</button>
+  </div>
+}

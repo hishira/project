@@ -12,15 +12,18 @@
 <app-main-page-view>
   <div class="tasks-container">
     <!-- Zakładki filtrów -->
-    <mat-tab-group [(selectedIndex)]="activeFilter" class="filter-tabs">
-      <mat-tab label="Moje zadania" value="my"></mat-tab>
-      <mat-tab label="Zespołowe" value="team"></mat-tab>
-      <mat-tab label="Zakończone" value="done"></mat-tab>
+    <mat-tab-group
+      [selectedIndex]="activeFilter() === 'my' ? 0 : activeFilter() === 'team' ? 1 : 2"
+      (selectedIndexChange)="onCategoryChange($event)"
+      class="filter-tabs">
+      <mat-tab label="Moje zadania"></mat-tab>
+      <mat-tab label="Zespołowe"></mat-tab>
+      <mat-tab label="Zakończone"></mat-tab>
     </mat-tab-group>
 
     <!-- Lista zadań -->
     <div class="tasks-list">
-      @for (task of filteredTasks; track task.id) {
+      @for (task of filteredTasks(); track task.id) {
         <mat-card class="task-card" [routerLink]="[task.id]">
           <mat-card-header>
             <div class="task-header">

@@ -1,13 +1,17 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TaskService } from '../task.service';
 import { Task } from '../task.model';
+import { getTaskPriorityIcon, getTaskPriorityColor, getTaskStatusLabel } from '../task-status.utils';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 
 @Component({
   selector: 'app-task-detail',
@@ -19,59 +23,31 @@ import { Task } from '../task.model';
     MatIconModule,
     MatButtonModule,
     MatChipsModule,
-    MatDividerModule
+    MatDividerModule,
+    DatePipe,
+    PageHeaderComponent,
+    MainPageViewComponent
   ],
   templateUrl: './task-detail.component.html',
-  styleUrls: ['./task-detail.component.scss']
+  styleUrls: ['./task-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskDetailComponent implements OnInit {
+export class TaskDetailComponent {
   private route = inject(ActivatedRoute);
   private taskService = inject(TaskService);
-  task = signal<Task | undefined>(undefined);
+  readonly task = signal<Task | undefined>(undefined);
 
-  ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      const found = this.taskService.tasks().find(t => t.id === id);
-      this.task.set(found);
-    }
-  }
+  readonly getPriorityIcon = getTaskPriorityIcon;
+  readonly getPriorityColor = getTaskPriorityColor;
+  readonly getStatusLabel = getTaskStatusLabel;
 
-  getPriorityIcon(priority: string): string {
-    const icons: Record<string, string> = {
-      low: 'arrow_downward',
-      medium: 'remove',
-      high: 'arrow_upward',
-      critical: 'priority_high'
-    };
-    return icons[priority] || 'help';
-  }
-
-  getPriorityColor(priority: string): string {
-    const colors: Record<string, string> = {
-      low: '#2e7d32',
-      medium: '#ed6c02',
-      high: '#d32f2f',
-      critical: '#b71c1c'
-    };
-    return colors[priority];
-  }
-
-  getStatusLabel(status: string): string {
-    const map: Record<string, string> = {
-      todo: 'Do zrobienia',
-      in_progress: 'W trakcie',
-      done: 'Zakończone',
-      cancelled: 'Anulowane'
-    };
-    return map[status] || status;
-  }
-
-  onEdit() {
-    console.log('Edytuj zadanie:', this.task()?.id);
-  }
-
-  onDelete() {
-    console.log('Usuń zadanie:', this.task()?.id);
+  constructor() {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        const found = this.taskService.tasks().find(t => t.id === id);
+        this.task.set(found);
+      }
+    });
   }
 }
