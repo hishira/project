@@ -9,9 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MarketingService } from '../marketing.service';
-import { Segment } from '../marketing.models';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { formatDatePolish, segmentListColumns } from '../marketing.constants';
 
 @Component({
   selector: 'app-segment-list',
@@ -36,13 +36,6 @@ export class SegmentListComponent {
   private readonly marketingService = inject(MarketingService);
   readonly segments = this.marketingService.segments;
 
-  readonly displayedColumns: string[] = ['name', 'description', 'contactsCount', 'updatedAt', 'actions'];
-
-  formatDate(date: Date): string {
-    return new Intl.DateTimeFormat('pl-PL', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
-    }).format(date);
-  }
+  readonly displayedColumns = segmentListColumns;
+  readonly formatDate = formatDatePolish;
 }

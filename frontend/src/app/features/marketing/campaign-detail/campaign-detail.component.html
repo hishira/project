@@ -2,8 +2,8 @@
   <app-page-header>
     <div class="main-header d-flex gap-2">Kampania {{ campaign.name }}</div>
     <div class="main-header-buttons">
-      <button mat-stroked-button color="primary" [routerLink]="['/marketing/campaigns', campaign.id, 'edit']">
-        <mat-icon>edit</mat-icon> Edytuj
+      <button mat-stroked-button color="primary" aria-label="Edytuj kampanię {{ campaign.name }}">
+        <mat-icon aria-hidden="true">edit</mat-icon> Edytuj
       </button>
     </div>
   </app-page-header>
@@ -18,61 +18,62 @@
           </mat-card-header>
           <mat-card-content>
             <div class="info-row">
-              <mat-icon>campaign</mat-icon>
+              <mat-icon aria-hidden="true">campaign</mat-icon>
               <span class="label">Nazwa:</span>
               <span class="value">{{ campaign.name }}</span>
             </div>
             <div class="info-row">
-              <mat-icon>type_specimen</mat-icon>
+              <mat-icon aria-hidden="true">type_specimen</mat-icon>
               <span class="label">Typ:</span>
               <span class="value">
                 <mat-chip class="type-chip">
-                  <mat-icon>{{ getTypeIcon(campaign.type) }}</mat-icon>
+                  <mat-icon aria-hidden="true">{{ getTypeIcon(campaign.type) }}</mat-icon>
                   {{ campaign.type }}
                 </mat-chip>
               </span>
             </div>
             <div class="info-row">
-              <mat-icon>flag</mat-icon>
+              <mat-icon aria-hidden="true">flag</mat-icon>
               <span class="label">Status:</span>
               <span class="value">
-                <mat-chip [class]="getStatusClass(campaign.status)" class="status-chip">
+                <mat-chip [class]="getStatusClass(campaign.status)" class="status-chip" role="status"
+                          [attr.aria-label]="'Status kampanii: ' + campaign.status">
                   {{ campaign.status }}
                 </mat-chip>
               </span>
             </div>
             <div class="info-row">
-              <mat-icon>calendar_today</mat-icon>
+              <mat-icon aria-hidden="true">calendar_today</mat-icon>
               <span class="label">Utworzono:</span>
-              <span class="value">{{ formatDate(campaign.createdAt) }}</span>
+              <span class="value">{{ formatDateTime(campaign.createdAt) }}</span>
             </div>
             <div class="info-row">
-              <mat-icon>update</mat-icon>
+              <mat-icon aria-hidden="true">update</mat-icon>
               <span class="label">Aktualizacja:</span>
-              <span class="value">{{ formatDate(campaign.updatedAt) }}</span>
+              <span class="value">{{ formatDateTime(campaign.updatedAt) }}</span>
             </div>
             @if (campaign.scheduledAt) {
               <div class="info-row">
-                <mat-icon>schedule</mat-icon>
+                <mat-icon aria-hidden="true">schedule</mat-icon>
                 <span class="label">Zaplanowano:</span>
-                <span class="value">{{ formatDate(campaign.scheduledAt) }}</span>
+                <span class="value">{{ formatDateTime(campaign.scheduledAt) }}</span>
               </div>
             }
             @if (campaign.sentAt) {
               <div class="info-row">
-                <mat-icon>send</mat-icon>
+                <mat-icon aria-hidden="true">send</mat-icon>
                 <span class="label">Wysłano:</span>
-                <span class="value">{{ formatDate(campaign.sentAt) }}</span>
+                <span class="value">{{ formatDateTime(campaign.sentAt) }}</span>
               </div>
             }
             <div class="info-row">
-              <mat-icon>person</mat-icon>
+              <mat-icon aria-hidden="true">person</mat-icon>
               <span class="label">Utworzył:</span>
               <span class="value">{{ campaign.createdBy }}</span>
             </div>
             @if (campaign.segmentId) {
               <div class="info-row">
-                <mat-icon>segment</mat-icon>
+                <mat-icon aria-hidden="true">segment</mat-icon>
                 <span class="label">Segment:</span>
                 <span class="value">{{ campaign.segmentId }}</span>
               </div>
@@ -114,29 +115,29 @@
             <div class="rates">
               <div class="rate-row">
                 <span class="label">Open rate:</span>
-                <span class="value">{{ calculateOpenRate(campaign) }}%</span>
+                <span class="value">{{ calcOpenRate(campaign) }}%</span>
                 <mat-progress-bar
                   mode="determinate"
-                  [value]="calculateOpenRate(campaign)"
-                  color="primary">
+                  [value]="calcOpenRate(campaign)"
+                  [attr.aria-label]="'Wskaźnik otwarć: ' + calcOpenRate(campaign) + '%'">
                 </mat-progress-bar>
               </div>
               <div class="rate-row">
                 <span class="label">Click rate (z otwarć):</span>
-                <span class="value">{{ calculateClickRate(campaign) }}%</span>
+                <span class="value">{{ calcClickRate(campaign) }}%</span>
                 <mat-progress-bar
                   mode="determinate"
-                  [value]="calculateClickRate(campaign)"
-                  color="accent">
+                  [value]="calcClickRate(campaign)"
+                  [attr.aria-label]="'Wskaźnik kliknięć: ' + calcClickRate(campaign) + '%'">
                 </mat-progress-bar>
               </div>
               <div class="rate-row">
                 <span class="label">Bounce rate:</span>
-                <span class="value">{{ calculateBounceRate(campaign) }}%</span>
+                <span class="value">{{ calcBounceRate(campaign) }}%</span>
                 <mat-progress-bar
                   mode="determinate"
-                  [value]="calculateBounceRate(campaign)"
-                  color="warn">
+                  [value]="calcBounceRate(campaign)"
+                  [attr.aria-label]="'Wskaźnik odbić: ' + calcBounceRate(campaign) + '%'">
                 </mat-progress-bar>
               </div>
             </div>

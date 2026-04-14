@@ -1,5 +1,5 @@
 // template-list.component.ts
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
@@ -10,7 +10,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MarketingService } from '../marketing.service';
-import { MessageTemplate } from '../marketing.models';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { getCampaignTypeIcon, formatDatePolish, templateListColumns } from '../marketing.constants';
 
 @Component({
   selector: 'app-template-list',
@@ -24,34 +26,22 @@ import { MessageTemplate } from '../marketing.models';
     MatButtonModule,
     MatChipsModule,
     MatCardModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MainPageViewComponent,
+    PageHeaderComponent
   ],
   templateUrl: './template-list.component.html',
-  styleUrls: ['./template-list.component.scss']
+  styleUrls: ['./template-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TemplateListComponent {
-  private marketingService = inject(MarketingService);
-  templates = this.marketingService.templates;
+  private readonly marketingService = inject(MarketingService);
+  readonly templates = this.marketingService.templates;
 
-  displayedColumns: string[] = ['name', 'type', 'subject', 'updatedAt', 'actions'];
+  readonly displayedColumns = templateListColumns;
 
-  getTypeIcon(type: string): string {
-    const map: Record<string, string> = {
-      email: 'email',
-      sms: 'sms',
-      social: 'share',
-      push: 'notifications'
-    };
-    return map[type] || 'description';
-  }
-
-  formatDate(date: Date): string {
-    return new Intl.DateTimeFormat('pl-PL', { 
-      day: '2-digit', 
-      month: 'short', 
-      year: 'numeric' 
-    }).format(date);
-  }
+  readonly getTypeIcon = getCampaignTypeIcon;
+  readonly formatDate = formatDatePolish;
 
   getTypeClass(type: string): string {
     return `type-${type}`;

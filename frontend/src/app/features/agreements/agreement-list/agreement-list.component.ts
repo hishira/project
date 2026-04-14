@@ -8,15 +8,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { AgreementListItem } from './agreement-list.mock';
 import { mockAgreements } from './agreement-list.mock';
 import { AgreementStatusType } from '../types';
-
-type AgreementStatus = 'ACTIVE' | 'EXPIRED' | 'PENDING' | 'DRAFT' | 'TERMINATED';
+import {
+  AgreementStatus,
+  agreementStatusOptions,
+  agreementCategoryOptions,
+  getAgreementStatusClass,
+  getAgreementStatusLabel
+} from './agreement-list.constants';
 
 @Component({
   selector: 'app-agreement-list',
@@ -31,7 +35,6 @@ type AgreementStatus = 'ACTIVE' | 'EXPIRED' | 'PENDING' | 'DRAFT' | 'TERMINATED'
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatTabsModule,
     FormsModule,
     DatePipe,
     PageHeaderComponent,
@@ -47,22 +50,11 @@ export class AgreementListComponent {
   readonly filterCategory = signal<string>('');
   readonly searchQuery = signal<string>('');
 
-  readonly statuses: { value: AgreementStatus | ''; label: string }[] = [
-    { value: '', label: 'Wszystkie' },
-    { value: 'ACTIVE', label: 'Aktywne' },
-    { value: 'PENDING', label: 'Oczekujące' },
-    { value: 'DRAFT', label: 'Szkice' },
-    { value: 'EXPIRED', label: 'Wygasłe' },
-    { value: 'TERMINATED', label: 'Rozwiązane' }
-  ];
+  readonly statuses = agreementStatusOptions;
+  readonly categories = agreementCategoryOptions;
 
-  readonly categories: { value: string; label: string }[] = [
-    { value: '', label: 'Wszystkie kategorie' },
-    { value: 'SOFTWARE_LICENSE', label: 'Licencje oprogramowania' },
-    { value: 'HARDWARE', label: 'Sprzęt' },
-    { value: 'SERVICE', label: 'Usługi' },
-    { value: 'SUBSCRIPTION', label: 'Subskrypcje' }
-  ];
+  readonly getStatusChipClass = getAgreementStatusClass;
+  readonly getStatusLabel = getAgreementStatusLabel;
 
   readonly filteredAgreements = computed(() => {
     let result = this.agreements();
@@ -86,28 +78,6 @@ export class AgreementListComponent {
 
     return result;
   });
-
-  getStatusChipClass(status: AgreementStatusType): string {
-    const map: Record<AgreementStatusType, string> = {
-      ACTIVE: 'status-active',
-      PENDING: 'status-pending',
-      DRAFT: 'status-draft',
-      EXPIRED: 'status-expired',
-      TERMINATED: 'status-terminated'
-    };
-    return map[status] || '';
-  }
-
-  getStatusLabel(status: AgreementStatusType): string {
-    const map: Record<AgreementStatusType, string> = {
-      ACTIVE: 'Aktywna',
-      PENDING: 'Oczekująca',
-      DRAFT: 'Szkic',
-      EXPIRED: 'Wygasła',
-      TERMINATED: 'Rozwiązana'
-    };
-    return map[status] || status;
-  }
 
   clearFilters(): void {
     this.filterStatus.set('');

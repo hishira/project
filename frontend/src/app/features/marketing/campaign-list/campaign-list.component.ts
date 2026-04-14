@@ -9,9 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { MarketingService } from '../marketing.service';
-import { Campaign } from '../marketing.models';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { getCampaignStatusClass, getCampaignTypeIcon, campaignListColumns } from '../marketing.constants';
 
 @Component({
   selector: 'app-campaign-list',
@@ -37,27 +37,8 @@ export class CampaignListComponent {
   private readonly marketingService = inject(MarketingService);
   readonly campaigns = this.marketingService.campaigns;
 
-  readonly displayedColumns: string[] = ['name', 'type', 'status', 'stats', 'schedule', 'actions'];
+  readonly displayedColumns = campaignListColumns;
 
-  getTypeIcon(type: string): string {
-    const map: Record<string, string> = {
-      email: 'email',
-      sms: 'sms',
-      social: 'share',
-      push: 'notifications'
-    };
-    return map[type] || 'campaign';
-  }
-
-  getStatusClass(status: string): string {
-    const map: Record<string, string> = {
-      draft: 'status-draft',
-      scheduled: 'status-scheduled',
-      active: 'status-active',
-      paused: 'status-paused',
-      completed: 'status-completed',
-      archived: 'status-archived'
-    };
-    return map[status] || '';
-  }
+  readonly getTypeIcon = getCampaignTypeIcon;
+  readonly getStatusClass = getCampaignStatusClass;
 }

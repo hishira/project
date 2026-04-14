@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { Campaign } from '../../marketing.models';
-import { getCampaignStatusClass, getCampaignTypeIcon, getCampaignTypeColor } from '../../marketing.utils';
+import { getCampaignStatusClass, getCampaignTypeIcon, calculateOpenRate } from '../../marketing.constants';
 
 @Component({
   selector: 'app-campaign-list-item',
@@ -21,5 +21,5 @@ export class CampaignListItemComponent {
 
   protected getCampaignStatusClass = getCampaignStatusClass;
   protected getCampaignTypeIcon = getCampaignTypeIcon;
-  protected getCampaignTypeColor = getCampaignTypeColor;
+  protected calcOpenRate = calculateOpenRate;
 }

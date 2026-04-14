@@ -1,98 +1,52 @@
-export interface StatusColorConfig {
-  [key: string]: string;
-}
+// Re-export all constants and utilities from the centralized constants file
+export {
+  // Status mappings
+  campaignStatusLabelMap,
+  campaignStatusClassMap,
+  campaignStatusColorMap,
+  campaignStatusTextColorMap,
+  campaignStatusOptions,
 
-export interface TypeIconConfig {
-  [key: string]: string;
-}
+  // Type mappings
+  campaignTypeIconMap,
+  campaignTypeColorMap,
+  campaignTypeLabelMap,
+  campaignTypeOptions,
 
-export const CAMPAIGN_STATUS_COLORS: StatusColorConfig = {
-  draft: '#f1f5f9',
-  scheduled: '#fef3c7',
-  active: '#dbeafe',
-  paused: '#ffe4e6',
-  completed: '#dcfce7',
-  archived: '#e2e8f0',
-};
+  // Table columns
+  campaignListColumns,
+  segmentListColumns,
+  templateListColumns,
 
-export const CAMPAIGN_STATUS_TEXT_COLORS: StatusColorConfig = {
-  draft: '#334155',
-  scheduled: '#92400e',
-  active: '#1e3a8a',
-  paused: '#9f1239',
-  completed: '#166534',
-  archived: '#475569',
-};
+  // Utility functions
+  getCampaignStatusLabel,
+  getCampaignStatusClass,
+  getCampaignTypeIcon,
+  getCampaignTypeLabel,
 
-export const CAMPAIGN_TYPE_ICONS: TypeIconConfig = {
-  email: 'email',
-  sms: 'sms',
-  social: 'share',
-  push: 'notifications',
-};
+  // Date formatting
+  polishLocale,
+  formatDatePolish,
+  formatDateTimePolish,
 
-export const CAMPAIGN_TYPE_COLORS: TypeIconConfig = {
-  email: '#2563eb',
-  sms: '#7c3aed',
-  social: '#db2777',
-  push: '#ea580c',
-};
+  // Rate calculations
+  calculateOpenRate,
+  calculateClickRate,
+  calculateBounceRate
+} from './marketing.constants';
 
-/**
- * Returns the background color for a given campaign status
- */
+// Legacy backward compatibility - deprecated
 export function getCampaignStatusColor(status: string): string {
-  return CAMPAIGN_STATUS_COLORS[status.toLowerCase()] || '#e2e8f0';
+  const { campaignStatusColorMap } = require('./marketing.constants');
+  return campaignStatusColorMap[status.toLowerCase() as keyof typeof campaignStatusColorMap] || '#e2e8f0';
 }
 
-/**
- * Returns the text color for a given campaign status
- */
 export function getCampaignStatusTextColor(status: string): string {
-  return CAMPAIGN_STATUS_TEXT_COLORS[status.toLowerCase()] || '#475569';
+  const { campaignStatusTextColorMap } = require('./marketing.constants');
+  return campaignStatusTextColorMap[status.toLowerCase() as keyof typeof campaignStatusTextColorMap] || '#475569';
 }
 
-/**
- * Returns the CSS class for a given campaign status
- */
-export function getCampaignStatusClass(status: string): string {
-  const map: Record<string, string> = {
-    draft: 'status-draft',
-    scheduled: 'status-scheduled',
-    active: 'status-active',
-    paused: 'status-paused',
-    completed: 'status-completed',
-    archived: 'status-archived',
-  };
-  return map[status.toLowerCase()] || '';
-}
-
-/**
- * Returns the icon for a given campaign type
- */
-export function getCampaignTypeIcon(type: string): string {
-  return CAMPAIGN_TYPE_ICONS[type.toLowerCase()] || 'campaign';
-}
-
-/**
- * Returns the color for a given campaign type
- */
 export function getCampaignTypeColor(type: string): string {
-  return CAMPAIGN_TYPE_COLORS[type.toLowerCase()] || '#64748b';
-}
-
-/**
- * Calculates the open rate percentage
- */
-export function calculateOpenRate(opened: number, recipients: number): number {
-  if (!recipients) return 0;
-  return Math.round((opened / recipients) * 100 * 10) / 10;
-}
-
-/**
- * Calculates the click rate percentage
- */
-export function calculateClickRate(clicked: number, opened: number): number {
-  if (!opened) return 0;
-  return Math.round((clicked / opened) * 100 * 10) / 10;
+  const { campaignTypeColorMap } = require('./marketing.constants');
+  return campaignTypeColorMap[type.toLowerCase() as keyof typeof campaignTypeColorMap] || '#64748b';
 }
