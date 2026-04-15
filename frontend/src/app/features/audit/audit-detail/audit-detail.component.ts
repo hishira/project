@@ -6,11 +6,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
-import { AuditLog, AUDIT_ENTITY_LABELS, AUDIT_ACTION_LABELS } from '../audit.model';
+import { AuditLog, AUDIT_ENTITY_LABELS, AUDIT_ACTION_LABELS, AuditActionType } from '../audit.model';
 import { AuditService } from '../audit.service';
 import { getAuditActionIcon, getActionSeverityColor, getActionChipClass, getEntityTypeIcon } from '../audit.utils';
 
@@ -26,7 +25,6 @@ import { getAuditActionIcon, getActionSeverityColor, getActionChipClass, getEnti
         MatButtonModule,
         MatChipsModule,
         MatDividerModule,
-        MatListModule,
         MatTooltipModule,
         PageHeaderComponent,
         MainPageViewComponent,
@@ -68,5 +66,9 @@ export class AuditDetailComponent implements OnInit {
         if (value === null) return 'puste';
         if (typeof value === 'boolean') return value ? 'Tak' : 'Nie';
         return String(value);
+    }
+
+    getChipClass(action: AuditActionType): string{
+        return `action-chip ${this. getActionChipClass(action)}`;
     }
 }

@@ -24,55 +24,73 @@
                     <mat-card-title>Informacje o zmianie</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                    <mat-list>
-                        <mat-list-item>
-                            <mat-icon matListItemIcon>event</mat-icon>
-                            <div matListItemTitle>Data i czas</div>
-                            <div matListItemLine class="value">{{ log.timestamp | date: 'dd MMMM yyyy, HH:mm:ss' }}</div>
-                        </mat-list-item>
-
-                        <mat-list-item>
-                            <mat-icon matListItemIcon>person</mat-icon>
-                            <div matListItemTitle>Użytkownik</div>
-                            <div matListItemLine class="value">{{ log.userName }}</div>
-                            <div matListItemLine class="sub-value">{{ log.userRole }}</div>
-                        </mat-list-item>
-
-                        <mat-divider></mat-divider>
-
-                        <mat-list-item>
-                            <mat-icon matListItemIcon>category</mat-icon>
-                            <div matListItemTitle>Typ encji</div>
-                            <div matListItemLine class="value">
-                                <mat-icon class="entity-icon">{{ getEntityTypeIcon(log.entityType) }}</mat-icon>
-                                {{ AUDIT_ENTITY_LABELS[log.entityType] }}
+                    <div class="info-grid">
+                        <div class="info-row">
+                            <div class="info-label">
+                                <mat-icon>event</mat-icon>
+                                <span>Data i czas</span>
                             </div>
-                        </mat-list-item>
+                            <div class="info-value">{{ log.timestamp | date: 'dd MMMM yyyy, HH:mm:ss' }}</div>
+                        </div>
 
-                        <mat-list-item>
-                            <mat-icon matListItemIcon>inventory_2</mat-icon>
-                            <div matListItemTitle>Nazwa encji</div>
-                            <div matListItemLine class="value">{{ log.entityName }}</div>
-                            <div matListItemLine class="sub-value">ID: {{ log.entityId }}</div>
-                        </mat-list-item>
+                        <div class="info-row">
+                            <div class="info-label">
+                                <mat-icon>person</mat-icon>
+                                <span>Użytkownik</span>
+                            </div>
+                            <div class="info-value">
+                                <span class="user-name">{{ log.userName }}</span>
+                                <span class="user-role">{{ log.userRole }}</span>
+                            </div>
+                        </div>
 
                         <mat-divider></mat-divider>
 
-                        <mat-list-item>
-                            <mat-icon matListItemIcon>history</mat-icon>
-                            <div matListItemTitle>Akcja</div>
-                            <div matListItemLine>
-                                <mat-chip class="action-chip {{ getActionChipClass(log.action) }}">
+                        <div class="info-row">
+                            <div class="info-label">
+                                <mat-icon>category</mat-icon>
+                                <span>Typ encji</span>
+                            </div>
+                            <div class="info-value">
+                                <mat-icon class="entity-icon">{{ getEntityTypeIcon(log.entityType) }}</mat-icon>
+                                <span>{{ AUDIT_ENTITY_LABELS[log.entityType] }}</span>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="info-label">
+                                <mat-icon>inventory_2</mat-icon>
+                                <span>Nazwa encji</span>
+                            </div>
+                            <div class="info-value">
+                                <span class="entity-name">{{ log.entityName }}</span>
+                                <span class="entity-id">ID: {{ log.entityId }}</span>
+                            </div>
+                        </div>
+
+                        <mat-divider></mat-divider>
+
+                        <div class="info-row">
+                            <div class="info-label">
+                                <mat-icon>history</mat-icon>
+                                <span>Akcja</span>
+                            </div>
+                            <div class="info-value">
+                                <mat-chip [ngClass]="getChipClass(log.action)">
+                                    <div class="d-flex align-items-center gap-1">
                                     <mat-icon>{{ getActionIcon(log.action) }}</mat-icon>
-                                    {{ AUDIT_ACTION_LABELS[log.action] }}
+                                    <span>{{ AUDIT_ACTION_LABELS[log.action] }}</span>
+                                    </div>
                                 </mat-chip>
                             </div>
-                        </mat-list-item>
+                        </div>
 
-                        <mat-list-item>
-                            <mat-icon matListItemIcon>priority_high</mat-icon>
-                            <div matListItemTitle>Ważność</div>
-                            <div matListItemLine>
+                        <div class="info-row">
+                            <div class="info-label">
+                                <mat-icon>priority_high</mat-icon>
+                                <span>Ważność</span>
+                            </div>
+                            <div class="info-value">
                                 <div class="severity-indicator">
                                     <span
                                         class="severity-dot"
@@ -80,8 +98,8 @@
                                     <span class="severity-label">{{ log.severity | titlecase }}</span>
                                 </div>
                             </div>
-                        </mat-list-item>
-                    </mat-list>
+                        </div>
+                    </div>
                 </mat-card-content>
             </mat-card>
 
@@ -135,30 +153,36 @@
                         <mat-card-title>Informacje techniczne</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <mat-list>
+                        <div class="info-grid">
                             @if (log.ipAddress) {
-                                <mat-list-item>
-                                    <mat-icon matListItemIcon>router</mat-icon>
-                                    <div matListItemTitle>Adres IP</div>
-                                    <div matListItemLine class="value">{{ log.ipAddress }}</div>
-                                </mat-list-item>
+                                <div class="info-row">
+                                    <div class="info-label">
+                                        <mat-icon>router</mat-icon>
+                                        <span>Adres IP</span>
+                                    </div>
+                                    <div class="info-value">{{ log.ipAddress }}</div>
+                                </div>
                             }
                             @if (log.userAgent) {
-                                <mat-list-item>
-                                    <mat-icon matListItemIcon>computer</mat-icon>
-                                    <div matListItemTitle>Przeglądarka / Klient</div>
-                                    <div matListItemLine class="value">{{ log.userAgent }}</div>
-                                </mat-list-item>
+                                <div class="info-row">
+                                    <div class="info-label">
+                                        <mat-icon>computer</mat-icon>
+                                        <span>Przeglądarka / Klient</span>
+                                    </div>
+                                    <div class="info-value">{{ log.userAgent }}</div>
+                                </div>
                             }
                             @if (log.previousVersionId) {
                                 <mat-divider></mat-divider>
-                                <mat-list-item>
-                                    <mat-icon matListItemIcon>history_toggle_off</mat-icon>
-                                    <div matListItemTitle>Poprzednia wersja</div>
-                                    <div matListItemLine class="value">{{ log.previousVersionId }}</div>
-                                </mat-list-item>
+                                <div class="info-row">
+                                    <div class="info-label">
+                                        <mat-icon>history_toggle_off</mat-icon>
+                                        <span>Poprzednia wersja</span>
+                                    </div>
+                                    <div class="info-value">{{ log.previousVersionId }}</div>
+                                </div>
                             }
-                        </mat-list>
+                        </div>
                     </mat-card-content>
                 </mat-card>
             }
