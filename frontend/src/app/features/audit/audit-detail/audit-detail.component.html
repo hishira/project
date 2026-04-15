@@ -1,0 +1,175 @@
+<app-page-header>
+    <div class="header main-header">
+        @if (auditLog()) {
+            <h1>Szczegół zmiany audytu</h1>
+        } @else {
+            <h1>Nie znaleziono logu</h1>
+        }
+    </div>
+    @if (auditLog()?.isRestorable) {
+        <div class="main-header-buttons">
+            <button mat-raised-button color="accent" (click)="restoreLog()">
+                <mat-icon>restore</mat-icon> Przywróć wersję
+            </button>
+        </div>
+    }
+</app-page-header>
+
+<app-main-page-view>
+    @if (auditLog(); as log) {
+        <div class="detail-container">
+            <!-- Podstawowe informacje -->
+            <mat-card class="info-card">
+                <mat-card-header>
+                    <mat-card-title>Informacje o zmianie</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-list>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>event</mat-icon>
+                            <div matListItemTitle>Data i czas</div>
+                            <div matListItemLine class="value">{{ log.timestamp | date: 'dd MMMM yyyy, HH:mm:ss' }}</div>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>person</mat-icon>
+                            <div matListItemTitle>Użytkownik</div>
+                            <div matListItemLine class="value">{{ log.userName }}</div>
+                            <div matListItemLine class="sub-value">{{ log.userRole }}</div>
+                        </mat-list-item>
+
+                        <mat-divider></mat-divider>
+
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>category</mat-icon>
+                            <div matListItemTitle>Typ encji</div>
+                            <div matListItemLine class="value">
+                                <mat-icon class="entity-icon">{{ getEntityTypeIcon(log.entityType) }}</mat-icon>
+                                {{ AUDIT_ENTITY_LABELS[log.entityType] }}
+                            </div>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>inventory_2</mat-icon>
+                            <div matListItemTitle>Nazwa encji</div>
+                            <div matListItemLine class="value">{{ log.entityName }}</div>
+                            <div matListItemLine class="sub-value">ID: {{ log.entityId }}</div>
+                        </mat-list-item>
+
+                        <mat-divider></mat-divider>
+
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>history</mat-icon>
+                            <div matListItemTitle>Akcja</div>
+                            <div matListItemLine>
+                                <mat-chip class="action-chip {{ getActionChipClass(log.action) }}">
+                                    <mat-icon>{{ getActionIcon(log.action) }}</mat-icon>
+                                    {{ AUDIT_ACTION_LABELS[log.action] }}
+                                </mat-chip>
+                            </div>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>priority_high</mat-icon>
+                            <div matListItemTitle>Ważność</div>
+                            <div matListItemLine>
+                                <div class="severity-indicator">
+                                    <span
+                                        class="severity-dot"
+                                        [style.backgroundColor]="getActionColor(log.severity)"></span>
+                                    <span class="severity-label">{{ log.severity | titlecase }}</span>
+                                </div>
+                            </div>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Opis zmiany -->
+            <mat-card class="description-card">
+                <mat-card-header>
+                    <mat-card-title>Opis zmiany</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p class="description">{{ log.description }}</p>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Szczegóły zmian (jeśli dostępne) -->
+            @if (log.changes && log.changes.length > 0) {
+                <mat-card class="changes-card">
+                    <mat-card-header>
+                        <mat-card-title>Szczegółowe zmiany</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <table class="changes-table">
+                            <thead>
+                                <tr>
+                                    <th>Pole</th>
+                                    <th>Poprzednia wartość</th>
+                                    <th>Nowa wartość</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (change of log.changes; track change.fieldName) {
+                                    <tr>
+                                        <td class="field-name">{{ change.fieldName }}</td>
+                                        <td class="old-value">
+                                            <span class="value-removed">{{ formatValue(change.oldValue) }}</span>
+                                        </td>
+                                        <td class="new-value">
+                                            <span class="value-added">{{ formatValue(change.newValue) }}</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </mat-card-content>
+                </mat-card>
+            }
+
+            <!-- Informacje techniczne -->
+            @if (log.ipAddress || log.userAgent) {
+                <mat-card class="technical-card">
+                    <mat-card-header>
+                        <mat-card-title>Informacje techniczne</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-list>
+                            @if (log.ipAddress) {
+                                <mat-list-item>
+                                    <mat-icon matListItemIcon>router</mat-icon>
+                                    <div matListItemTitle>Adres IP</div>
+                                    <div matListItemLine class="value">{{ log.ipAddress }}</div>
+                                </mat-list-item>
+                            }
+                            @if (log.userAgent) {
+                                <mat-list-item>
+                                    <mat-icon matListItemIcon>computer</mat-icon>
+                                    <div matListItemTitle>Przeglądarka / Klient</div>
+                                    <div matListItemLine class="value">{{ log.userAgent }}</div>
+                                </mat-list-item>
+                            }
+                            @if (log.previousVersionId) {
+                                <mat-divider></mat-divider>
+                                <mat-list-item>
+                                    <mat-icon matListItemIcon>history_toggle_off</mat-icon>
+                                    <div matListItemTitle>Poprzednia wersja</div>
+                                    <div matListItemLine class="value">{{ log.previousVersionId }}</div>
+                                </mat-list-item>
+                            }
+                        </mat-list>
+                    </mat-card-content>
+                </mat-card>
+            }
+        </div>
+    } @else {
+        <div class="not-found">
+            <mat-icon>error_outline</mat-icon>
+            <p>Nie znaleziono logu audytu o podanym identyfikatorze.</p>
+            <button mat-raised-button color="primary" routerLink="/audit">
+                <mat-icon>arrow_back</mat-icon> Wróć do listy
+            </button>
+        </div>
+    }
+</app-main-page-view>

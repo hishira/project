@@ -115,29 +115,29 @@
             <div class="rates">
               <div class="rate-row">
                 <span class="label">Open rate:</span>
-                <span class="value">{{ calcOpenRate(campaign) }}%</span>
+                <span class="value">{{ calcOpenRate() }}%</span>
                 <mat-progress-bar
                   mode="determinate"
-                  [value]="calcOpenRate(campaign)"
-                  [attr.aria-label]="'Wskaźnik otwarć: ' + calcOpenRate(campaign) + '%'">
+                  [value]="calcOpenRate()"
+                  [attr.aria-label]="'Wskaźnik otwarć: ' + calcOpenRate() + '%'">
                 </mat-progress-bar>
               </div>
               <div class="rate-row">
                 <span class="label">Click rate (z otwarć):</span>
-                <span class="value">{{ calcClickRate(campaign) }}%</span>
+                <span class="value">{{ calcClickRate() }}%</span>
                 <mat-progress-bar
                   mode="determinate"
-                  [value]="calcClickRate(campaign)"
-                  [attr.aria-label]="'Wskaźnik kliknięć: ' + calcClickRate(campaign) + '%'">
+                  [value]="calcClickRate()"
+                  [attr.aria-label]="'Wskaźnik kliknięć: ' + calcClickRate() + '%'">
                 </mat-progress-bar>
               </div>
               <div class="rate-row">
                 <span class="label">Bounce rate:</span>
-                <span class="value">{{ calcBounceRate(campaign) }}%</span>
+                <span class="value">{{ calcBounceRate() }}%</span>
                 <mat-progress-bar
                   mode="determinate"
-                  [value]="calcBounceRate(campaign)"
-                  [attr.aria-label]="'Wskaźnik odbić: ' + calcBounceRate(campaign) + '%'">
+                  [value]="calcBounceRate()"
+                  [attr.aria-label]="'Wskaźnik odbić: ' + calcBounceRate() + '%'">
                 </mat-progress-bar>
               </div>
             </div>

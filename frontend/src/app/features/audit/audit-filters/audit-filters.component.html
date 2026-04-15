@@ -1,0 +1,70 @@
+<div class="filters-container">
+    <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Szukaj</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+            matInput
+            placeholder="Wpisz nazwę lub opis..."
+            [ngModel]="search()"
+            (ngModelChange)="searchChange.emit($event)"
+        />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Typ encji</mat-label>
+        <mat-select [value]="entityType()" (selectionChange)="entityTypeChange.emit($event.value)">
+            <mat-option value="">Wszystkie</mat-option>
+            @for (type of entityTypes; track type) {
+                <mat-option [value]="type">{{ AUDIT_ENTITY_LABELS[type] }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Akcja</mat-label>
+        <mat-select [value]="action()" (selectionChange)="actionChange.emit($event.value)">
+            <mat-option value="">Wszystkie</mat-option>
+            @for (act of actionTypes; track act) {
+                <mat-option [value]="act">{{ AUDIT_ACTION_LABELS[act] }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Ważność</mat-label>
+        <mat-select [value]="severity()" (selectionChange)="severityChange.emit($event.value)">
+            <mat-option value="">Wszystkie</mat-option>
+            @for (sev of severities; track sev) {
+                <mat-option [value]="sev">{{ sev | titlecase }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Od daty</mat-label>
+        <input
+            matInput
+            [matDatepicker]="dateFromPicker"
+            [value]="dateFrom()"
+            (dateChange)="dateFromChange.emit($event.value)"
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="dateFromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dateFromPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Do daty</mat-label>
+        <input
+            matInput
+            [matDatepicker]="dateToPicker"
+            [value]="dateTo()"
+            (dateChange)="dateToChange.emit($event.value)"
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="dateToPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dateToPicker></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-icon-button color="primary" class="clear-filters-btn" (click)="clearFilters.emit()" matTooltip="Wyczyść filtry">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>

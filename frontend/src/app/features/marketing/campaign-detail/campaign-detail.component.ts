@@ -1,5 +1,4 @@
-// campaign-detail.component.ts
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -54,9 +53,25 @@ export class CampaignDetailComponent {
   readonly getStatusClass = getCampaignStatusClass;
   readonly getTypeIcon = getCampaignTypeIcon;
   readonly formatDateTime = formatDateTimePolish;
-  readonly calcOpenRate = calculateOpenRate;
-  readonly calcClickRate = calculateClickRate;
-  readonly calcBounceRate = calculateBounceRate;
+
+  // Wrapper functions that accept Campaign object
+  readonly calcOpenRate = computed(() => {
+    const c = this.campaign();
+    if (!c) return 0;
+    return calculateOpenRate(c.stats.opened, c.stats.recipients);
+  });
+
+  readonly calcClickRate = computed(() => {
+    const c = this.campaign();
+    if (!c) return 0;
+    return calculateClickRate(c.stats.clicked, c.stats.opened);
+  });
+
+  readonly calcBounceRate = computed(() => {
+    const c = this.campaign();
+    if (!c) return 0;
+    return calculateBounceRate(c.stats.bounced, c.stats.recipients);
+  });
 
   constructor() {
     this.route.paramMap.subscribe(params => {
