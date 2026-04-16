@@ -1,0 +1,32 @@
+<!-- Szczegóły zmian (jeśli dostępne) -->
+@if (log().changes?.length) {
+    <mat-card class="changes-card">
+        <mat-card-header>
+            <mat-card-title>Szczegółowe zmiany</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <table class="changes-table">
+                <thead>
+                    <tr>
+                        <th>Pole</th>
+                        <th>Poprzednia wartość</th>
+                        <th>Nowa wartość</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (change of log().changes; track change.fieldName) {
+                        <tr>
+                            <td class="field-name">{{ change.fieldName }}</td>
+                            <td class="old-value">
+                                <span class="value-removed">{{ formatValue(change.oldValue) }}</span>
+                            </td>
+                            <td class="new-value">
+                                <span class="value-added">{{ formatValue(change.newValue) }}</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </mat-card-content>
+    </mat-card>
+}

@@ -1,0 +1,84 @@
+<!-- Podstawowe informacje -->
+<mat-card class="info-card">
+    <mat-card-header>
+        <mat-card-title>Informacje o zmianie</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="info-grid">
+            <div class="info-row">
+                <div class="info-label">
+                    <mat-icon>event</mat-icon>
+                    <span>Data i czas</span>
+                </div>
+                <div class="info-value">{{ log().timestamp | date: 'dd MMMM yyyy, HH:mm:ss' }}</div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <mat-icon>person</mat-icon>
+                    <span>Użytkownik</span>
+                </div>
+                <div class="info-value">
+                    <span class="user-name">{{ log().userName }}</span>
+                    <span class="user-role">{{ log().userRole }}</span>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <mat-icon>category</mat-icon>
+                    <span>Typ encji</span>
+                </div>
+                <div class="info-value">
+                    <mat-icon class="entity-icon">{{ getEntityTypeIcon(log().entityType) }}</mat-icon>
+                    <span>{{ AUDIT_ENTITY_LABELS[log().entityType] }}</span>
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <mat-icon>inventory_2</mat-icon>
+                    <span>Nazwa encji</span>
+                </div>
+                <div class="info-value">
+                    <span class="entity-name">{{ log().entityName }}</span>
+                    <span class="entity-id">ID: {{ log().entityId }}</span>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <mat-icon>history</mat-icon>
+                    <span>Akcja</span>
+                </div>
+                <div class="info-value">
+                    <mat-chip [ngClass]="getChipClass(log().action)">
+                        <div class="d-flex align-items-center gap-1">
+                        <mat-icon>{{ getActionIcon(log().action) }}</mat-icon>
+                        <span>{{ AUDIT_ACTION_LABELS[log().action] }}</span>
+                        </div>
+                    </mat-chip>
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <mat-icon>priority_high</mat-icon>
+                    <span>Ważność</span>
+                </div>
+                <div class="info-value">
+                    <div class="severity-indicator">
+                        <span
+                            class="severity-dot"
+                            [style.backgroundColor]="getActionColor(log().severity)"></span>
+                        <span class="severity-label">{{ log().severity | titlecase }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

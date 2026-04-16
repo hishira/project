@@ -12,6 +12,10 @@ import { MainPageViewComponent } from '../../../core/components/main-page-view/m
 import { AuditLog, AUDIT_ENTITY_LABELS, AUDIT_ACTION_LABELS, AuditActionType } from '../audit.model';
 import { AuditService } from '../audit.service';
 import { getAuditActionIcon, getActionSeverityColor, getActionChipClass, getEntityTypeIcon } from '../audit.utils';
+import { AuditDetailInfoComponent } from './components/audit-detail-info/audit-detail-info.component';
+import { AuditDetailDescriptionComponent } from './components/audit-detail-description/audit-detail-description.component';
+import { AuditDetailChangesComponent } from './components/audit-detail-changes/audit-detail-changes.component';
+import { AuditDetailTechnicalComponent } from './components/audit-detail-technical/audit-detail-technical.component';
 
 @Component({
     selector: 'app-audit-detail',
@@ -28,6 +32,10 @@ import { getAuditActionIcon, getActionSeverityColor, getActionChipClass, getEnti
         MatTooltipModule,
         PageHeaderComponent,
         MainPageViewComponent,
+        AuditDetailInfoComponent,
+        AuditDetailDescriptionComponent,
+        AuditDetailChangesComponent,
+        AuditDetailTechnicalComponent,
     ],
     templateUrl: './audit-detail.component.html',
     styleUrls: ['./audit-detail.component.scss'],
@@ -39,9 +47,6 @@ export class AuditDetailComponent implements OnInit {
 
     readonly auditLog = signal<AuditLog | undefined>(undefined);
 
-    readonly AUDIT_ENTITY_LABELS = AUDIT_ENTITY_LABELS;
-    readonly AUDIT_ACTION_LABELS = AUDIT_ACTION_LABELS;
-
     ngOnInit(): void {
         const id = this.route.snapshot.paramMap.get('id');
         if (id) {
@@ -50,25 +55,10 @@ export class AuditDetailComponent implements OnInit {
         }
     }
 
-    getActionIcon = getAuditActionIcon;
-    getActionColor = getActionSeverityColor;
-    getActionChipClass = getActionChipClass;
-    getEntityTypeIcon = getEntityTypeIcon;
-
     restoreLog(): void {
         const log = this.auditLog();
         if (log && log.isRestorable) {
             this.auditService.restoreAuditLog(log.id);
         }
-    }
-
-    formatValue(value: string | number | boolean | null): string {
-        if (value === null) return 'puste';
-        if (typeof value === 'boolean') return value ? 'Tak' : 'Nie';
-        return String(value);
-    }
-
-    getChipClass(action: AuditActionType): string{
-        return `action-chip ${this. getActionChipClass(action)}`;
     }
 }

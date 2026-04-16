@@ -1,0 +1,40 @@
+<!-- Informacje techniczne -->
+@if (log().ipAddress || log().userAgent) {
+    <mat-card class="technical-card">
+        <mat-card-header>
+            <mat-card-title>Informacje techniczne</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="info-grid">
+                @if (log().ipAddress) {
+                    <div class="info-row">
+                        <div class="info-label">
+                            <mat-icon>router</mat-icon>
+                            <span>Adres IP</span>
+                        </div>
+                        <div class="info-value">{{ log().ipAddress }}</div>
+                    </div>
+                }
+                @if (log().userAgent) {
+                    <div class="info-row">
+                        <div class="info-label">
+                            <mat-icon>computer</mat-icon>
+                            <span>Przeglądarka / Klient</span>
+                        </div>
+                        <div class="info-value">{{ log().userAgent }}</div>
+                    </div>
+                }
+                @if (log().previousVersionId) {
+                    <mat-divider></mat-divider>
+                    <div class="info-row">
+                        <div class="info-label">
+                            <mat-icon>history_toggle_off</mat-icon>
+                            <span>Poprzednia wersja</span>
+                        </div>
+                        <div class="info-value">{{ log().previousVersionId }}</div>
+                    </div>
+                }
+            </div>
+        </mat-card-content>
+    </mat-card>
+}

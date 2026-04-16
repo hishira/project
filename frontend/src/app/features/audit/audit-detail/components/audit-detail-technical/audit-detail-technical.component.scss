@@ -1,0 +1,60 @@
+.technical-card {
+    mat-card-header {
+        margin-bottom: 16px;
+    }
+
+    mat-card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1e293b;
+    }
+}
+
+.info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.info-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 12px 0;
+    gap: 16px;
+
+    &:first-child {
+        padding-top: 0;
+    }
+}
+
+.info-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    min-width: 180px;
+
+    mat-icon {
+        color: #64748b;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    span {
+        font-size: 14px;
+        color: #64748b;
+        font-weight: 500;
+    }
+}
+
+.info-value {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: #1e293b;
+}

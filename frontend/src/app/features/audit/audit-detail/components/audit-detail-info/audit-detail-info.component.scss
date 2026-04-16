@@ -1,0 +1,169 @@
+.info-card {
+    mat-card-header {
+        margin-bottom: 16px;
+    }
+
+    mat-card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1e293b;
+    }
+}
+
+.info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.info-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 12px 0;
+    gap: 16px;
+
+    &:first-child {
+        padding-top: 0;
+    }
+}
+
+.info-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    min-width: 180px;
+
+    mat-icon {
+        color: #64748b;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    span {
+        font-size: 14px;
+        color: #64748b;
+        font-weight: 500;
+    }
+}
+
+.info-value {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: #1e293b;
+
+    .user-name {
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .user-role {
+        font-size: 12px;
+        color: #64748b;
+        margin-left: 8px;
+    }
+
+    .entity-name {
+        font-weight: 500;
+        color: #1e293b;
+    }
+
+    .entity-id {
+        font-size: 12px;
+        color: #64748b;
+        margin-left: 8px;
+    }
+}
+
+.entity-icon {
+    color: #6366f1;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.action-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+
+    mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
+
+    &.chip-create {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    &.chip-update {
+        background-color: #e3f2fd;
+        color: #1565c0;
+    }
+
+    &.chip-delete {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+
+    &.chip-restore {
+        background-color: #f3e5f5;
+        color: #7b1fa2;
+    }
+
+    &.chip-change {
+        background-color: #fff3e0;
+        color: #ef6c00;
+    }
+
+    &.chip-export {
+        background-color: #e0f2f1;
+        color: #00695c;
+    }
+
+    &.chip-import {
+        background-color: #e8eaf6;
+        color: #283593;
+    }
+
+    &.chip-permission {
+        background-color: #fce4ec;
+        color: #ad1457;
+    }
+
+    &.chip-default {
+        background-color: #f5f5f5;
+        color: #424242;
+    }
+}
+
+.severity-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    .severity-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .severity-label {
+        font-weight: 500;
+    }
+}
