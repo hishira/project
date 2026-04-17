@@ -1,0 +1,69 @@
+<app-page-header>
+  <div class="header main-header">
+    <h1>Eksport danych</h1>
+  </div>
+  <div class="main-header-buttons">
+    <button mat-flat-button color="primary" (click)="openExportModal()">
+      <mat-icon>file_upload</mat-icon>
+      Nowy eksport
+    </button>
+  </div>
+</app-page-header>
+
+<app-main-page-view>
+  <div class="export-list-container">
+    <mat-card>
+      <mat-card-title>Ostatnie eksporty</mat-card-title>
+      <mat-card-content>
+        <table mat-table [dataSource]="exportJobs()" class="export-table">
+          <ng-container matColumnDef="view">
+            <th mat-header-cell *matHeaderCellDef>Widok</th>
+            <td mat-cell *matCellDef="let job">{{ job.view }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Format</th>
+            <td mat-cell *matCellDef="let job">{{ job.type }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef>Utworzono</th>
+            <td mat-cell *matCellDef="let job">{{ job.createdAt }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let job">{{ job.status }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let job">
+              <button mat-button color="primary" (click)="viewDetails(job); $event.stopPropagation()">Szczegóły</button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['view', 'type', 'createdAt', 'status', 'actions']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['view', 'type', 'createdAt', 'status', 'actions']"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>Zakres danych</mat-card-title>
+      <mat-card-content>
+        <p>W systemie dostępne encje do eksportu:</p>
+        <ul>
+          <li>Tickety</li>
+          <li>Agreementy</li>
+          <li>Użytkownicy</li>
+          <li>Klienci</li>
+          <li>Dokumenty</li>
+          <li>Faktury</li>
+          <li>Projekty</li>
+        </ul>
+        <p>Eksport odbywa się w postaci modalnego kreatora, w którym wybierasz encję, format i pola.</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</app-main-page-view>

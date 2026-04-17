@@ -87,6 +87,11 @@ export const routes: Routes = [
         loadChildren: () => import('./features/offer/offer.routes').then(m => m.OFFERS_ROUTES)
       },
       {
+        path: 'import-export',
+        loadChildren: () => import('./features/import-export/import-export.routes').then(m => m.IMPORT_EXPORT_ROUTES),
+        canActivate: [authGuard],
+      },
+      {
         path: 'social',
         loadChildren: () => import('./features/social/social.routes').then(m => m.SOCIAL_ROUTES)
       },

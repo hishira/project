@@ -13,12 +13,12 @@
     <div class="list-container">
         <!-- Panel filtrów -->
         <app-audit-filters
-            [search]="filterSearch()"
-            [entityType]="filterEntityType()"
-            [action]="filterAction()"
-            [severity]="filterSeverity()"
-            [dateFrom]="filterDateFrom()"
-            [dateTo]="filterDateTo()"
+            [search]="filterService.filterSearch()"
+            [entityType]="filterService.filterEntityType()"
+            [action]="filterService.filterAction()"
+            [severity]="filterService.filterSeverity()"
+            [dateFrom]="filterService.filterDateFrom()"
+            [dateTo]="filterService.filterDateTo()"
             (searchChange)="onSearchChange($event)"
             (entityTypeChange)="onEntityTypeChange($event)"
             (actionChange)="onActionChange($event)"
@@ -35,10 +35,7 @@
                     <ng-container matColumnDef="timestamp">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header="timestamp">Data i czas</th>
                         <td mat-cell *matCellDef="let log">
-                            <div class="timestamp-cell">
-                                <span class="date">{{ log.timestamp | date: 'dd MMM yyyy' }}</span>
-                                <span class="time">{{ log.timestamp | date: 'HH:mm:ss' }}</span>
-                            </div>
+                            <app-audit-timestamp-cell [log]="log"></app-audit-timestamp-cell>
                         </td>
                     </ng-container>
 
@@ -46,13 +43,7 @@
                     <ng-container matColumnDef="entity">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header="entityType">Encja</th>
                         <td mat-cell *matCellDef="let log">
-                            <div class="entity-cell">
-                                <mat-icon class="entity-icon">{{ getEntityTypeIcon(log.entityType) }}</mat-icon>
-                                <div class="entity-info">
-                                    <span class="entity-name">{{ log.entityName }}</span>
-                                    <span class="entity-type">{{ getEntityLabel(log.entityType) }}</span>
-                                </div>
-                            </div>
+                            <app-audit-entity-cell [log]="log"></app-audit-entity-cell>
                         </td>
                     </ng-container>
 

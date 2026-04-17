@@ -1,0 +1,15 @@
+.timestamp-cell {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+
+    .date {
+        font-weight: 500;
+        color: #1e293b;
+    }
+
+    .time {
+        font-size: 12px;
+        color: #64748b;
+    }
+}

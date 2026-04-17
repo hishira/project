@@ -1,0 +1,20 @@
+.export-list-container {
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+}
+
+.export-table {
+  width: 100%;
+}
+
+.main-header-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 960px) {
+  .export-list-container {
+    padding: 16px;
+  }
+}

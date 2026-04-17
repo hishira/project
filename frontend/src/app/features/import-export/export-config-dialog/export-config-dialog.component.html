@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Nowy eksport danych</h2>
+<div mat-dialog-content class="dialog-content">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Encja</mat-label>
+    <mat-select [value]="selectedEntityId()" (selectionChange)="selectEntity($event.value)">
+      <mat-option *ngFor="let entity of entities" [value]="entity.id">{{ entity.label }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Format exportu</mat-label>
+    <mat-select [value]="exportType()" (selectionChange)="exportType.set($event.value)">
+      <mat-option value="CSV">CSV</mat-option>
+      <mat-option value="JSON">JSON</mat-option>
+      <mat-option value="Excel">Excel</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="field-list">
+    <h3>Wybierz pola</h3>
+    <div *ngFor="let field of currentFields" class="field-item">
+      <mat-checkbox
+        [checked]="selectedFields().includes(field.key)"
+        (change)="toggleField(field.key, $event.checked)">
+        {{ field.label }}
+      </mat-checkbox>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Anuluj</button>
+  <button mat-flat-button color="primary" (click)="confirm()">Utwórz eksport</button>
+</div>

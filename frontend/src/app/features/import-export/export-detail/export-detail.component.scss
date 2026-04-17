@@ -1,0 +1,13 @@
+.export-detail-container {
+  padding: 24px;
+}
+
+.detail-row {
+  margin-bottom: 12px;
+}
+
+@media (max-width: 960px) {
+  .export-detail-container {
+    padding: 16px;
+  }
+}

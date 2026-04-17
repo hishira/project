@@ -13,7 +13,10 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { AuditLog, AUDIT_ENTITY_LABELS, AUDIT_ACTION_LABELS, AuditEntityType, AuditActionType, AuditSeverity } from '../audit.model';
 import { AuditService } from '../audit.service';
+import { AuditFilterService } from '../audit-filter.service';
 import { AuditFiltersComponent } from '../audit-filters/audit-filters.component';
+import { AuditTimestampCellComponent } from './cells/audit-timestamp-cell/audit-timestamp-cell.component';
+import { AuditEntityCellComponent } from './cells/audit-entity-cell/audit-entity-cell.component';
 import {
     getAuditActionIcon,
     getActionSeverityColor,
@@ -40,13 +43,16 @@ import {
         PageHeaderComponent,
         MainPageViewComponent,
         AuditFiltersComponent,
+        AuditTimestampCellComponent,
+        AuditEntityCellComponent,
     ],
     templateUrl: './audit-list.component.html',
     styleUrls: ['./audit-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuditListComponent implements AfterViewInit {
-    private readonly auditService = inject(AuditService);
+    readonly auditService = inject(AuditService);
+    readonly filterService = inject(AuditFilterService);
     readonly auditLogs = this.auditService.auditLogs;
 
     readonly dataSource = signal<MatTableDataSource<AuditLog>>(new MatTableDataSource<AuditLog>([]));
@@ -54,13 +60,6 @@ export class AuditListComponent implements AfterViewInit {
 
     readonly sort = viewChild(MatSort);
     readonly paginator = viewChild(MatPaginator);
-
-    readonly filterSearch = signal<string>('');
-    readonly filterEntityType = signal<AuditEntityType | ''>('');
-    readonly filterAction = signal<AuditActionType | ''>('');
-    readonly filterSeverity = signal<AuditSeverity | ''>('');
-    readonly filterDateFrom = signal<Date | null>(null);
-    readonly filterDateTo = signal<Date | null>(null);
 
     readonly AUDIT_ENTITY_LABELS = AUDIT_ENTITY_LABELS;
     readonly AUDIT_ACTION_LABELS = AUDIT_ACTION_LABELS;
@@ -73,7 +72,7 @@ export class AuditListComponent implements AfterViewInit {
         if (sort && paginator) {
             dataSource.sort = sort;
             dataSource.paginator = paginator;
-            dataSource.filterPredicate = this.filterPredicate;
+            dataSource.filterPredicate = this.filterService.filterPredicate;
         }
     }
 
@@ -82,77 +81,43 @@ export class AuditListComponent implements AfterViewInit {
         this.dataSource.set(dataSource);
     }
 
-    private filterPredicate = (data: AuditLog, filter: string): boolean => {
-        const filterObj = JSON.parse(filter);
-
-        if (filterObj.search) {
-            const search = filterObj.search.toLowerCase();
-            const matchesSearch =
-                data.entityName.toLowerCase().includes(search) ||
-                data.userName.toLowerCase().includes(search) ||
-                data.description.toLowerCase().includes(search);
-            if (!matchesSearch) return false;
-        }
-
-        if (filterObj.entityType && data.entityType !== filterObj.entityType) return false;
-        if (filterObj.action && data.action !== filterObj.action) return false;
-        if (filterObj.severity && data.severity !== filterObj.severity) return false;
-        if (filterObj.dateFrom && new Date(data.timestamp) < new Date(filterObj.dateFrom)) return false;
-        if (filterObj.dateTo && new Date(data.timestamp) > new Date(filterObj.dateTo)) return false;
-
-        return true;
-    };
-
     applyFilters() {
         const dataSource = this.dataSource();
-        const filterObj = {
-            search: this.filterSearch(),
-            entityType: this.filterEntityType(),
-            action: this.filterAction(),
-            severity: this.filterSeverity(),
-            dateFrom: this.filterDateFrom(),
-            dateTo: this.filterDateTo(),
-        };
-        dataSource.filter = JSON.stringify(filterObj);
+        dataSource.filter = this.filterService.getFilterString();
     }
 
     clearFilters() {
-        this.filterSearch.set('');
-        this.filterEntityType.set('');
-        this.filterAction.set('');
-        this.filterSeverity.set('');
-        this.filterDateFrom.set(null);
-        this.filterDateTo.set(null);
+        this.filterService.clearFilters();
         this.applyFilters();
     }
 
     onSearchChange(search: string) {
-        this.filterSearch.set(search);
+        this.filterService.filterSearch.set(search);
         this.applyFilters();
     }
 
     onEntityTypeChange(entityType: AuditEntityType | '') {
-        this.filterEntityType.set(entityType);
+        this.filterService.filterEntityType.set(entityType);
         this.applyFilters();
     }
 
     onActionChange(action: AuditActionType | '') {
-        this.filterAction.set(action);
+        this.filterService.filterAction.set(action);
         this.applyFilters();
     }
 
     onSeverityChange(severity: AuditSeverity | '') {
-        this.filterSeverity.set(severity);
+        this.filterService.filterSeverity.set(severity);
         this.applyFilters();
     }
 
     onDateFromChange(date: Date | null) {
-        this.filterDateFrom.set(date);
+        this.filterService.filterDateFrom.set(date);
         this.applyFilters();
     }
 
     onDateToChange(date: Date | null) {
-        this.filterDateTo.set(date);
+        this.filterService.filterDateTo.set(date);
         this.applyFilters();
     }
 
