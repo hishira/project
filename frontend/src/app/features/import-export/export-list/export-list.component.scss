@@ -1,12 +1,110 @@
 .export-list-container {
   display: grid;
   gap: 24px;
-  padding: 24px;
+  padding: 32px;
 }
 
 .export-table {
   width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: left;
+    padding: 16px;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  td {
+    padding: 16px;
+    vertical-align: center;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  tr:hover {
+    background-color: #fafafa;
+  }
 }
+
+// Table Header Icons - proper sizing and alignment
+.table-header-icon {
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+  margin-right: 8px;
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Format Chips - color-coded
+.format-chip {
+  font-size: 12px !important;
+  height: 32px;
+  padding: 0 12px !important;
+  font-weight: 500;
+
+  &.format-csv {
+    background-color: #e3f2fd !important;
+    color: #1976d2 !important;
+  }
+
+  &.format-json {
+    background-color: #f3e5f5 !important;
+    color: #7b1fa2 !important;
+  }
+
+  &.format-excel {
+    background-color: #e8f5e9 !important;
+    color: #388e3c !important;
+  }
+}
+
+// Status Chips with Icons
+.status-ready {
+  background-color: #e8f5e9 !important;
+  color: #388e3c !important;
+
+  .status-icon {
+    margin-right: 6px;
+  }
+}
+
+.status-scheduled {
+  background-color: #fff3e0 !important;
+  color: #e65100 !important;
+
+  .status-icon {
+    margin-right: 6px;
+  }
+}
+
+.status-failed {
+  background-color: #ffebee !important;
+  color: #c62828 !important;
+
+  .status-icon {
+    margin-right: 6px;
+  }
+}
+
+// Status Icon sizing
+.status-icon {
+  font-size: 16px !important;
+  height: 16px !important;
+  width: 16px !important;
+  line-height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+// Action Button - use Material's default which is correct
+// No additional styling needed, Material icon buttons handle sizing properly
 
 .main-header-buttons {
   display: flex;
@@ -16,5 +114,40 @@
 @media (max-width: 960px) {
   .export-list-container {
     padding: 16px;
+    gap: 16px;
+  }
+
+  .export-table {
+    th,
+    td {
+      padding: 12px;
+      font-size: 13px;
+    }
+
+    th {
+      padding: 12px;
+    }
+  }
+
+  .table-header-icon {
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+    line-height: 18px;
+    margin-right: 6px;
+  }
+
+  .format-chip {
+    height: 28px;
+    font-size: 11px !important;
+    padding: 0 10px !important;
+  }
+
+  .status-icon {
+    font-size: 14px !important;
+    height: 14px !important;
+    width: 14px !important;
+    line-height: 14px;
+    margin-right: 4px;
   }
 }

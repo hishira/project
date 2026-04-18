@@ -6,28 +6,137 @@
 
 <app-main-page-view>
   <div class="export-detail-container">
-    <mat-card *ngIf="exportJob() as job; else noJob">
-      <mat-card-title>{{ job.view }}</mat-card-title>
-      <mat-card-content>
-        <div class="detail-row"><strong>ID:</strong> {{ job.id }}</div>
-        <div class="detail-row"><strong>Format:</strong> {{ job.type }}</div>
-        <div class="detail-row"><strong>Status:</strong> {{ job.status }}</div>
-        <div class="detail-row"><strong>Utworzono:</strong> {{ job.createdAt }}</div>
-        <div class="detail-row" *ngIf="job.schedule"><strong>Harmonogram:</strong> {{ job.schedule }}</div>
-        <div class="detail-row"><strong>Plik:</strong> {{ job.fileName }}</div>
-        <div class="detail-row"><strong>Wierszy:</strong> {{ job.rowCount }}</div>
-        <div class="detail-row"><strong>Inicjator:</strong> {{ job.initiatedBy }}</div>
-        <div class="detail-row"><strong>Opis:</strong> {{ job.description }}</div>
-        <div class="detail-row"><strong>Wybrane pola:</strong> {{ job.fields.join(', ') }}</div>
+    <mat-card *ngIf="exportJob() as job; else noJob" class="detail-card">
+      <div class="detail-header">
+        <mat-card-title class="detail-title">
+          <mat-icon>file_download</mat-icon>
+          {{ job.view }}
+        </mat-card-title>
+        <mat-chip [ngClass]="'status-' + job.status">
+          <mat-icon class="status-icon">{{ getStatusIcon(job.status) }}</mat-icon>
+          {{ getStatusLabel(job.status) }}
+        </mat-chip>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-content class="detail-content">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h3 class="section-title">
+              <mat-icon>info</mat-icon>
+              Informacje ogólne
+            </h3>
+            <div class="detail-row">
+              <span class="label">
+                <mat-icon>fingerprint</mat-icon>
+                ID
+              </span>
+              <span class="value">{{ job.id }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">
+                <mat-icon>description</mat-icon>
+                Format
+              </span>
+              <mat-chip class="format-chip" [ngClass]="'format-' + job.type.toLowerCase()">
+                {{ job.type }}
+              </mat-chip>
+            </div>
+            <div class="detail-row">
+              <span class="label">
+                <mat-icon>calendar_today</mat-icon>
+                Utworzono
+              </span>
+              <span class="value">{{ job.createdAt }}</span>
+            </div>
+            <div class="detail-row" *ngIf="job.schedule">
+              <span class="label">
+                <mat-icon>schedule</mat-icon>
+                Harmonogram
+              </span>
+              <span class="value">{{ job.schedule }}</span>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3 class="section-title">
+              <mat-icon>storage</mat-icon>
+              Dane
+            </h3>
+            <div class="detail-row">
+              <span class="label">
+                <mat-icon>attach_file</mat-icon>
+                Plik
+              </span>
+              <span class="value">{{ job.fileName }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">
+                <mat-icon>list</mat-icon>
+                Liczba wierszy
+              </span>
+              <span class="value">{{ job.rowCount }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">
+                <mat-icon>person</mat-icon>
+                Inicjator
+              </span>
+              <span class="value">{{ job.initiatedBy }}</span>
+            </div>
+          </div>
+        </div>
+
+        <mat-divider class="divider-top"></mat-divider>
+
+        <div class="detail-section">
+          <h3 class="section-title">
+            <mat-icon>description</mat-icon>
+            Opis
+          </h3>
+          <p class="description-text">{{ job.description }}</p>
+        </div>
+
+        <mat-divider class="divider-top"></mat-divider>
+
+        <div class="detail-section">
+          <h3 class="section-title">
+            <mat-icon>select_all</mat-icon>
+            Wybrane pola ({{ job.fields.length }})
+          </h3>
+          <div class="fields-container">
+            <mat-chip *ngFor="let field of job.fields" class="field-chip">
+              <mat-icon>check</mat-icon>
+              {{ field }}
+            </mat-chip>
+          </div>
+        </div>
       </mat-card-content>
-      <mat-card-actions>
-        <button mat-flat-button color="primary" [routerLink]="['/import-export/list']">Powrót do listy</button>
+
+      <mat-card-actions class="detail-actions">
+        <button mat-stroked-button [routerLink]="['/import-export/list']">
+          <mat-icon>arrow_back</mat-icon>
+          Powrót do listy
+        </button>
+        <button mat-flat-button color="primary">
+          <mat-icon>download</mat-icon>
+          Pobierz plik
+        </button>
       </mat-card-actions>
     </mat-card>
 
     <ng-template #noJob>
-      <mat-card>
-        <mat-card-content>Nie znaleziono szczegółów eksportu.</mat-card-content>
+      <mat-card class="no-job-card">
+        <mat-card-content class="no-job-content">
+          <mat-icon class="no-job-icon">not_found</mat-icon>
+          <h2>Nie znaleziono eksportu</h2>
+          <p>Żądany eksport nie istnieje lub został usunięty.</p>
+          <button mat-flat-button color="primary" [routerLink]="['/import-export/list']">
+            <mat-icon>arrow_back</mat-icon>
+            Wróć do listy
+          </button>
+        </mat-card-content>
       </mat-card>
     </ng-template>
   </div>

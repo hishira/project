@@ -22,24 +22,44 @@
           </ng-container>
 
           <ng-container matColumnDef="type">
-            <th mat-header-cell *matHeaderCellDef>Format</th>
-            <td mat-cell *matCellDef="let job">{{ job.type }}</td>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-icon class="table-header-icon">description</mat-icon>
+              Format
+            </th>
+            <td mat-cell *matCellDef="let job">
+              <mat-chip [ngClass]="'format-' + job.type.toLowerCase()">
+                {{ job.type }}
+              </mat-chip>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="createdAt">
-            <th mat-header-cell *matHeaderCellDef>Utworzono</th>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-icon class="table-header-icon">calendar_today</mat-icon>
+              Utworzono
+            </th>
             <td mat-cell *matCellDef="let job">{{ job.createdAt }}</td>
           </ng-container>
 
           <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let job">{{ job.status }}</td>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-icon class="table-header-icon">info</mat-icon>
+              Status
+            </th>
+            <td mat-cell *matCellDef="let job">
+              <mat-chip [ngClass]="'status-' + job.status">
+                <mat-icon class="status-icon">{{ getStatusIcon(job.status) }}</mat-icon>
+                {{ getStatusLabel(job.status) }}
+              </mat-chip>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let job">
-              <button mat-button color="primary" (click)="viewDetails(job); $event.stopPropagation()">Szczegóły</button>
+              <button mat-icon-button matTooltip="Pokaż szczegóły" color="primary" (click)="viewDetails(job); $event.stopPropagation()">
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
             </td>
           </ng-container>
 

@@ -5,6 +5,8 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { ImportExportService } from '../import-export.service';
@@ -14,7 +16,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-export-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, MatIconModule, PageHeaderComponent, MainPageViewComponent],
+  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, MatDividerModule, PageHeaderComponent, MainPageViewComponent],
   templateUrl: './export-detail.component.html',
   styleUrls: ['./export-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,5 +39,31 @@ export class ExportDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
+  }
+
+  getStatusIcon(status: string): string {
+    switch (status) {
+      case 'ready':
+        return 'check_circle';
+      case 'scheduled':
+        return 'schedule';
+      case 'failed':
+        return 'error';
+      default:
+        return 'help';
+    }
+  }
+
+  getStatusLabel(status: string): string {
+    switch (status) {
+      case 'ready':
+        return 'Gotowy';
+      case 'scheduled':
+        return 'Zaplanowany';
+      case 'failed':
+        return 'Błąd';
+      default:
+        return status;
+    }
   }
 }
