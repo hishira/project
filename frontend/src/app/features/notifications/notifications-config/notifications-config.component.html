@@ -1,0 +1,178 @@
+<app-page-header>
+  <div class="header main-header">
+    <h1>Konfiguracja powiadomień</h1>
+  </div>
+  <div class="main-header-buttons">
+    <button mat-stroked-button [routerLink]="['/notifications/list']">
+      <mat-icon>arrow_back</mat-icon>
+      Powrót do listy
+    </button>
+  </div>
+</app-page-header>
+
+<app-main-page-view>
+  <div class="config-container">
+    <form [formGroup]="configForm" (ngSubmit)="onSave()">
+      <!-- Global Settings -->
+      <mat-card class="config-card">
+        <mat-card-title>Ustawienia globalne</mat-card-title>
+        <mat-card-content>
+          <div class="global-settings">
+            <mat-slide-toggle formControlName="emailEnabled" class="setting-toggle">
+              <div class="toggle-content">
+                <mat-icon>email</mat-icon>
+                <div>
+                  <strong>Powiadomienia e-mail</strong>
+                  <p>Otrzymuj powiadomienia na adres e-mail</p>
+                </div>
+              </div>
+            </mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="smsEnabled" class="setting-toggle">
+              <div class="toggle-content">
+                <mat-icon>sms</mat-icon>
+                <div>
+                  <strong>Powiadomienia SMS</strong>
+                  <p>Otrzymuj powiadomienia SMS na telefon</p>
+                </div>
+              </div>
+            </mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="pushEnabled" class="setting-toggle">
+              <div class="toggle-content">
+                <mat-icon>notifications</mat-icon>
+                <div>
+                  <strong>Powiadomienia push</strong>
+                  <p>Otrzymuj powiadomienia push w przeglądarce</p>
+                </div>
+              </div>
+            </mat-slide-toggle>
+
+            <mat-slide-toggle formControlName="webSocketEnabled" class="setting-toggle">
+              <div class="toggle-content">
+                <mat-icon>sync</mat-icon>
+                <div>
+                  <strong>Powiadomienia w czasie rzeczywistym</strong>
+                  <p>WebSocket - natychmiastowe powiadomienia</p>
+                </div>
+              </div>
+            </mat-slide-toggle>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Quiet Hours -->
+      <mat-card class="config-card">
+        <mat-card-title>Ciche godziny</mat-card-title>
+        <mat-card-content>
+          <div class="quiet-hours-section">
+            <mat-slide-toggle formControlName="quietHours.enabled" class="setting-toggle">
+              <div class="toggle-content">
+                <mat-icon>nightlight</mat-icon>
+                <div>
+                  <strong>Włącz ciche godziny</strong>
+                  <p>Nie wysyłaj powiadomień w określonych godzinach</p>
+                </div>
+              </div>
+            </mat-slide-toggle>
+
+            <div class="time-settings" *ngIf="configForm.get('quietHours.enabled')?.value">
+              <mat-form-field appearance="outline">
+                <mat-label>Godzina rozpoczęcia</mat-label>
+                <input matInput type="time" formControlName="quietHours.start">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Godzina zakończenia</mat-label>
+                <input matInput type="time" formControlName="quietHours.end">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Category Settings -->
+      <mat-card class="config-card">
+        <mat-card-title>Ustawienia kategorii</mat-card-title>
+        <mat-card-content>
+          <div class="categories-intro">
+            <p>Wybierz kanały powiadomień dla każdej kategorii:</p>
+          </div>
+
+          <div class="categories-grid">
+            <div class="category-header">
+              <span class="category-name">Kategoria</span>
+              <div class="channel-headers">
+                <div class="channel-header">
+                  <mat-icon>email</mat-icon>
+                  <span>E-mail</span>
+                  <mat-checkbox
+                    [checked]="isAllSelectedForChannel('email')"
+                    [indeterminate]="isSomeSelectedForChannel('email')"
+                    (change)="toggleAllForChannel('email', $event.checked)">
+                  </mat-checkbox>
+                </div>
+                <div class="channel-header">
+                  <mat-icon>sms</mat-icon>
+                  <span>SMS</span>
+                  <mat-checkbox
+                    [checked]="isAllSelectedForChannel('sms')"
+                    [indeterminate]="isSomeSelectedForChannel('sms')"
+                    (change)="toggleAllForChannel('sms', $event.checked)">
+                  </mat-checkbox>
+                </div>
+                <div class="channel-header">
+                  <mat-icon>notifications</mat-icon>
+                  <span>Push</span>
+                  <mat-checkbox
+                    [checked]="isAllSelectedForChannel('push')"
+                    [indeterminate]="isSomeSelectedForChannel('push')"
+                    (change)="toggleAllForChannel('push', $event.checked)">
+                  </mat-checkbox>
+                </div>
+                <div class="channel-header">
+                  <mat-icon>sync</mat-icon>
+                  <span>WebSocket</span>
+                  <mat-checkbox
+                    [checked]="isAllSelectedForChannel('webSocket')"
+                    [indeterminate]="isSomeSelectedForChannel('webSocket')"
+                    (change)="toggleAllForChannel('webSocket', $event.checked)">
+                  </mat-checkbox>
+                </div>
+              </div>
+            </div>
+
+            <div formArrayName="categories" class="categories-list">
+              <div
+                *ngFor="let categoryControl of categoryControls.controls; let i = index"
+                [formGroupName]="i"
+                class="category-row">
+
+                <span class="category-name">{{ getCategoryLabel(categoryControl.get('category')?.value) }}</span>
+
+                <div class="channel-controls">
+                  <mat-checkbox formControlName="email"></mat-checkbox>
+                  <mat-checkbox formControlName="sms"></mat-checkbox>
+                  <mat-checkbox formControlName="push"></mat-checkbox>
+                  <mat-checkbox formControlName="webSocket"></mat-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Actions -->
+      <div class="config-actions">
+        <button mat-button type="button" (click)="onReset()" [disabled]="isSaving()">
+          Przywróć ustawienia
+        </button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="configForm.invalid || isSaving()">
+          <mat-icon *ngIf="isSaving()">hourglass_empty</mat-icon>
+          <mat-icon *ngIf="!isSaving()">save</mat-icon>
+          {{ isSaving() ? 'Zapisywanie...' : 'Zapisz konfigurację' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</app-main-page-view>

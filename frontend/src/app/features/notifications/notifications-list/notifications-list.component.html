@@ -1,0 +1,133 @@
+<app-page-header>
+  <div class="header main-header">
+    <h1>Powiadomienia</h1>
+  </div>
+  <div class="main-header-buttons">
+    <button mat-stroked-button [routerLink]="['/notifications/config']">
+      <mat-icon>settings</mat-icon>
+      Konfiguracja
+    </button>
+    <button mat-flat-button color="primary" (click)="markAllAsRead()" [disabled]="unreadCount() === 0">
+      <mat-icon>done_all</mat-icon>
+      Oznacz wszystkie jako przeczytane
+    </button>
+  </div>
+</app-page-header>
+
+<app-main-page-view>
+  <div class="notifications-container">
+    <!-- Filter Chips -->
+    <mat-card class="filter-card">
+      <mat-card-content>
+        <div class="filter-chips">
+          <mat-chip
+            [highlighted]="filter() === 'all'"
+            (click)="setFilter('all')"
+            selectable="true">
+            Wszystkie ({{ notifications().length }})
+          </mat-chip>
+          <mat-chip
+            [highlighted]="filter() === 'unread'"
+            (click)="setFilter('unread')"
+            selectable="true"
+            [class.unread-chip]="unreadCount() > 0">
+            Nieprzeczytane
+            <mat-icon *ngIf="unreadCount() > 0">notifications</mat-icon>
+            <span *ngIf="unreadCount() > 0" class="unread-count">{{ unreadCount() }}</span>
+          </mat-chip>
+          <mat-chip
+            [highlighted]="filter() === 'read'"
+            (click)="setFilter('read')"
+            selectable="true">
+            Przeczytane
+          </mat-chip>
+          <mat-chip
+            [highlighted]="filter() === 'archived'"
+            (click)="setFilter('archived')"
+            selectable="true">
+            Zarchiwizowane
+          </mat-chip>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Notifications List -->
+    <div class="notifications-list">
+      <mat-card
+        *ngFor="let notification of filteredNotifications(); trackBy: trackById"
+        class="notification-card"
+        [class.unread]="notification.status === 'unread'"
+        [class.archived]="notification.status === 'archived'">
+
+        <mat-card-content class="notification-content">
+          <div class="notification-header">
+            <div class="notification-icon">
+              <mat-icon [style.color]="getPriorityColor(notification.priority)">
+                {{ getTypeIcon(notification.type) }}
+              </mat-icon>
+            </div>
+
+            <div class="notification-main">
+              <h3 class="notification-title">{{ notification.title }}</h3>
+              <p class="notification-message">{{ notification.message }}</p>
+
+              <div class="notification-meta">
+                <mat-chip class="priority-chip" [style.background-color]="getPriorityColor(notification.priority)">
+                  {{ notification.priority }}
+                </mat-chip>
+                <mat-chip class="category-chip">
+                  {{ notification.category.replace('_', ' ') }}
+                </mat-chip>
+                <span class="notification-date">{{ formatDate(notification.createdAt) }}</span>
+              </div>
+            </div>
+
+            <div class="notification-actions">
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                aria-label="Więcej opcji">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+
+              <mat-menu #menu="matMenu">
+                <button
+                  mat-menu-item
+                  *ngIf="notification.status === 'unread'"
+                  (click)="markAsRead(notification)">
+                  <mat-icon>check</mat-icon>
+                  <span>Oznacz jako przeczytane</span>
+                </button>
+                <button
+                  mat-menu-item
+                  *ngIf="notification.status !== 'archived'"
+                  (click)="archiveNotification(notification)">
+                  <mat-icon>archive</mat-icon>
+                  <span>Archiwizuj</span>
+                </button>
+                <button
+                  mat-menu-item
+                  [routerLink]="['/notifications/detail', notification.id]">
+                  <mat-icon>visibility</mat-icon>
+                  <span>Wyświetl szczegóły</span>
+                </button>
+              </mat-menu>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Empty State -->
+      <mat-card *ngIf="filteredNotifications().length === 0" class="empty-state-card">
+        <mat-card-content class="empty-state-content">
+          <mat-icon class="empty-state-icon">notifications_off</mat-icon>
+          <h3>Brak powiadomień</h3>
+          <p *ngIf="filter() === 'all'">Nie masz jeszcze żadnych powiadomień.</p>
+          <p *ngIf="filter() === 'unread'">Wszystkie powiadomienia zostały przeczytane.</p>
+          <p *ngIf="filter() === 'read'">Brak przeczytanych powiadomień.</p>
+          <p *ngIf="filter() === 'archived'">Brak zarchiwizowanych powiadomień.</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</app-main-page-view>

@@ -1,0 +1,123 @@
+<app-page-header>
+  <div class="header main-header">
+    <h1>Szczegóły powiadomienia</h1>
+  </div>
+  <div class="main-header-buttons">
+    <button mat-stroked-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Powrót do listy
+    </button>
+  </div>
+</app-page-header>
+
+<app-main-page-view>
+  <div class="notification-detail-container">
+    <mat-card *ngIf="notification() as notification; else noNotification" class="detail-card">
+      <div class="detail-header">
+        <div class="notification-icon-large">
+          <mat-icon [style.color]="getPriorityColor(notification.priority)">
+            {{ getTypeIcon(notification.type) }}
+          </mat-icon>
+        </div>
+        <div class="header-content">
+          <mat-card-title class="detail-title">{{ notification.title }}</mat-card-title>
+          <div class="notification-badges">
+            <mat-chip [style.background-color]="getPriorityColor(notification.priority)" class="priority-badge">
+              {{ getPriorityLabel(notification.priority) }}
+            </mat-chip>
+            <mat-chip class="type-badge">
+              {{ getTypeLabel(notification.type) }}
+            </mat-chip>
+            <mat-chip class="category-badge">
+              {{ getCategoryLabel(notification.category) }}
+            </mat-chip>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-content class="detail-content">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h3 class="section-title">
+              <mat-icon>description</mat-icon>
+              Treść powiadomienia
+            </h3>
+            <div class="message-content">
+              <p>{{ notification.message }}</p>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3 class="section-title">
+              <mat-icon>info</mat-icon>
+              Szczegóły
+            </h3>
+            <div class="detail-row">
+              <span class="label">
+                <mat-icon>fingerprint</mat-icon>
+                ID powiadomienia
+              </span>
+              <span class="value">{{ notification.id }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">
+                <mat-icon>person</mat-icon>
+                Użytkownik
+              </span>
+              <span class="value">{{ notification.userId }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">
+                <mat-icon>calendar_today</mat-icon>
+                Data utworzenia
+              </span>
+              <span class="value">{{ formatDate(notification.createdAt) }}</span>
+            </div>
+            <div class="detail-row" *ngIf="notification.readAt">
+              <span class="label">
+                <mat-icon>visibility</mat-icon>
+                Data przeczytania
+              </span>
+              <span class="value">{{ formatDate(notification.readAt) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <mat-divider class="divider-top" *ngIf="notification.metadata && Object.keys(notification.metadata).length > 0"></mat-divider>
+
+        <div class="detail-section" *ngIf="notification.metadata && Object.keys(notification.metadata).length > 0">
+          <h3 class="section-title">
+            <mat-icon>code</mat-icon>
+            Dodatkowe dane
+          </h3>
+          <div class="metadata-content">
+            <pre>{{ notification.metadata | json }}</pre>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="detail-actions">
+        <button mat-stroked-button color="warn" (click)="archiveNotification()">
+          <mat-icon>archive</mat-icon>
+          Archiwizuj
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <ng-template #noNotification>
+      <mat-card class="no-notification-card">
+        <mat-card-content class="no-notification-content">
+          <mat-icon class="no-notification-icon">notification_important</mat-icon>
+          <h2>Powiadomienie nie znalezione</h2>
+          <p>Żądane powiadomienie nie istnieje lub zostało usunięte.</p>
+          <button mat-flat-button color="primary" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+            Wróć do listy
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+</app-main-page-view>
