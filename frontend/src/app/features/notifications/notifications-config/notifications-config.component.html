@@ -65,8 +65,8 @@
       <mat-card class="config-card">
         <mat-card-title>Ciche godziny</mat-card-title>
         <mat-card-content>
-          <div class="quiet-hours-section">
-            <mat-slide-toggle formControlName="quietHours.enabled" class="setting-toggle">
+          <div class="quiet-hours-section" formGroupName="quietHours">
+            <mat-slide-toggle formControlName="enabled" class="setting-toggle">
               <div class="toggle-content">
                 <mat-icon>nightlight</mat-icon>
                 <div>
@@ -79,12 +79,12 @@
             <div class="time-settings" *ngIf="configForm.get('quietHours.enabled')?.value">
               <mat-form-field appearance="outline">
                 <mat-label>Godzina rozpoczęcia</mat-label>
-                <input matInput type="time" formControlName="quietHours.start">
+                <input matInput type="time" formControlName="start">
               </mat-form-field>
 
               <mat-form-field appearance="outline">
                 <mat-label>Godzina zakończenia</mat-label>
-                <input matInput type="time" formControlName="quietHours.end">
+                <input matInput type="time" formControlName="end">
               </mat-form-field>
             </div>
           </div>

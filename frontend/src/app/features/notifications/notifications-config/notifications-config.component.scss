@@ -1,30 +1,37 @@
 .config-container {
-  padding: 32px;
+  padding: 40px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .config-card {
-  margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .config-card mat-card-title {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 16px;
-  font-size: 20px;
+  margin-bottom: 20px;
+  font-size: 22px;
   font-weight: 600;
+  padding: 24px 24px 0 24px;
 
   mat-icon {
     color: #666;
   }
 }
 
+.config-card mat-card-content {
+  padding: 24px;
+}
+
 .global-settings {
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
 
 .setting-toggle {
@@ -34,7 +41,7 @@
 .toggle-content {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 16px;
   width: 100%;
 
   mat-icon {
@@ -45,8 +52,9 @@
 
   strong {
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     color: #333;
+    font-size: 16px;
   }
 
   p {
@@ -58,7 +66,7 @@
 
 .quiet-hours-section {
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
 
 .time-settings {
@@ -74,6 +82,7 @@
   p {
     margin: 0;
     color: #666;
+    font-size: 16px;
   }
 }
 
@@ -86,8 +95,8 @@
 .category-header {
   display: grid;
   grid-template-columns: 1fr auto;
-  background-color: #f5f5f5;
-  padding: 16px;
+  background-color: #f8f9fa;
+  padding: 20px;
   border-bottom: 1px solid #e0e0e0;
   font-weight: 600;
   color: #333;
@@ -95,6 +104,7 @@
 
 .category-name {
   font-weight: 600;
+  font-size: 16px;
 }
 
 .channel-headers {
@@ -130,7 +140,7 @@
 .category-row {
   display: grid;
   grid-template-columns: 1fr auto;
-  padding: 16px;
+  padding: 20px;
   border-bottom: 1px solid #f0f0f0;
   align-items: center;
   transition: background-color 0.2s;
@@ -158,10 +168,10 @@
 .config-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  padding: 24px 0;
+  gap: 16px;
+  padding: 32px 0;
   border-top: 1px solid #e0e0e0;
-  margin-top: 32px;
+  margin-top: 40px;
 }
 
 .main-header-buttons {
@@ -171,6 +181,14 @@
 
 @media (max-width: 960px) {
   .config-container {
+    padding: 20px;
+  }
+
+  .config-card mat-card-title {
+    padding: 16px 16px 0 16px;
+  }
+
+  .config-card mat-card-content {
     padding: 16px;
   }
 
@@ -207,7 +225,7 @@
 
   .config-actions {
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
   }
 
   .main-header-buttons {

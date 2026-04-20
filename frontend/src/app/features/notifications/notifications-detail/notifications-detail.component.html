@@ -3,9 +3,9 @@
     <h1>Szczegóły powiadomienia</h1>
   </div>
   <div class="main-header-buttons">
-    <button mat-stroked-button (click)="goBack()">
-      <mat-icon>arrow_back</mat-icon>
-      Powrót do listy
+    <button mat-stroked-button color="warn" (click)="archiveNotification()">
+      <mat-icon>archive</mat-icon>
+      Archiwizuj
     </button>
   </div>
 </app-page-header>
@@ -85,7 +85,9 @@
           </div>
         </div>
 
-        <mat-divider class="divider-top" *ngIf="notification.metadata && Object.keys(notification.metadata).length > 0"></mat-divider>
+        <mat-divider
+          class="divider-top"
+          *ngIf="notification.metadata && Object.keys(notification.metadata).length > 0"></mat-divider>
 
         <div class="detail-section" *ngIf="notification.metadata && Object.keys(notification.metadata).length > 0">
           <h3 class="section-title">
@@ -97,13 +99,7 @@
           </div>
         </div>
       </mat-card-content>
-
-      <mat-card-actions class="detail-actions">
-        <button mat-stroked-button color="warn" (click)="archiveNotification()">
-          <mat-icon>archive</mat-icon>
-          Archiwizuj
-        </button>
-      </mat-card-actions>
+      <mat-card-actions class="detail-actions"> </mat-card-actions>
     </mat-card>
 
     <ng-template #noNotification>
