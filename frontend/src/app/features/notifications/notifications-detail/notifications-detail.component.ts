@@ -10,6 +10,7 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { NotificationsService } from '../notifications.service';
 import { Notification, NotificationType, NotificationPriority } from '../notifications.model';
+import { NOTIFICATION_TYPE_ICONS, NOTIFICATION_PRIORITY_COLORS, NOTIFICATION_TYPE_LABELS, NOTIFICATION_PRIORITY_LABELS } from '../notifications.constants';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -63,13 +64,7 @@ export class NotificationsDetailComponent implements OnInit, OnDestroy {
   }
 
   getTypeIcon(type: NotificationType): string {
-    switch (type) {
-      case 'success': return 'check_circle';
-      case 'warning': return 'warning';
-      case 'error': return 'error';
-      case 'system': return 'settings';
-      default: return 'info';
-    }
+    return NOTIFICATION_TYPE_ICONS[type] || 'info';
   }
 
   getPriorityColor(priority: NotificationPriority): string {

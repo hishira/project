@@ -16,6 +16,7 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { NotificationsService } from '../notifications.service';
 import { NotificationConfig, NotificationCategory } from '../notifications.model';
+import { NOTIFICATION_CATEGORIES } from '../notifications.constants';
 
 @Component({
   selector: 'app-notifications-config',
@@ -49,16 +50,7 @@ export class NotificationsConfigComponent implements OnInit {
   isLoading = signal(false);
   isSaving = signal(false);
 
-  categories: { key: NotificationCategory; label: string }[] = [
-    { key: 'system', label: 'System' },
-    { key: 'user_activity', label: 'Aktywność użytkownika' },
-    { key: 'task_updates', label: 'Aktualizacje zadań' },
-    { key: 'project_changes', label: 'Zmiany w projektach' },
-    { key: 'security', label: 'Bezpieczeństwo' },
-    { key: 'billing', label: 'Rozliczenia' },
-    { key: 'support', label: 'Wsparcie' },
-    { key: 'marketing', label: 'Marketing' }
-  ];
+  categories: { key: NotificationCategory; label: string }[] = NOTIFICATION_CATEGORIES;
 
   ngOnInit(): void {
     this.initializeForm();

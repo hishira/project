@@ -11,6 +11,7 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { NotificationsService } from '../notifications.service';
 import { Notification, NotificationType, NotificationPriority } from '../notifications.model';
+import { NOTIFICATION_TYPE_ICONS, NOTIFICATION_PRIORITY_COLORS, NOTIFICATION_STATUS_LABELS } from '../notifications.constants';
 import { RouterLink } from '@angular/router';
 
 @Component({

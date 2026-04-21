@@ -11,6 +11,7 @@ import {
   NotificationCategory,
   NotificationStatus
 } from './notifications.model';
+import { SAMPLE_NOTIFICATION_TITLES, SAMPLE_NOTIFICATION_MESSAGES, NOTIFICATION_TYPES, NOTIFICATION_PRIORITIES, NOTIFICATION_CATEGORIES_KEYS } from './notifications.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -140,27 +141,14 @@ export class NotificationsService {
   }
 
   private generateRandomNotification(): Notification {
-    const titles = [
-      'Aktualizacja systemu',
-      'Nowe zadanie',
-      'Zmiana statusu projektu',
-      'Powiadomienie bezpieczeństwa',
-      'Raport gotowy',
-      'Przypomnienie o spotkaniu'
-    ];
 
-    const messages = [
-      'W systemie zostały wprowadzone ważne aktualizacje.',
-      'Zostało Ci przypisane nowe zadanie do wykonania.',
-      'Status projektu uległ zmianie - sprawdź szczegóły.',
-      'Wykryto aktywność związaną z bezpieczeństwem konta.',
-      'Nowy raport jest dostępny w systemie.',
-      'Przypominamy o zaplanowanym spotkaniu.'
-    ];
+    const titles = SAMPLE_NOTIFICATION_TITLES;
 
-    const types: NotificationType[] = ['info', 'success', 'warning', 'error'];
-    const priorities: NotificationPriority[] = ['low', 'medium', 'high', 'urgent'];
-    const categories: NotificationCategory[] = ['system', 'task_updates', 'project_changes', 'security', 'billing'];
+    const messages = SAMPLE_NOTIFICATION_MESSAGES;
+
+    const types = NOTIFICATION_TYPES;
+    const priorities = NOTIFICATION_PRIORITIES;
+    const categories = NOTIFICATION_CATEGORIES_KEYS;
 
     return {
       id: Date.now().toString(),
