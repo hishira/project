@@ -27,12 +27,11 @@ export interface NotificationConfig {
   };
 }
 
+export interface NotificationChannelConfig extends Record<NotificationChannel, boolean> {}
+
 export interface NotificationCategoryConfig {
   category: NotificationCategory;
-  email: boolean;
-  sms: boolean;
-  push: boolean;
-  webSocket: boolean;
+  channels: NotificationChannelConfig;
 }
 
 export type NotificationType = 'info' | 'success' | 'warning' | 'error' | 'system';
@@ -41,15 +40,17 @@ export type NotificationPriority = 'low' | 'medium' | 'high' | 'urgent';
 
 export type NotificationStatus = 'unread' | 'read' | 'archived';
 
+export type NotificationChannel = 'email' | 'sms' | 'push' | 'webSocket';
+
 export type NotificationCategory =
   | 'system'
   | 'user_activity'
   | 'task_updates'
   | 'project_changes'
   | 'security'
-  | 'marketing'
+  | 'billing'
   | 'support'
-  | 'billing';
+  | 'marketing';
 
 export interface CreateNotificationRequest {
   title: string;

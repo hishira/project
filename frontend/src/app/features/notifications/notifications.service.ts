@@ -105,11 +105,11 @@ export class NotificationsService {
       pushEnabled: true,
       webSocketEnabled: true,
       categories: [
-        { category: 'system', email: true, sms: false, push: true, webSocket: true },
-        { category: 'security', email: true, sms: true, push: true, webSocket: true },
-        { category: 'task_updates', email: true, sms: false, push: true, webSocket: true },
-        { category: 'project_changes', email: false, sms: false, push: true, webSocket: true },
-        { category: 'billing', email: true, sms: false, push: false, webSocket: true }
+        { category: 'system', channels: { email: true, sms: false, push: true, webSocket: true } },
+        { category: 'security', channels: { email: true, sms: true, push: true, webSocket: true } },
+        { category: 'task_updates', channels: { email: true, sms: false, push: true, webSocket: true } },
+        { category: 'project_changes', channels: { email: false, sms: false, push: true, webSocket: true } },
+        { category: 'billing', channels: { email: true, sms: false, push: false, webSocket: true } }
       ],
       quietHours: {
         enabled: true,

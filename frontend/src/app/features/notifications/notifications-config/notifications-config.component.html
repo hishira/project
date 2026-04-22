@@ -150,7 +150,7 @@
 
                 <span class="category-name">{{ getCategoryLabel(categoryControl.get('category')?.value) }}</span>
 
-                <div class="channel-controls">
+                <div formGroupName="channels" class="channel-controls">
                   <mat-checkbox formControlName="email"></mat-checkbox>
                   <mat-checkbox formControlName="sms"></mat-checkbox>
                   <mat-checkbox formControlName="push"></mat-checkbox>

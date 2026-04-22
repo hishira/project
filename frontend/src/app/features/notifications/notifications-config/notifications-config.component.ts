@@ -15,7 +15,7 @@ import { RouterLink } from '@angular/router';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { NotificationsService } from '../notifications.service';
-import { NotificationConfig, NotificationCategory } from '../notifications.model';
+import { NotificationConfig, NotificationCategory, NotificationChannel } from '../notifications.model';
 import { NOTIFICATION_CATEGORIES } from '../notifications.constants';
 
 @Component({
@@ -75,10 +75,12 @@ export class NotificationsConfigComponent implements OnInit {
     this.categories.forEach(category => {
       const categoryGroup = this.fb.group({
         category: [category.key],
-        email: [false],
-        sms: [false],
-        push: [true],
-        webSocket: [true]
+        channels: this.fb.group({
+          email: [false],
+          sms: [false],
+          push: [true],
+          webSocket: [true]
+        })
       });
       this.categoryControls.push(categoryGroup);
     });
@@ -158,18 +160,18 @@ export class NotificationsConfigComponent implements OnInit {
     });
   }
 
-  toggleAllForChannel(channel: 'email' | 'sms' | 'push' | 'webSocket', enabled: boolean): void {
+  toggleAllForChannel(channel: NotificationChannel, enabled: boolean): void {
     this.categoryControls.controls.forEach(control => {
-      control.get(channel)?.setValue(enabled);
+      control.get('channels')?.get(channel)?.setValue(enabled);
     });
   }
 
-  isAllSelectedForChannel(channel: 'email' | 'sms' | 'push' | 'webSocket'): boolean {
-    return this.categoryControls.controls.every(control => control.get(channel)?.value);
+  isAllSelectedForChannel(channel: NotificationChannel): boolean {
+    return this.categoryControls.controls.every(control => control.get('channels')?.get(channel)?.value);
   }
 
-  isSomeSelectedForChannel(channel: 'email' | 'sms' | 'push' | 'webSocket'): boolean {
-    const selectedCount = this.categoryControls.controls.filter(control => control.get(channel)?.value).length;
+  isSomeSelectedForChannel(channel: NotificationChannel): boolean {
+    const selectedCount = this.categoryControls.controls.filter(control => control.get('channels')?.get(channel)?.value).length;
     return selectedCount > 0 && selectedCount < this.categoryControls.length;
   }
 }

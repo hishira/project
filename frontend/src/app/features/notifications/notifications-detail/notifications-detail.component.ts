@@ -68,33 +68,15 @@ export class NotificationsDetailComponent implements OnInit, OnDestroy {
   }
 
   getPriorityColor(priority: NotificationPriority): string {
-    switch (priority) {
-      case 'urgent': return '#d32f2f';
-      case 'high': return '#f57c00';
-      case 'medium': return '#1976d2';
-      case 'low': return '#388e3c';
-      default: return '#666';
-    }
+    return NOTIFICATION_PRIORITY_COLORS[priority] || '#666';
   }
 
   getTypeLabel(type: NotificationType): string {
-    switch (type) {
-      case 'success': return 'Sukces';
-      case 'warning': return 'Ostrzeżenie';
-      case 'error': return 'Błąd';
-      case 'system': return 'System';
-      default: return 'Informacja';
-    }
+    return NOTIFICATION_TYPE_LABELS[type] || 'Informacja';
   }
 
   getPriorityLabel(priority: NotificationPriority): string {
-    switch (priority) {
-      case 'urgent': return 'Pilne';
-      case 'high': return 'Wysoki';
-      case 'medium': return 'Średni';
-      case 'low': return 'Niski';
-      default: return priority;
-    }
+    return NOTIFICATION_PRIORITY_LABELS[priority] || 'Nieznany';
   }
 
   getCategoryLabel(category: string): string {

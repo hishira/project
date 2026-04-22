@@ -64,32 +64,15 @@ export class NotificationsListComponent implements OnInit {
   }
 
   getTypeIcon(type: NotificationType): string {
-    switch (type) {
-      case 'success': return 'check_circle';
-      case 'warning': return 'warning';
-      case 'error': return 'error';
-      case 'system': return 'settings';
-      default: return 'info';
-    }
+    return NOTIFICATION_TYPE_ICONS[type] || 'info';
   }
 
   getPriorityColor(priority: NotificationPriority): string {
-    switch (priority) {
-      case 'urgent': return '#d32f2f';
-      case 'high': return '#f57c00';
-      case 'medium': return '#1976d2';
-      case 'low': return '#388e3c';
-      default: return '#666';
-    }
+    return NOTIFICATION_PRIORITY_COLORS[priority] || '#666';
   }
 
   getStatusLabel(status: string): string {
-    switch (status) {
-      case 'unread': return 'Nieprzeczytane';
-      case 'read': return 'Przeczytane';
-      case 'archived': return 'Zarchiwizowane';
-      default: return status;
-    }
+    return NOTIFICATION_STATUS_LABELS[status] || status;
   }
 
   markAsRead(notification: Notification): void {
