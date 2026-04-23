@@ -10,7 +10,7 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { NotificationsService } from '../notifications.service';
 import { Notification, NotificationType, NotificationPriority } from '../notifications.model';
-import { NOTIFICATION_TYPE_ICONS, NOTIFICATION_PRIORITY_COLORS, NOTIFICATION_TYPE_LABELS, NOTIFICATION_PRIORITY_LABELS } from '../notifications.constants';
+import { getTypeIcon, getPriorityColor, getTypeLabel, getPriorityLabel, getCategoryLabel, formatDateDetailed } from '../notifications.utils';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -64,35 +64,27 @@ export class NotificationsDetailComponent implements OnInit, OnDestroy {
   }
 
   getTypeIcon(type: NotificationType): string {
-    return NOTIFICATION_TYPE_ICONS[type] || 'info';
+    return getTypeIcon(type);
   }
 
   getPriorityColor(priority: NotificationPriority): string {
-    return NOTIFICATION_PRIORITY_COLORS[priority] || '#666';
+    return getPriorityColor(priority);
   }
 
   getTypeLabel(type: NotificationType): string {
-    return NOTIFICATION_TYPE_LABELS[type] || 'Informacja';
+    return getTypeLabel(type);
   }
 
   getPriorityLabel(priority: NotificationPriority): string {
-    return NOTIFICATION_PRIORITY_LABELS[priority] || 'Nieznany';
+    return getPriorityLabel(priority);
   }
 
   getCategoryLabel(category: string): string {
-    return category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+    return getCategoryLabel(category);
   }
 
   formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleString('pl-PL', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
+    return formatDateDetailed(dateString);
   }
 
   archiveNotification(): void {

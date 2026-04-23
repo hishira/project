@@ -11,7 +11,7 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { NotificationsService } from '../notifications.service';
 import { Notification, NotificationType, NotificationPriority } from '../notifications.model';
-import { NOTIFICATION_TYPE_ICONS, NOTIFICATION_PRIORITY_COLORS, NOTIFICATION_STATUS_LABELS } from '../notifications.constants';
+import { getTypeIcon, getPriorityColor, getStatusLabel, formatDate } from '../notifications.utils';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -64,15 +64,15 @@ export class NotificationsListComponent implements OnInit {
   }
 
   getTypeIcon(type: NotificationType): string {
-    return NOTIFICATION_TYPE_ICONS[type] || 'info';
+    return getTypeIcon(type);
   }
 
   getPriorityColor(priority: NotificationPriority): string {
-    return NOTIFICATION_PRIORITY_COLORS[priority] || '#666';
+    return getPriorityColor(priority);
   }
 
   getStatusLabel(status: string): string {
-    return NOTIFICATION_STATUS_LABELS[status] || status;
+    return getStatusLabel(status);
   }
 
   markAsRead(notification: Notification): void {
@@ -96,13 +96,6 @@ export class NotificationsListComponent implements OnInit {
   }
 
   formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleString('pl-PL', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    return formatDate(dateString);
   }
 }
