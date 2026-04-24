@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -19,6 +19,7 @@ import { Client, ClientStatus } from '../client.model';
 import { getClientStatusLabel, getClientStatusClass } from '../client-status.utils';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { ClientListFiltersComponent } from './client-list-filters.component';
 
 @Component({
   selector: 'app-client-list',
@@ -41,20 +42,14 @@ import { MainPageViewComponent } from '../../../core/components/main-page-view/m
     DatePipe,
     PageHeaderComponent,
     MainPageViewComponent,
+    ClientListFiltersComponent,
   ],
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ClientListComponent implements AfterViewInit {
+export class ClientListComponent  {
   private clientService = inject(ClientService);
-  readonly clients = this.clientService.clients;
-
-  readonly dataSource = new MatTableDataSource<Client>(this.clients());
-  readonly displayedColumns: string[] = ['name', 'taxId', 'mainContact', 'status', 'documents', 'lastContact', 'actions'];
-
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   readonly filterName = signal<string>('');
   readonly filterStatus = signal<ClientStatus | ''>('');
@@ -66,35 +61,48 @@ export class ClientListComponent implements AfterViewInit {
     { value: 'former', label: 'Były' }
   ];
 
+  readonly displayedColumns: string[] = ['name', 'taxId', 'mainContact', 'status', 'documents', 'lastContact', 'actions'];
+
   readonly getStatusLabel = getClientStatusLabel;
   readonly getStatusChipClass = getClientStatusClass;
 
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.filterPredicate = this.createFilterPredicate();
-  }
+  // Computed signal for filtered clients
+  readonly filteredClients = computed(() => {
+    const clients = this.clientService.clients();
+    const nameFilter = this.filterName().toLowerCase().trim();
+    const statusFilter = this.filterStatus();
 
-  applyFilters(): void {
-    const filterObj = {
-      name: this.filterName(),
-      status: this.filterStatus()
-    };
-    this.dataSource.filter = JSON.stringify(filterObj);
-  }
-
-  clearFilters(): void {
-    this.filterName.set('');
-    this.filterStatus.set('');
-    this.applyFilters();
-  }
-
-  private createFilterPredicate(): (data: Client, filter: string) => boolean {
-    return (data: Client, filter: string): boolean => {
-      const filterObj = JSON.parse(filter) as { name?: string; status?: ClientStatus | '' };
-      const matchesName = !filterObj.name || data.name.toLowerCase().includes(filterObj.name.toLowerCase());
-      const matchesStatus = !filterObj.status || data.status === filterObj.status;
+    return clients.filter(client => {
+      const matchesName = !nameFilter || client.name.toLowerCase().includes(nameFilter);
+      const matchesStatus = !statusFilter || client.status === statusFilter;
       return matchesName && matchesStatus;
-    };
+    });
+  });
+
+  readonly dataSource = new MatTableDataSource<Client>();
+
+  readonly sort = viewChild(MatSort);
+  readonly paginator = viewChild(MatPaginator);
+
+  constructor() {
+    effect(() => {
+      const sort = this.sort();
+      const paginator = this.paginator();
+
+      if (sort) {
+        this.dataSource.sort = sort;
+      }
+
+      if (paginator) {
+        this.dataSource.paginator = paginator;
+      }
+
+      this.dataSource.data = this.filteredClients();
+    });
+  }
+
+  onFiltersChange(filters: { name: string; status: ClientStatus | '' }): void {
+    this.filterName.set(filters.name);
+    this.filterStatus.set(filters.status);
   }
 }

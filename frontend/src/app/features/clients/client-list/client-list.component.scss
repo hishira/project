@@ -6,22 +6,6 @@
   margin: 0 auto;
 }
 
-.filters-card {
-  margin-bottom: $spacing-2xl;
-}
-
-.filters-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: $spacing-lg;
-  margin-bottom: $spacing-sm;
-}
-
-.filter-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .client-table {
   width: 100%;
 
