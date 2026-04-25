@@ -21,6 +21,15 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { ClientListFiltersComponent } from './client-list-filters.component';
 
+const CLIENT_STATUSES: { value: ClientStatus; label: string }[] = [
+  { value: 'active', label: 'Aktywny' },
+  { value: 'inactive', label: 'Nieaktywny' },
+  { value: 'lead', label: 'Potencjalny' },
+  { value: 'former', label: 'Były' }
+];
+
+const DISPLAYED_COLUMNS: string[] = ['name', 'taxId', 'mainContact', 'status', 'documents', 'lastContact', 'actions'];
+
 @Component({
   selector: 'app-client-list',
   standalone: true,
@@ -54,14 +63,8 @@ export class ClientListComponent  {
   readonly filterName = signal<string>('');
   readonly filterStatus = signal<ClientStatus | ''>('');
 
-  readonly statuses: { value: ClientStatus; label: string }[] = [
-    { value: 'active', label: 'Aktywny' },
-    { value: 'inactive', label: 'Nieaktywny' },
-    { value: 'lead', label: 'Potencjalny' },
-    { value: 'former', label: 'Były' }
-  ];
-
-  readonly displayedColumns: string[] = ['name', 'taxId', 'mainContact', 'status', 'documents', 'lastContact', 'actions'];
+  readonly statuses = CLIENT_STATUSES;
+  readonly displayedColumns = DISPLAYED_COLUMNS;
 
   readonly getStatusLabel = getClientStatusLabel;
   readonly getStatusChipClass = getClientStatusClass;

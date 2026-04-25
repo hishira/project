@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { Integration } from '../integration.model';
@@ -49,21 +50,20 @@ import { ApiConfigComponent } from './api-config/api-config.component';
 export class IntegrationDetailComponent {
   private route = inject(ActivatedRoute);
   private integrationService = inject(IntegrationService);
-  readonly integration = signal<Integration | undefined>(undefined);
 
+  private routeParams = toSignal(this.route.paramMap);
+
+  readonly integrationId = computed(() => this.routeParams()?.get('id') || '');
+
+  readonly integration = computed(() => {
+    const id = this.integrationId();
+    return id ? this.integrationService.getIntegrationById(id) : undefined;
+  });
+
+  // Utility functions
   readonly getStatusColor = getIntegrationStatusColor;
   readonly getStatusIcon = getIntegrationStatusIcon;
   readonly getStatusLabel = getIntegrationStatusLabel;
-
-  constructor() {
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        const found = this.integrationService.getIntegrationById(id);
-        this.integration.set(found);
-      }
-    });
-  }
 
   onTest(): void {
     const int = this.integration();

@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ClientService } from '../client.service';
 import { Client } from '../client.model';
 import { Document } from '../../documents/document.models';
@@ -35,20 +36,17 @@ export class ClientDetailsComponent {
     private clientService = inject(ClientService);
     private documentService = inject(DocumentService);
 
-    readonly client = signal<Client | undefined>(undefined);
-    readonly clientDocuments = signal<Document[]>([]);
+    private routeParams = toSignal(this.route.paramMap);
 
-    constructor() {
-        this.route.paramMap.subscribe(params => {
-            const id = params.get('id');
-            if (id) {
-                const found = this.clientService.getClientById(id);
-                this.client.set(found);
-                if (found) {
-                    const docs = this.documentService.documents().filter(d => d.clientId === id);
-                    this.clientDocuments.set(docs);
-                }
-            }
-        });
-    }
+    readonly clientId = computed(() => this.routeParams()?.get('id') || '');
+
+    readonly client = computed(() => {
+        const id = this.clientId();
+        return id ? this.clientService.getClientById(id) : undefined;
+    });
+
+    readonly clientDocuments = computed(() => {
+        const client = this.client();
+        return client ? this.documentService.documents().filter(d => d.clientId === client.id) : [];
+    });
 }
