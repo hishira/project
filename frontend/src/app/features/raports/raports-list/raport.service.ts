@@ -1,6 +1,6 @@
 // report.service.ts
 import { Injectable, signal } from '@angular/core';
-import { SAMPLE_REPORTS } from './sample-raports';
+import { SAMPLE_REPORTS } from '../raports-mock-data';
 import { Report } from '../types';
 
 @Injectable({ providedIn: 'root' })

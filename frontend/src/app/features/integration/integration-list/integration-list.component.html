@@ -11,7 +11,7 @@
     <section class="category">
       <h2>Poczta e-mail</h2>
       <div class="integrations-grid">
-        @for (int of emailIntegrations; track int.id) {
+        @for (int of emailIntegrations(); track int.id) {
           <mat-card class="integration-card" [class.disabled]="!int.enabled" [routerLink]="[int.id]">
             <mat-card-header>
               <mat-icon class="type-icon" [style.color]="getStatusColor(int.status)">{{
@@ -26,7 +26,7 @@
               </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-              @if (isEmail(int)) {
+              @if (isEmailIntegration(int)) {
                 <div class="config-preview">
                   <div class="config-item">
                     <span>Serwer IMAP:</span> {{ int.config.imapHost }}:{{ int.config.imapPort }}
@@ -61,7 +61,7 @@
     <section class="category">
       <h2>Kalendarze</h2>
       <div class="integrations-grid">
-        @for (int of calendarIntegrations; track int.id) {
+        @for (int of calendarIntegrations(); track int.id) {
           <mat-card class="integration-card" [class.disabled]="!int.enabled" [routerLink]="[int.id]">
             <mat-card-header>
               <mat-icon class="type-icon" [style.color]="getStatusColor(int.status)">{{
@@ -73,13 +73,13 @@
                   getStatusIcon(int.status)
                 }}</mat-icon>
                 {{ int.status }}
-                @if (isCalendar(int)) {
+                @if (isCalendarIntegration(int)) {
                   · {{ int.provider }}
                 }
               </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-              @if (isCalendar(int)) {
+              @if (isCalendarIntegration(int)) {
                 <div class="config-preview">
                   <div class="config-item"><span>Client ID:</span> {{ int.config.clientId | slice: 0 : 15 }}...</div>
                   <div class="config-item"><span>Synchronizacja:</span> co {{ int.config.syncInterval }} min</div>
@@ -112,7 +112,7 @@
     <section class="category">
       <h2>Komunikatory</h2>
       <div class="integrations-grid">
-        @for (int of messengerIntegrations; track int.id) {
+        @for (int of messengerIntegrations(); track int.id) {
           <mat-card class="integration-card" [class.disabled]="!int.enabled" [routerLink]="[int.id]">
             <mat-card-header>
               <mat-icon class="type-icon" [style.color]="getStatusColor(int.status)">{{
@@ -124,13 +124,13 @@
                   getStatusIcon(int.status)
                 }}</mat-icon>
                 {{ int.status }}
-                @if (isMessenger(int)) {
+                @if (isMessengerIntegration(int)) {
                   · {{ int.provider }}
                 }
               </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-              @if (isMessenger(int)) {
+              @if (isMessengerIntegration(int)) {
                 <div class="config-preview">
                   <div class="config-item"><span>Kanał:</span> {{ int.config.channel || 'domyślny' }}</div>
                   @if (int?.config?.notifyOn?.length) {
@@ -165,7 +165,7 @@
     <section class="category">
       <h2>API</h2>
       <div class="integrations-grid">
-        @for (int of apiIntegrations; track int.id) {
+        @for (int of apiIntegrations(); track int.id) {
           <mat-card class="integration-card" [class.disabled]="!int.enabled" [routerLink]="[int.id]">
             <mat-card-header>
               <mat-icon class="type-icon" [style.color]="getStatusColor(int.status)">{{
@@ -177,13 +177,13 @@
                   getStatusIcon(int.status)
                 }}</mat-icon>
                 {{ int.status }}
-                @if (isApi(int)) {
+                @if (isApiIntegration(int)) {
                   · {{ int.config.apiKeys.length }} kluczy
                 }
               </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-              @if (isApi(int)) {
+              @if (isApiIntegration(int)) {
                 <div class="config-preview">
                   <div class="config-item"><span>Limit zapytań:</span> {{ int.config.rateLimit ?? 'brak' }}/h</div>
                 </div>

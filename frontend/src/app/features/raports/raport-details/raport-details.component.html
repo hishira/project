@@ -1,9 +1,9 @@
-@if (report) {
+@if (report(); as currentReport) {
   <app-page-header>
     <div class="main-header">
       <div class="d-flex align-items-center gap-3">
-        <h1>{{ report.name }}</h1>
-        <span class="report-id">#{{ report.id }}</span>
+        <h1>{{ currentReport.name }}</h1>
+        <span class="report-id">#{{ currentReport.id }}</span>
       </div>
     </div>
   </app-page-header>
@@ -21,53 +21,53 @@
             <div class="info-row d-flex align-items-center gap-2">
               <mat-icon>schedule</mat-icon>
               <span class="label">Wygenerowano:</span>
-              <span class="value">{{ report.generatedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+              <span class="value">{{ currentReport.generatedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
             </div>
-            @if (report.expiresAt) {
+            @if (currentReport.expiresAt) {
               <div class="info-row d-flex align-items-center gap-2">
                 <mat-icon>hourglass_empty</mat-icon>
                 <span class="label">Wygasa:</span>
-                <span class="value">{{ report.expiresAt | date: 'dd MMM yyyy' }}</span>
+                <span class="value">{{ currentReport.expiresAt | date: 'dd MMM yyyy' }}</span>
               </div>
             }
             <div class="info-row d-flex align-items-center gap-2">
               <mat-icon>source</mat-icon>
               <span class="label">Źródło:</span>
-              <span class="value">{{ report.metadata.sourceSystem }}</span>
+              <span class="value">{{ currentReport.metadata.sourceSystem }}</span>
             </div>
-            @if (report.metadata.createdBy) {
+            @if (currentReport.metadata.createdBy) {
               <div class="info-row d-flex align-items-center gap-2">
                 <mat-icon>person</mat-icon>
                 <span class="label">Utworzył:</span>
-                <span class="value">{{ report.metadata.createdBy }}</span>
+                <span class="value">{{ currentReport.metadata.createdBy }}</span>
               </div>
             }
             <div class="info-row d-flex align-items-center gap-2">
               <mat-icon>category</mat-icon>
               <span class="label">Typ:</span>
               <span class="value">
-                <mat-chip class="chip-type-{{ report.type }}">{{ report.type }}</mat-chip>
+                <mat-chip class="chip-type-{{ currentReport.type }}">{{ currentReport.type }}</mat-chip>
               </span>
             </div>
             <div class="info-row d-flex align-items-center gap-2">
               <mat-icon>format_shapes</mat-icon>
               <span class="label">Format:</span>
               <span class="value">
-                <mat-chip class="chip-format-{{ report.format }}">{{ report.format }}</mat-chip>
+                <mat-chip class="chip-format-{{ currentReport.format }}">{{ currentReport.format }}</mat-chip>
               </span>
             </div>
-            @if (report.metadata.version) {
+            @if (currentReport.metadata.version) {
               <div class="info-row d-flex align-items-center gap-2">
                 <mat-icon>tag</mat-icon>
                 <span class="label">Wersja:</span>
-                <span class="value">{{ report.metadata.version }}</span>
+                <span class="value">{{ currentReport.metadata.version }}</span>
               </div>
             }
-            @if (report.metadata.parameters) {
+            @if (currentReport.metadata.parameters) {
               <div class="info-row d-flex align-items-center gap-2">
                 <mat-icon>tune</mat-icon>
                 <span class="label">Parametry:</span>
-                <pre class="parameters">{{ report.metadata.parameters | json }}</pre>
+                <pre class="parameters">{{ currentReport.metadata.parameters | json }}</pre>
               </div>
             }
           </mat-card-content>
@@ -79,7 +79,7 @@
             <mat-card-title>Dane raportu</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <app-report-types [report]="report" />
+            <app-report-types [report]="currentReport" />
           </mat-card-content>
         </mat-card>
       </div>
