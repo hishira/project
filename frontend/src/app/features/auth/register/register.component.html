@@ -20,47 +20,45 @@
             icon="person"
             label="First Name"
             placeholder="Enter your first name"
-            [errorsMap]="{ required: 'First name is required' }" />
+            [errorsMap]="formErrors.firstName" />
           <app-text-input
             formControlName="lastName"
             icon="person"
             label="Last Name"
             placeholder="Enter your last name"
-            [errorsMap]="{ required: 'Last name is required' }" />
+            [errorsMap]="formErrors.lastName" />
         </div>
         <app-text-input
           formControlName="login"
           icon="account_circle"
           label="Username"
           placeholder="Choose a username"
-          [errorsMap]="{ required: 'Username is required', minlength: 'Username must be at least 3 characters long', pattern: 'Username can only contain letters, numbers, underscores, and hyphens' }" />
+          [errorsMap]="formErrors.login" />
         <app-text-input
           formControlName="email"
           icon="email"
           inputType="email"
           label="Email"
           placeholder="Enter your email"
-          [errorsMap]="{ required: 'Email is required', email: 'Please enter a valid email address' }" />
-      <app-text-input
+          [errorsMap]="formErrors.email" />
+        <app-text-input
           formControlName="password"
           inputType="password"
           label="Password"
           placeholder="Enter your password"
-          [errorsMap]="{ required: 'Password is required', minlength: 'Password must be at least 8 characters long', pattern: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character' }" />
-       
+          [errorsMap]="formErrors.password" />
         <app-text-input
           formControlName="confirmPassword"
           inputType="password"
           label="Confirm Password"
           placeholder="Confirm your password"
-          [errorsMap]="{ required: 'Password is required', passwordMismatch: 'Passwords do not match' }" />
-       
+          [errorsMap]="formErrors.confirmPassword" />
         <button
           class="full-width auth-button"
           color="primary"
           mat-raised-button
           type="submit"
-          [disabled]="registerForm.invalid || isLoading">
+          [disabled]="registerForm.invalid || isLoading()">
           @if (isLoading()) {
             <mat-spinner diameter="20"></mat-spinner>
           }

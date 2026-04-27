@@ -17,17 +17,16 @@
           icon="person"
           label="Email or Username"
           placeholder="Enter your email or username"
-          [inputValidation]="loginValidators.login"
-
-          />
+          [errorsMap]="formErrors.identifier"
+        />
 
         <app-text-input
           formControlName="password"
           inputType="password"
           label="Password"
-          placeholder="Enter your password" 
-          [inputValidation]="loginValidators.password"
-          />
+          placeholder="Enter your password"
+          [errorsMap]="formErrors.password"
+        />
 
         <button
           class="full-width auth-button"
@@ -43,10 +42,6 @@
           }
         </button>
       </form>
-       <lib-generic-form
-        [formGroup]="group"
-        [genericEditInfo]="genericEditDefinition"
-      ></lib-generic-form>
     </mat-card-content>
 
     <mat-card-actions class="auth-actions">

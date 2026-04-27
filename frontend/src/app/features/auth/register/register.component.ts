@@ -1,16 +1,14 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
+  inject,
   signal,
-  WritableSignal
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
-import { SnackBar } from '../../../core/services/snack-bar.service';
 import { RegisterDto } from '../../../shared/models/auth.model';
-import { registerComponentsImports, registerFormGroup } from './consts';
+import { registerComponentsImports, registerFormGroup, REGISTER_FORM_ERRORS } from './consts';
+import { AuthFormSubmissionService } from '../shared/auth-form-submission.service';
 
 @Component({
   selector: 'app-register',
@@ -20,23 +18,13 @@ import { registerComponentsImports, registerFormGroup } from './consts';
   standalone: true,
   imports: [...registerComponentsImports],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
+  private readonly authService = inject(AuthService);
+  private readonly submissionService = inject(AuthFormSubmissionService);
+
   readonly registerForm: FormGroup = registerFormGroup();
-  
-  readonly isLoading: WritableSignal<boolean> = signal(false);
-
-  constructor(
-    private readonly authService: AuthService,
-    private readonly router: Router,
-    private readonly snackBar: SnackBar
-  ) {}
-
-  ngOnInit(): void {
-    // Redirect if already authenticated
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/dashboard']);
-    }
-  }
+  readonly isLoading = signal(false);
+  readonly formErrors = REGISTER_FORM_ERRORS;
 
   onSubmit(): void {
     if (this.registerForm.valid && !this.isLoading()) {
@@ -46,17 +34,17 @@ export class RegisterComponent implements OnInit {
       const registerDto: RegisterDto = registerData;
 
       this.authService.register(registerDto).subscribe({
-        next: (response) => {
+        next: () => {
           this.isLoading.set(false);
-          this.snackBar.openSuccess(
+          this.submissionService.handleAuthSuccess(
             'Registration successful! Welcome to application!'
           );
-          this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           this.isLoading.set(false);
-          this.snackBar.openError(
-            error || 'Registration failed. Please try again.'
+          this.submissionService.handleAuthError(
+            error,
+            'Registration failed. Please try again.'
           );
         },
       });
