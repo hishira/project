@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, output } from '@angular/cor
 import { RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { SnackBar } from '../../services/snack-bar.service';
 import { Router } from '@angular/router';
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
   imports: [
     RouterLink,
     MatIcon,
-    MatDivider
+    MatDivider,
   ],
 })
 export class SideNavComponent {
@@ -29,15 +30,14 @@ export class SideNavComponent {
     this.closed.emit();
   }
 
-  logout(): void {
-    this.authService.logout().subscribe({
-      next: () => {
-        this.snackBar.openSuccess('Logged out successfully');
-        this.router.navigate(['/auth/login']);
-      },
-      error: (error) => {
-        console.error('Logout error:', error);
-      },
-    });
+  async logout(): Promise<void> {
+    try {
+      await firstValueFrom(this.authService.logout());
+      this.snackBar.openSuccess('Logged out successfully');
+      this.router.navigate(['/auth/login']);
+    } catch (error) {
+      console.error('Logout error:', error);
+      this.snackBar.openError('Unable to log out. Please try again.');
+    }
   }
 }

@@ -1,4 +1,12 @@
 <div class="row">
-    <div class="col">{{genericEditDescription().group.label}}</div>
+  <div class="col">{{ genericEditDescription().group.label }}</div>
 </div>
-  @for (input of genericEditDescription().inputs) {}
+
+@for (input of genericEditDescription().inputs; track input.formControlName) {
+  <div class="row">
+    <div class="col">
+      <div class="input-label">{{ input.label }}</div>
+      <div class="input-placeholder">{{ input.placeholder }}</div>
+    </div>
+  </div>
+}

@@ -1,5 +1,5 @@
 ---
-name: angular-refacor
+name: angular-refactor
 description: Refactor angular component
 ---
 # Skill: Angular Component Refactoring (Angular 21+)

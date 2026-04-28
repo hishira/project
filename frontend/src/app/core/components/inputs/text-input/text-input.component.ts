@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, forwardRef, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, forwardRef, input } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -43,33 +43,49 @@ export class TextInputComponent extends BaseInputComponent<FormControl> implemen
   readonly inputType = input<'text' | 'password' | 'email'>('text');
   readonly icon = input<string>('');
   readonly errorsMap = input<ErrorsMap>({});
-  errorsMessage: Set<string> = new Set<string>([]);
-  //ngControl: ControlContainer  = inject(ControlContainer , {self: true, optional: true})!;
-  
+  readonly errorMessages = computed(() => {
+    const controlErrors = this.control?.errors ?? {};
+
+    return Object.keys(controlErrors).map((errorKey) => {
+      const mappedMessage = this.errorsMap()[errorKey];
+      if (mappedMessage) {
+        return mappedMessage;
+      }
+
+      const errorValue = controlErrors[errorKey];
+      if (errorKey === 'required') {
+        return 'This field is required';
+      }
+
+      if (errorKey === 'minlength' && typeof errorValue === 'object') {
+        return `Must be at least ${errorValue['requiredLength']} characters`;
+      }
+
+      if (errorKey === 'maxlength' && typeof errorValue === 'object') {
+        return `Must be no more than ${errorValue['requiredLength']} characters`;
+      }
+
+      return `${errorKey} is invalid`;
+    });
+  });
+
   get Control() {
     return this.control;
   }
 
-  constructor(
-    // eslint-disable-next-line @angular-eslint/prefer-inject
-  //  @Self() @Optional() public ngControl: NgControl,
-  ) {
+  constructor() {
     super();
 
-    // if (this.ngControl) {
-    //   this.ngControl.valueAccessor = this;
-    //   //this.control = this.ngControl.control as FormControl;
-    // }
     effect(() => {
       this.control?.reset();
       const validators =
         this.inputValidation()
           ?.map((v) => v.validator)
-          ?.filter((v) => !!v) ?? [];
+          ?.filter((validator): validator is NonNullable<typeof validator> => !!validator) ?? [];
       const asyncValidators =
         this.inputValidation()
           ?.map((v) => v.asyncValidator)
-          ?.filter((v) => !!v) ?? [];
+          ?.filter((validator): validator is NonNullable<typeof validator> => !!validator) ?? [];
       this.control?.setValidators(validators);
       this.control?.setAsyncValidators(asyncValidators);
       this.control?.updateValueAndValidity();
@@ -80,27 +96,7 @@ export class TextInputComponent extends BaseInputComponent<FormControl> implemen
     this.control = new FormControl(null);
   }
 
-  protected override onInit(): void {
-    // this.control.events.subscribe(() => {
-    //   this.inputValidation().forEach((validation) => {
-    //     if (this.control.hasError(validation.name) && validation.message) {
-    //       //this.errorsMessage.add(validation.message);
-    //     }
-    //   });
-    // });
-    // const validators$ = this.control.valueChanges.pipe().subscribe(a=>{
-    //   console.log(a)
-    //   this.validate(this.ngControl.control!)
-    // });
-  }
-  validate(control: AbstractControl): ValidationErrors | null {
-    // console.log('TOUCHED', this.control.touched);
-    // console.log(control?.validator)
-    // if(!this.control.dirty) return null;
-    // this.control.clearValidators();
-    // // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    // control?.validator && this.control.addValidators([control.validator!]);
-    // this.control.updateValueAndValidity();
+  validate(_: AbstractControl): ValidationErrors | null {
     return this.control.errors;
   }
 }
