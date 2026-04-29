@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, input, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -12,18 +13,22 @@ import {
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
-import { Subscription, noop } from 'rxjs';
+import { noop } from 'rxjs';
 
+import {
+  AddressComponent, AutocompleteComponent, ChipSelectableComponent,
+  DefaultErrors,
+  DefaultSelectableConfig,
+  ErrorsComponent, MutliSelectWithSearchComponent,
+  NumberDirective,
+  SelectableComponent,
+} from 'common-forms';
 import { GenericInput } from '../types';
 import { DefaultFunction, GenericInputDefaultStrategy } from './const';
 import {
   GenericInputValidationStrategy,
   StrategyValidateFunction,
 } from './types';
-import {
-  AddressComponent, AutocompleteComponent, ChipSelectableComponent, NumberDirective, DefaultErrors, ErrorsComponent, MutliSelectWithSearchComponent, DefaultSelectableConfig,
-  SelectableComponent,
-} from 'common-forms';
 @Component({
   selector: 'crm-generic-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -57,11 +62,10 @@ import {
   ],
 })
 export class GenericInputComponent
-  implements OnInit, ControlValueAccessor, OnDestroy, Validator {
+  implements OnInit, ControlValueAccessor, Validator {
   readonly genericInput = input.required<GenericInput>()
-  readonly inputApprearance = computed(() => this.genericInput().outlineControl ? 'outline' : 'fill')
+  readonly inputAppearance = computed(() => this.genericInput().outlineControl ? 'outline' : 'fill')
   formControl!: FormControl;
-  subscription: Subscription = new Subscription();
   DefaultAddressErrors = DefaultErrors;
   onChange: (value: unknown) => void = noop;
   onTouch: () => void = noop;
@@ -73,11 +77,11 @@ export class GenericInputComponent
 
   ngOnInit(): void {
     this.formControl = new FormControl(null, this.genericInput().validators);
-    this.subscription.add(
-      this.formControl.valueChanges.subscribe((formValue) => {
+    this.formControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((formValue) => {
         this.onChange(formValue);
-      })
-    );
+      });
   }
 
   validate(_: AbstractControl): ValidationErrors | null {
@@ -87,9 +91,6 @@ export class GenericInputComponent
     );
 
     return mainErrors ?? null;
-  }
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
   writeValue(obj: unknown): void {
     this.formControl.setValue(obj);

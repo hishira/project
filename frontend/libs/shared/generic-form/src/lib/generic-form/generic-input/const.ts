@@ -5,13 +5,12 @@ export const DefaultFunction: StrategyValidateFunction = (
   formControl: FormControl,
   validators?: ValidatorFn[]
 ): ValidationErrors | null => {
-  let mainErrors = {};
+  let mainErrors: ValidationErrors = {};
   validators?.forEach((validator) => {
-    const errors = validator(formControl);
-    //TODO: fix => mainErrors = {...mainErrors, ...errors}
-    mainErrors = { ...errors };
+    const errors = validator(formControl) ?? {};
+    mainErrors = { ...mainErrors, ...errors };
   });
-  return mainErrors;
+  return Object.keys(mainErrors).length ? mainErrors : null;
 };
 export const GenericInputDefaultStrategy = {
   address: (formControl: FormControl) => {
