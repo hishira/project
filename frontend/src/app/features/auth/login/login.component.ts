@@ -17,13 +17,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { TextInputComponent } from '../../../core/components/inputs/text-input/text-input.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { LoginDto } from '../../../shared/models/auth.model';
-import { TextInputComponent } from '../../../core/components/inputs/text-input/text-input.component';
-import { loginValidators } from './login-validators';
-import { AuthFormSubmissionService } from '../shared/auth-form-submission.service';
 import { LOGIN_FORM_ERRORS } from '../shared/auth-error-messages';
+import { AuthFormSubmissionService } from '../shared/auth-form-submission.service';
+import { loginValidators } from './login-validators';
 
 @Component({
   selector: 'app-login',
@@ -52,25 +52,29 @@ export class LoginComponent {
   readonly loginValidators = loginValidators;
   readonly formErrors = LOGIN_FORM_ERRORS;
   readonly isLoading = signal(false);
-  
+
   loginForm: FormGroup = this.createLoginForm();
 
+  cantLogin(): boolean {
+    return !this.loginForm.valid || this.isLoading()
+  }
   onSubmit(): void {
-    if (this.loginForm.valid && !this.isLoading()) {
-      this.isLoading.set(true);
-      const loginData: LoginDto = this.loginForm.value;
+    if (this.cantLogin()) return;
 
-      this.authService.login(loginData).subscribe({
-        next: () => {
-          this.isLoading.set(false);
-          this.submissionService.handleAuthSuccess('Login successful');
-        },
-        error: (error) => {
-          this.isLoading.set(false);
-          this.submissionService.handleAuthError(error, 'Login failed. Please try again.');
-        },
-      });
-    }
+    this.isLoading.set(true);
+    const loginData: LoginDto = this.loginForm.value;
+
+    this.authService.login(loginData).subscribe({
+      next: () => {
+        this.isLoading.set(false);
+        this.submissionService.handleAuthSuccess('Login successful');
+      },
+      error: (error) => {
+        this.isLoading.set(false);
+        this.submissionService.handleAuthError(error, 'Login failed. Please try again.');
+      },
+    });
+
   }
 
   private createLoginForm(): FormGroup {
