@@ -1,34 +1,25 @@
-import { Component, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { ClientService } from '../client.service';
-import { Client, ClientStatus } from '../client.model';
-import { getClientStatusLabel, getClientStatusClass } from '../client-status.utils';
-import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { getClientStatusClass, getClientStatusLabel } from '../client-status.utils';
+import { Client, ClientStatus } from '../client.model';
+import { ClientService } from '../client.service';
 import { ClientListFiltersComponent } from './client-list-filters.component';
-
-const CLIENT_STATUSES: { value: ClientStatus; label: string }[] = [
-  { value: 'active', label: 'Aktywny' },
-  { value: 'inactive', label: 'Nieaktywny' },
-  { value: 'lead', label: 'Potencjalny' },
-  { value: 'former', label: 'Były' }
-];
-
-const DISPLAYED_COLUMNS: string[] = ['name', 'taxId', 'mainContact', 'status', 'documents', 'lastContact', 'actions'];
+import { CLIENT_STATUSES, DISPLAYED_COLUMNS } from './client-list.consts';
 
 @Component({
   selector: 'app-client-list',
@@ -57,7 +48,7 @@ const DISPLAYED_COLUMNS: string[] = ['name', 'taxId', 'mainContact', 'status', '
   styleUrls: ['./client-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ClientListComponent  {
+export class ClientListComponent {
   private clientService = inject(ClientService);
 
   readonly filterName = signal<string>('');
