@@ -7,7 +7,7 @@ export interface OnboardingTask {
   description?: string;
   status: TaskStatus;
   order: number;
-  dueDays?: number; // liczba dni od startu onboardingu
+  dueDaysFromStart?: number;
   completedAt?: Date;
 }
 

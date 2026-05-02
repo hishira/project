@@ -13,7 +13,7 @@ export class OnboardingService {
       status: 'in_progress',
       tasks: [
         { id: 't1', title: 'Wypełnij formularz kontaktowy', description: 'Podaj dane osoby odpowiedzialnej', status: 'completed', order: 1, completedAt: new Date('2025-03-02') },
-        { id: 't2', title: 'Prześlij listę preferowanych produktów', status: 'pending', order: 2, dueDays: 7 },
+        { id: 't2', title: 'Prześlij listę preferowanych produktów', status: 'pending', order: 2, dueDaysFromStart: 7 },
         { id: 't3', title: 'Umów pierwsze spotkanie', status: 'pending', order: 3 }
       ],
       materials: [

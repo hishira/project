@@ -10,6 +10,7 @@ import { RouterLink } from '@angular/router';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { OnboardingService } from '../onboarding.service';
+import { getOnboardingStatusClass, getOnboardingStatusLabel } from '../onboarding-status.utils';
 
 @Component({
   selector: 'app-onboarding-list',
@@ -28,21 +29,6 @@ export class OnboardingListComponent {
   private onboardingService = inject(OnboardingService);
   list = this.onboardingService.getOnboardingList();
 
-  getStatusClass(status: string): string {
-    const map: Record<string, string> = {
-      in_progress: 'status-in-progress',
-      completed: 'status-completed',
-      overdue: 'status-overdue'
-    };
-    return map[status] || '';
-  }
-
-  getStatusLabel(status: string): string {
-    const map: Record<string, string> = {
-      in_progress: 'W trakcie',
-      completed: 'Zakończony',
-      overdue: 'Opóźniony'
-    };
-    return map[status] || status;
-  }
+  getStatusClass = getOnboardingStatusClass;
+  getStatusLabel = getOnboardingStatusLabel;
 }
