@@ -12,7 +12,8 @@
 
 <app-main-page-view>
   <div class="notification-detail-container">
-    <mat-card *ngIf="notification() as notification; else noNotification" class="detail-card">
+    @if (notification(); as notification) {
+    <mat-card class="detail-card">
       <div class="detail-header">
         <div class="notification-icon-large">
           <mat-icon [style.color]="getPriorityColor(notification.priority)">
@@ -75,21 +76,22 @@
               </span>
               <span class="value">{{ formatDate(notification.createdAt) }}</span>
             </div>
-            <div class="detail-row" *ngIf="notification.readAt">
+            @if (notification.readAt) {
+            <div class="detail-row">
               <span class="label">
                 <mat-icon>visibility</mat-icon>
                 Data przeczytania
               </span>
               <span class="value">{{ formatDate(notification.readAt) }}</span>
             </div>
+            }
           </div>
         </div>
 
-        <mat-divider
-          class="divider-top"
-          *ngIf="notification.metadata && Object.keys(notification.metadata).length > 0"></mat-divider>
+        @if (notification.metadata && Object.keys(notification.metadata).length > 0) {
+        <mat-divider class="divider-top"></mat-divider>
 
-        <div class="detail-section" *ngIf="notification.metadata && Object.keys(notification.metadata).length > 0">
+        <div class="detail-section">
           <h3 class="section-title">
             <mat-icon>code</mat-icon>
             Dodatkowe dane
@@ -98,10 +100,11 @@
             <pre>{{ notification.metadata | json }}</pre>
           </div>
         </div>
+        }
       </mat-card-content>
       <mat-card-actions class="detail-actions"> </mat-card-actions>
     </mat-card>
-
+    } @else {
     <ng-template #noNotification>
       <mat-card class="no-notification-card">
         <mat-card-content class="no-notification-content">
@@ -115,5 +118,6 @@
         </mat-card-content>
       </mat-card>
     </ng-template>
+    }
   </div>
 </app-main-page-view>

@@ -76,7 +76,8 @@
               </div>
             </mat-slide-toggle>
 
-            <div class="time-settings" *ngIf="configForm.get('quietHours.enabled')?.value">
+            @if (configForm.get('quietHours.enabled')?.value) {
+            <div class="time-settings">
               <mat-form-field appearance="outline">
                 <mat-label>Godzina rozpoczęcia</mat-label>
                 <input matInput type="time" formControlName="start">
@@ -87,6 +88,7 @@
                 <input matInput type="time" formControlName="end">
               </mat-form-field>
             </div>
+            }
           </div>
         </mat-card-content>
       </mat-card>
@@ -143,10 +145,8 @@
             </div>
 
             <div formArrayName="categories" class="categories-list">
-              <div
-                *ngFor="let categoryControl of categoryControls.controls; let i = index"
-                [formGroupName]="i"
-                class="category-row">
+              @for (categoryControl of categoryControls.controls; let i = index; track i) {
+              <div [formGroupName]="i" class="category-row">
 
                 <span class="category-name">{{ getCategoryLabel(categoryControl.get('category')?.value) }}</span>
 
@@ -157,6 +157,7 @@
                   <mat-checkbox formControlName="webSocket"></mat-checkbox>
                 </div>
               </div>
+              }
             </div>
           </div>
         </mat-card-content>
@@ -168,8 +169,8 @@
           Przywróć ustawienia
         </button>
         <button mat-flat-button color="primary" type="submit" [disabled]="configForm.invalid || isSaving()">
-          <mat-icon *ngIf="isSaving()">hourglass_empty</mat-icon>
-          <mat-icon *ngIf="!isSaving()">save</mat-icon>
+          @if (isSaving()) { <mat-icon>hourglass_empty</mat-icon> }
+          @if (!isSaving()) { <mat-icon>save</mat-icon> }
           {{ isSaving() ? 'Zapisywanie...' : 'Zapisz konfigurację' }}
         </button>
       </div>
