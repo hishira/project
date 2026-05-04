@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogClose, MatDialogModule } from '@angular/material/dialog';
@@ -34,6 +34,11 @@ export class ExportConfigDialogComponent {
   readonly exportType = signal<'CSV' | 'JSON' | 'Excel'>('CSV');
   readonly selectedFields = signal<string[]>(this.entities[0]?.fields.map((field) => field.key) ?? []);
 
+  readonly currentFields = computed(() => {
+    const entity = this.entities.find((item) => item.id === this.selectedEntityId());
+    return entity?.fields ?? [];
+  });
+
   selectEntity(entityId: string) {
     this.selectedEntityId.set(entityId);
     const entity = this.entities.find((item) => item.id === entityId);
@@ -47,11 +52,6 @@ export class ExportConfigDialogComponent {
       }
       return current.filter((item) => item !== fieldKey);
     });
-  }
-
-  get currentFields(): ExportField[] {
-    const entity = this.entities.find((item) => item.id === this.selectedEntityId());
-    return entity?.fields ?? [];
   }
 
   confirm() {

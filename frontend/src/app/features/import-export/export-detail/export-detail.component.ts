@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, signal, OnDestroy } from '@angular/core';
+import { Component, OnInit, inject, signal, OnDestroy, computed } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -11,7 +12,6 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { ImportExportService } from '../import-export.service';
 import { ExportJob } from '../import-export.model';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-export-detail',
@@ -21,25 +21,17 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./export-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExportDetailComponent implements OnInit, OnDestroy {
+export class ExportDetailComponent {
   private route = inject(ActivatedRoute);
   private readonly service = inject(ImportExportService);
-  private subscription?: Subscription;
 
-  exportJob = signal<ExportJob | undefined>(undefined);
+  private routeParams = toSignal(this.route.paramMap);
 
-  ngOnInit(): void {
-    this.subscription = this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        this.exportJob.set(this.service.getExportJobById(id));
-      }
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
-  }
+  exportJob = computed(() => {
+    const params = this.routeParams();
+    const id = params?.get('id');
+    return id ? this.service.getExportJobById(id) : undefined;
+  });
 
   getStatusIcon(status: string): string {
     switch (status) {

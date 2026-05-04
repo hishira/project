@@ -3,7 +3,9 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Encja</mat-label>
     <mat-select [value]="selectedEntityId()" (selectionChange)="selectEntity($event.value)">
-      <mat-option *ngFor="let entity of entities" [value]="entity.id">{{ entity.label }}</mat-option>
+      @for (entity of entities; track entity.id) {
+        <mat-option [value]="entity.id">{{ entity.label }}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
@@ -18,13 +20,15 @@
 
   <div class="field-list">
     <h3>Wybierz pola</h3>
-    <div *ngFor="let field of currentFields" class="field-item">
-      <mat-checkbox
-        [checked]="selectedFields().includes(field.key)"
-        (change)="toggleField(field.key, $event.checked)">
-        {{ field.label }}
-      </mat-checkbox>
-    </div>
+    @for (field of currentFields; track field.key) {
+      <div class="field-item">
+        <mat-checkbox
+          [checked]="selectedFields().includes(field.key)"
+          (change)="toggleField(field.key, $event.checked)">
+          {{ field.label }}
+        </mat-checkbox>
+      </div>
+    }
   </div>
 </div>
 <div mat-dialog-actions align="end">
