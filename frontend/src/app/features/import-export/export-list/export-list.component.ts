@@ -1,19 +1,19 @@
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatChipsModule } from '@angular/material/chips';
-import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { ModalService } from '../../../core/services/modal.service';
-import { ImportExportService } from '../import-export.service';
 import { ExportConfigDialogComponent } from '../export-config-dialog/export-config-dialog.component';
 import { ExportJob } from '../import-export.model';
+import { ImportExportService } from '../import-export.service';
 
 @Component({
   selector: 'app-export-list',

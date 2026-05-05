@@ -1,17 +1,15 @@
-import { Component, OnInit, inject, signal, OnDestroy, computed } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
-import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { ImportExportService } from '../import-export.service';
-import { ExportJob } from '../import-export.model';
 
 @Component({
   selector: 'app-export-detail',

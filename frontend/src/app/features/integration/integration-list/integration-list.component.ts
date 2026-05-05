@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, Injector } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -7,13 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import { Integration } from '../integration.model';
-import { IntegrationService } from '../integration.service';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
-import { INTEGRATION_TYPE_ICONS } from '../integration.constants';
 import { INTEGRATION_STATUS_COLORS, INTEGRATION_STATUS_ICONS } from '../integration-status.utils';
-import { isEmailIntegration, isCalendarIntegration, isMessengerIntegration, isApiIntegration } from '../integration-type.guards';
+import { isApiIntegration, isCalendarIntegration, isEmailIntegration, isMessengerIntegration } from '../integration-type.guards';
+import { INTEGRATION_TYPE_ICONS } from '../integration.constants';
+import { Integration } from '../integration.model';
+import { IntegrationService } from '../integration.service';
+import {runInContext, WithInjector} from 'utils'
 
 @Component({
     selector: 'app-integration-list',
@@ -33,9 +34,8 @@ import { isEmailIntegration, isCalendarIntegration, isMessengerIntegration, isAp
     templateUrl: './integration-list.component.html',
     styleUrls: ['./integration-list.component.scss']
 })
-export class IntegrationListComponent {
+export class IntegrationListComponent extends WithInjector {
     private integrationService = inject(IntegrationService);
-
     readonly integrations = this.integrationService.integrations;
 
     readonly emailIntegrations = computed(() =>
@@ -78,6 +78,7 @@ export class IntegrationListComponent {
         console.log('Zmiana stanu integracji:', integration.id, event.checked);
     }
 
+    @runInContext
     onTest(integration: Integration, event: MouseEvent): void {
         event.stopPropagation();
         this.integrationService.testConnection(integration.id);

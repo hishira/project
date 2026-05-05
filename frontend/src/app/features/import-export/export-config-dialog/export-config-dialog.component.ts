@@ -1,13 +1,12 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogClose, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ExportEntity, ExportConfig, ExportField } from '../import-export.model';
+import { ExportConfig, ExportEntity } from '../import-export.model';
 
 @Component({
   selector: 'app-export-config-dialog',

@@ -1,18 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ClientService } from '../client.service';
-import { Client } from '../client.model';
-import { Document } from '../../documents/document.models';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { DocumentService } from '../../documents/document.service';
-import { ClientInfoComponent } from './client-info/client-info.component';
+import { ClientService } from '../client.service';
 import { ClientContactsComponent } from './client-contacts/client-contacts.component';
 import { ClientDocumentsComponent } from './client-documents/client-documents.component';
-import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
-import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { ClientInfoComponent } from './client-info/client-info.component';
 
 @Component({
     selector: 'app-client-detail',

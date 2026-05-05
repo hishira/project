@@ -145,8 +145,8 @@
             </div>
 
             <div formArrayName="categories" class="categories-list">
-              @for (categoryControl of categoryControls.controls; let i = index; track i) {
-              <div [formGroupName]="i" class="category-row">
+              @for (categoryControl of categoryControls.controls; track $index) {
+              <div [formGroupName]="$index" class="category-row">
 
                 <span class="category-name">{{ getCategoryLabel(categoryControl.get('category')?.value) }}</span>
 

@@ -20,7 +20,7 @@
 
   <div class="field-list">
     <h3>Wybierz pola</h3>
-    @for (field of currentFields; track field.key) {
+    @for (field of currentFields(); track field.key) {
       <div class="field-item">
         <mat-checkbox
           [checked]="selectedFields().includes(field.key)"
