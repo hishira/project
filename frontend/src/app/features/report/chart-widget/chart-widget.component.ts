@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AnalyticsService } from '../analytics.service';
 
@@ -28,21 +28,21 @@ import { AnalyticsService } from '../analytics.service';
 })
 export class ChartWidgetComponent implements OnInit {
   private analyticsService = inject(AnalyticsService);
-  @Input() config!: any;
+  config = input.required<any>();
 
   report: any;
   chartData: any;
 
   ngOnInit(): void {
-    if (this.config.reportId) {
-      this.report = this.analyticsService.reports().find(r => r.id === this.config.reportId);
+    if (this.config().reportId) {
+      this.report = this.analyticsService.reports().find(r => r.id === this.config().reportId);
       this.refresh();
     }
   }
 
   refresh() {
-    if (this.config.reportId) {
-      const result = this.analyticsService.getReportData(this.config.reportId);
+    if (this.config().reportId) {
+      const result = this.analyticsService.getReportData(this.config().reportId);
       this.chartData = result.data;
     }
   }

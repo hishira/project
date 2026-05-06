@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
@@ -11,7 +11,7 @@ import { AnalyticsService } from '../analytics.service';
   imports: [CommonModule, RouterLink, MatListModule, MatChipsModule],
   template: `
     <mat-list>
-      @for (item of churnPredictions().slice(0, config.limit || 5); track item.clientId) {
+      @for (item of churnPredictions().slice(0, config().limit || 5); track item.clientId) {
         <mat-list-item [routerLink]="['/clients', item.clientId]" class="prediction-item">
           <div class="prediction-row">
             <span class="client-name">{{ item.clientName }}</span>
@@ -41,7 +41,7 @@ import { AnalyticsService } from '../analytics.service';
 })
 export class PredictionWidgetComponent {
   private analyticsService = inject(AnalyticsService);
-  @Input() config!: any;
+  config = input.required<any>();
 
   churnPredictions = this.analyticsService.churnPredictions;
 }
