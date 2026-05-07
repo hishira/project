@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, viewChild, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -42,15 +42,15 @@ import { ReportDefinition } from '../report.models';
   templateUrl: './report-list.component.html',
   styleUrls: ['./report-list.component.scss']
 })
-export class ReportListComponent {
+export class ReportListComponent implements AfterViewInit {
   private analyticsService = inject(AnalyticsService);
   reports = this.analyticsService.reports;
 
   dataSource = new MatTableDataSource<ReportDefinition>(this.reports());
   displayedColumns: string[] = ['name', 'type', 'createdAt', 'lastRun', 'isFavorite', 'actions'];
 
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  sort = viewChild(MatSort);
+  paginator = viewChild(MatPaginator);
 
   filterName = '';
   filterType: string = '';
@@ -64,8 +64,8 @@ export class ReportListComponent {
   ];
 
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort()!;
+    this.dataSource.paginator = this.paginator()!;
     this.dataSource.filterPredicate = (data: ReportDefinition, filter: string) => {
       const filterObj = JSON.parse(filter);
       if (filterObj.name && !data.name.toLowerCase().includes(filterObj.name.toLowerCase())) return false;

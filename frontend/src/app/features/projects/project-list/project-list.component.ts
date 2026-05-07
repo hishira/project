@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal, ViewChild, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, viewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -43,8 +43,8 @@ export class ProjectListComponent implements AfterViewInit {
   readonly filterName = signal<string>('');
   readonly filterStatus = signal<ProjectStatus | ''>('');
 
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  readonly sort = viewChild(MatSort);
+  readonly paginator = viewChild(MatPaginator);
 
   readonly statuses: { value: ProjectStatus; label: string }[] = [
     { value: 'planned', label: 'Planowany' },
@@ -57,8 +57,8 @@ export class ProjectListComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.updateDataSource();
     const dataSource = this.dataSource();
-    dataSource.sort = this.sort;
-    dataSource.paginator = this.paginator;
+    dataSource.sort = this.sort()!;
+    dataSource.paginator = this.paginator()!;
     dataSource.filterPredicate = (data: Project, filter: string) => {
       const filterObj = JSON.parse(filter);
       if (filterObj.name && !data.name.toLowerCase().includes(filterObj.name.toLowerCase())) return false;
