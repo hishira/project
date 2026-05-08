@@ -1,8 +1,8 @@
-import { Component, input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatListModule } from '@angular/material/list';
+import { Component, inject, input } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatListModule } from '@angular/material/list';
+import { RouterLink } from '@angular/router';
 import { AnalyticsService } from '../analytics.service';
 
 @Component({

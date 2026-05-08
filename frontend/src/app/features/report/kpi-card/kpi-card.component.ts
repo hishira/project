@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, computed } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { AnalyticsService } from '../analytics.service';
 
 @Component({
-    selector: 'app-kpi-card',
-    standalone: true,
-    imports: [CommonModule, MatCardModule, MatIconModule],
-    template: `
+  selector: 'app-kpi-card',
+  standalone: true,
+  imports: [CommonModule, MatCardModule, MatIconModule],
+  template: `
     <div class="kpi-grid">
       @for (kpi of kpis(); track kpi.id) {
         <div class="kpi-item">
@@ -27,7 +27,7 @@ import { AnalyticsService } from '../analytics.service';
       }
     </div>
   `,
-    styles: [`
+  styles: [`
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -63,21 +63,21 @@ import { AnalyticsService } from '../analytics.service';
   `]
 })
 export class KpiCardComponent {
-    private analyticsService = inject(AnalyticsService);
-    config: any = input.required<any>();
+  private analyticsService = inject(AnalyticsService);
+  config: any = input.required<any>();
 
-    kpis = computed(()=>this.analyticsService.kpis().filter(k => this.config().kpiIds?.includes(k.id) ?? true));
+  kpis = computed(() => this.analyticsService.kpis().filter(k => this.config().kpiIds?.includes(k.id) ?? true));
 
-    formatValue(kpi: any): string {
-        switch (kpi.format) {
-            case 'currency': return new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN', maximumFractionDigits: 0 }).format(kpi.value);
-            case 'percent': return kpi.value + '%';
-            case 'number': return new Intl.NumberFormat('pl-PL').format(kpi.value);
-            default: return kpi.value;
-        }
+  formatValue(kpi: any): string {
+    switch (kpi.format) {
+      case 'currency': return new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN', maximumFractionDigits: 0 }).format(kpi.value);
+      case 'percent': return kpi.value + '%';
+      case 'number': return new Intl.NumberFormat('pl-PL').format(kpi.value);
+      default: return kpi.value;
     }
+  }
 
-    abs(val: number): number {
-        return Math.abs(val);
-    }
+  abs(val: number): number {
+    return Math.abs(val);
+  }
 }

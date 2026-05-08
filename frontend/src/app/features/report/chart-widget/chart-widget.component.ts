@@ -1,5 +1,5 @@
-import { Component, input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { AnalyticsService } from '../analytics.service';
 
 @Component({

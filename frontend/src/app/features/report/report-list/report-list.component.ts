@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, viewChild, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, inject, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -22,7 +22,7 @@ import { ReportDefinition } from '../report.models';
   selector: 'app-report-list',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     RouterLink,
     MatTableModule,
     MatSortModule,

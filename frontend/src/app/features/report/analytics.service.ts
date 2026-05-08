@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { KpiDefinition, ReportDefinition, ReportResult, PredictionModel, ChurnPrediction, OpportunityPrediction, DashboardWidget } from './report.models';
+import { ChurnPrediction, DashboardWidget, KpiDefinition, OpportunityPrediction, PredictionModel, ReportDefinition, ReportResult } from './report.models';
 
 @Injectable({ providedIn: 'root' })
 export class AnalyticsService {

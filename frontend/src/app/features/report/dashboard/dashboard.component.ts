@@ -6,7 +6,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
 import { AnalyticsService } from '../analytics.service';
 import { ChartWidgetComponent } from '../chart-widget/chart-widget.component';
 import { KpiCardComponent } from '../kpi-card/kpi-card.component';
