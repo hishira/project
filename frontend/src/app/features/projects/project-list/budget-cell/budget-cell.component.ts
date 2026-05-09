@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-budget-cell',
@@ -10,11 +10,9 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BudgetCellComponent {
-  spent = input.required<number>();
-  total = input.required<number>();
-  currency = input.required<string>();
+  readonly spent = input.required<number>();
+  readonly total = input.required<number>();
+  readonly currency = input.required<string>();
+  readonly budgetPercent = computed(() => (this.spent() / this.total()) * 100);
 
-  get budgetPercent(): number {
-    return (this.spent() / this.total()) * 100;
-  }
 }

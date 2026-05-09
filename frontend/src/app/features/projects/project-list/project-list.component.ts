@@ -1,15 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject, signal, viewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Project, ProjectStatus } from '../project.model';
-import { ProjectService } from '../project.service';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { Project, ProjectStatus } from '../project.model';
+import { ProjectService } from '../project.service';
 import { ProjectFiltersComponent } from './project-filters/project-filters.component';
 import { ProjectTableComponent } from './project-table/project-table.component';
 

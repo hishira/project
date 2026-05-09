@@ -25,11 +25,11 @@ import { ProjectStatus } from '../../project.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectFiltersComponent {
-  filterName = input<string>('');
-  filterStatus = input<ProjectStatus | ''>('');
-  statuses = input<{ value: ProjectStatus; label: string }[]>([]);
+  readonly filterName = input<string>('');
+  readonly filterStatus = input<ProjectStatus | ''>('');
+  readonly statuses = input<{ value: ProjectStatus; label: string }[]>([]);
 
-  filterNameChange = output<string>();
-  filterStatusChange = output<ProjectStatus | ''>();
-  clearFilters = output<void>();
+  readonly filterNameChange = output<string>();
+  readonly filterStatusChange = output<ProjectStatus | ''>();
+  readonly clearFilters = output<void>();
 }

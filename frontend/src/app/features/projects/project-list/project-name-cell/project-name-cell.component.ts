@@ -10,6 +10,6 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectNameCellComponent {
-  projectId = input.required<string>();
-  projectName = input.required<string>();
+  readonly projectId = input.required<string>();
+  readonly projectName = input.required<string>();
 }

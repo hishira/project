@@ -13,8 +13,8 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectActionsComponent {
-  projectId = input.required<string>();
+  readonly projectId = input.required<string>();
 
-  viewDetails = output<void>();
-  edit = output<void>();
+  readonly viewDetails = output<void>();
+  readonly edit = output<void>();
 }

@@ -1,6 +1,9 @@
+@let spend = spent() | number;
+@let _total = total() | number;
+
 <div class="budget-cell">
-  <span>{{ spent() | number }} / {{ total() | number }} {{ currency() }}</span>
+  <span>{{ spend }} / {{ _total }} {{ currency() }}</span>
   <div class="progress-bar">
-    <div class="progress-fill" [style.width.%]="budgetPercent"></div>
+    <div class="progress-fill" [style.width.%]="budgetPercent()"></div>
   </div>
 </div>
