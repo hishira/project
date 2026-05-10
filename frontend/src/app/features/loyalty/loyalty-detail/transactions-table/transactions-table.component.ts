@@ -13,9 +13,9 @@ import { PointsTransaction } from '../../loyalty.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionsTableComponent {
-  transactions = input.required<PointsTransaction[]>();
+  readonly transactions = input.required<PointsTransaction[]>();
 
-  displayedColumns: string[] = ['date', 'description', 'pointsChange', 'balanceAfter', 'source'];
+  readonly displayedColumns: string[] = ['date', 'description', 'pointsChange', 'balanceAfter', 'source'];
 
   getPointsChangeColor(pointsChange: number): string {
     return pointsChange > 0 ? '#2e7d32' : '#d32f2f';

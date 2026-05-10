@@ -9,6 +9,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PointsSummaryComponent {
-  label = input.required<string>();
-  value = input.required<number>();
+  readonly bel = input.required<string>();
+  readonly value = input.required<number>();
 }

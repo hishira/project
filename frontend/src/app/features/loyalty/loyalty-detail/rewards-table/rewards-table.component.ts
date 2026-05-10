@@ -15,10 +15,10 @@ import { Reward } from '../../loyalty.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RewardsTableComponent {
-  rewards = input.required<Reward[]>();
-  redeem = output<Reward>();
+  readonly rewards = input.required<Reward[]>();
+  readonly redeem = output<Reward>();
 
-  displayedColumns: string[] = ['name', 'pointsCost', 'discount', 'code', 'expiresAt', 'actions'];
+  readonly displayedColumns: string[] = ['name', 'pointsCost', 'discount', 'code', 'expiresAt', 'actions'];
 
   onRedeem(reward: Reward) {
     this.redeem.emit(reward);

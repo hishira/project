@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-detail-progress',
@@ -10,18 +10,18 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailProgressComponent {
-  points = input.required<number>();
-  nextLevelThreshold = input.required<number>();
-  pointsToNextLevel = input<number>();
-  isMaxLevel = input<boolean>();
+  readonly points = input.required<number>();
+  readonly nextLevelThreshold = input.required<number>();
+  readonly pointsToNextLevel = input<number>();
+  readonly isMaxLevel = input<boolean>();
 
-  get progressPercent(): number {
+  readonly progressPercent = computed(() => {
     const points = this.points();
     const threshold = this.nextLevelThreshold();
     return (points / threshold) * 100;
-  }
+  })
 
-  get progressLabel(): string {
-    return this.isMaxLevel() ? 'maksymalnego poziomu' : 'następnego poziomu';
-  }
+  readonly progressLabel = computed(() =>
+    this.isMaxLevel() ? 'maksymalnego poziomu' : 'następnego poziomu'
+  )
 }

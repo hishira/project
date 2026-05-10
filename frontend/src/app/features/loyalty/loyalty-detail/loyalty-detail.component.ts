@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -10,9 +10,9 @@ import { MainPageViewComponent } from '../../../core/components/main-page-view/m
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { CustomerLoyalty, Reward } from '../loyalty.model';
 import { LoyaltyService } from '../loyalty.service';
+import { DetailProgressComponent } from './detail-progress/detail-progress.component';
 import { LevelSummaryBadgeComponent } from './level-summary-badge/level-summary-badge.component';
 import { PointsSummaryComponent } from './points-summary/points-summary.component';
-import { DetailProgressComponent } from './detail-progress/detail-progress.component';
 import { RewardsTableComponent } from './rewards-table/rewards-table.component';
 import { TransactionsTableComponent } from './transactions-table/transactions-table.component';
 

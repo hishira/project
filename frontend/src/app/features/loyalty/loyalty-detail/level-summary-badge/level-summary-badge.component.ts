@@ -13,8 +13,8 @@ import { getLevelColor, getLevelIcon } from '../../loyalty.utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LevelSummaryBadgeComponent {
-  level = input.required<MembershipLevel>();
+  readonly level = input.required<MembershipLevel>();
 
-  getLevelColor = getLevelColor;
-  getLevelIcon = getLevelIcon;
+  readonly getLevelColor = getLevelColor;
+  readonly getLevelIcon = getLevelIcon;
 }
