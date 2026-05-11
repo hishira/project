@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentNameCellComponent {
-  id = input.required<string>();
-  name = input.required<string>();
-  version = input<string | undefined>(undefined);
+  readonly id = input.required<string>();
+  readonly name = input.required<string>();
+  readonly version = input<string | undefined>(undefined);
 }

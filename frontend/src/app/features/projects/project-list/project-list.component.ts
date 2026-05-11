@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,7 +33,7 @@ import { ProjectTableComponent } from './project-table/project-table.component';
   styleUrls: ['./project-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectListComponent implements AfterViewInit {
+export class ProjectListComponent {
   private readonly projectService = inject(ProjectService);
   private readonly projects = this.projectService.projects;
 
@@ -53,19 +53,32 @@ export class ProjectListComponent implements AfterViewInit {
     { value: 'completed', label: 'Zakończony' },
     { value: 'cancelled', label: 'Anulowany' }
   ];
-
-  ngAfterViewInit() {
-    this.updateDataSource();
-    const dataSource = this.dataSource();
-    dataSource.sort = this.sort()!;
-    dataSource.paginator = this.paginator()!;
-    dataSource.filterPredicate = (data: Project, filter: string) => {
-      const filterObj = JSON.parse(filter);
-      if (filterObj.name && !data.name.toLowerCase().includes(filterObj.name.toLowerCase())) return false;
-      if (filterObj.status && data.status !== filterObj.status) return false;
-      return true;
-    };
+  constructor() {
+    afterNextRender(() => {
+      this.updateDataSource();
+      const dataSource = this.dataSource();
+      dataSource.sort = this.sort()!;
+      dataSource.paginator = this.paginator()!;
+      dataSource.filterPredicate = (data: Project, filter: string) => {
+        const filterObj = JSON.parse(filter);
+        if (filterObj.name && !data.name.toLowerCase().includes(filterObj.name.toLowerCase())) return false;
+        if (filterObj.status && data.status !== filterObj.status) return false;
+        return true;
+      };
+    })
   }
+  // ngAfterViewInit() {
+  //   this.updateDataSource();
+  //   const dataSource = this.dataSource();
+  //   dataSource.sort = this.sort()!;
+  //   dataSource.paginator = this.paginator()!;
+  //   dataSource.filterPredicate = (data: Project, filter: string) => {
+  //     const filterObj = JSON.parse(filter);
+  //     if (filterObj.name && !data.name.toLowerCase().includes(filterObj.name.toLowerCase())) return false;
+  //     if (filterObj.status && data.status !== filterObj.status) return false;
+  //     return true;
+  //   };
+  // }
 
   private updateDataSource() {
     const dataSource = new MatTableDataSource<Project>(this.projects());

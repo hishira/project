@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-document-description',
-  standalone: true,
-  imports: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './document-description.component.html',
   styleUrls: ['./document-description.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class DocumentDescriptionComponent {
-  description = input.required<string>();
+  readonly description = input.required<string>();
 }

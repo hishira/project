@@ -10,8 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentMetadataItemComponent {
-  icon = input.required<string>();
-  label = input.required<string>();
-  value = input<string | null | undefined>('');
-  isExpired = input<boolean>(false);
+  readonly icon = input.required<string>();
+  readonly label = input.required<string>();
+  readonly value = input<string | null | undefined>('');
+  readonly isExpired = input<boolean>(false);
 }

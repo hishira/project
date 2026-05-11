@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, signal, viewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -19,10 +19,10 @@ import { MainPageViewComponent } from '../../../core/components/main-page-view/m
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { Document, DocumentType } from '../document.models';
 import { DocumentService } from '../document.service';
-import { DocumentFiltersComponent } from './document-filters/document-filters.component';
-import { DocumentTypeIconComponent } from './document-type-icon/document-type-icon.component';
-import { DocumentNameCellComponent } from './document-name-cell/document-name-cell.component';
 import { DocumentActionsComponent } from './document-actions/document-actions.component';
+import { DocumentFiltersComponent } from './document-filters/document-filters.component';
+import { DocumentNameCellComponent } from './document-name-cell/document-name-cell.component';
+import { DocumentTypeIconComponent } from './document-type-icon/document-type-icon.component';
 
 @Component({
   selector: 'app-document-list',

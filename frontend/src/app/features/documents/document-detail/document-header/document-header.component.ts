@@ -14,11 +14,11 @@ import { getDocumentTypeIcon, getDocumentTypeLabel } from '../../document.utils'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentHeaderComponent {
-  name = input.required<string>();
-  type = input.required<DocumentType | string>();
-  version = input<string | undefined>(undefined);
-  approved = input<boolean | undefined>(false);
+  readonly name = input.required<string>();
+  readonly type = input.required<DocumentType | string>();
+  readonly version = input<string | undefined>(undefined);
+  readonly approved = input<boolean | undefined>(false);
 
-  getIcon = getDocumentTypeIcon;
-  getLabel = getDocumentTypeLabel;
+  readonly getIcon = getDocumentTypeIcon;
+  readonly getLabel = getDocumentTypeLabel;
 }

@@ -13,6 +13,6 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentActionsComponent {
-  id = input.required<string>();
-  approved = input<boolean>(false);
+  readonly id = input.required<string>();
+  readonly approved = input<boolean>(false);
 }

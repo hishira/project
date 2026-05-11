@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -12,11 +12,11 @@ import { MainPageViewComponent } from '../../../core/components/main-page-view/m
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { Document } from '../document.models';
 import { DocumentService } from '../document.service';
+import { formatFileSize, isDocumentExpired } from '../document.utils';
+import { DocumentDescriptionComponent } from './document-description/document-description.component';
 import { DocumentHeaderComponent } from './document-header/document-header.component';
 import { DocumentMetadataItemComponent } from './document-metadata-item/document-metadata-item.component';
-import { DocumentDescriptionComponent } from './document-description/document-description.component';
 import { DocumentTagsComponent } from './document-tags/document-tags.component';
-import { isDocumentExpired, formatFileSize } from '../document.utils';
 
 @Component({
   selector: 'app-document-detail',

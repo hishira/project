@@ -13,8 +13,8 @@ import { getDocumentTypeIcon, getDocumentTypeLabel } from '../../document.utils'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentTypeIconComponent {
-  type = input.required<DocumentType>();
+  readonly type = input.required<DocumentType>();
 
-  getIcon = getDocumentTypeIcon;
-  getLabel = getDocumentTypeLabel;
+  readonly getIcon = getDocumentTypeIcon;
+  readonly getLabel = getDocumentTypeLabel;
 }
