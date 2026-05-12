@@ -6,7 +6,6 @@ import { Agreement } from '../../types';
 
 @Component({
   selector: 'app-agreement-product-info',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatDividerModule],
   template: `
     <mat-card class="mb-4">

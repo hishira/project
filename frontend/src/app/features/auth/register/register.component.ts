@@ -15,7 +15,6 @@ import { REGISTER_FORM_ERRORS, registerComponentsImports, registerFormGroup } fr
   templateUrl: './register.component.html',
   styleUrl: './registe.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [...registerComponentsImports],
 })
 export class RegisterComponent {

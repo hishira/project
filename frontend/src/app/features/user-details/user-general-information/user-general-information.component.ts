@@ -12,7 +12,6 @@ import { AdminDirective } from './../../../core/directives/admin.directive';
   selector: 'app-user-general-information',
   templateUrl: './user-general-information.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [MatCardModule, ReadonlyOnlyComponent, MatButtonModule, AdminDirective],
   providers: [ModalService]
 })

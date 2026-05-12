@@ -5,7 +5,6 @@ import { CalendarIntegration } from '../../integration.model';
 
 @Component({
   selector: 'app-calendar-config',
-  standalone: true,
   imports: [CommonModule, MatCardModule],
   template: `
     <section class="section">

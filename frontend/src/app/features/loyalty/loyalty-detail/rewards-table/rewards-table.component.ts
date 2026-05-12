@@ -8,7 +8,6 @@ import { Reward } from '../../loyalty.model';
 
 @Component({
   selector: 'app-rewards-table',
-  standalone: true,
   imports: [CommonModule, MatTableModule, MatIconModule, MatButtonModule, MatTooltipModule],
   templateUrl: './rewards-table.component.html',
   styleUrls: ['./rewards-table.component.scss'],

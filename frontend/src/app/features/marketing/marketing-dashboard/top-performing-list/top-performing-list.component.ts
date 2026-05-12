@@ -8,7 +8,6 @@ import { CampaignListItemComponent } from '../campaign-list-item/campaign-list-i
 
 @Component({
   selector: 'app-top-performing-list',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatList, RouterLink, CampaignListItemComponent],
   templateUrl: './top-performing-list.component.html',
   styleUrls: ['./top-performing-list.component.scss'],

@@ -2,7 +2,6 @@ import { Directive, input, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 @Directive({
   selector: '[crm-parse-value-input]',
-  standalone: true,
 })
 export class ParseValueInptuDirective {
   readonly dataVariable = input.required<string>()

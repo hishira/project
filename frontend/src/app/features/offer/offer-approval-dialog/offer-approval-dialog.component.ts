@@ -19,7 +19,6 @@ export const OFFER_APPROVAL_DIALOG_CONFIG = {
 
 @Component({
   selector: 'app-offer-approval-dialog',
-  standalone: true,
   imports: [
     CommonModule, FormsModule,
     MatDialogModule, MatButtonModule,

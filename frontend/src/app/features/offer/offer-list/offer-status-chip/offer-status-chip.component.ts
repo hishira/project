@@ -5,7 +5,6 @@ import { getOfferStatusClass, getOfferStatusLabel } from '../../offer.utils';
 
 @Component({
   selector: 'app-offer-status-chip',
-  standalone: true,
   imports: [MatChipsModule],
   templateUrl: './offer-status-chip.component.html',
   styleUrls: ['./offer-status-chip.component.scss'],

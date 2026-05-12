@@ -7,7 +7,6 @@ import { getLevelColor, getLevelIcon } from '../../loyalty.utils';
 
 @Component({
   selector: 'app-level-card',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatIconModule],
   templateUrl: './level-card.component.html',
   styleUrls: ['./level-card.component.scss'],

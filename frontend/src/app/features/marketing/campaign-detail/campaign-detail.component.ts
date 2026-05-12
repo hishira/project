@@ -25,7 +25,6 @@ import {
 
 @Component({
   selector: 'app-campaign-detail',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

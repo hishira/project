@@ -18,7 +18,6 @@ import { AgreementTagsComponent } from "./agreement-tags/agreement-tags.componen
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './agreement-details.component.html',
     styleUrl: './agreement-details.component.scss',
-    standalone: true,
     imports: [
         MainPageViewComponent,
         PageHeaderComponent,

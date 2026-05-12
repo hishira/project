@@ -23,7 +23,6 @@ import { CLIENT_STATUSES, DISPLAYED_COLUMNS } from './client-list.consts';
 
 @Component({
   selector: 'app-client-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

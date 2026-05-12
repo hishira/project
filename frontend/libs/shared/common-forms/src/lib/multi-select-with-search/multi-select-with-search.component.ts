@@ -39,7 +39,6 @@ import { ParseValueInptuDirective } from '../directives/parse-value-input.direct
   selector: 'crm-multi-select-with-search',
   templateUrl: './multi-select-with-search.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   styleUrls: ['./multi-select-with-search.scss'],
   imports: [
     ReactiveFormsModule,

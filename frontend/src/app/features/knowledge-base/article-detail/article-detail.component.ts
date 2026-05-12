@@ -12,7 +12,6 @@ import { KnowledgeBaseService } from '../knowledge-base.service';
 
 @Component({
   selector: 'app-article-detail',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

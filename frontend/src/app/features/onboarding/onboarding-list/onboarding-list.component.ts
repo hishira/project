@@ -14,7 +14,6 @@ import { getOnboardingStatusClass, getOnboardingStatusLabel } from '../onboardin
 
 @Component({
   selector: 'app-onboarding-list',
-  standalone: true,
   imports: [
     CommonModule, RouterLink,
     MatCardModule, MatIconModule, MatButtonModule,

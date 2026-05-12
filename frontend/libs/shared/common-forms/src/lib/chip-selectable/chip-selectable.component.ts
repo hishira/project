@@ -31,7 +31,6 @@ import { ChipSelectableType } from './types';
       multi: true,
     },
   ],
-  standalone: true,
   imports: Imports,
 })
 export class ChipSelectableComponent

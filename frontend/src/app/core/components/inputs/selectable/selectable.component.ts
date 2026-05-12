@@ -5,7 +5,6 @@ import { BaseInputComponent } from '../base-input/base-input.component';
 @Component({
   selector: 'app-selectable',
   templateUrl: './selectable.component.html',
-  standalone: true,
   imports: [MatFormField, MatSelectModule, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

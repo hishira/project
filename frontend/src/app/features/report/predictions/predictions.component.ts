@@ -9,7 +9,6 @@ import { AnalyticsService } from '../analytics.service';
 
 @Component({
   selector: 'app-predictions',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatTabsModule, MatTableModule, MatChipsModule, MatListModule],
   template: `
     <div class="predictions-container">

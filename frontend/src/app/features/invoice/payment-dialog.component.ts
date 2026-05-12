@@ -12,7 +12,6 @@ import { Invoice, PaymentMethod } from './invoice.model';
 
 @Component({
   selector: 'app-payment-dialog',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

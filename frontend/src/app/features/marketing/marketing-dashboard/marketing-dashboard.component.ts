@@ -12,7 +12,6 @@ import { TopPerformingListComponent } from './top-performing-list/top-performing
 
 @Component({
   selector: 'app-marketing-dashboard',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

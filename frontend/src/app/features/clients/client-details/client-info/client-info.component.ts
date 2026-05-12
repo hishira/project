@@ -1,14 +1,13 @@
-import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { getClientStatusClass, getClientStatusLabel } from '../../client-status.utils';
 import { Client } from '../../client.model';
-import { getClientStatusLabel, getClientStatusClass } from '../../client-status.utils';
 
 @Component({
   selector: 'app-client-info',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatChipsModule, MatIconModule],
   template: `
     <mat-card class="main-card">
@@ -174,8 +173,8 @@ import { getClientStatusLabel, getClientStatusClass } from '../../client-status.
   `]
 })
 export class ClientInfoComponent {
-  client = input.required<Client>();
+  readonly client = input.required<Client>();
 
-  getStatusLabel = getClientStatusLabel;
-  getStatusClass = getClientStatusClass;
+  readonly getStatusLabel = getClientStatusLabel;
+  readonly getStatusClass = getClientStatusClass;
 }

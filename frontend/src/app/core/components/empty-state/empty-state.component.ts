@@ -5,7 +5,6 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-empty-state',
   templateUrl: './empty-state.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [MatIconModule],
 })
 export class EmptyStateComponent {

@@ -13,7 +13,6 @@ import { getPriorityIcon, getPriorityColor, getStatusLabel, getStatusClass } fro
 
 @Component({
   selector: 'app-ticket-item',
-  standalone: true,
   imports: [
     CommonModule,
     MatCheckboxModule,

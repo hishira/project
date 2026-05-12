@@ -10,7 +10,6 @@ import { ExportConfig, ExportEntity } from '../import-export.model';
 
 @Component({
   selector: 'app-export-config-dialog',
-  standalone: true,
   imports: [
     CommonModule,
     MatDialogModule,

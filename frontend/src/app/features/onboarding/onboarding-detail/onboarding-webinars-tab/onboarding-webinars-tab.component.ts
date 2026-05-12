@@ -8,7 +8,6 @@ import { Webinar } from '../../onboarding.model';
 
 @Component({
   selector: 'app-onboarding-webinars-tab',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatListModule, MatButtonModule, MatIconModule],
   template: `
     <div class="tab-content">

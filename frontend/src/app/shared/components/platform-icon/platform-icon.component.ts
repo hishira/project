@@ -6,7 +6,6 @@ import { PLATFORM_ICONS } from '../social-icons/social-icons.constants';
 
 @Component({
   selector: 'app-platform-icon',
-  standalone: true,
   imports: [MatIconModule, MatTooltipModule],
   template: `
     <mat-icon [matTooltip]="platform()">{{ getIcon() }}</mat-icon>

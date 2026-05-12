@@ -7,7 +7,6 @@ import { getInvoiceStatusClass, getInvoiceStatusLabel } from '../../invoice.util
 
 @Component({
   selector: 'app-invoice-summary',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatChipsModule],
   templateUrl: './invoice-summary.component.html',
   styleUrls: ['./invoice-summary.component.scss'],

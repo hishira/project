@@ -16,7 +16,6 @@ import { OnboardingWebinarsTabComponent } from './onboarding-webinars-tab/onboar
 
 @Component({
   selector: 'app-onboarding-detail',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

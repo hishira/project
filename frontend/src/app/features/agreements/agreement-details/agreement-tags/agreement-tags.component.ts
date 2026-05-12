@@ -6,7 +6,6 @@ import { Agreement } from '../../types';
 
 @Component({
   selector: 'app-agreement-tags',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatChipsModule],
   template: `
     <mat-card>

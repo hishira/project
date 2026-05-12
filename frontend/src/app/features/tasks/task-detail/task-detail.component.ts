@@ -15,7 +15,6 @@ import { MainPageViewComponent } from '../../../core/components/main-page-view/m
 
 @Component({
   selector: 'app-task-detail',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

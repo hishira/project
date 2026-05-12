@@ -16,7 +16,6 @@ import { SAMPLE_REPORT_DETAILS } from '../raports-mock-data';
 @Component({
   selector: 'app-report-details',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
     CommonModule,
     MatCardModule,

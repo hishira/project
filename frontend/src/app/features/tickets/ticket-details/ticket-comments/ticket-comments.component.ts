@@ -10,7 +10,6 @@ import { TicketDetails } from "../../types";
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './ticket-comments.component.html',
     styleUrl: './ticket-comments.component.scss',
-    standalone: true,
     imports: [MatCardModule, MatList, MatChip, DatePipe, MatListItem,]
 })
 export class TicketComments {

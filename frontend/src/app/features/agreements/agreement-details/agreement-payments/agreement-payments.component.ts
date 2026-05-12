@@ -14,7 +14,6 @@ export interface PaymentScheduleItem {
 @Component({
     selector: 'app-payment-schedule',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         CommonModule,
         MatCardModule,

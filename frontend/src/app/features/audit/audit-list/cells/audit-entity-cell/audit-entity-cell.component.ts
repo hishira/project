@@ -6,7 +6,6 @@ import { getEntityTypeIcon } from '../../../audit.utils';
 
 @Component({
     selector: 'app-audit-entity-cell',
-    standalone: true,
     imports: [CommonModule, MatIconModule],
     template: `
         <div class="entity-cell">

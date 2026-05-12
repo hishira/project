@@ -6,7 +6,6 @@ import { getLevelColor, getLevelIcon } from '../../loyalty.utils';
 
 @Component({
   selector: 'app-level-summary-badge',
-  standalone: true,
   imports: [CommonModule, MatIconModule],
   templateUrl: './level-summary-badge.component.html',
   styleUrls: ['./level-summary-badge.component.scss'],

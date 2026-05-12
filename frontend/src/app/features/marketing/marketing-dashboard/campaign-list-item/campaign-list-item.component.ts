@@ -7,7 +7,6 @@ import { getCampaignStatusClass, getCampaignTypeIcon, calculateOpenRate } from '
 
 @Component({
   selector: 'app-campaign-list-item',
-  standalone: true,
   imports: [CommonModule, MatChipsModule, MatIconModule],
   templateUrl: './campaign-list-item.component.html',
   styleUrls: ['./campaign-list-item.component.scss'],

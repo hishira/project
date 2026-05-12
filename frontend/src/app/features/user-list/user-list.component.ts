@@ -18,7 +18,6 @@ const otherColumns = ['firstName', 'lastName', 'email', 'role'];
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [MatTableModule, TableFilteringComponent, MatCard, MatCardContent, MainPageViewComponent],
   providers: [CommonRouterService],
 })

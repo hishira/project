@@ -7,7 +7,6 @@ import { Offer } from '../../offer.model';
 
 @Component({
   selector: 'app-offer-actions',
-  standalone: true,
   imports: [MatButtonModule, MatIconModule, MatTooltipModule, RouterLink],
   templateUrl: './offer-actions.component.html',
   styleUrls: ['./offer-actions.component.scss'],

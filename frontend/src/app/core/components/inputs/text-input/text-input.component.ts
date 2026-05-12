@@ -21,7 +21,6 @@ type ErrorsMap = {
   selector: 'app-text-input',
   templateUrl: './text-input.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule, PasswordInputComponent],
   providers: [
     {

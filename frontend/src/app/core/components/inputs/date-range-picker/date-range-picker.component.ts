@@ -8,7 +8,6 @@ import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 @Component({
     selector: 'app-date-range-picker',
     templateUrl: './date-range-picker.component.html',
-    standalone: true,
     imports: [MatFormFieldModule, MatDatepickerModule, MatInputModule, ReactiveFormsModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

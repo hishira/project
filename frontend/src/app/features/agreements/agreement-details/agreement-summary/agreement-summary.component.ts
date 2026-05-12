@@ -7,7 +7,6 @@ import { agreementStatusLowerCase } from '../utils';
 
 @Component({
   selector: 'app-agreement-summary',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatChipsModule, DatePipe],
   template: `
     <mat-card class="mb-4">

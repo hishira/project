@@ -7,7 +7,6 @@ import { getStatusClass, getStatusLabel } from '../../offer-status.utils';
 
 @Component({
   selector: 'app-offer-summary',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatChipsModule],
   template: `
     <mat-card class="summary-card">

@@ -11,7 +11,6 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-task-calendar',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

@@ -5,7 +5,6 @@ import { map } from 'rxjs';
 import { InputValidation } from '../types';
 
 @Directive({
-  standalone: true,
 })
 export abstract class BaseInputComponent<T extends AbstractControl> implements ControlValueAccessor, OnInit {
   readonly inputValidation = input<InputValidation[]>([]);

@@ -1,5 +1,5 @@
-import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,7 +8,6 @@ import { ContactPerson } from '../../client.model';
 
 @Component({
   selector: 'app-client-contacts',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatChipsModule, MatIconModule, MatListModule],
   template: `
     <mat-card class="contacts-card">
@@ -107,5 +106,5 @@ import { ContactPerson } from '../../client.model';
   `]
 })
 export class ClientContactsComponent {
-  contacts = input.required<ContactPerson[] | undefined>();
+  readonly contacts = input.required<ContactPerson[] | undefined>();
 }

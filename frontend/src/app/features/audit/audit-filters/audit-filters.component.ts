@@ -18,7 +18,6 @@ import {
 
 @Component({
     selector: 'app-audit-filters',
-    standalone: true,
     imports: [
         CommonModule,
         FormsModule,

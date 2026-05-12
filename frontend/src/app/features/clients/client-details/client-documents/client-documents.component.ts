@@ -11,7 +11,6 @@ import { getDocumentTypeIcon } from '../../client-status.utils';
 
 @Component({
   selector: 'app-client-documents',
-  standalone: true,
   imports: [CommonModule, DatePipe, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule, MatTableModule, RouterLink],
   template: `
     <mat-card class="documents-card">
@@ -86,9 +85,9 @@ import { getDocumentTypeIcon } from '../../client-status.utils';
   `]
 })
 export class ClientDocumentsComponent {
-  documents = input.required<Document[]>();
-  clientId = input.required<string>();
-  displayedColumns: string[] = ['name', 'type', 'uploaded', 'version', 'actions'];
+  readonly documents = input.required<Document[]>();
+  readonly clientId = input.required<string>();
+  readonly displayedColumns: string[] = ['name', 'type', 'uploaded', 'version', 'actions'];
 
-  getDocIcon = getDocumentTypeIcon;
+  readonly getDocIcon = getDocumentTypeIcon;
 }

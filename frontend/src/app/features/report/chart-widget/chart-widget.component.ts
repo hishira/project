@@ -4,7 +4,6 @@ import { AnalyticsService } from '../analytics.service';
 
 @Component({
   selector: 'app-chart-widget',
-  standalone: true,
   imports: [CommonModule],
   template: `
     <div class="chart-placeholder">

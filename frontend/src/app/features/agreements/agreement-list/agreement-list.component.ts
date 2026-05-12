@@ -24,7 +24,6 @@ import {
 
 @Component({
   selector: 'app-agreement-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

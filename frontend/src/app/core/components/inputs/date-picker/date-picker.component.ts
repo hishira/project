@@ -8,7 +8,6 @@ import { BaseInputComponent } from '../base-input/base-input.component';
 @Component({
   selector: 'app-date-picker',
   templateUrl: './date-picker.component.html',
-  standalone: true,
   imports: [MatFormFieldModule, MatDatepickerModule, MatInputModule, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

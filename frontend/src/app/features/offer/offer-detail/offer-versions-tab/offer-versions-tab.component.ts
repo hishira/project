@@ -6,7 +6,6 @@ import { OfferVersion } from '../../offer.model';
 
 @Component({
   selector: 'app-offer-versions-tab',
-  standalone: true,
   imports: [CommonModule, MatTabsModule, MatTableModule],
   template: `
     @if (versions().length) {

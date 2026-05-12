@@ -20,7 +20,6 @@ import { NOTIFICATION_CATEGORIES } from '../notifications.constants';
 
 @Component({
   selector: 'app-notifications-config',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,

@@ -9,7 +9,6 @@ import { ToolbarComponent } from '../../../features/dashboard/toolbar/toolbar.co
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
     RouterOutlet, 
     ToolbarComponent,

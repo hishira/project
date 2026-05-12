@@ -12,7 +12,6 @@ import { TicketDetails } from "../../types";
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './ticket-attachments.component.html',
     styleUrl: './ticket-attachments.component.scss',
-    standalone: true,
     imports: [
         CommonModule,
         MatCardModule,

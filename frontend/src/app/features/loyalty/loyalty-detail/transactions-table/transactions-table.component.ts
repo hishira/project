@@ -6,7 +6,6 @@ import { PointsTransaction } from '../../loyalty.model';
 
 @Component({
   selector: 'app-transactions-table',
-  standalone: true,
   imports: [CommonModule, MatTableModule, MatChipsModule],
   templateUrl: './transactions-table.component.html',
   styleUrls: ['./transactions-table.component.scss'],

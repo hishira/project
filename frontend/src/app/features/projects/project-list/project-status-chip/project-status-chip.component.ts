@@ -20,7 +20,6 @@ const labelMap = {
 
 @Component({
   selector: 'app-project-status-chip',
-  standalone: true,
   imports: [MatChipsModule],
   templateUrl: './project-status-chip.component.html',
   styleUrls: ['./project-status-chip.component.scss'],

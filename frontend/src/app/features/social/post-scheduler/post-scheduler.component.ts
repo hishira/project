@@ -17,7 +17,6 @@ import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-post-scheduler',
-  standalone: true,
   imports: [
     CommonModule, RouterLink, ReactiveFormsModule,
     MatCardModule, MatIconModule, MatButtonModule,

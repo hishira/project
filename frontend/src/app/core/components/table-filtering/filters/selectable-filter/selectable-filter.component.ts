@@ -7,7 +7,6 @@ import { BaseFilterComponent } from '../base-filter/base-filter.component';
 @Component({
   selector: 'app-selectable-filter',
   templateUrl: './selectable-filter.component.html',
-  standalone: true,
   imports: [SelectableComponent, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

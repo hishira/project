@@ -30,7 +30,6 @@ export const DefaultErrors: ErrorsInput = {
   selector: 'crm-errors',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './errors.component.html',
-  standalone: true,
   imports: [ MatInputModule, MatFormFieldModule],
 })
 export class ErrorsComponent implements OnInit {

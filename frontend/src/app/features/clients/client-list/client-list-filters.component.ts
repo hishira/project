@@ -10,7 +10,6 @@ import { ClientStatus } from '../client.model';
 
 @Component({
   selector: 'app-client-list-filters',
-  standalone: true,
   imports: [
     CommonModule,
     MatFormFieldModule,

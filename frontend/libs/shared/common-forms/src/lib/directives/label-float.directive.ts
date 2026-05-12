@@ -2,7 +2,6 @@ import { AfterViewInit, Directive, ElementRef, inject, OnInit } from '@angular/c
 
 @Directive({
     selector: 'mat-label',
-    standalone: true,
 })
 export class LabelFloatDirective implements AfterViewInit {
   private el = inject(ElementRef);

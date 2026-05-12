@@ -14,7 +14,6 @@ import { ClientInfoComponent } from './client-info/client-info.component';
 
 @Component({
     selector: 'app-client-detail',
-    standalone: true,
     imports: [
         CommonModule,
         RouterLink,

@@ -7,7 +7,6 @@ import { ProjectStatusChipComponent } from '../project-status-chip/project-statu
 
 @Component({
   selector: 'app-project-summary',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatProgressBarModule, ProjectStatusChipComponent],
   templateUrl: './project-summary.component.html',
   styleUrls: ['./project-summary.component.scss'],

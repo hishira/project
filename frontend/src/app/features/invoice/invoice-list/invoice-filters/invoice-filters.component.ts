@@ -12,7 +12,6 @@ import { INVOICE_STATUS_OPTIONS } from '../../invoice.utils';
 
 @Component({
   selector: 'app-invoice-filters',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

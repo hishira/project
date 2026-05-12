@@ -17,7 +17,6 @@ import { User } from '../../../shared/models/auth.model';
   templateUrl: './toolbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./toolbar.component.scss'],
-  standalone: true,
   imports: [
     MatMenuModule,
     MatButtonModule,

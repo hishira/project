@@ -9,7 +9,6 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-recent-campaigns-list',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatList, RouterLink, CampaignListItemComponent, MatButtonModule],
   templateUrl: './recent-campaigns-list.component.html',
   styleUrls: ['./recent-campaigns-list.component.scss'],

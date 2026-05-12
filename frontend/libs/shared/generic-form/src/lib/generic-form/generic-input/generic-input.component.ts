@@ -34,7 +34,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './generic-input.component.html',
   styleUrls: ['./generic-input.scss'],
-  standalone: true,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

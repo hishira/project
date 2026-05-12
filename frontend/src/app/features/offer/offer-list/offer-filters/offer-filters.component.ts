@@ -12,7 +12,6 @@ import { OFFER_STATUS_OPTIONS } from '../../offer.utils';
 
 @Component({
   selector: 'app-offer-filters',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

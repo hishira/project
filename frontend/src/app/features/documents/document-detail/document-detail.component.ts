@@ -20,7 +20,6 @@ import { DocumentTagsComponent } from './document-tags/document-tags.component';
 
 @Component({
   selector: 'app-document-detail',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

@@ -9,7 +9,6 @@ import { FilterActionLogic } from './filters/base-filter/filter-action-logic.ser
 @Component({
   selector: 'app-table-filtering',
   templateUrl: './table-filtering.component.html',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [SelectableFilterComponent, DateFilterComponent, FilterChipsComponent],
   providers: [FilterService, FilterActionLogic],

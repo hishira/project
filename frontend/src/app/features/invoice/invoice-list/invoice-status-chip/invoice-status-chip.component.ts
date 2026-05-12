@@ -5,7 +5,6 @@ import { getInvoiceStatusClass, getInvoiceStatusLabel } from '../../invoice.util
 
 @Component({
   selector: 'app-invoice-status-chip',
-  standalone: true,
   imports: [MatChipsModule],
   templateUrl: './invoice-status-chip.component.html',
   styleUrls: ['./invoice-status-chip.component.scss'],

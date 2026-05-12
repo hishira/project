@@ -6,7 +6,6 @@ import { SENTIMENT_COLORS, SENTIMENT_ICONS } from '../social-icons/social-icons.
 
 @Component({
   selector: 'app-sentiment-icon',
-  standalone: true,
   imports: [MatIconModule, MatTooltipModule],
   template: `
     <mat-icon [style.color]="getColor()" [matTooltip]="sentiment()">

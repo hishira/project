@@ -9,7 +9,6 @@ import { MatInputModule } from '@angular/material/input';
   selector: 'app-password-input',
   templateUrl: './password-input.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatButtonModule],
 })
 export class PasswordInputComponent {

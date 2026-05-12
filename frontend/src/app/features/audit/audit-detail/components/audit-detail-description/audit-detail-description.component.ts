@@ -4,7 +4,6 @@ import { AuditLog } from '../../../audit.model';
 
 @Component({
     selector: 'app-audit-detail-description',
-    standalone: true,
     imports: [MatCardModule],
     templateUrl: './audit-detail-description.component.html',
     styleUrls: ['./audit-detail-description.component.scss'],

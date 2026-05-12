@@ -6,7 +6,6 @@ import { getDocumentTypeIcon, getDocumentTypeLabel } from '../../document.utils'
 
 @Component({
   selector: 'app-document-type-icon',
-  standalone: true,
   imports: [MatIconModule, MatTooltipModule],
   templateUrl: './document-type-icon.component.html',
   styleUrls: ['./document-type-icon.component.scss'],

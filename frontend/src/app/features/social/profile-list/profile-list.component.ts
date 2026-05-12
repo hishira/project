@@ -9,7 +9,6 @@ import { ProfileCardComponent } from './profile-card.component';
 
 @Component({
   selector: 'app-profile-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

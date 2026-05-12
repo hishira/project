@@ -8,7 +8,6 @@ import { Milestone } from '../../project.model';
 
 @Component({
   selector: 'app-milestones-list',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatListModule, MatIconModule, MatButtonModule],
   templateUrl: './milestones-list.component.html',
   styleUrls: ['./milestones-list.component.scss'],

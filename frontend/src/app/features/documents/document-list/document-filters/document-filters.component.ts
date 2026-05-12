@@ -13,7 +13,6 @@ import { DOCUMENT_TYPE_OPTIONS } from '../../document.utils';
 
 @Component({
   selector: 'app-document-filters',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

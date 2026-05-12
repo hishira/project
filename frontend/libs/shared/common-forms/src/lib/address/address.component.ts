@@ -35,7 +35,6 @@ import { AddressFormGroup, ObjectValidators } from './types';
     },
     { provide: NG_VALIDATORS, useExisting: AddressComponent, multi: true },
   ],
-  standalone: true,
   imports: [
     MatInputModule,
     ReactiveFormsModule,

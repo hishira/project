@@ -8,7 +8,6 @@ import { getOnboardingStatusLabel, getOnboardingStatusClass } from '../../onboar
 
 @Component({
   selector: 'app-onboarding-summary',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatChipsModule, MatProgressBarModule],
   template: `
     <mat-card class="summary-card">

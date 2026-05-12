@@ -6,7 +6,6 @@ import { PageBackButtonComponent } from './page-back-button/page-back-button.com
   selector: 'app-page-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './page-header.component.html',
-  standalone: true,
   imports: [MatToolbarModule, PageBackButtonComponent],
 })
 export class PageHeaderComponent {

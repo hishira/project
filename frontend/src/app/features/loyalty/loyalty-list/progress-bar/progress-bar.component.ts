@@ -4,7 +4,6 @@ import { getProgressWidth } from '../../loyalty.utils';
 
 @Component({
   selector: 'app-progress-bar',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.scss'],

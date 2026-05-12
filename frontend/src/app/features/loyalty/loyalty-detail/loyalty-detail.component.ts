@@ -18,7 +18,6 @@ import { TransactionsTableComponent } from './transactions-table/transactions-ta
 
 @Component({
   selector: 'app-loyalty-detail',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

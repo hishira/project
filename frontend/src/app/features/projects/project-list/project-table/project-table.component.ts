@@ -23,7 +23,6 @@ function calculateProgress(project: Project): number {
 
 @Component({
   selector: 'app-project-table',
-  standalone: true,
   imports: [
     CommonModule,
     DatePipe,

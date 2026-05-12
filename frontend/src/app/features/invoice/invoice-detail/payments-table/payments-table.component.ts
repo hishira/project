@@ -8,7 +8,6 @@ import { getPaymentMethodLabel } from '../../invoice.utils';
 
 @Component({
   selector: 'app-payments-table',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatChipsModule, MatTableModule],
   templateUrl: './payments-table.component.html',
   styleUrls: ['./payments-table.component.scss'],

@@ -23,7 +23,6 @@ import { InvoiceActionsComponent } from './invoice-actions/invoice-actions.compo
 
 @Component({
   selector: 'app-invoice-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

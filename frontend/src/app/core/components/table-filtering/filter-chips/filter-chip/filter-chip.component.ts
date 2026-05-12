@@ -8,7 +8,6 @@ import { FilterValue } from '../../filters/base-filter/types';
   selector: 'app-filter-chip',
   templateUrl: './filter-chip.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [MatChipsModule, MatIconModule],
 })
 export class FilterChipComponent {

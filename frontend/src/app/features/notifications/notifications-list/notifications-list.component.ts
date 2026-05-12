@@ -16,7 +16,6 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-notifications-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

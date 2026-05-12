@@ -28,7 +28,6 @@ export const DefaultSelectableConfig: SelectableConfig = {
   selector: 'crm-selectable',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './selectable.component.html',
-  standalone: true,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

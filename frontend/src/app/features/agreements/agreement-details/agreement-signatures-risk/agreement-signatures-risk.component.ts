@@ -5,7 +5,6 @@ import { Agreement } from '../../types';
 
 @Component({
   selector: 'app-agreement-signatures-risk',
-  standalone: true,
   imports: [CommonModule, MatCardModule, DatePipe],
   template: `
     <mat-card class="mb-4">

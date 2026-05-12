@@ -24,7 +24,6 @@ interface MentionForm {
 
 @Component({
   selector: 'app-mention-detail',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

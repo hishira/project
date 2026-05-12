@@ -19,7 +19,6 @@ import { AuditDetailTechnicalComponent } from './components/audit-detail-technic
 
 @Component({
     selector: 'app-audit-detail',
-    standalone: true,
     imports: [
         CommonModule,
         DatePipe,

@@ -11,7 +11,6 @@ import { InvoiceService } from './invoice.service';
 
 @Component({
   selector: 'app-receivables-report',
-  standalone: true,
   imports: [CommonModule, RouterLink, MatCardModule, MatIconModule, MatButtonModule, MatTableModule, MatTabsModule, MatChipsModule],
   template: `
     <div class="report-container">

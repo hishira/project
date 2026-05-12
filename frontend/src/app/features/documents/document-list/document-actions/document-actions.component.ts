@@ -6,7 +6,6 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-document-actions',
-  standalone: true,
   imports: [MatButtonModule, MatIconModule, MatTooltipModule, RouterLink],
   templateUrl: './document-actions.component.html',
   styleUrls: ['./document-actions.component.scss'],

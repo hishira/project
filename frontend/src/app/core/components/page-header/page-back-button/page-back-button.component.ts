@@ -7,7 +7,6 @@ import { MoveBackService } from '../../../services/move-back.service';
   selector: 'app-page-back-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './page-back-button.component.html',
-  standalone: true,
   imports: [MatIconModule, MatButtonModule],
 })
 export class PageBackButtonComponent {

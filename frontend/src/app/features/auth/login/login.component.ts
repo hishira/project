@@ -27,7 +27,6 @@ import { loginValidators } from './login-validators';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,

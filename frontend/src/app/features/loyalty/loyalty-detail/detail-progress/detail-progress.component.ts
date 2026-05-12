@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 
 @Component({
   selector: 'app-detail-progress',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './detail-progress.component.html',
   styleUrls: ['./detail-progress.component.scss'],

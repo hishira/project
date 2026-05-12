@@ -6,7 +6,6 @@ import { AnalyticsService } from '../analytics.service';
 
 @Component({
   selector: 'app-kpi-card',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatIconModule],
   template: `
     <div class="kpi-grid">

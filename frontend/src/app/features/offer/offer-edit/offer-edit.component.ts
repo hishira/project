@@ -19,7 +19,6 @@ import { OfferItemRowComponent } from './offer-item-row/offer-item-row.component
 
 @Component({
   selector: 'app-offer-edit',
-  standalone: true,
   imports: [
     CommonModule, RouterLink, ReactiveFormsModule,
     MatCardModule, MatIconModule, MatButtonModule,

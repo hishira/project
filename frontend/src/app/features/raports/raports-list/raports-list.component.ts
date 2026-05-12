@@ -22,7 +22,6 @@ import {
 @Component({
   selector: 'app-report-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
     CommonModule,
     MatCardModule,

@@ -8,7 +8,6 @@ import { FilterChipComponent } from './filter-chip/filter-chip.component';
   selector: 'app-filter-chips',
   templateUrl: './filter-chips.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [MatChipsModule, MatButtonModule, FilterChipComponent],
 })
 export class FilterChipsComponent {

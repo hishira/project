@@ -16,7 +16,6 @@ import { getCampaignTypeIcon, formatDatePolish, templateListColumns } from '../m
 
 @Component({
   selector: 'app-template-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

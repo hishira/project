@@ -23,7 +23,6 @@ import { ApiConfigComponent } from './api-config/api-config.component';
 
 @Component({
   selector: 'app-integration-detail',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

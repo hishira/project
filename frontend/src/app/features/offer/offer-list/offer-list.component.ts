@@ -23,7 +23,6 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
 
 @Component({
   selector: 'app-offer-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

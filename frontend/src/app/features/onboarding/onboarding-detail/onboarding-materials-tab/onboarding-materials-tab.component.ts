@@ -10,7 +10,6 @@ import { getMaterialTypeIcon } from '../../onboarding-status.utils';
 
 @Component({
   selector: 'app-onboarding-materials-tab',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatListModule, MatButtonModule, MatIconModule, MatTooltipModule],
   template: `
     <div class="tab-content">

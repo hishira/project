@@ -6,7 +6,6 @@ import { OfferItem } from '../../offer.model';
 
 @Component({
   selector: 'app-offer-items-table',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatTableModule],
   template: `
     <mat-card class="items-card">

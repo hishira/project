@@ -10,7 +10,6 @@ import { ProjectTask } from '../../project.model';
 
 @Component({
   selector: 'app-tasks-table',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatTableModule, MatChipsModule, MatIconModule, MatButtonModule, MatTooltipModule],
   templateUrl: './tasks-table.component.html',
   styleUrls: ['./tasks-table.component.scss'],

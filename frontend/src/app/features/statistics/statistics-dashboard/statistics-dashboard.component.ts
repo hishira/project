@@ -24,7 +24,6 @@ Chart.register(...registerables);
 
 @Component({
   selector: 'app-statistics-dashboard',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,

@@ -18,7 +18,6 @@ import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 
 @Component({
   selector: 'app-loyalty-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

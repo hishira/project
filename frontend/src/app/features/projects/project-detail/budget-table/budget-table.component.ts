@@ -6,7 +6,6 @@ import { BudgetItem } from '../../project.model';
 
 @Component({
   selector: 'app-budget-table',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatTableModule],
   templateUrl: './budget-table.component.html',
   styleUrls: ['./budget-table.component.scss'],

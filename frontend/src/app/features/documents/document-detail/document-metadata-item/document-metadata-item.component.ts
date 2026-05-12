@@ -3,7 +3,6 @@ import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-document-metadata-item',
-  standalone: true,
   imports: [MatIconModule],
   templateUrl: './document-metadata-item.component.html',
   styleUrls: ['./document-metadata-item.component.scss'],

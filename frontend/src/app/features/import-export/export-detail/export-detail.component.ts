@@ -13,7 +13,6 @@ import { ImportExportService } from '../import-export.service';
 
 @Component({
   selector: 'app-export-detail',
-  standalone: true,
   imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, MatDividerModule, PageHeaderComponent, MainPageViewComponent],
   templateUrl: './export-detail.component.html',
   styleUrls: ['./export-detail.component.scss'],

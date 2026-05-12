@@ -17,7 +17,6 @@ import { usetTypeToCssClassMapper } from './utils';
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
     MatCardModule,
     MainPageViewComponent,

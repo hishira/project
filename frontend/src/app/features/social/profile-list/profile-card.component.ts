@@ -9,7 +9,6 @@ import { PLATFORM_INFO } from './profile-list.constants';
 
 @Component({
   selector: 'app-profile-card',
-  standalone: true,
   imports: [
     CommonModule,
     MatCardModule,

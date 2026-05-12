@@ -8,7 +8,6 @@ import { getApprovalStatusClass } from '../../offer-status.utils';
 
 @Component({
   selector: 'app-offer-approvals-tab',
-  standalone: true,
   imports: [CommonModule, MatTabsModule, MatTableModule, MatChipsModule],
   template: `
     @if (approvals().length) {

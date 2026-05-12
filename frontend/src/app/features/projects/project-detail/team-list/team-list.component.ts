@@ -7,7 +7,6 @@ import { ProjectTeamMember } from '../../project.model';
 
 @Component({
   selector: 'app-team-list',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatListModule, MatButtonModule],
   templateUrl: './team-list.component.html',
   styleUrls: ['./team-list.component.scss'],

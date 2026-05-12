@@ -5,7 +5,6 @@ import { GenericEdit } from './types';
   selector: 'app-generic-form',
   templateUrl: './generic-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [],
 })
 export class GenericFormComponent {

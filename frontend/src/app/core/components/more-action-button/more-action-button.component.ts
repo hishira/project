@@ -9,7 +9,6 @@ import { ActionItem } from './action.model';
 
 @Component({
   selector: 'app-action-buttons',
-  standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule, MatMenuModule, MatTooltipModule],
   template: `
     @if (actions().length === 1) {

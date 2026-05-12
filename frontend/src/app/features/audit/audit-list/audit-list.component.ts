@@ -26,7 +26,6 @@ import {
 
 @Component({
     selector: 'app-audit-list',
-    standalone: true,
     imports: [
         CommonModule,
         RouterLink,

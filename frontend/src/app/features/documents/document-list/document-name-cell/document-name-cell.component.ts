@@ -3,7 +3,6 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-document-name-cell',
-  standalone: true,
   imports: [RouterLink],
   templateUrl: './document-name-cell.component.html',
   styleUrls: ['./document-name-cell.component.scss'],

@@ -26,7 +26,6 @@ import { DocumentTypeIconComponent } from './document-type-icon/document-type-ic
 
 @Component({
   selector: 'app-document-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

@@ -9,7 +9,6 @@ import { getAuditActionIcon, getActionSeverityColor, getActionChipClass, getEnti
 
 @Component({
     selector: 'app-audit-detail-info',
-    standalone: true,
     imports: [
         CommonModule,
         DatePipe,

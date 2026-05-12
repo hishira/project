@@ -8,7 +8,6 @@ import { GenericEdit } from '../types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './generic-group.component.html',
   styleUrls: ['./generic-group.scss'],
-  standalone: true,
   imports: [
     MatGridListModule,
     GenericInputComponent,

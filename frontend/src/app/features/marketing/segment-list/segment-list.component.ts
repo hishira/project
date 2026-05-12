@@ -15,7 +15,6 @@ import { formatDatePolish, segmentListColumns } from '../marketing.constants';
 
 @Component({
   selector: 'app-segment-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

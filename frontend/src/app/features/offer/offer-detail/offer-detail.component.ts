@@ -19,7 +19,6 @@ import { MainPageViewComponent } from '../../../core/components/main-page-view/m
 
 @Component({
   selector: 'app-offer-detail',
-  standalone: true,
   imports: [
     CommonModule, RouterLink,
     MatCardModule, MatIconModule, MatButtonModule, MatTabsModule, MatDialogModule,

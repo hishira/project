@@ -26,7 +26,6 @@ function getTaskTypeIcon(type: TaskType): string {
 
 @Component({
   selector: 'app-task-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

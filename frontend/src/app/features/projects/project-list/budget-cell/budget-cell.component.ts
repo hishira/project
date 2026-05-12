@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 
 @Component({
   selector: 'app-budget-cell',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './budget-cell.component.html',
   styleUrls: ['./budget-cell.component.scss'],

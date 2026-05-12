@@ -44,7 +44,6 @@ export interface FetchingAutoCompleteSerivce {
   selector: 'crm-autocomplete',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './autocomplete.component.html',
-  standalone: true,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

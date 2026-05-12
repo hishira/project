@@ -7,7 +7,6 @@ import { OnboardingTask } from '../../onboarding.model';
 
 @Component({
   selector: 'app-onboarding-tasks-tab',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatCheckboxModule, MatListModule],
   template: `
     <div class="tab-content">

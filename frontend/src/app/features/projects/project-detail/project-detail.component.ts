@@ -18,7 +18,6 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
 
 @Component({
   selector: 'app-project-detail',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

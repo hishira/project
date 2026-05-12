@@ -12,7 +12,6 @@ import { imports } from './user-agreements.component.dependencies';
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './user-agreements.component.html',
     styleUrls: ['./user-agreements.component.scss'],
-    standalone: true,
     imports: [
         ...imports
     ],

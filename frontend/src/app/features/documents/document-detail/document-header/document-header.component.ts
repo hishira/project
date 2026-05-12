@@ -7,7 +7,6 @@ import { getDocumentTypeIcon, getDocumentTypeLabel } from '../../document.utils'
 
 @Component({
   selector: 'app-document-header',
-  standalone: true,
   imports: [MatCardModule, MatIconModule, MatChipsModule],
   templateUrl: './document-header.component.html',
   styleUrls: ['./document-header.component.scss'],

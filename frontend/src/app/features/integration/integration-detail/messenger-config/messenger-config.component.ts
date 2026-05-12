@@ -5,7 +5,6 @@ import { MessengerIntegration } from '../../integration.model';
 
 @Component({
   selector: 'app-messenger-config',
-  standalone: true,
   imports: [CommonModule, MatCardModule],
   template: `
     <section class="section">

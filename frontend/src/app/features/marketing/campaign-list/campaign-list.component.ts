@@ -15,7 +15,6 @@ import { getCampaignStatusClass, getCampaignTypeIcon, campaignListColumns } from
 
 @Component({
   selector: 'app-campaign-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

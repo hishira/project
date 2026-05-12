@@ -17,7 +17,6 @@ import { ImportExportService } from '../import-export.service';
 
 @Component({
   selector: 'app-export-list',
-  standalone: true,
   imports: [
     CommonModule,
     MatButtonModule,

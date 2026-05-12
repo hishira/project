@@ -7,7 +7,6 @@ import { Invoice } from '../../invoice.model';
 
 @Component({
   selector: 'app-invoice-actions',
-  standalone: true,
   imports: [MatButtonModule, MatIconModule, MatTooltipModule, RouterLink],
   templateUrl: './invoice-actions.component.html',
   styleUrls: ['./invoice-actions.component.scss'],

@@ -9,7 +9,6 @@ import { CommonModule } from "@angular/common";
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './ticket-metadata.component.html',
     styleUrl: './ticket-metadata.component.scss',
-    standalone: true,
     imports: [
         MatIconModule,
         MatChipsModule,

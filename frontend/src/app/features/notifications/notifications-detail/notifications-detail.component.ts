@@ -15,7 +15,6 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-notifications-detail',
-  standalone: true,
   imports: [
     CommonModule,
     MatCardModule,

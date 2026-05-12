@@ -15,7 +15,6 @@ import { ProjectTableComponent } from './project-table/project-table.component';
 
 @Component({
   selector: 'app-project-list',
-  standalone: true,
   imports: [
     CommonModule,
     MatTableModule,

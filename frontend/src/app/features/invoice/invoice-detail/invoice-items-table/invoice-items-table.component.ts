@@ -6,7 +6,6 @@ import { InvoiceItem } from '../../invoice.model';
 
 @Component({
   selector: 'app-invoice-items-table',
-  standalone: true,
   imports: [CommonModule, MatCardModule, MatTableModule],
   templateUrl: './invoice-items-table.component.html',
   styleUrls: ['./invoice-items-table.component.scss'],

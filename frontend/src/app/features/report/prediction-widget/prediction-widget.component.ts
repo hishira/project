@@ -7,7 +7,6 @@ import { AnalyticsService } from '../analytics.service';
 
 @Component({
   selector: 'app-prediction-widget',
-  standalone: true,
   imports: [CommonModule, RouterLink, MatListModule, MatChipsModule],
   template: `
     <mat-list>

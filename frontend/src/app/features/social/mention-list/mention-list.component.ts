@@ -29,7 +29,6 @@ interface MentionFilters {
 
 @Component({
   selector: 'app-mention-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

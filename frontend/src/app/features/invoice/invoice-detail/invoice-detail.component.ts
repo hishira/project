@@ -23,7 +23,6 @@ import { PaymentsTableComponent } from './payments-table/payments-table.componen
 
 @Component({
     selector: 'app-invoice-detail',
-    standalone: true,
     imports: [
         CommonModule,
         RouterLink,

@@ -6,7 +6,6 @@ import { User } from "../../shared/models/user.model";
 
 @Directive({
     selector: '[isAdmin]',
-    standalone: true,
 })
 export class AdminDirective implements OnInit{
     private readonly temmplateRef = inject(TemplateRef);

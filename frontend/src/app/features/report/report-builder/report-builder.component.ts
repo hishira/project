@@ -12,7 +12,6 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-report-builder',
-  standalone: true,
   imports: [
     CommonModule, RouterLink,
     MatCardModule, MatStepperModule,

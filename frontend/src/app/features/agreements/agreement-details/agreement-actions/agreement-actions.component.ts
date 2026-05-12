@@ -12,7 +12,6 @@ export type AgreementStatus = 'ACTIVE' | 'EXPIRED' | 'DRAFT';
     selector: 'app-agreement-actions',
     templateUrl: './agreement-actions.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         CommonModule,
         MatCardModule,

@@ -12,7 +12,6 @@ import { BaseFilterComponent } from '../base-filter/base-filter.component';
 @Component({
   selector: 'app-date-filter',
   templateUrl: './date-filter.component.html',
-  standalone: true,
   providers: [provideNativeDateAdapter()],
   imports: [
     MatFormFieldModule,

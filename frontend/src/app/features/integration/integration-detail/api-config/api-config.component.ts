@@ -9,7 +9,6 @@ import { ApiIntegration, ApiKey } from '../../integration.model';
 
 @Component({
   selector: 'app-api-config',
-  standalone: true,
   imports: [CommonModule, DatePipe, MatCardModule, MatButtonModule, MatIconModule, MatListModule, MatTooltipModule],
   template: `
     <section class="section">

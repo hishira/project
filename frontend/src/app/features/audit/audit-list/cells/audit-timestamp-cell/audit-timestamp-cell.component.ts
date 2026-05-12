@@ -4,7 +4,6 @@ import { AuditLog } from '../../../audit.model';
 
 @Component({
     selector: 'app-audit-timestamp-cell',
-    standalone: true,
     imports: [CommonModule, DatePipe],
     template: `
         <div class="timestamp-cell">

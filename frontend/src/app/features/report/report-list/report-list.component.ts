@@ -20,7 +20,6 @@ import { ReportDefinition } from '../report.models';
 
 @Component({
   selector: 'app-report-list',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

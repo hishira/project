@@ -14,7 +14,6 @@ import { IntegrationService } from '../integration.service';
 
 @Component({
   selector: 'app-integration-edit',
-  standalone: true,
   imports: [
     CommonModule,
     RouterLink,

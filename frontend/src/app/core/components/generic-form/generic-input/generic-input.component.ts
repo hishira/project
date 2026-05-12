@@ -42,7 +42,6 @@ export const GenericInputDefaultStrategy = {
   templateUrl: './generic-input.component.html',
   styleUrls: ['./generic-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [TextInputComponent],
 })
 export class GenericInputComponent implements Validator {

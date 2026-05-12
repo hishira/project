@@ -6,7 +6,6 @@ import {
 
 @Directive({
   selector: '[number-directive]',
-  standalone: true,
 })
 export class NumberDirective {
   constructor(private ngControl: NgControl) {

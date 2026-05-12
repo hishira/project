@@ -10,7 +10,6 @@ import { ProjectStatus } from '../../project.model';
 
 @Component({
   selector: 'app-project-filters',
-  standalone: true,
   imports: [
     MatCardModule,
     MatFormFieldModule,
