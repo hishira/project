@@ -63,9 +63,9 @@ import { AnalyticsService } from '../analytics.service';
 })
 export class KpiCardComponent {
   private analyticsService = inject(AnalyticsService);
-  config: any = input.required<any>();
+  readonly config: any = input.required<any>();
 
-  kpis = computed(() => this.analyticsService.kpis().filter(k => this.config().kpiIds?.includes(k.id) ?? true));
+  readonly kpis = computed(() => this.analyticsService.kpis().filter(k => this.config().kpiIds?.includes(k.id) ?? true));
 
   formatValue(kpi: any): string {
     switch (kpi.format) {

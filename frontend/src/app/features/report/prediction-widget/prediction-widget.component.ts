@@ -40,7 +40,7 @@ import { AnalyticsService } from '../analytics.service';
 })
 export class PredictionWidgetComponent {
   private analyticsService = inject(AnalyticsService);
-  config = input.required<any>();
+  readonly config = input.required<any>();
 
-  churnPredictions = this.analyticsService.churnPredictions;
+  readonly churnPredictions = this.analyticsService.churnPredictions;
 }

@@ -120,8 +120,8 @@ import { AnalyticsService } from '../analytics.service';
   `]
 })
 export class PredictionsComponent {
-  private analyticsService = inject(AnalyticsService);
-  predictionModels = this.analyticsService.predictionModels;
-  churnPredictions = this.analyticsService.churnPredictions;
-  opportunityPredictions = this.analyticsService.opportunityPredictions;
+  readonly analyticsService = inject(AnalyticsService);
+  readonly predictionModels = this.analyticsService.predictionModels;
+  readonly churnPredictions = this.analyticsService.churnPredictions;
+  readonly opportunityPredictions = this.analyticsService.opportunityPredictions;
 }

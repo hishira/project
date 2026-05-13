@@ -129,7 +129,7 @@ import { RouterLink } from '@angular/router';
 })
 export class ReportBuilderComponent {
   private fb = inject(FormBuilder);
-  basicForm = this.fb.group({
+  readonly basicForm = this.fb.group({
     name: ['', Validators.required],
     description: [''],
     type: ['', Validators.required]

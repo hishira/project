@@ -27,7 +27,7 @@ import { AnalyticsService } from '../analytics.service';
 })
 export class ChartWidgetComponent implements OnInit {
   private analyticsService = inject(AnalyticsService);
-  config = input.required<any>();
+  readonly config = input.required<any>();
 
   report: any;
   chartData: any;

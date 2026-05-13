@@ -43,13 +43,13 @@ import { ReportDefinition } from '../report.models';
 })
 export class ReportListComponent implements AfterViewInit {
   private analyticsService = inject(AnalyticsService);
-  reports = this.analyticsService.reports;
+  readonly reports = this.analyticsService.reports;
 
-  dataSource = new MatTableDataSource<ReportDefinition>(this.reports());
-  displayedColumns: string[] = ['name', 'type', 'createdAt', 'lastRun', 'isFavorite', 'actions'];
+  readonly dataSource = new MatTableDataSource<ReportDefinition>(this.reports());
+  readonly displayedColumns: string[] = ['name', 'type', 'createdAt', 'lastRun', 'isFavorite', 'actions'];
 
-  sort = viewChild(MatSort);
-  paginator = viewChild(MatPaginator);
+  readonly sort = viewChild(MatSort);
+  readonly paginator = viewChild(MatPaginator);
 
   filterName = '';
   filterType: string = '';

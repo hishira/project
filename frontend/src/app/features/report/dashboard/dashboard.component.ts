@@ -25,10 +25,10 @@ import { PageHeaderComponent } from './../../../core/components/page-header/page
 })
 export class DashboardComponent {
   private analyticsService = inject(AnalyticsService);
-  widgets = this.analyticsService.dashboardWidgets();
+  readonly widgets = this.analyticsService.dashboardWidgets();
 
   // Responsywna siatka – dostosowanie liczby kolumn do szerokości ekranu
-  cols = signal(4);
+  readonly cols = signal(4);
 
   constructor() {
     // Symulacja responsywności (w rzeczywistości użyć BreakpointObserver)
