@@ -2,7 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule, MatCheckboxChange } from '@angular/material/checkbox';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -10,9 +10,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { getTaskPriorityColor, getTaskPriorityIcon, getTaskStatusLabel } from '../task-status.utils';
 import { Task, TaskType } from '../task.model';
 import { TaskService } from '../task.service';
-import { getTaskPriorityIcon, getTaskPriorityColor, getTaskStatusLabel } from '../task-status.utils';
 
 const taskTypeIcons: Record<TaskType, string> = {
   task: 'assignment',

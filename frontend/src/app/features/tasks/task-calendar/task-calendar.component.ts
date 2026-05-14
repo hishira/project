@@ -1,13 +1,13 @@
-import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
 import { TaskService } from '../task.service';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-task-calendar',
@@ -26,13 +26,13 @@ import { FormsModule } from '@angular/forms';
 })
 export class TaskCalendarComponent {
   private taskService = inject(TaskService);
-  tasks = this.taskService.tasks;
+  readonly tasks = this.taskService.tasks;
 
   viewMode: 'month' | 'week' = 'month';
-  currentDate = signal(new Date());
-now = Date.now()
+  readonly currentDate = signal(new Date());
+  readonly now = Date.now()
   // Obliczanie dni do wyświetlenia w widoku miesięcznym
-  calendarDays = computed(() => {
+  readonly calendarDays = computed(() => {
     const date = this.currentDate();
     const year = date.getFullYear();
     const month = date.getMonth();
