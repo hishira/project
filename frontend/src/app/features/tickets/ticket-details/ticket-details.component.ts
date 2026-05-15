@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Signal, computed, inject } from '@angular/core';
+import { getPriorityColor, getPriorityIcon, getStatusClass, getStatusLabel } from '../ticket-status.utils';
 import { TicketDetails } from '../types';
 import { imports } from './ticket-details.dependency';
 import { TicketDetailService } from './ticket-details.service';
-import { getPriorityIcon, getPriorityColor, getStatusLabel, getStatusClass } from '../ticket-status.utils';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -14,8 +14,8 @@ import { getPriorityIcon, getPriorityColor, getStatusLabel, getStatusClass } fro
   styleUrls: ['./ticket-details.component.scss']
 })
 export class TicketDetailComponent {
-  private ticketService = inject(TicketDetailService);
-  private resourceRef = this.ticketService.getResource();
+  private readonly ticketService = inject(TicketDetailService);
+  private readonly resourceRef = this.ticketService.getResource();
 
   readonly ticketDetails: Signal<TicketDetails | undefined> = this.resourceRef.value;
   readonly isLoading: Signal<boolean> = this.resourceRef.isLoading;

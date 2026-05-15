@@ -51,16 +51,17 @@ export class ReportListComponent implements AfterViewInit {
   readonly sort = viewChild(MatSort);
   readonly paginator = viewChild(MatPaginator);
 
-  filterName = '';
-  filterType: string = '';
+  readonly types = [
 
-  types = [
     { value: 'sales', label: 'Sprzedaż' },
     { value: 'support', label: 'Obsługa' },
     { value: 'marketing', label: 'Marketing' },
     { value: 'finance', label: 'Finanse' },
     { value: 'custom', label: 'Niestandardowe' }
   ];
+
+  filterName = '';
+  filterType: string = '';
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort()!;
