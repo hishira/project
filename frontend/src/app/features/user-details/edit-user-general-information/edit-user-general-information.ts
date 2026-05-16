@@ -21,7 +21,7 @@ export type EditUserGeneralInformationDataProps = {
 })
 export class EditUserGeneralInformation extends CommonModal<EditUserGeneralInformationDataProps> {
   readonly genericEditFormGroup = createEditUserFormGroup(this.data)
-  editUserGeneralInfoDefinition = editUserGeneralInfoDefinition;
+  readonly editUserGeneralInfoDefinition = editUserGeneralInfoDefinition;
 
   editForm(): void {
     console.log(this.data);

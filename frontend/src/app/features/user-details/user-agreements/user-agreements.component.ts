@@ -6,6 +6,7 @@ import { AgreementRiskStatus, AgreementStatus, AgreementStatusColor } from '../.
 import { smnallSamples } from './mocks';
 import { AgreementTableItem } from "./types";
 import { imports } from './user-agreements.component.dependencies';
+import { getDaysUntilExpiration } from "../utils";
 
 @Component({
     selector: 'app-user-agreements',
@@ -19,7 +20,7 @@ import { imports } from './user-agreements.component.dependencies';
 
 })
 export class UserAgreementsComponent {
-    displayedColumns: string[] = [
+    readonly displayedColumns: string[] = [
         'expand',
         'contractId',
         'title',
@@ -35,7 +36,7 @@ export class UserAgreementsComponent {
 
     private readonly router = inject(CommonRouterService);
     readonly agreements = signal<AgreementTableItem[]>(smnallSamples as AgreementTableItem[]);
-
+    readonly getDaysUntilExpiration = getDaysUntilExpiration
     expandedElement: AgreementTableItem | null = null;
 
     getStatusColor(status: AgreementStatus): AgreementStatusColor {
@@ -44,13 +45,6 @@ export class UserAgreementsComponent {
 
     getRiskColor(riskLevel: AgreementRiskStatus): AgreementStatusColor {
         return agreementRiskColorMap(riskLevel);
-    }
-
-    getDaysUntilExpiration(expirationDate: Date): number {
-        const now = new Date();
-        const exp = new Date(expirationDate);
-        const diffTime = exp.getTime() - now.getTime();
-        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     }
 
     formatCurrency(value: number, currency: string): string {

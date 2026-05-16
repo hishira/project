@@ -8,3 +8,11 @@ export const usetTypeToCssClassMapper: { [key in State]: UserTypeCssClass } = {
     [State.Deleted]: UserTypeCssClass.Deleted,
     [State.Unknown]: UserTypeCssClass.Unknown,
 }
+
+
+export function getDaysUntilExpiration(expirationDate: Date): number {
+    const now = new Date();
+    const exp = new Date(expirationDate);
+    const diffTime = exp.getTime() - now.getTime();
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
