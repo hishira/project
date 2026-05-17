@@ -77,17 +77,17 @@
             </mat-slide-toggle>
 
             @if (configForm.get('quietHours.enabled')?.value) {
-            <div class="time-settings">
-              <mat-form-field appearance="outline">
-                <mat-label>Godzina rozpoczęcia</mat-label>
-                <input matInput type="time" formControlName="start">
-              </mat-form-field>
+              <div class="time-settings">
+                <mat-form-field appearance="outline">
+                  <mat-label>Godzina rozpoczęcia</mat-label>
+                  <input matInput type="time" formControlName="start" />
+                </mat-form-field>
 
-              <mat-form-field appearance="outline">
-                <mat-label>Godzina zakończenia</mat-label>
-                <input matInput type="time" formControlName="end">
-              </mat-form-field>
-            </div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Godzina zakończenia</mat-label>
+                  <input matInput type="time" formControlName="end" />
+                </mat-form-field>
+              </div>
             }
           </div>
         </mat-card-content>
@@ -146,17 +146,16 @@
 
             <div formArrayName="categories" class="categories-list">
               @for (categoryControl of categoryControls.controls; track $index) {
-              <div [formGroupName]="$index" class="category-row">
+                <div [formGroupName]="$index" class="category-row">
+                  <span class="category-name">{{ getCategoryLabel(categoryControl.get('category')?.value) }}</span>
 
-                <span class="category-name">{{ getCategoryLabel(categoryControl.get('category')?.value) }}</span>
-
-                <div formGroupName="channels" class="channel-controls">
-                  <mat-checkbox formControlName="email"></mat-checkbox>
-                  <mat-checkbox formControlName="sms"></mat-checkbox>
-                  <mat-checkbox formControlName="push"></mat-checkbox>
-                  <mat-checkbox formControlName="webSocket"></mat-checkbox>
+                  <div formGroupName="channels" class="channel-controls">
+                    <mat-checkbox formControlName="email"></mat-checkbox>
+                    <mat-checkbox formControlName="sms"></mat-checkbox>
+                    <mat-checkbox formControlName="push"></mat-checkbox>
+                    <mat-checkbox formControlName="webSocket"></mat-checkbox>
+                  </div>
                 </div>
-              </div>
               }
             </div>
           </div>
@@ -165,12 +164,14 @@
 
       <!-- Actions -->
       <div class="config-actions">
-        <button mat-button type="button" (click)="onReset()" [disabled]="isSaving()">
-          Przywróć ustawienia
-        </button>
+        <button mat-button type="button" (click)="onReset()" [disabled]="isSaving()">Przywróć ustawienia</button>
         <button mat-flat-button color="primary" type="submit" [disabled]="configForm.invalid || isSaving()">
-          @if (isSaving()) { <mat-icon>hourglass_empty</mat-icon> }
-          @if (!isSaving()) { <mat-icon>save</mat-icon> }
+          @if (isSaving()) {
+            <mat-icon>hourglass_empty</mat-icon>
+          }
+          @if (!isSaving()) {
+            <mat-icon>save</mat-icon>
+          }
           {{ isSaving() ? 'Zapisywanie...' : 'Zapisz konfigurację' }}
         </button>
       </div>

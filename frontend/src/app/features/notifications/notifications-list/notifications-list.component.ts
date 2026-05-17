@@ -1,18 +1,18 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDividerModule } from '@angular/material/divider';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
-import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
-import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
-import { NotificationsService } from '../notifications.service';
-import { Notification, NotificationType, NotificationPriority } from '../notifications.model';
-import { getTypeIcon, getPriorityColor, getStatusLabel, formatDate } from '../notifications.utils';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { Notification, NotificationPriority, NotificationType } from '../notifications.model';
+import { NotificationsService } from '../notifications.service';
+import { formatDate, getPriorityColor, getStatusLabel, getTypeIcon } from '../notifications.utils';
 
 @Component({
   selector: 'app-notifications-list',
@@ -33,12 +33,12 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./notifications-list.component.scss']
 })
 export class NotificationsListComponent implements OnInit {
-  private notificationsService = inject(NotificationsService);
+  private readonly notificationsService = inject(NotificationsService);
 
-  notifications = signal<Notification[]>([]);
-  filter = signal<'all' | 'unread' | 'read' | 'archived'>('all');
+  readonly notifications = signal<Notification[]>([]);
+  readonly filter = signal<'all' | 'unread' | 'read' | 'archived'>('all');
 
-  filteredNotifications = computed(() => {
+  readonly filteredNotifications = computed(() => {
     const all = this.notifications();
     switch (this.filter()) {
       case 'unread':
@@ -52,7 +52,7 @@ export class NotificationsListComponent implements OnInit {
     }
   });
 
-  unreadCount = computed(() =>
+  readonly unreadCount = computed(() =>
     this.notifications().filter(n => n.status === 'unread').length
   );
 

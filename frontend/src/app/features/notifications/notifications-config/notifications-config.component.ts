@@ -1,22 +1,22 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
-import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
-import { NotificationsService } from '../notifications.service';
-import { NotificationConfig, NotificationCategory, NotificationChannel } from '../notifications.model';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { NOTIFICATION_CATEGORIES } from '../notifications.constants';
+import { NotificationCategory, NotificationChannel, NotificationConfig } from '../notifications.model';
+import { NotificationsService } from '../notifications.service';
 
 @Component({
   selector: 'app-notifications-config',
@@ -41,15 +41,14 @@ import { NOTIFICATION_CATEGORIES } from '../notifications.constants';
   styleUrls: ['./notifications-config.component.scss']
 })
 export class NotificationsConfigComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  private notificationsService = inject(NotificationsService);
-  private snackBar = inject(MatSnackBar);
+  private readonly fb = inject(FormBuilder);
+  private readonly notificationsService = inject(NotificationsService);
+  private readonly snackBar = inject(MatSnackBar);
 
-  configForm!: FormGroup;
-  isLoading = signal(false);
-  isSaving = signal(false);
-
-  categories: { key: NotificationCategory; label: string }[] = NOTIFICATION_CATEGORIES;
+  readonly configForm!: FormGroup;
+  readonly isLoading = signal(false);
+  readonly isSaving = signal(false);
+  readonly categories: { key: NotificationCategory; label: string }[] = NOTIFICATION_CATEGORIES;
 
   ngOnInit(): void {
     this.initializeForm();

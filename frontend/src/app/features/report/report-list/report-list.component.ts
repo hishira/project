@@ -52,7 +52,6 @@ export class ReportListComponent implements AfterViewInit {
   readonly paginator = viewChild(MatPaginator);
 
   readonly types = [
-
     { value: 'sales', label: 'Sprzedaż' },
     { value: 'support', label: 'Obsługa' },
     { value: 'marketing', label: 'Marketing' },

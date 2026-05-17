@@ -1,17 +1,17 @@
-import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
-import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
-import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
-import { NotificationsService } from '../notifications.service';
-import { Notification, NotificationType, NotificationPriority } from '../notifications.model';
-import { getTypeIcon, getPriorityColor, getTypeLabel, getPriorityLabel, getCategoryLabel, formatDateDetailed } from '../notifications.utils';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { Notification, NotificationPriority, NotificationType } from '../notifications.model';
+import { NotificationsService } from '../notifications.service';
+import { formatDateDetailed, getCategoryLabel, getPriorityColor, getPriorityLabel, getTypeIcon, getTypeLabel } from '../notifications.utils';
 
 @Component({
   selector: 'app-notifications-detail',
@@ -33,9 +33,9 @@ export class NotificationsDetailComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private notificationsService = inject(NotificationsService);
 
-  notification = signal<Notification | null>(null);
-  private subscription = new Subscription();
-  Object = Object; // Expose Object to template
+  readonly notification = signal<Notification | null>(null);
+  private readonly subscription = new Subscription();
+  readonly Object = Object; // Expose Object to template
 
   ngOnInit(): void {
     this.subscription.add(
