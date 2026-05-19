@@ -1,28 +1,28 @@
-import { ChangeDetectionStrategy, Component, inject, signal, viewChild, AfterViewInit } from '@angular/core';
-import { CommonModule, DatePipe, DecimalPipe, TitleCasePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatIconModule } from '@angular/material/icon';
+import { CommonModule, DatePipe, TitleCasePipe } from '@angular/common';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
-import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
-import { AuditLog, AUDIT_ENTITY_LABELS, AUDIT_ACTION_LABELS, AuditEntityType, AuditActionType, AuditSeverity } from '../audit.model';
-import { AuditService } from '../audit.service';
+import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { AuditFilterService } from '../audit-filter.service';
 import { AuditFiltersComponent } from '../audit-filters/audit-filters.component';
-import { AuditTimestampCellComponent } from './cells/audit-timestamp-cell/audit-timestamp-cell.component';
-import { AuditEntityCellComponent } from './cells/audit-entity-cell/audit-entity-cell.component';
+import { AUDIT_ACTION_LABELS, AUDIT_ENTITY_LABELS, AuditActionType, AuditEntityType, AuditLog, AuditSeverity } from '../audit.model';
+import { AuditService } from '../audit.service';
 import {
-    getAuditActionIcon,
-    getActionSeverityColor,
     getActionChipClass,
+    getActionSeverityColor,
+    getAuditActionIcon,
     getEntityTypeIcon,
 } from '../audit.utils';
+import { AuditEntityCellComponent } from './cells/audit-entity-cell/audit-entity-cell.component';
+import { AuditTimestampCellComponent } from './cells/audit-timestamp-cell/audit-timestamp-cell.component';
 
 @Component({
     selector: 'app-audit-list',

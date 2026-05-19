@@ -1,15 +1,16 @@
-import { AfterViewInit, Directive, ElementRef, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, inject } from '@angular/core';
 
 @Directive({
-    selector: 'mat-label',
+  selector: 'mat-label',
 })
 export class LabelFloatDirective implements AfterViewInit {
   private el = inject(ElementRef);
-  ngAfterViewInit(): void{
+
+  ngAfterViewInit(): void {
     const element = this.el.nativeElement as HTMLElement;
     const parent = element?.parentElement;
-    if(element.offsetWidth > (parent?.offsetWidth ?? 0)) {
-        element.classList.add('text-class')
+    if (element.offsetWidth > (parent?.offsetWidth ?? 0)) {
+      element.classList.add('text-class')
     }
   }
 }

@@ -44,8 +44,8 @@ function getTaskTypeIcon(type: TaskType): string {
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent {
-  private taskService = inject(TaskService);
-  readonly tasks = this.taskService.tasks;
+  private readonly taskService = inject(TaskService);
+  private readonly tasks = this.taskService.tasks;
   readonly now = new Date();
 
   // Filtry widoku

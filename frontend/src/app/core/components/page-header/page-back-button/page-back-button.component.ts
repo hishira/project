@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MoveBackService } from '../../../services/move-back.service';
 
 @Component({
@@ -11,6 +11,7 @@ import { MoveBackService } from '../../../services/move-back.service';
 })
 export class PageBackButtonComponent {
   private readonly backService: MoveBackService = inject(MoveBackService);
+
   onMoveBack(): void {
     this.backService.moveBack().then();
   }

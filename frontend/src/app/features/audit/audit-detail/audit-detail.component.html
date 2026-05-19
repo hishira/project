@@ -1,35 +1,35 @@
 <app-page-header>
-    <div class="header main-header">
-        @if (auditLog()) {
-            <h1>Szczegół zmiany audytu</h1>
-        } @else {
-            <h1>Nie znaleziono logu</h1>
-        }
-    </div>
-    @if (auditLog()?.isRestorable) {
-        <div class="main-header-buttons">
-            <button mat-raised-button color="accent" (click)="restoreLog()">
-                <mat-icon>restore</mat-icon> Przywróć wersję
-            </button>
-        </div>
+  <div class="header main-header">
+    @if (auditLog()) {
+      <h1>Szczegół zmiany audytu</h1>
+    } @else {
+      <h1>Nie znaleziono logu</h1>
     }
+  </div>
+  @if (auditLog()?.isRestorable) {
+    <div class="main-header-buttons">
+      <button mat-raised-button color="accent" (click)="restoreLog()">
+        <mat-icon>restore</mat-icon> Przywróć wersję
+      </button>
+    </div>
+  }
 </app-page-header>
 
 <app-main-page-view>
-    @if (auditLog(); as log) {
-        <div class="detail-container">
-            <app-audit-detail-info [log]="log" />
-            <app-audit-detail-description [log]="log" />
-            <app-audit-detail-changes [log]="log" />
-            <app-audit-detail-technical [log]="log" />
-        </div>
-    } @else {
-        <div class="not-found">
-            <mat-icon>error_outline</mat-icon>
-            <p>Nie znaleziono logu audytu o podanym identyfikatorze.</p>
-            <button mat-raised-button color="primary" routerLink="/audit">
-                <mat-icon>arrow_back</mat-icon> Wróć do listy
-            </button>
-        </div>
-    }
+  @if (auditLog(); as log) {
+    <div class="detail-container">
+      <app-audit-detail-info [log]="log" />
+      <app-audit-detail-description [log]="log" />
+      <app-audit-detail-changes [log]="log" />
+      <app-audit-detail-technical [log]="log" />
+    </div>
+  } @else {
+    <div class="not-found">
+      <mat-icon>error_outline</mat-icon>
+      <p>Nie znaleziono logu audytu o podanym identyfikatorze.</p>
+      <button mat-raised-button color="primary" routerLink="/audit">
+        <mat-icon>arrow_back</mat-icon> Wróć do listy
+      </button>
+    </div>
+  }
 </app-main-page-view>
