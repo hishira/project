@@ -1,0 +1,83 @@
+@use 'variables' as *;
+
+:host {
+  .dashboard-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: $z-dropdown;
+    box-shadow: $shadow-xs;
+    min-height: 64px;
+    background: $gradient-sidebar;
+  }
+
+  .toolbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  .toolbar-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .app-title {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    font-size: $text-3xl;
+    font-weight: $font-medium;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .app-title-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .title-icon {
+    font-size: $icon-xl;
+    flex-shrink: 0;
+  }
+
+  .hamburger-menu-button {
+    color: white;
+    background-color: transparent;
+  }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    flex-shrink: 0;
+  }
+
+  .welcome-text {
+    color: white;
+    font-weight: $font-medium;
+    white-space: nowrap;
+  }
+
+  .welcome-text-short {
+    display: none;
+    color: white;
+    font-weight: $font-medium;
+    white-space: nowrap;
+  }
+
+  .user-menu-button {
+    color: white;
+    background-color: transparent;
+  }
+
+}

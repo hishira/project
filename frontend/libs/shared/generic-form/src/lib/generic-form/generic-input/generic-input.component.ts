@@ -64,11 +64,11 @@ export class GenericInputComponent
   implements OnInit, ControlValueAccessor, Validator {
   readonly genericInput = input.required<GenericInput>()
   readonly inputAppearance = computed(() => this.genericInput().outlineControl ? 'outline' : 'fill')
+  readonly DefaultAddressErrors = DefaultErrors;
   formControl!: FormControl;
-  DefaultAddressErrors = DefaultErrors;
   onChange: (value: unknown) => void = noop;
   onTouch: () => void = noop;
-  defaultFunction: StrategyValidateFunction = DefaultFunction;
+  readonly defaultFunction: StrategyValidateFunction = DefaultFunction;
 
   DefaultSelectableConfig = DefaultSelectableConfig;
   validationStrategy: GenericInputValidationStrategy =

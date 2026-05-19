@@ -11,7 +11,8 @@
     "paths": {
       "generic-form": ["libs/shared/generic-form/src/index.ts"],
       "common-forms": ["libs/shared/common-forms/src/index.ts"],
-      "utils": ["libs/shared/utils/src/index.ts"]
+      "utils": ["libs/shared/utils/src/index.ts"],
+      "layout": ["libs/shared/layout/src/index.ts"]
     }
   }
 }
