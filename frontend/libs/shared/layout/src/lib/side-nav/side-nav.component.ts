@@ -3,8 +3,8 @@ import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
-import { SnackBar } from '../../services/snack-bar.service';
+import { AuthenticationService } from '../services/auth.service';
+import { SnackBar } from './../services/snack-bar.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -18,7 +18,7 @@ import { SnackBar } from '../../services/snack-bar.service';
   ],
 })
 export class SideNavComponent {
-  private authService = inject(AuthService);
+  private authService = inject(AuthenticationService);
   private snackBar = inject(SnackBar);
   private router = inject(Router);
 

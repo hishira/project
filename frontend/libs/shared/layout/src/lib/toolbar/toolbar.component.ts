@@ -8,8 +8,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { map, Observable } from 'rxjs';
 import { AdminDirective } from '../../../core/directives/admin.directive';
-import { AuthService } from '../../../core/services/auth.service';
-import { SnackBar } from '../../../core/services/snack-bar.service';
+import { AuthenticationService } from '../services/auth.service';
+import { SnackBar } from '../services/snack-bar.service';
 import { User } from '../../../shared/models/auth.model';
 
 @Component({
@@ -29,7 +29,7 @@ import { User } from '../../../shared/models/auth.model';
   ],
 })
 export class ToolbarComponent {
-  private readonly authService: AuthService = inject(AuthService);
+  private readonly authService = inject(AuthenticationService);
   private readonly snackBar: SnackBar = inject(SnackBar);
   
   readonly menuToggle = output<void>();
