@@ -10,8 +10,17 @@ import { map, Observable } from 'rxjs';
 import { AdminDirective } from '../../../core/directives/admin.directive';
 import { AuthenticationService } from '../services/auth.service';
 import { SnackBar } from '../services/snack-bar.service';
-import { User } from '../../../shared/models/auth.model';
 
+type User = {
+  id: string;
+  credentials: any;
+  credentialsId: string;
+  firstName?: string;
+  lastName?: string;
+  userType: any;
+  roleId: any;
+  role?: any;
+}
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
