@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TicketService } from '../ticket.service';
-import { TicketListItem, TicketStatus } from '../types';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { CommonRouterService } from '../../../core/services/common-router.service';
+import { TicketService } from '../ticket.service';
+import { TicketListItem, TicketStatus } from '../types';
 import { TicketItemComponent } from './ticket-item/ticket-item.component';
 
 @Component({

@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@use 'variables';
 
 .side-nav-header {
   display: flex;
@@ -7,30 +7,30 @@
   padding: 0 $spacing-2xl;
   height: 64px;
   min-height: 64px;
-  background: $gradient-sidebar;
+  background: variables.$gradient-sidebar;
   margin-bottom: $spacing-sm;
 
   mat-icon {
-    font-size: $icon-2xl;
-    width: $icon-2xl;
-    height: $icon-2xl;
+    font-size: variables.$icon-2xl;
+    width: variables.$icon-2xl;
+    height: variables.$icon-2xl;
     color: white;
   }
 
   h3 {
     margin: 0;
-    font-size: $text-2xl;
-    font-weight: $font-semibold;
+    font-size: variables.$text-2xl;
+    font-weight: variables.$font-semibold;
     color: white;
     letter-spacing: -0.02em;
   }
 }
 
 .side-nav-list {
-  padding: $spacing-sm $spacing-lg;
+  padding: variables.$spacing-sm $spacing-lg;
   display: flex;
   flex-direction: column;
-  gap: $spacing-xs;
+  gap: variables.$spacing-xs;
   overflow-y: auto;
   max-height: calc(100vh - 100px);
   scrollbar-width: thin;
@@ -42,17 +42,17 @@
 
   &::-webkit-scrollbar-track {
     background: transparent;
-    margin: $spacing-xs;
+    margin: variables.$spacing-xs;
   }
 
   &::-webkit-scrollbar-thumb {
     background: linear-gradient(180deg, 
       rgba(92, 102, 102, 0.4) 0%, 
       rgba(182, 194, 187, 0.6) 100%);
-    border-radius: $radius-pill-lg;
+    border-radius: variables.$radius-pill-lg;
     border: 2px solid transparent;
     background-clip: padding-box;
-    transition: all $transition-base;
+    transition: all variables.$transition-base;
 
     &:hover {
       background: linear-gradient(180deg, 
@@ -77,26 +77,26 @@
 .nav-item {
   display: flex;
   align-items: center;
-  gap: $spacing-lg;
-  padding: 14px $spacing-lg;
-  border-radius: $radius-lg;
+  gap: variables.$spacing-lg;
+  padding: 14px variables.$spacing-lg;
+  border-radius: variables.$radius-lg;
   text-decoration: none;
   cursor: pointer;
-  transition: all $transition-fast;
+  transition: all variables.$transition-fast;
   position: relative;
 
   &:hover {
-    background: $gradient-nav-hover;
+    background: variables.$gradient-nav-hover;
     transform: translateX(4px);
 
     .nav-item-icon {
-      color: $color-indigo;
+      color: variables.$color-indigo;
       transform: scale(1.1);
     }
 
     .nav-item-text {
-      color: $color-indigo;
-      font-weight: $font-semibold;
+      color: variables.$color-indigo;
+      font-weight: variables.$font-semibold;
     }
   }
 
@@ -111,9 +111,9 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: $radius-md-alt;
-  background: $gradient-sidebar-section;
-  transition: all $transition-fast;
+  border-radius: variables.$radius-md-alt;
+  background: variables.$gradient-sidebar-section;
+  transition: all variables.$transition-fast;
   flex-shrink: 0;
 
   .nav-item:hover & {
@@ -122,30 +122,30 @@
 }
 
 .nav-item-icon {
-  font-size: $icon-lg;
-  width: $icon-lg;
-  height: $icon-lg;
-  color: $text-muted;
-  transition: all $transition-fast;
+  font-size: variables.$icon-lg;
+  width: variables.$icon-lg;
+  height: variables.$icon-lg;
+  color: variables.$text-muted;
+  transition: all variables.$transition-fast;
 }
 
 .nav-item-text {
-  font-size: $text-2xl;
-  font-weight: $font-normal;
-  color: $text-secondary;
-  transition: all $transition-fast;
+  font-size: variables.$text-2xl;
+  font-weight: variables.$font-normal;
+  color: variables.$text-secondary;
+  transition: all variables.$transition-fast;
   letter-spacing: -0.01em;
 }
 
 .nav-divider {
   height: 1px;
-  background: $border-light;
-  margin: $spacing-sm $spacing-lg;
+  background: variables.$border-light;
+  margin: variables.$spacing-sm $spacing-lg;
 }
 
 .nav-item-logout {
   .nav-item-icon-wrapper {
-    background: $gradient-danger;
+    background: variables.$gradient-danger;
   }
 
   .nav-item-icon {

@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-points-summary',
-  imports: [],
   templateUrl: './points-summary.component.html',
   styleUrls: ['./points-summary.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PointsSummaryComponent {
-  readonly bel = input.required<string>();
+  readonly label = input.required<string>();
   readonly value = input.required<number>();
 }

@@ -6,6 +6,12 @@ import { firstValueFrom } from 'rxjs';
 import { AuthenticationService } from '../services/auth.service';
 import { SnackBar } from './../services/snack-bar.service';
 
+export interface SineNavElement{
+  title: string;
+  link: string;
+  closeHandle?: Function
+  icon?: string;
+}
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.component.html',

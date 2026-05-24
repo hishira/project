@@ -85,22 +85,22 @@ export const mockCrmTickets: CrmTicket[] = [
         priority: 'high',
         createdAt: new Date('2025-02-10T09:23:00'),
         updatedAt: new Date('2025-02-15T14:30:00'),
-        createdBy: this.users[0],
-        assignedTo: this.users[1],
+        createdBy: users[0],
+        assignedTo: users[1],
         tags: ['logowanie', 'SSO'],
         comments: [
             {
                 id: 'c1',
                 content: 'Sprawdziliśmy logi – wygląda na problem z kontem AD. Przekazałem do zespołu IAM.',
                 createdAt: new Date('2025-02-10T10:15:00'),
-                author: this.users[1],
+                author: users[1],
                 isInternal: true
             },
             {
                 id: 'c2',
                 content: 'Czy klient próbował z innej przeglądarki?',
                 createdAt: new Date('2025-02-11T08:30:00'),
-                author: this.users[2],
+                author: users[2],
                 isInternal: true
             }
         ],
@@ -112,10 +112,10 @@ export const mockCrmTickets: CrmTicket[] = [
                 mimeType: 'image/png',
                 url: '/assets/screenshots/error.png',
                 uploadedAt: new Date('2025-02-10T09:25:00'),
-                uploadedBy: this.users[0]
+                uploadedBy: users[0]
             }
         ],
-        customer: this.users[7],
+        customer: users[7],
         account: 'Firma XYZ',
         channel: 'email',
         slaDeadline: new Date('2025-02-18T17:00:00'),
@@ -132,11 +132,11 @@ export const mockCrmTickets: CrmTicket[] = [
         priority: 'medium',
         createdAt: new Date('2025-02-01T08:30:00'),
         updatedAt: new Date('2025-02-17T10:00:00'),
-        createdBy: this.users[1],
+        createdBy: users[1],
         tags: ['API', 'integracja'],
         comments: [],
         attachments: [],
-        customer: this.users[7],
+        customer: users[7],
         account: 'Acme Corp',
         channel: 'portal',
         product: 'API Gateway'
@@ -154,15 +154,15 @@ export const mockPmIssues: PmIssue[] = [
         priority: 'critical',
         createdAt: new Date('2025-02-14T11:05:00'),
         updatedAt: new Date('2025-02-16T09:12:00'),
-        createdBy: this.users[2],
-        assignedTo: this.users[3],
+        createdBy: users[2],
+        assignedTo: users[3],
         tags: ['backend', 'raporty'],
         comments: [
             {
                 id: 'c3',
                 content: 'Zidentyfikowałem problem – limit pamięci w kontenerze. Zwiększyłem limit, ale potrzebujemy optymalizacji zapytania.',
                 createdAt: new Date('2025-02-15T14:20:00'),
-                author: this.users[3],
+                author: users[3],
                 isInternal: true
             }
         ],
@@ -174,7 +174,7 @@ export const mockPmIssues: PmIssue[] = [
                 mimeType: 'text/plain',
                 url: '/assets/logs/stacktrace.log',
                 uploadedAt: new Date('2025-02-14T11:10:00'),
-                uploadedBy: this.users[2]
+                uploadedBy: users[2]
             }
         ],
         issueType: 'bug',
@@ -193,7 +193,7 @@ export const mockPmIssues: PmIssue[] = [
         priority: 'low',
         createdAt: new Date('2025-02-16T15:45:00'),
         updatedAt: new Date('2025-02-16T15:45:00'),
-        createdBy: this.users[4],
+        createdBy: users[4],
         tags: ['docs', 'wiki'],
         comments: [],
         attachments: [],

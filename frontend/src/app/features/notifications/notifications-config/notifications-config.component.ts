@@ -45,18 +45,7 @@ export class NotificationsConfigComponent implements OnInit {
   private readonly notificationsService = inject(NotificationsService);
   private readonly snackBar = inject(MatSnackBar);
 
-  readonly configForm!: FormGroup;
-  readonly isLoading = signal(false);
-  readonly isSaving = signal(false);
-  readonly categories: { key: NotificationCategory; label: string }[] = NOTIFICATION_CATEGORIES;
-
-  ngOnInit(): void {
-    this.initializeForm();
-    this.loadConfig();
-  }
-
-  private initializeForm(): void {
-    this.configForm = this.fb.group({
+  readonly configForm: FormGroup = this.fb.group({
       emailEnabled: [false],
       smsEnabled: [false],
       pushEnabled: [false],
@@ -68,7 +57,16 @@ export class NotificationsConfigComponent implements OnInit {
       }),
       categories: this.fb.array([])
     });
+  readonly isLoading = signal(false);
+  readonly isSaving = signal(false);
+  readonly categories: { key: NotificationCategory; label: string }[] = NOTIFICATION_CATEGORIES;
 
+  ngOnInit(): void {
+    this.initializeCategoriesForm();
+    this.loadConfig();
+  }
+
+  private initializeCategoriesForm(): void {
     // Initialize category controls
     this.categories.forEach(category => {
       const categoryGroup = this.fb.group({

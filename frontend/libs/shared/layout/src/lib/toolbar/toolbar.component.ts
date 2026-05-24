@@ -11,6 +11,12 @@ import { AdminDirective } from '../../../core/directives/admin.directive';
 import { AuthenticationService } from '../services/auth.service';
 import { SnackBar } from '../services/snack-bar.service';
 
+type TolbarItems = {
+  description: string;
+  link: string;
+  icon?: string;
+  visibility?: boolean;
+}
 type User = {
   id: string;
   credentials: any;
