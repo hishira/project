@@ -1,0 +1,92 @@
+@use 'variables';
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: variables.$spacing-lg;
+  padding: 14px variables.$spacing-lg;
+  border-radius: variables.$radius-lg;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all variables.$transition-fast;
+  position: relative;
+
+  &:hover {
+    background: variables.$gradient-nav-hover;
+    transform: translateX(4px);
+
+    .nav-item-icon {
+      color: variables.$color-indigo;
+      transform: scale(1.1);
+    }
+
+    .nav-item-text {
+      color: variables.$color-indigo;
+      font-weight: variables.$font-semibold;
+    }
+  }
+
+  &:active {
+    transform: translateX(2px);
+  }
+}
+
+.nav-item-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: variables.$radius-md-alt;
+  background: variables.$gradient-sidebar-section;
+  transition: all variables.$transition-fast;
+  flex-shrink: 0;
+
+  .nav-item:hover & {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+  }
+}
+
+.nav-item-icon {
+  font-size: variables.$icon-lg;
+  width: variables.$icon-lg;
+  height: variables.$icon-lg;
+  color: variables.$text-muted;
+  transition: all variables.$transition-fast;
+}
+
+.nav-item-text {
+  font-size: variables.$text-2xl;
+  font-weight: variables.$font-normal;
+  color: variables.$text-secondary;
+  transition: all variables.$transition-fast;
+  letter-spacing: -0.01em;
+}
+
+.nav-divider {
+  height: 1px;
+  background: variables.$border-light;
+  margin: variables.$spacing-sm $spacing-lg;
+}
+
+.nav-item-logout {
+  .nav-item-icon-wrapper {
+    background: variables.$gradient-danger;
+  }
+
+  .nav-item-icon {
+    color: #ef4444;
+  }
+
+  &:hover {
+    background: linear-gradient(90deg, rgba(239, 68, 68, 0.08) 0%, rgba(220, 38, 38, 0.04) 100%);
+
+    .nav-item-icon {
+      color: #dc2626;
+    }
+
+    .nav-item-text {
+      color: #dc2626;
+    }
+  }
+}
