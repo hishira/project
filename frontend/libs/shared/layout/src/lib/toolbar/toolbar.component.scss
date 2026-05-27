@@ -1,13 +1,13 @@
-@use 'variables' as *;
+@use 'variables';
 
 :host {
   .dashboard-toolbar {
     position: sticky;
     top: 0;
-    z-index: $z-dropdown;
-    box-shadow: $shadow-xs;
+    z-index: variables.$z-dropdown;
+    box-shadow: variables.$shadow-xs;
     min-height: 64px;
-    background: $gradient-sidebar;
+    background: variables.$gradient-sidebar;
   }
 
   .toolbar-content {
@@ -21,7 +21,7 @@
   .toolbar-left {
     display: flex;
     align-items: center;
-    gap: $spacing-sm;
+    gap: variables.$spacing-sm;
   }
 
   .toolbar-right {
@@ -32,9 +32,9 @@
   .app-title {
     display: flex;
     align-items: center;
-    gap: $spacing-sm;
-    font-size: $text-3xl;
-    font-weight: $font-medium;
+    gap: variables.$spacing-sm;
+    font-size: variables.$text-3xl;
+    font-weight: variables.$font-medium;
     flex: 1;
     min-width: 0;
   }
@@ -46,7 +46,7 @@
   }
 
   .title-icon {
-    font-size: $icon-xl;
+    font-size: variables.$icon-xl;
     flex-shrink: 0;
   }
 
@@ -58,20 +58,20 @@
   .user-menu {
     display: flex;
     align-items: center;
-    gap: $spacing-md;
+    gap: variables.$spacing-md;
     flex-shrink: 0;
   }
 
   .welcome-text {
     color: white;
-    font-weight: $font-medium;
+    font-weight: variables.$font-medium;
     white-space: nowrap;
   }
 
   .welcome-text-short {
     display: none;
     color: white;
-    font-weight: $font-medium;
+    font-weight: variables.$font-medium;
     white-space: nowrap;
   }
 

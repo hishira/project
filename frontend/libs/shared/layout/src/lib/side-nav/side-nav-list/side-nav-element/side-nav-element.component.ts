@@ -1,5 +1,14 @@
 import { Component } from "@angular/core";
 
+
+export interface SineNavElement {
+  title: string;
+  link: string;
+  closeHandle?: Function
+  icon?: string;
+}
+
+
 @Component({
     selector: 'app-side-nav-element',
     templateUrl: './side-nav-element.component.html',
