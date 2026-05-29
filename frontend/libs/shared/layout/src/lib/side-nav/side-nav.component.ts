@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { SideNavListComponent } from "./side-nav-list/side-nav-list.component";
+
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.component.html',
@@ -12,5 +13,4 @@ import { SideNavListComponent } from "./side-nav-list/side-nav-list.component";
   ],
 })
 export class SideNavComponent {
-
 }

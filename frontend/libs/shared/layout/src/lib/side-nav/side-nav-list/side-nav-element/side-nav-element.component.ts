@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { MatIcon } from "@angular/material/icon";
 
 
 export interface SineNavElement {
@@ -13,6 +14,10 @@ export interface SineNavElement {
     selector: 'app-side-nav-element',
     templateUrl: './side-nav-element.component.html',
     styleUrl: './side-nav-element.component.scss',
-    imports: []
+    imports: [MatIcon]
 })
-export class  SideNavElementComponent{}
+export class  SideNavElementComponent{
+  close(): void {
+    
+  }
+}
