@@ -59,3 +59,11 @@ export interface Milestone {
   completed: boolean;
   completedAt?: Date;
 }
+
+export const statuses: { value: ProjectStatus; label: string }[] = [
+    { value: 'planned', label: 'Planowany' },
+    { value: 'active', label: 'Aktywny' },
+    { value: 'on_hold', label: 'Wstrzymany' },
+    { value: 'completed', label: 'Zakończony' },
+    { value: 'cancelled', label: 'Anulowany' }
+  ];

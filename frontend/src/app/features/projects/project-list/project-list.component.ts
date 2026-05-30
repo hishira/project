@@ -8,7 +8,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
-import { Project, ProjectStatus } from '../project.model';
+import { Project, ProjectStatus, statuses } from '../project.model';
 import { ProjectService } from '../project.service';
 import { ProjectFiltersComponent } from './project-filters/project-filters.component';
 import { ProjectTableComponent } from './project-table/project-table.component';
@@ -45,13 +45,8 @@ export class ProjectListComponent {
   readonly sort = viewChild(MatSort);
   readonly paginator = viewChild(MatPaginator);
 
-  readonly statuses: { value: ProjectStatus; label: string }[] = [
-    { value: 'planned', label: 'Planowany' },
-    { value: 'active', label: 'Aktywny' },
-    { value: 'on_hold', label: 'Wstrzymany' },
-    { value: 'completed', label: 'Zakończony' },
-    { value: 'cancelled', label: 'Anulowany' }
-  ];
+  readonly statuses: { value: ProjectStatus; label: string }[] = statuses;
+
   constructor() {
     afterNextRender(() => {
       this.updateDataSource();
@@ -66,18 +61,7 @@ export class ProjectListComponent {
       };
     })
   }
-  // ngAfterViewInit() {
-  //   this.updateDataSource();
-  //   const dataSource = this.dataSource();
-  //   dataSource.sort = this.sort()!;
-  //   dataSource.paginator = this.paginator()!;
-  //   dataSource.filterPredicate = (data: Project, filter: string) => {
-  //     const filterObj = JSON.parse(filter);
-  //     if (filterObj.name && !data.name.toLowerCase().includes(filterObj.name.toLowerCase())) return false;
-  //     if (filterObj.status && data.status !== filterObj.status) return false;
-  //     return true;
-  //   };
-  // }
+ 
 
   private updateDataSource() {
     const dataSource = new MatTableDataSource<Project>(this.projects());

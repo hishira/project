@@ -58,19 +58,19 @@ export class ProjectDetailComponent implements OnInit {
     return Math.round((done / project.tasks.length) * 100);
   }
 
-  onAddTask() {
+  onAddTask(): void {
     console.log('Dodaj nowe zadanie do projektu:', this.project()?.id);
   }
 
-  onEditTask(taskId: string) {
+  onEditTask(taskId: string): void {
     console.log('Edytuj zadanie:', taskId);
   }
 
-  onAddMilestone() {
+  onAddMilestone(): void {
     console.log('Dodaj kamień milowy');
   }
 
-  onGenerateReport() {
+  onGenerateReport(): void {
     console.log('Generuj raport postępu dla projektu:', this.project()?.id);
   }
 }
