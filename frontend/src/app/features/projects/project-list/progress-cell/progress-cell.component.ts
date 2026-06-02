@@ -9,5 +9,5 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProgressCellComponent {
-  progress = input.required<number>();
+  readonly progress = input.required<number>();
 }
