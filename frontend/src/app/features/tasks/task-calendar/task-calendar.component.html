@@ -6,7 +6,7 @@
       <button mat-icon-button (click)="previousMonth()">
         <mat-icon>chevron_left</mat-icon>
       </button>
-      <span class="current-month">{{ currentDate() | date:'MMMM yyyy' }}</span>
+      <span class="current-month">{{ currentDate() | date: 'MMMM yyyy' }}</span>
       <button mat-icon-button (click)="nextMonth()">
         <mat-icon>chevron_right</mat-icon>
       </button>
@@ -14,9 +14,7 @@
         <mat-button-toggle value="month">Miesiąc</mat-button-toggle>
         <mat-button-toggle value="week">Tydzień</mat-button-toggle>
       </mat-button-toggle-group>
-      <button mat-raised-button color="primary" (click)="onAdd()">
-        <mat-icon>add</mat-icon> Nowe
-      </button>
+      <button mat-raised-button color="primary" (click)="onAdd()"><mat-icon>add</mat-icon> Nowe</button>
     </div>
   </div>
 
@@ -33,17 +31,19 @@
         <!-- Siatka dni -->
         <div class="calendar-grid">
           @for (day of calendarDays(); track day) {
-            <div class="day-cell"
-                 [class.other-month]="day.getMonth() !== currentDate().getMonth()"
-                 [class.today]="day.toDateString() === (now | date:'yyyy-MM-dd')">
+            <div
+              class="day-cell"
+              [class.other-month]="day.getMonth() !== currentDate().getMonth()"
+              [class.today]="day.toDateString() === (now | date: 'yyyy-MM-dd')">
               <div class="day-number">{{ day.getDate() }}</div>
               <div class="day-events">
                 @for (task of getTasksForDay(day).slice(0, 3); track task.id) {
-                  <div class="event"
-                       [style.background]="getPriorityColor(task.priority)"
-                       [matTooltip]="task.title"
-                       [routerLink]="['/tasks', task.id]">
-                    {{ task.title | slice:0:12 }}{{ task.title.length > 12 ? '…' : '' }}
+                  <div
+                    class="event"
+                    [style.background]="getPriorityColor(task.priority)"
+                    [matTooltip]="task.title"
+                    [routerLink]="['/tasks', task.id]">
+                    {{ task.title | slice: 0 : 12 }}{{ task.title.length > 12 ? '…' : '' }}
                   </div>
                 }
                 @if (getTasksForDay(day).length > 3) {

@@ -1,24 +1,23 @@
-import { Component, OnInit, inject, signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { ChangeDetectorRef, Component, OnInit, inject, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-//import { BaseChartDirective } from 'ng2-charts';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { firstValueFrom } from 'rxjs';
-import { StatisticsService } from '../../../core/services/statistics.service';
 import { ActivityService } from '../../../core/services/activity.service';
 import { ChartManagementService } from '../../../core/services/chart-management.service';
-import { ProgressCalculationService } from '../../../core/services/progress-calculation.service';
 import { DataFormatterService } from '../../../core/services/data-formatter.service';
+import { ProgressCalculationService } from '../../../core/services/progress-calculation.service';
+import { StatisticsService } from '../../../core/services/statistics.service';
+import { Activity, ActivityType } from '../../../shared/models/activity.model';
 import { AdminStatistics } from '../../../shared/models/statistics.model';
-import { ActivityType, Activity } from '../../../shared/models/activity.model';
 
 Chart.register(...registerables);
 
@@ -35,7 +34,7 @@ Chart.register(...registerables);
     MatFormFieldModule,
     MatProgressSpinnerModule,
     MatTabsModule,
-   // BaseChartDirective
+    // BaseChartDirective
   ],
   templateUrl: './statistics-dashboard.component.html',
   styleUrls: ['./statistics-dashboard.component.scss']
@@ -49,16 +48,16 @@ export class StatisticsDashboardComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  statistics = signal<AdminStatistics | null>(null);
-  activities = signal<Activity[]>([]);
-  isLoading = signal(false);
+  readonly statistics = signal<AdminStatistics | null>(null);
+  readonly activities = signal<Activity[]>([]);
+  readonly isLoading = signal(false);
 
-  filterForm: FormGroup = this.fb.group({
+  readonly filterForm: FormGroup = this.fb.group({
     period: ['month'],
     activityType: ['']
   });
 
-  activityTypes = Object.values(ActivityType).map(type => ({
+  readonly activityTypes = Object.values(ActivityType).map(type => ({
     value: type,
     label: this.activityService.getActivityTypeLabel(type)
   }));
@@ -103,7 +102,7 @@ export class StatisticsDashboardComponent implements OnInit {
   private async loadStatistics(): Promise<void> {
     this.isLoading.set(true);
     const filters = this.filterForm.value;
-    
+
     try {
       const [stats, activitiesResponse] = await Promise.all([
         firstValueFrom(this.statisticsService.getStatistics({
@@ -112,7 +111,7 @@ export class StatisticsDashboardComponent implements OnInit {
         })),
         firstValueFrom(this.activityService.getActivities())
       ]);
-      
+
       this.statistics.set(stats);
       const activities = activitiesResponse.activities || [];
       this.activities.set(activities);
@@ -129,13 +128,13 @@ export class StatisticsDashboardComponent implements OnInit {
    */
   private updateAllCharts(stats: AdminStatistics, activities: Activity[]): void {
     const updatedCharts = this.chartManagementService.updateAllCharts(stats, activities);
-    
+
     this.activityTypeChart = updatedCharts.activityTypeChart;
     this.intensityChart = updatedCharts.intensityChart;
     this.durationTrendChart = updatedCharts.durationTrendChart;
     this.weeklyGoalChart = updatedCharts.weeklyGoalChart;
     this.monthlyGoalChart = updatedCharts.monthlyGoalChart;
-    
+
     this.cdr.detectChanges(); // Force change detection to update charts
   }
 

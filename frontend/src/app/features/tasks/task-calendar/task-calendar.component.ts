@@ -31,16 +31,12 @@ export class TaskCalendarComponent {
   viewMode: 'month' | 'week' = 'month';
   readonly currentDate = signal(new Date());
   readonly now = Date.now()
-  // Obliczanie dni do wyświetlenia w widoku miesięcznym
   readonly calendarDays = computed(() => {
     const date = this.currentDate();
     const year = date.getFullYear();
     const month = date.getMonth();
 
-    // Pierwszy dzień miesiąca
     const firstDay = new Date(year, month, 1);
-    // Ostatni dzień miesiąca
-    const lastDay = new Date(year, month + 1, 0);
 
     const startDay = new Date(firstDay);
     startDay.setDate(startDay.getDate() - startDay.getDay()); // przesunięcie do niedzieli poprzedniego tygodnia
