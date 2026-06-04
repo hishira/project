@@ -4,7 +4,7 @@ import { AfterViewInit, Directive, ElementRef, inject } from '@angular/core';
   selector: 'mat-label',
 })
 export class LabelFloatDirective implements AfterViewInit {
-  private el = inject(ElementRef);
+  private readonly el = inject(ElementRef);
 
   ngAfterViewInit(): void {
     const element = this.el.nativeElement as HTMLElement;

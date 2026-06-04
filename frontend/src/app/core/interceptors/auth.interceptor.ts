@@ -1,22 +1,25 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { catchError, switchMap, throwError } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
+const URLS = [
+  '/auth/login',
+  '/auth/register',
+  '/auth/refresh'
+]
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
   // Skip interceptor for auth endpoints to avoid infinite loops
-  if (req.url.includes('/auth/login') || 
-      req.url.includes('/auth/register') || 
-      req.url.includes('/auth/refresh')) {
+  if (URLS.includes(req.url)) {
     return next(req);
   }
 
   const token = authService.getToken();
-  
+
   // Clone request and add auth header if token exists
   const authReq = token ? req.clone({
     setHeaders: {
@@ -37,7 +40,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                 Authorization: `Bearer ${newToken}`
               }
             }) : req;
-            
+
             return next(retryReq);
           }),
           catchError(refreshError => {
@@ -48,7 +51,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           })
         );
       }
-      
+
       return throwError(error);
     })
   );
