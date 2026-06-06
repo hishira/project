@@ -32,8 +32,7 @@
                 (click)="$event.stopPropagation()"
                 (change)="onToggleDone(task, $event)"
                 class="task-checkbox"
-                aria-label="Oznacz zadanie jako wykonane"
-              ></mat-checkbox>
+                aria-label="Oznacz zadanie jako wykonane"></mat-checkbox>
               <mat-icon [class]="'type-icon ' + task.type" aria-hidden="true">{{ getTypeIcon(task.type) }}</mat-icon>
               <div class="task-title">
                 <span class="title">{{ task.title }}</span>
@@ -46,11 +45,14 @@
               <div class="task-meta">
                 @if (task.dueDate) {
                   <span class="due-date" [class.overdue]="task.dueDate < now && task.status !== 'done'">
-                    <mat-icon aria-hidden="true">event</mat-icon> {{ task.dueDate | date:'dd MMM' }}
+                    <mat-icon aria-hidden="true">event</mat-icon> {{ task.dueDate | date: 'dd MMM' }}
                   </span>
                 }
-                <mat-chip [class]="'priority-' + task.priority" class="priority-chip" role="status"
-                          [attr.aria-label]="'Priorytet: ' + task.priority">
+                <mat-chip
+                  [class]="'priority-' + task.priority"
+                  class="priority-chip"
+                  role="status"
+                  [attr.aria-label]="'Priorytet: ' + task.priority">
                   <mat-icon aria-hidden="true">{{ getPriorityIcon(task.priority) }}</mat-icon>
                   {{ task.priority }}
                 </mat-chip>
@@ -60,20 +62,28 @@
 
           <mat-card-content>
             @if (task.description) {
-              <p class="description">{{ task.description | slice:0:100 }}{{ task.description.length > 100 ? '...' : '' }}</p>
+              <p class="description">
+                {{ task.description | slice: 0 : 100 }}{{ task.description.length > 100 ? '...' : '' }}
+              </p>
             }
             <div class="footer">
               <div class="assignee">
                 @if (task.assignedTo) {
-                  <img [src]="task.assignedTo.avatarUrl" alt="Awatar użytkownika {{ task.assignedTo.fullName }}" class="avatar" />
+                  <img
+                    [src]="task.assignedTo.avatarUrl"
+                    alt="Awatar użytkownika {{ task.assignedTo.fullName }}"
+                    class="avatar" />
                   <span>{{ task.assignedTo.fullName }}</span>
                 } @else {
                   <span class="unassigned">Nieprzypisane</span>
                 }
               </div>
               <div class="actions">
-                <button mat-icon-button (click)="onEdit(task, $event)" matTooltip="Edytuj zadanie"
-                        aria-label="Edytuj zadanie {{ task.title }}">
+                <button
+                  mat-icon-button
+                  (click)="onEdit(task, $event)"
+                  matTooltip="Edytuj zadanie"
+                  aria-label="Edytuj zadanie {{ task.title }}">
                   <mat-icon aria-hidden="true">edit</mat-icon>
                 </button>
               </div>

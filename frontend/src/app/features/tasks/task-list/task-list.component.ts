@@ -48,9 +48,8 @@ export class TaskListComponent {
   private readonly tasks = this.taskService.tasks;
   readonly now = new Date();
 
-  // Filtry widoku
   readonly activeFilter = signal<'my' | 'team' | 'done'>('my');
-  readonly currentUserId = 'u1'; // symulacja zalogowanego użytkownika
+  readonly currentUserId = 'u1';
 
   readonly filteredTasks = computed(() => {
     const all = this.tasks();

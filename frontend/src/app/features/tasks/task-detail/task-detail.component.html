@@ -22,8 +22,12 @@
               <div class="meta">
                 <span>Typ: {{ t.type }}</span>
                 <span>Status: {{ getStatusLabel(t.status) }}</span>
-                <mat-chip [style.background]="getPriorityColor(t.priority)" [style.color]="'white'" role="status"
-                          [attr.aria-label]="'Priorytet: ' + t.priority" class="priority-chip">
+                <mat-chip
+                  [style.background]="getPriorityColor(t.priority)"
+                  [style.color]="'white'"
+                  role="status"
+                  [attr.aria-label]="'Priorytet: ' + t.priority"
+                  class="priority-chip">
                   <mat-icon aria-hidden="true">{{ getPriorityIcon(t.priority) }}</mat-icon>
                   <span>{{ t.priority }}</span>
                 </mat-chip>
@@ -52,7 +56,7 @@
               <div class="info-item">
                 <mat-icon aria-hidden="true">schedule</mat-icon>
                 <span class="label">Utworzono:</span>
-                <span class="value">{{ t.createdAt | date:'dd MMM yyyy, HH:mm' }}</span>
+                <span class="value">{{ t.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
               </div>
               @if (t.assignedTo) {
                 <div class="info-item">
@@ -65,21 +69,21 @@
                 <div class="info-item">
                   <mat-icon aria-hidden="true">event</mat-icon>
                   <span class="label">Termin:</span>
-                  <span class="value">{{ t.dueDate | date:'dd MMM yyyy, HH:mm' }}</span>
+                  <span class="value">{{ t.dueDate | date: 'dd MMM yyyy, HH:mm' }}</span>
                 </div>
               }
               @if (t.completedAt) {
                 <div class="info-item">
                   <mat-icon aria-hidden="true">check_circle</mat-icon>
                   <span class="label">Zakończono:</span>
-                  <span class="value">{{ t.completedAt | date:'dd MMM yyyy, HH:mm' }}</span>
+                  <span class="value">{{ t.completedAt | date: 'dd MMM yyyy, HH:mm' }}</span>
                 </div>
               }
               @if (t.reminder) {
                 <div class="info-item">
                   <mat-icon aria-hidden="true">notifications</mat-icon>
                   <span class="label">Przypomnienie:</span>
-                  <span class="value">{{ t.reminder | date:'dd MMM yyyy, HH:mm' }}</span>
+                  <span class="value">{{ t.reminder | date: 'dd MMM yyyy, HH:mm' }}</span>
                 </div>
               }
               @if (t.location) {
@@ -97,10 +101,20 @@
             <section class="section" aria-labelledby="related-heading">
               <h3 id="related-heading">Powiązane</h3>
               <div class="related-item">
-                <mat-icon aria-hidden="true">{{ t.relatedTo.type === 'client' ? 'business' : (t.relatedTo.type === 'ticket' ? 'support_agent' : 'request_quote') }}</mat-icon>
+                <mat-icon aria-hidden="true">{{
+                  t.relatedTo.type === 'client'
+                    ? 'business'
+                    : t.relatedTo.type === 'ticket'
+                      ? 'support_agent'
+                      : 'request_quote'
+                }}</mat-icon>
                 <span>{{ t.relatedTo.name }}</span>
-                <button mat-stroked-button [routerLink]="['/' + t.relatedTo.type + 's', t.relatedTo.id]"
-                        aria-label="Zobacz szczegóły {{ t.relatedTo.type }}: {{ t.relatedTo.name }}">Zobacz</button>
+                <button
+                  mat-stroked-button
+                  [routerLink]="['/' + t.relatedTo.type + 's', t.relatedTo.id]"
+                  aria-label="Zobacz szczegóły {{ t.relatedTo.type }}: {{ t.relatedTo.name }}">
+                  Zobacz
+                </button>
               </div>
             </section>
           }

@@ -9,6 +9,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TaskService } from '../task.service';
 
+const colors: Record<string, string> = {
+  low: '#2e7d32',
+  medium: '#ed6c02',
+  high: '#d32f2f',
+  critical: '#b71c1c'
+};
+
 @Component({
   selector: 'app-task-calendar',
   imports: [
@@ -76,12 +83,7 @@ export class TaskCalendarComponent {
   }
 
   getPriorityColor(priority: string): string {
-    const colors: Record<string, string> = {
-      low: '#2e7d32',
-      medium: '#ed6c02',
-      high: '#d32f2f',
-      critical: '#b71c1c'
-    };
+
     return colors[priority] || '#757575';
   }
 
