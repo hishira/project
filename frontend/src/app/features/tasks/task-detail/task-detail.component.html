@@ -4,10 +4,10 @@
       <h1>{{ t.title }}</h1>
     </div>
     <div class="main-header-buttons d-flex gap-3">
-      <button mat-stroked-button aria-label="Edytuj zadanie {{ t.title }}">
+      <button type="button" mat-stroked-button aria-label="Edytuj zadanie {{ t.title }}">
         <mat-icon aria-hidden="true">edit</mat-icon> Edytuj
       </button>
-      <button mat-stroked-button color="warn" aria-label="Usuń zadanie {{ t.title }}">
+      <button type="button" mat-stroked-button color="warn" aria-label="Usuń zadanie {{ t.title }}">
         <mat-icon aria-hidden="true">delete</mat-icon> Usuń
       </button>
     </div>
@@ -110,6 +110,7 @@
                 }}</mat-icon>
                 <span>{{ t.relatedTo.name }}</span>
                 <button
+                  type="button"
                   mat-stroked-button
                   [routerLink]="['/' + t.relatedTo.type + 's', t.relatedTo.id]"
                   aria-label="Zobacz szczegóły {{ t.relatedTo.type }}: {{ t.relatedTo.name }}">
@@ -126,6 +127,6 @@
   <div class="not-found" role="alert">
     <mat-icon aria-hidden="true">error_outline</mat-icon>
     <p>Nie znaleziono zadania</p>
-    <button mat-raised-button color="primary" routerLink="/tasks">Powrót do listy zadań</button>
+    <button type="button" mat-raised-button color="primary" routerLink="/tasks">Powrót do listy zadań</button>
   </div>
 }

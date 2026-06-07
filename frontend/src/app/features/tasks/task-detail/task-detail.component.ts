@@ -6,6 +6,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { filter, map } from 'rxjs';
 import { MainPageViewComponent } from '../../../core/components/main-page-view/main-page-view.component';
 import { PageHeaderComponent } from '../../../core/components/page-header/page-header.component';
 import { getTaskPriorityColor, getTaskPriorityIcon, getTaskStatusLabel } from '../task-status.utils';
@@ -40,12 +41,10 @@ export class TaskDetailComponent {
   readonly getStatusLabel = getTaskStatusLabel;
 
   constructor() {
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        const found = this.taskService.tasks().find(t => t.id === id);
-        this.task.set(found);
-      }
+    this.route.paramMap.pipe(map(params => params.get('id')), filter(Boolean)).subscribe(id => {
+      const found = this.taskService.tasks().find(t => t.id === id);
+      this.task.set(found);
+
     });
   }
 }
