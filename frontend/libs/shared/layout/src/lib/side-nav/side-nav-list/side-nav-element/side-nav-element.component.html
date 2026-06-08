@@ -1,6 +1,18 @@
-<a class="nav-item" routerLink="/dashboard" (click)="close()">
+<!-- <a class="nav-item" routerLink="/dashboard" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">dashboard</mat-icon>
     </div>
     <span class="nav-item-text">Dashboard</span>
-  </a>
+  </a> -->
+
+  @for(item of sideNavElement; track $index){
+    <a class="nav-item" routerLink="{{item.link}}" (click)="close()">
+      <div class="nav-item-icon-wrapper">
+        <mat-icon class="nav-item-icon">{{item.icon}}</mat-icon>
+      </div>
+      <span class="nav-item-text">{{item.title}}</span>
+    </a>
+    @if(item.isLastInSection) {
+        <div class="nav-divider"></div>
+    }
+  }
