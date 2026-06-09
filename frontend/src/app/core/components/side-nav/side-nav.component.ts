@@ -5,9 +5,9 @@ import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { SnackBar } from '../../services/snack-bar.service';
-import { SideNavElement } from 'layout'
+import { SideNavElement, SideNavListComponent, SIDE_NAV_ELEMENTS } from 'layout'
 
-const SideNavElement: SideNavElement[] = [
+const sideNavElement: SideNavElement[] = [
   {
     title: 'Dashboard',
     link: 'dashboard',
@@ -146,17 +146,18 @@ const SideNavElement: SideNavElement[] = [
     link: '',
     icon: 'logout',
     customClickHandle: async () => {
-      const authService = inject(AuthService);
-      const snackBar = inject(SnackBar);
-      const router = inject(Router);
-      try {
-        await firstValueFrom(authService.logout());
-        snackBar.openSuccess('Logged out successfully');
-        router.navigate(['/auth/login']);
-      } catch (error) {
-        console.error('Logout error:', error);
-        snackBar.openError('Unable to log out. Please try again.');
-      }
+      // const authService = inject(AuthService);
+      // const snackBar = inject(SnackBar);
+      // const router = inject(Router);
+      // try {
+      //   await firstValueFrom(authService.logout());
+      //   snackBar.openSuccess('Logged out successfully');
+      //   router.navigate(['/auth/login']);
+      // } catch (error) {
+      //   console.error('Logout error:', error);
+      //   snackBar.openError('Unable to log out. Please try again.');
+      // }
+      console.log('logout')
     }
   }
 ]
@@ -170,12 +171,19 @@ const SideNavElement: SideNavElement[] = [
     RouterLink,
     MatIcon,
     MatDivider,
+    SideNavListComponent
   ],
+  providers: [
+    {
+      provide: SIDE_NAV_ELEMENTS,
+      useValue: sideNavElement
+    }
+  ]
 })
 export class SideNavComponent {
-  private authService = inject(AuthService);
-  private snackBar = inject(SnackBar);
-  private router = inject(Router);
+  // private authService = inject(AuthService);
+  // private snackBar = inject(SnackBar);
+  // private router = inject(Router);
 
   readonly closed = output<void>();
 
@@ -183,14 +191,14 @@ export class SideNavComponent {
     this.closed.emit();
   }
 
-  async logout(): Promise<void> {
-    try {
-      await firstValueFrom(this.authService.logout());
-      this.snackBar.openSuccess('Logged out successfully');
-      this.router.navigate(['/auth/login']);
-    } catch (error) {
-      console.error('Logout error:', error);
-      this.snackBar.openError('Unable to log out. Please try again.');
-    }
-  }
+   async logout(): Promise<void> {
+    // try {
+    //   await firstValueFrom(this.authService.logout());
+    //   this.snackBar.openSuccess('Logged out successfully');
+    //   this.router.navigate(['/auth/login']);
+    // } catch (error) {
+    //   console.error('Logout error:', error);
+    //   this.snackBar.openError('Unable to log out. Please try again.');
+    // }
+   }
 }

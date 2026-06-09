@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { SideNavListComponent } from "./side-nav-list/side-nav-list.component";
 
 @Component({
-  selector: 'app-side-nav',
+  selector: 'app-side-nav-v2',
   templateUrl: './side-nav.component.html',
   styleUrls: ['./side-nav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -12,5 +12,6 @@ import { SideNavListComponent } from "./side-nav-list/side-nav-list.component";
     SideNavListComponent
   ],
 })
-export class SideNavComponent {
+export class SideNavComponentV2 {
+  closed = output();
 }

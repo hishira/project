@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { SideNavComponent } from '../side-nav/side-nav.component';
+import { SideNavComponentV2 } from '../side-nav/side-nav.component';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
 
 @Component({
@@ -13,7 +13,7 @@ import { ToolbarComponent } from '../toolbar/toolbar.component';
     RouterOutlet, 
     ToolbarComponent,
     MatSidenavModule,
-    SideNavComponent
+    SideNavComponentV2
   ],
 })
 export class AppLayoutComponent {

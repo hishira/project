@@ -4,8 +4,8 @@
     </div>
     <span class="nav-item-text">Dashboard</span>
   </a> -->
-
-  @for(item of sideNavElement; track $index){
+@let item = sideNavElement();
+  <!-- //@for(item of sideNavElement; track $index){ -->
     <a class="nav-item" routerLink="{{item.link}}" (click)="close()">
       <div class="nav-item-icon-wrapper">
         <mat-icon class="nav-item-icon">{{item.icon}}</mat-icon>
@@ -15,4 +15,4 @@
     @if(item.isLastInSection) {
         <div class="nav-divider"></div>
     }
-  }
+  <!-- } -->

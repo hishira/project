@@ -3,12 +3,12 @@
 .side-nav-header {
   display: flex;
   align-items: center;
-  gap: $spacing-lg;
-  padding: 0 $spacing-2xl;
+  gap: variables.$spacing-lg;
+  padding: 0 variables.$spacing-2xl;
   height: 64px;
   min-height: 64px;
   background: variables.$gradient-sidebar;
-  margin-bottom: $spacing-sm;
+  margin-bottom: variables.$spacing-sm;
 
   mat-icon {
     font-size: variables.$icon-2xl;
@@ -27,7 +27,7 @@
 }
 
 .side-nav-list {
-  padding: variables.$spacing-sm $spacing-lg;
+  padding: variables.$spacing-sm variables.$spacing-lg;
   display: flex;
   flex-direction: column;
   gap: variables.$spacing-xs;
@@ -140,7 +140,7 @@
 .nav-divider {
   height: 1px;
   background: variables.$border-light;
-  margin: variables.$spacing-sm $spacing-lg;
+  margin: variables.$spacing-sm variables.$spacing-lg;
 }
 
 .nav-item-logout {

@@ -7,7 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
 import { map, Observable } from 'rxjs';
-import { AdminDirective } from '../../../core/directives/admin.directive';
+//import { AdminDirective } from '../../../core/directives/admin.directive';
 import { AuthenticationService } from '../services/auth.service';
 import { SnackBar } from '../services/snack-bar.service';
 
@@ -39,7 +39,7 @@ type User = {
     MatIcon,
     MatDivider,
     AsyncPipe,
-    AdminDirective,
+    //AdminDirective,
     RouterLink
   ],
 })

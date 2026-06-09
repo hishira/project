@@ -1,4 +1,4 @@
-import { Component, inject, InjectionToken, output } from "@angular/core";
+import { Component, inject, InjectionToken, input, output } from "@angular/core";
 import { MatIcon } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
 
@@ -20,11 +20,11 @@ export const SIDE_NAV_ELEMENTS = new InjectionToken<SideNavElement[]>('SIDE_NAV_
   imports: [MatIcon, RouterLink]
 })
 export class SideNavElementComponent {
-  readonly sideNavElement = inject(SIDE_NAV_ELEMENTS);
+  readonly sideNavElement = input.required<SideNavElement>()
   readonly closeEmit = output<void>()
   
-  close(element: SideNavElement): void {
+  close(): void {
     this.closeEmit.emit();
-    element?.customClickHandle?.();
+    this.sideNavElement()?.customClickHandle?.();
   }
 }

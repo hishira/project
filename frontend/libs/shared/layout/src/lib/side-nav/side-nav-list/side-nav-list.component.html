@@ -1,5 +1,7 @@
-<nav class="side-nav-list">
-  <!-- Dashboard -->
+@for(item of sideNavElements; track $index){
+  <app-side-nav-element [sideNavElement]="item" (closed)="close()"/>
+}
+<!-- <nav class="side-nav-list">
   <a class="nav-item" routerLink="/dashboard" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">dashboard</mat-icon>
@@ -7,7 +9,6 @@
     <span class="nav-item-text">Dashboard</span>
   </a>
 
-  <!-- Użytkownicy -->
   <a class="nav-item" routerLink="/users" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">people</mat-icon>
@@ -15,7 +16,6 @@
     <span class="nav-item-text">Users</span>
   </a>
 
-  <!-- Tickety -->
   <a class="nav-item" routerLink="/tickets" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">confirmation_number</mat-icon>
@@ -23,7 +23,6 @@
     <span class="nav-item-text">Tickets</span>
   </a>
 
-  <!-- Umowy -->
   <a class="nav-item" routerLink="/agreements" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">description</mat-icon>
@@ -31,7 +30,6 @@
     <span class="nav-item-text">Agreements</span>
   </a>
 
-  <!-- Raporty -->
   <a class="nav-item" routerLink="/raports" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">assessment</mat-icon>
@@ -39,7 +37,6 @@
     <span class="nav-item-text">Raports</span>
   </a>
 
-  <!-- Marketing -->
   <a class="nav-item" routerLink="/marketing" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">campaign</mat-icon>
@@ -47,7 +44,6 @@
     <span class="nav-item-text">Marketing</span>
   </a>
 
-  <!-- Dokumenty -->
   <a class="nav-item" routerLink="/documents" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">folder</mat-icon>
@@ -55,7 +51,6 @@
     <span class="nav-item-text">Documents</span>
   </a>
 
-  <!-- Klienci -->
   <a class="nav-item" routerLink="/clients" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">business</mat-icon>
@@ -63,7 +58,6 @@
     <span class="nav-item-text">Clients</span>
   </a>
 
-  <!-- Baza wiedzy -->
   <a class="nav-item" routerLink="/knowledge-base" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">menu_book</mat-icon>
@@ -71,7 +65,6 @@
     <span class="nav-item-text">Knowledge Base</span>
   </a>
 
-  <!-- Zadania -->
   <a class="nav-item" routerLink="/tasks" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">task</mat-icon>
@@ -79,7 +72,6 @@
     <span class="nav-item-text">Tasks</span>
   </a>
 
-  <!-- Projekty -->
   <a class="nav-item" routerLink="/projects" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">project</mat-icon>
@@ -87,7 +79,6 @@
     <span class="nav-item-text">Projects</span>
   </a>
 
-  <!-- Integracje -->
   <a class="nav-item" routerLink="/integrations" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">integration_instructions</mat-icon>
@@ -95,7 +86,6 @@
     <span class="nav-item-text">Integrations</span>
   </a>
 
-  <!-- Faktury -->
   <a class="nav-item" routerLink="/invoices" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">receipt_long</mat-icon>
@@ -103,7 +93,6 @@
     <span class="nav-item-text">Invoices</span>
   </a>
 
-  <!-- Lojalnościowy -->
   <a class="nav-item" routerLink="/loyalty" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">card_giftcard</mat-icon>
@@ -111,7 +100,6 @@
     <span class="nav-item-text">Loyalty</span>
   </a>
 
-  <!-- Oferty -->
   <a class="nav-item" routerLink="/offers" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">local_offer</mat-icon>
@@ -119,7 +107,6 @@
     <span class="nav-item-text">Offers</span>
   </a>
 
-  <!-- Media społecznościowe -->
   <a class="nav-item" routerLink="/social" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">share</mat-icon>
@@ -127,7 +114,6 @@
     <span class="nav-item-text">Social</span>
   </a>
 
-  <!-- Onboarding -->
   <a class="nav-item" routerLink="/onboarding" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">school</mat-icon>
@@ -135,7 +121,6 @@
     <span class="nav-item-text">Onboarding</span>
   </a>
 
-  <!-- Analityka -->
   <a class="nav-item" routerLink="/analytics" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">analytics</mat-icon>
@@ -143,7 +128,6 @@
     <span class="nav-item-text">Analytics</span>
   </a>
 
-  <!-- Statystyki -->
   <a class="nav-item" routerLink="/statistics" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">bar_chart</mat-icon>
@@ -153,7 +137,6 @@
 
   <div class="nav-divider"></div>
 
-  <!-- Ustawienia -->
   <a class="nav-item" routerLink="/settings" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">settings</mat-icon>
@@ -161,7 +144,6 @@
     <span class="nav-item-text">Settings</span>
   </a>
 
-  <!-- Pomoc -->
   <a class="nav-item" routerLink="/help" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">help_outline</mat-icon>
@@ -169,7 +151,6 @@
     <span class="nav-item-text">Help & Support</span>
   </a>
 
-  <!-- Profil -->
   <a class="nav-item" routerLink="/profile" (click)="close()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">person_outline</mat-icon>
@@ -179,11 +160,11 @@
 
   <div class="nav-divider nav-divider-accent"></div>
 
-  <!-- Wyloguj -->
   <a class="nav-item nav-item-logout" (click)="logout()">
     <div class="nav-item-icon-wrapper">
       <mat-icon class="nav-item-icon">logout</mat-icon>
     </div>
     <span class="nav-item-text">Logout</span>
   </a>
-</nav>
+</nav> -->
+
