@@ -1,6 +1,11 @@
-@for(item of sideNavElements; track $index){
-  <app-side-nav-element [sideNavElement]="item" (closed)="close()"/>
+@if (sideNavElements.length > 0) {
+  <nav class="side-nav-list">
+    @for (item of sideNavElements; track $index) {
+      <app-side-nav-element [sideNavElement]="item" (closed)="close()" />
+    }
+  </nav>
 }
+
 <!-- <nav class="side-nav-list">
   <a class="nav-item" routerLink="/dashboard" (click)="close()">
     <div class="nav-item-icon-wrapper">
@@ -167,4 +172,3 @@
     <span class="nav-item-text">Logout</span>
   </a>
 </nav> -->
-
