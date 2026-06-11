@@ -13,5 +13,5 @@ import { SideNavListComponent } from "./side-nav-list/side-nav-list.component";
   ],
 })
 export class SideNavComponentV2 {
-  closed = output();
+  readonly closed = output();
 }

@@ -22,7 +22,7 @@ export const SIDE_NAV_ELEMENTS = new InjectionToken<SideNavElement[]>('SIDE_NAV_
 export class SideNavElementComponent {
   readonly sideNavElement = input.required<SideNavElement>()
   readonly closeEmit = output<void>()
-  
+
   close(): void {
     this.closeEmit.emit();
     this.sideNavElement()?.customClickHandle?.();
