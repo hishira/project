@@ -6,4 +6,4 @@ export interface AuthenticationService {
     currentUser$: Observable<any>;
 }
 
-export const AuthenticationService = new InjectionToken<AuthenticationService>('authentication_service_interface')
+export const AuthenticationService = new InjectionToken<AuthenticationService>('authentication_service_interface');
