@@ -20,7 +20,7 @@ export const SIDE_NAV_ELEMENTS = new InjectionToken<SideNavElement[]>('SIDE_NAV_
   imports: [MatIcon, RouterLink]
 })
 export class SideNavElementComponent {
-  readonly sideNavElement = input.required<SideNavElement>()
+  readonly sideNavElement = input.required< Readonly<SideNavElement>>()
   readonly closeEmit = output<void>()
 
   close(): void {
