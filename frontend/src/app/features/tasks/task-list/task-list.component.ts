@@ -73,7 +73,7 @@ export class TaskListComponent {
 
   onCategoryChange(event: any): void {
     const index = event.index;
-    const filters: Array<'my' | 'team' | 'done'> = ['my', 'team', 'done'];
+    const filters: ('my' | 'team' | 'done')[] = ['my', 'team', 'done'];
     if (index >= 0 && index < filters.length) {
       this.activeFilter.set(filters[index]);
     }

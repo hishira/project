@@ -8,7 +8,7 @@ const _test = (globalThis as any).test || test;
 const _expect = (globalThis as any).expect || expect;
 
 _describe('ProjectStatusChipComponent', () => {
-  const statuses: Array<{ value: string; expectedLabel: string }> = [
+  const statuses: { value: string; expectedLabel: string }[] = [
     { value: 'planned', expectedLabel: 'Planowany' },
     { value: 'active', expectedLabel: 'Aktywny' },
     { value: 'on_hold', expectedLabel: 'Wstrzymany' },
