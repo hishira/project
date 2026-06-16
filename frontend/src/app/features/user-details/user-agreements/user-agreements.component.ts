@@ -3,10 +3,24 @@ import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/cor
 import { CommonRouterService } from '../../../core/services/common-router.service';
 import { agreementRiskColorMap, agreementStatusColorMap } from '../../agreements/agreement-details/utils';
 import { AgreementRiskStatus, AgreementStatus, AgreementStatusColor } from '../../agreements/types';
+import { getDaysUntilExpiration } from "../utils";
 import { smnallSamples } from './mocks';
 import { AgreementTableItem } from "./types";
 import { imports } from './user-agreements.component.dependencies';
-import { getDaysUntilExpiration } from "../utils";
+
+const columns = [
+    'expand',
+    'contractId',
+    'title',
+    'status',
+    'product',
+    'parties',
+    'dates',
+    'value',
+    'risk',
+    'signatures',
+    'actions'
+];
 
 @Component({
     selector: 'app-user-agreements',
@@ -20,19 +34,7 @@ import { getDaysUntilExpiration } from "../utils";
 
 })
 export class UserAgreementsComponent {
-    readonly displayedColumns: string[] = [
-        'expand',
-        'contractId',
-        'title',
-        'status',
-        'product',
-        'parties',
-        'dates',
-        'value',
-        'risk',
-        'signatures',
-        'actions'
-    ];
+    readonly displayedColumns: string[] = columns;
 
     private readonly router = inject(CommonRouterService);
     readonly agreements = signal<AgreementTableItem[]>(smnallSamples as AgreementTableItem[]);

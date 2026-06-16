@@ -13,6 +13,7 @@ import { userFilters } from './user-list.filter';
 
 const adminColumns = ['id', 'firstName', 'lastName', 'email', 'role', 'state'];
 const otherColumns = ['firstName', 'lastName', 'email', 'role'];
+
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -23,12 +24,12 @@ const otherColumns = ['firstName', 'lastName', 'email', 'role'];
 })
 export class UserListComponent {
   readonly users = signal(usersListMocks);
+  readonly commonRouter = inject(CommonRouterService);
   readonly user: Signal<User | any> = toSignal(inject(Store).select(userSelector));
   readonly columns: Signal<string[]> = computed(() =>
     this.user()?.role?.roleType?.roleType === 'admin' ? adminColumns : otherColumns,
   );
   readonly filters = userFilters;
-  readonly commonRouter = inject(CommonRouterService);
 
   onRowClick(row: User): void {
     this.commonRouter.navitgateTo(['details', row.id]);
