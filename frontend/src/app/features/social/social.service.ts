@@ -3,13 +3,13 @@ import { Mention, ScheduledPost, SentimentStats, SocialProfile } from './social.
 
 @Injectable({ providedIn: 'root' })
 export class SocialService {
-    private profilesData: SocialProfile[] = [
+    private readonly profilesData: SocialProfile[] = [
         { id: 'prof1', platform: 'facebook', profileId: 'fb123', profileName: 'CRM Soki', profileUrl: 'https://facebook.com/crmsoki', avatarUrl: 'https://example.com/avatar1.png', connected: true, lastSync: new Date() },
         { id: 'prof2', platform: 'twitter', profileId: 'tw456', profileName: '@crmsoki', profileUrl: 'https://twitter.com/crmsoki', connected: true, lastSync: new Date() },
         { id: 'prof3', platform: 'instagram', profileId: 'ig789', profileName: 'crmsoki', profileUrl: 'https://instagram.com/crmsoki', connected: false }
     ];
 
-    private mentionsData: Mention[] = [
+    private readonly mentionsData: Mention[] = [
         {
             id: 'm1',
             platform: 'twitter',
@@ -95,7 +95,7 @@ export class SocialService {
         }
     ];
 
-    private scheduledPostsData: ScheduledPost[] = [
+    private readonly scheduledPostsData: ScheduledPost[] = [
         { id: 'sp1', platform: 'facebook', content: 'Nowość! Soki z marchwi już w sprzedaży.', scheduledAt: new Date('2025-03-12T10:00:00'), status: 'scheduled', createdBy: 'Jan Kowalski', createdAt: new Date() },
         { id: 'sp2', platform: 'twitter', content: 'Konkurs: wygraj roczny zapas soków!', scheduledAt: new Date('2025-03-15T12:00:00'), status: 'draft', createdBy: 'Anna Nowak', createdAt: new Date() }
     ];

@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { SocialService } from '../social.service';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { SocialProfile } from '../social.model';
+import { SocialService } from '../social.service';
 import { ProfileCardComponent } from './profile-card.component';
 
 @Component({

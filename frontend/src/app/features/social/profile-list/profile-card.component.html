@@ -19,25 +19,17 @@
     @if (profile().lastSync) {
       <p class="sync-info">
         <mat-icon>schedule</mat-icon>
-        Ostatnia synchronizacja: {{ profile().lastSync | date:'dd MMM yyyy, HH:mm' }}
+        Ostatnia synchronizacja: {{ profile().lastSync | date: 'dd MMM yyyy, HH:mm' }}
       </p>
     }
   </mat-card-content>
 
   <mat-card-actions align="end">
-    <mat-slide-toggle
-      [checked]="profile().connected"
-      (change)="onToggleConnection()"
-    >
+    <mat-slide-toggle [checked]="profile().connected" (change)="onToggleConnection()">
       {{ profile().connected ? 'Połączony' : 'Rozłączony' }}
     </mat-slide-toggle>
 
-    <button
-      mat-icon-button
-      (click)="onSync()"
-      matTooltip="Synchronizuj"
-      [disabled]="!profile().connected"
-    >
+    <button mat-icon-button (click)="onSync()" matTooltip="Synchronizuj" [disabled]="!profile().connected">
       <mat-icon [class.syncing]="false">sync</mat-icon>
     </button>
   </mat-card-actions>
