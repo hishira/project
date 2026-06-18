@@ -1,9 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, resource, signal, ResourceRef } from '@angular/core';
 import { Task, CalendarEvent, TaskStatus, TaskPriority } from './task.model';
 
-@Injectable({ providedIn: 'root' })
-export class TaskService {
-  private readonly tasksData: Task[] = [
+const tasks: Promise<Task[]> = Promise.resolve([
     {
       id: 't1',
       title: 'Przygotowanie oferty dla Tymbark',
@@ -96,9 +94,17 @@ export class TaskService {
       createdBy: { id: 'u1', fullName: 'Jan Kowalski' },
       relatedTo: { type: 'client', id: 'c4', name: 'Coca-Cola HBC Polska' }
     }
-  ];
+  ])
 
-  readonly tasks = signal<Task[]>(this.tasksData);
+@Injectable({ providedIn: 'root' })
+export class TaskService {
+  private readonly tasksData: ResourceRef<Task[]> = resource({
+    loader: ()=> tasks,
+    defaultValue: [],
+
+  });
+
+  readonly tasks = this.tasksData.value;
 
   getTasksByStatus(status: TaskStatus): Task[] {
     return this.tasks().filter(t => t.status === status);

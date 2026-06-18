@@ -50,7 +50,6 @@ export class TaskListComponent {
 
   readonly activeFilter = signal<'my' | 'team' | 'done'>('my');
   readonly currentUserId = 'u1';
-
   readonly filteredTasks = computed(() => {
     const all = this.tasks();
     const filter = this.activeFilter();
