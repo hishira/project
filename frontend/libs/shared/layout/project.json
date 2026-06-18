@@ -4,13 +4,17 @@
   "sourceRoot": "libs/shared/layout/src",
   "prefix": "lib",
   "projectType": "library",
-  "tags": ["common-layout"],
+  "tags": [
+    "common-layout"
+  ],
   "targets": {
     "test": {
       "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": [
+        "{options.reportsDirectory}"
+      ],
       "options": {
-        "reportsDirectory": "../../../coverage/libs/shared/layout"
+        "reportsDirectory": "{projectRoot}/../../../coverage/libs/shared/layout"
       }
     },
     "lint": {

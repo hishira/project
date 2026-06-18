@@ -51,3 +51,4 @@ vitest.config.*.timestamp*
 
 .vscode
 .nx
+.claude/worktrees

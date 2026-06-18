@@ -7,10 +7,10 @@
       "inputs": ["production", "^production"]
     },
     "test": {
-      "executor": "@nx/vite:test",
+      "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "coverage"
+        "reportsDirectory": "{projectRoot}/coverage"
       }
     },
     "lint": {
@@ -62,5 +62,7 @@
     "@nx/angular:component": {
       "style": "scss"
     }
-  }
+  },
+  "neverConnectToCloud": true,
+  "analytics": false
 }

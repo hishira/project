@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  resource,
   signal,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
