@@ -1,6 +1,7 @@
-import { resource, ResourceRef } from "@angular/core";
+import { inject, resource, ResourceRef } from "@angular/core";
 import { Task } from "../../features/tasks/task.model";
-import { Resource } from "./resource";
+import { Resource, resourceProviderCreation } from "./resource";
+import { Development } from "./development";
 
 const tasks: Promise<Task[]> = Promise.resolve([
     {
@@ -97,10 +98,18 @@ const tasks: Promise<Task[]> = Promise.resolve([
     }
 ])
 
-export class LocalTaskListResource extends Resource<Task[]> {
+export class LocalTaskListResource extends Resource<Task[], any> {
     override resource: ResourceRef<Task[]> = resource({
         loader: () => tasks,
         defaultValue: [],
 
     })
 }
+
+export class TaskListResource extends Resource<Task[], any> {
+    override resource: ResourceRef<Task[]> = resource({
+        loader: () => Promise.resolve([]),
+        defaultValue: [],
+    })
+}
+export const taskListProvider = resourceProviderCreation(() => inject(Development).isLocal ? new LocalTaskListResource() : new TaskListResource());
