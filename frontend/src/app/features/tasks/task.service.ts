@@ -1,16 +1,12 @@
-import { Injectable, resource, signal, ResourceRef } from '@angular/core';
+import { Injectable, resource, signal, ResourceRef, inject } from '@angular/core';
 import { Task, CalendarEvent, TaskStatus, TaskPriority } from './task.model';
+import { Resource } from '../../shared/resources/resource';
 
 
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
-  private readonly tasksData: ResourceRef<Task[]> = resource({
-    loader: () => Promise.resolve([]),
-    defaultValue: [],
-
-  });
-
+  private readonly tasksData: ResourceRef<Task[]> = inject(Resource<Task[]>).resource;
   readonly tasks = this.tasksData.value;
 
   getTasksByStatus(status: TaskStatus): Task[] {

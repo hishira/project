@@ -5,7 +5,7 @@ import { Injectable } from "@angular/core";
 })
 export class Development {
     private _isLocal: boolean = false;
-    
+
     get isLocal(): boolean {
         return this._isLocal;
     }

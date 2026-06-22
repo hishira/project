@@ -1,7 +1,7 @@
 import { inject, resource, ResourceRef } from "@angular/core";
 import { Task } from "../../features/tasks/task.model";
-import { Resource, resourceProviderCreation } from "./resource";
 import { Development } from "./development";
+import { Resource, resourceProviderCreation } from "./resource";
 
 const tasks: Promise<Task[]> = Promise.resolve([
     {

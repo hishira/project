@@ -4,7 +4,7 @@ interface ResourceStrategy<ResourceType, ResourceParams> {
     fetchData(): Promise<ResourceType>
 }
 
-export abstract class Resource<ResourceType, ParamsType> {
+export abstract class Resource<ResourceType, ParamsType = any> {
     readonly params!: () => ParamsType;
     readonly resource!: ResourceRef<ResourceType>;
 

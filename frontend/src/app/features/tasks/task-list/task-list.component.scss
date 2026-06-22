@@ -21,7 +21,7 @@
   transition: box-shadow 0.2s;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -38,9 +38,17 @@
 }
 
 .type-icon {
-  &.task { color: #1976d2; }
-  &.meeting { color: #7b1fa2; }
-  &.note { color: #2e7d32; }
+  &.task {
+    color: #1976d2;
+  }
+
+  &.meeting {
+    color: #7b1fa2;
+  }
+
+  &.note {
+    color: #2e7d32;
+  }
 }
 
 .task-title {
@@ -106,10 +114,21 @@
     margin-right: 4px;
   }
 
-  &.priority-low { background-color: #2e7d32 !important; }
-  &.priority-medium { background-color: #ed6c02 !important; }
-  &.priority-high { background-color: #d32f2f !important; }
-  &.priority-critical { background-color: #b71c1c !important; }
+  &.priority-low {
+    background-color: #2e7d32 !important;
+  }
+
+  &.priority-medium {
+    background-color: #ed6c02 !important;
+  }
+
+  &.priority-high {
+    background-color: #d32f2f !important;
+  }
+
+  &.priority-critical {
+    background-color: #b71c1c !important;
+  }
 }
 
 .description {
