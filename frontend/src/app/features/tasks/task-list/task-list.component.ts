@@ -13,6 +13,8 @@ import { PageHeaderComponent } from '../../../core/components/page-header/page-h
 import { getTaskPriorityColor, getTaskPriorityIcon, getTaskStatusLabel } from '../task-status.utils';
 import { Task, TaskType } from '../task.model';
 import { TaskService } from '../task.service';
+import { resourceProviderCreation } from '../../../shared/resources/resource';
+import { taskListProvider } from '../../../shared/resources/task-list.resource';
 
 const taskTypeIcons: Record<TaskType, string> = {
   task: 'assignment',
@@ -41,7 +43,8 @@ function getTaskTypeIcon(type: TaskType): string {
     MainPageViewComponent
   ],
   templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.scss']
+  styleUrls: ['./task-list.component.scss'],
+  providers: [taskListProvider]
 })
 export class TaskListComponent {
   private readonly taskService = inject(TaskService);

@@ -1,6 +1,6 @@
-import { Injectable, resource, signal, ResourceRef, inject } from '@angular/core';
-import { Task, CalendarEvent, TaskStatus, TaskPriority } from './task.model';
+import { Injectable, ResourceRef, inject } from '@angular/core';
 import { Resource } from '../../shared/resources/resource';
+import { CalendarEvent, Task, TaskPriority, TaskStatus } from './task.model';
 
 
 

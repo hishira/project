@@ -35,7 +35,6 @@ export class TaskCalendarComponent {
   private taskService = inject(TaskService);
   readonly tasks = this.taskService.tasks;
 
-  viewMode: 'month' | 'week' = 'month';
   readonly currentDate = signal(new Date());
   readonly now = Date.now()
   readonly calendarDays = computed(() => {
@@ -56,6 +55,7 @@ export class TaskCalendarComponent {
     }
     return days;
   });
+  viewMode: 'month' | 'week' = 'month';
 
   // Pobieranie zadań dla danego dnia
   getTasksForDay(day: Date) {
