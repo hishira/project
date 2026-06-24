@@ -121,7 +121,7 @@ export interface TicketListItem {
 // ==================== Typy dla widoku szczegółowego ====================
 
 // Rozszerzenie ticketu o dodatkowe dane potrzebne w szczegółach
-export type TicketDetails =  {
+export type TicketDetails = {
   // Możemy dodać więcej pól, jeśli backend dostarcza
   // np. historia zmian, powiązane tickety, itp.
   relatedTickets?: TicketListItem[]; // powiązane zgłoszenia

@@ -1,7 +1,7 @@
-import { Injectable, signal } from '@angular/core';
-import { TicketListItem } from './types';
+import { Injectable } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { delay, of } from 'rxjs';
+import { TicketListItem } from './types';
 
 @Injectable({ providedIn: 'root' })
 export class TicketService {
