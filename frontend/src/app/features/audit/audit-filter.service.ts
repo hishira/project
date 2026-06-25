@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { AuditLog, AuditEntityType, AuditActionType, AuditSeverity } from './audit.model';
+import { AuditActionType, AuditEntityType, AuditLog, AuditSeverity } from './audit.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuditFilterService {
